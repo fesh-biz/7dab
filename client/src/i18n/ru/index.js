@@ -1,0 +1,23 @@
+export default {
+  check_your_data: 'Проверьте введенные данные',
+  wrong_credentials: 'Пользователь с такими данными не найден',
+  you_ll_be_redirected_in_3_seconds: 'Вы будете перенаправлены через 3 секунды',
+  your_password_has_been_successfully_reset: 'Вы успешно сменили ваш пароль',
+  password_confirmation: 'Повторите пароль',
+  name: 'Имя',
+  registration: 'Регистрация',
+  home_page: 'Главная',
+  logout: 'Выйти',
+  forgot_your_password: 'Забыли пароль',
+  forgot_your_password_hint: 'Забыли свой пароль? Нет проблем. Просто сообщите нам вашу электронную почту и мы вышлем вам ссылку для смены пароля',
+  email_password_reset_link: 'Отправить ссылку для сброса',
+  reset_password: 'Сбросить пароль',
+  register: 'Регистрация',
+  login: 'Вход',
+  log_in: 'Войти',
+  submit: 'Отправить',
+  email: 'Email',
+  password: 'Пароль',
+  failed: 'Потрачено',
+  success: 'Успех'
+}

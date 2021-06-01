@@ -6,7 +6,7 @@
           <q-item :to="{ name: 'home'}">
             <img width="24px" src="~assets/quasar-logo-full.svg" alt="">
           </q-item>
-          <q-item>Starter Kit</q-item>
+          <q-item>7dab</q-item>
         </q-toolbar-title>
 
         <div>
@@ -17,7 +17,7 @@
     </q-header>
 
     <q-page-container>
-      <q-page>
+      <q-page padding>
         <router-view/>
       </q-page>
     </q-page-container>

@@ -1,6 +1,3 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
   check_your_data: 'Check your data',
   wrong_credentials: 'These credentials do not match our records',
@@ -17,6 +14,7 @@ export default {
   reset_password: 'Reset Password',
   register: 'Register',
   login: 'Login',
+  log_in: 'Login',
   submit: 'Submit',
   email: 'Email',
   password: 'Password',

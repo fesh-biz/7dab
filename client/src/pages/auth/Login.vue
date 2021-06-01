@@ -60,7 +60,7 @@
 
           <!-- Buttons -->
           <q-card-actions class="q-pa-md">
-            <q-btn dusk="l-login-form-submit" :disable="formIsBusy" :loading="formIsBusy" :label="$t('submit')" type="submit" color="primary"/>
+            <q-btn dusk="l-login-form-submit" :disable="formIsBusy" :loading="formIsBusy" :label="$t('log_in')" type="submit" color="primary"/>
           </q-card-actions>
         </q-card>
       </q-form>
