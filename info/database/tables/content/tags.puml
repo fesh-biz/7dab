@@ -4,11 +4,12 @@ object tags {
     __
     + id
     - user_id (UBI)
-    - post_id (UBI)
 
     title (string)
     body (text)
     slug (string)
+    rating (integer)
+    total_posts (integer)
 
     created_at
     updated_at

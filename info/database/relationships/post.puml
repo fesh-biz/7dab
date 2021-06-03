@@ -1,11 +1,13 @@
 @startuml
 !include ../tables/content/comments.puml
+!include ../tables/content/post_tag.puml
 !include ../tables/content/posts.puml
 !include ../tables/content/tags.puml
 !include ../tables/users.puml
 
 posts -{ comments
-tags }-{ posts
+post_tag -- tags
+post_tag -- posts
 posts -- users
 comments -- users
 tags -- users

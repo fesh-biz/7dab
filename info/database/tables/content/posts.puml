@@ -7,7 +7,7 @@ object posts {
 
     title (string)
     body (text)
-    current_rating (integer)
+    rating (integer)
     slug (string)
 
     created_at

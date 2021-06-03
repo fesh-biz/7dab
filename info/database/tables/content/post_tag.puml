@@ -1,0 +1,11 @@
+@startuml
+object post_tag {
+    PIVOT
+    __
+    - post_id (UBI)
+    - tag_id (UBI)
+
+    created_at
+    updated_at
+}
+@enduml
