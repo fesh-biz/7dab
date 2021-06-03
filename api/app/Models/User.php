@@ -38,6 +38,10 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $rating
+ * @property int $is_banned
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsBanned($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRating($value)
  */
 class User extends Authenticatable
 {
