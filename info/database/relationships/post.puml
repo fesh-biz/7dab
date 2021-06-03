@@ -1,0 +1,13 @@
+@startuml
+!include ../tables/content/comments.puml
+!include ../tables/content/posts.puml
+!include ../tables/content/tags.puml
+!include ../tables/users.puml
+
+posts -{ comments
+tags }-{ posts
+posts -- users
+comments -- users
+tags -- users
+comments -{ comments
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+object comments {
+    App\Models\Content\Comment
+    __
+    + id
+
+    - user_id (UBI)
+    - commentable_id (UBI)
+    - commentable_type (string)
+
+    body (text)
+    current_rating (integer)
+    created_at
+    updated_at
+}
+@enduml

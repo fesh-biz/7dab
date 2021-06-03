@@ -1,0 +1,16 @@
+@startuml
+object tags {
+    App\Models\Content\Tag
+    __
+    + id
+    - user_id (UBI)
+    - post_id (UBI)
+
+    title (string)
+    body (text)
+    slug (string)
+
+    created_at
+    updated_at
+}
+@enduml

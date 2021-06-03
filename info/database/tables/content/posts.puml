@@ -1,0 +1,16 @@
+@startuml
+object posts {
+    App\Models\Content\Post
+    __
+    + id
+    - user_id (UBI)
+
+    title (string)
+    body (text)
+    current_rating (integer)
+    slug (string)
+
+    created_at
+    updated_at
+}
+@enduml
