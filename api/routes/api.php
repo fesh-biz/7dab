@@ -13,6 +13,7 @@
 */
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Content\PostController;
 
 
 Route::post('register', [AuthController::class, 'register']);
@@ -22,4 +23,8 @@ Route::post('password-reset', [AuthController::class, 'passwordReset']);
 Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
+});
+
+Route::group(['prefix' => 'content'], function() {
+    Route::get('/', [PostController::class, 'index']);
 });
