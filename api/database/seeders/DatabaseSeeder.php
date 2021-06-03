@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PassportSeeder::class);
 
+        if (app()->environment() === 'dusk'){
+            return;
+        }
+
         // Content
         $this->call(TagSeeder::class);
         $this->call(PostSeeder::class);
