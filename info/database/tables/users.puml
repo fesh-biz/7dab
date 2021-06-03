@@ -1,0 +1,14 @@
+@startuml
+object users {
+    App\Models\User
+    __
+    + id
+    name (string)
+    email (string|unique)
+    email_verified_at (timestamp)
+    password (string)
+    remember_token (string)
+    created_at
+    updated_at
+}
+@enduml
