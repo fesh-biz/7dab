@@ -22,7 +22,11 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => 1,
+            'title' => $this->faker->text(mt_rand(5, 30)),
+            'body' => $this->faker->text,
+            'total_post_rating' => mt_rand(-100, 100),
+            'total_posts' => mt_rand(0, 100)
         ];
     }
 }

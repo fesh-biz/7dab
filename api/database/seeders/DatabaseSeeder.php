@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\Content\CommentSeeder;
+use Database\Seeders\Content\PostSeeder;
+use Database\Seeders\Content\TagSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,5 +24,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(PassportSeeder::class);
+
+        // Content
+        $this->call(TagSeeder::class);
+        $this->call(PostSeeder::class);
+        $this->call(CommentSeeder::class);
     }
 }
