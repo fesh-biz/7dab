@@ -9,6 +9,8 @@ object posts {
     body (text)
     rating (integer)
     slug (string)
+    total_views (UI)
+    total_comments (UI)
 
     created_at
     updated_at

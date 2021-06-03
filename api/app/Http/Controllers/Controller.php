@@ -51,6 +51,6 @@ class Controller extends BaseController
    }
 
    public function test() {
-       dd(Post::with('comments.comments')->first());
+       dd(Post::first());
    }
 }

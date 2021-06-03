@@ -23,7 +23,8 @@ class CreatePostsTable extends Migration
             $table->integer('rating')->default(0);
             $table->string('slug')->unique();
             $table->boolean('is_approved')->default(false);
-            $table->unsignedBigInteger('total_views')->default(0);
+            $table->unsignedInteger('total_views')->default(0);
+            $table->unsignedInteger('total_comments')->default(0);
 
             $table->timestamps();
         });

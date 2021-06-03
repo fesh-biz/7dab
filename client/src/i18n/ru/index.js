@@ -1,4 +1,7 @@
 export default {
+  rating: 'Рейтинг',
+  views: 'Просмотров',
+  comments: 'Комментариев',
   check_your_data: 'Проверьте введенные данные',
   wrong_credentials: 'Пользователь с такими данными не найден',
   you_ll_be_redirected_in_3_seconds: 'Вы будете перенаправлены через 3 секунды',

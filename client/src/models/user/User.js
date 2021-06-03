@@ -6,8 +6,8 @@ export default class User extends AppModel {
   static fields () {
     return {
       id: this.attr(null),
-      first_name: this.attr(''),
-      last_name: this.attr('')
+      name: this.string(''),
+      rating: this.number(0)
     }
   }
 }

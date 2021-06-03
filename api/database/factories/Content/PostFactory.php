@@ -22,7 +22,8 @@ class PostFactory extends Factory
             'body' => $this->faker->text(mt_rand(400, 1000)),
             'rating' => mt_rand(-100, 100),
             'is_approved' => false,
-            'total_views' => mt_rand(10000, 100000)
+            'total_views' => mt_rand(10000, 100000),
+            'total_comments' => mt_rand(100, 1000)
         ];
     }
 }
