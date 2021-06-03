@@ -2,10 +2,13 @@
 
 namespace App\Models\Content;
 
+use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Slugable;
+
+
 }

@@ -3,6 +3,7 @@
 namespace Database\Factories\Content;
 
 use App\Models\Content\Comment;
+use App\Models\Content\Post;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentFactory extends Factory
@@ -14,15 +15,14 @@ class CommentFactory extends Factory
      */
     protected $model = Comment::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            'user_id' => 1,
+            'commentable_id' => 1,
+            'commentable_type' => Post::class,
+            'body' => $this->faker->text,
+            'rating' => mt_rand(-100, 100)
         ];
     }
 }

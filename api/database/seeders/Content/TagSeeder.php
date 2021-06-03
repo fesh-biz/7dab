@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Content;
 
 use Illuminate\Database\Seeder;
 
-class CommentSeeder extends Seeder
+class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Slug;
+use App\Models\Content\Post;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -46,5 +48,8 @@ class Controller extends BaseController
                'email' => $user->email
            ]
        ]);
+   }
+
+   public function test() {
    }
 }

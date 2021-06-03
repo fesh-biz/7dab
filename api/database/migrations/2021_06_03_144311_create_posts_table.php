@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->integer('rating')->default(0);
             $table->string('slug')->unique();
-            $table->boolean('is_approved');
+            $table->boolean('is_approved')->default(false);
 
             $table->timestamps();
         });

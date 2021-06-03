@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function() {
     echo 'index';
 });
+
+Route::get('/test', [Controller::class, 'test']);
