@@ -1,30 +1,27 @@
 <template>
-  <q-card :flat="$q.platform.is.mobile" class="q-my-md">
+  <q-card :dusk="'post-' + item.id" :flat="$q.platform.is.mobile" class="q-my-md">
     <!-- Title, Author -->
-    <q-card-section class="flex justify-between">
-      <!-- Title -->
-      <div>
-        {{ item.title }}
+    <q-card-section class="q-pb-none">
+      <!-- Author -->
+      <div :dusk="'post-' + item.id + '-author'">
+        {{ item.user.name }}
       </div>
 
-      <!-- Author -->
-      <div>
-        {{ item.user.name }}
+      <!-- Title -->
+      <div :dusk="'post-' + item.id + '-title'">
+        {{ item.title }}
       </div>
     </q-card-section>
 
     <!-- Body -->
-    <q-card-section>
+    <q-card-section  :dusk="'post-' + item.id + '-body'">
       {{ item.body }}
     </q-card-section>
 
     <!-- Info -->
     <q-card-section>
       <post-info
-        :tags="item.tags"
-        :rating="item.rating"
-        :total-comments="item.total_comments"
-        :total-views="item.total_views"
+        :post="item"
       />
     </q-card-section>
 

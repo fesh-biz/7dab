@@ -1,27 +1,27 @@
 <template>
   <div style="color: #757575">
     <!-- Views, Comments, Rating-->
-    <div class="flex">
+    <div class="flex cursor-default">
       <!-- Rating -->
-      <div class="q-mr-md">
-        <post-info-icon icon="thumbs_up_down" :amount="rating" :tooltip-label="$t('rating')"/>
+      <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
+        <post-info-icon icon="thumbs_up_down" :amount="post.rating" :tooltip-label="$t('rating')"/>
       </div>
 
       <!-- Total Views -->
-      <div class="q-mr-md">
-        <post-info-icon icon="visibility" :amount="totalViews" :tooltip-label="$t('views')"/>
+      <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
+        <post-info-icon icon="visibility" :amount="post.total_views" :tooltip-label="$t('views')"/>
       </div>
 
       <!-- Total Comments -->
-      <div class="q-mr-md">
-        <post-info-icon icon="question_answer" :amount="totalComments" :tooltip-label="$t('comments')"/>
+      <div :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
+        <post-info-icon icon="question_answer" :amount="post.total_comments" :tooltip-label="$t('comments')"/>
       </div>
     </div>
 
     <!-- Tags -->
-    <div class="q-mt-md flex">
+    <div :dusk="'post-' + post.id + '-info-tags'" class="q-mt-md flex">
       <tag
-        v-for="(tag, index) in tags"
+        v-for="(tag, index) in post.tags"
         :key="'tag' + index"
         :item="tag"
       />
@@ -41,20 +41,8 @@ export default {
   },
 
   props: {
-    tags: {
-      type: Array,
-      required: true
-    },
-    rating: {
-      type: Number,
-      required: true
-    },
-    totalViews: {
-      type: Number,
-      required: true
-    },
-    totalComments: {
-      type: Number,
+    post: {
+      type: Object,
       required: true
     }
   }

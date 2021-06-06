@@ -29,7 +29,6 @@ export default {
 
   computed: {
     posts () {
-      console.log(PostModel.query().withAll().all())
       return PostModel.query().withAll().all()
     }
   },
@@ -43,7 +42,6 @@ export default {
       this.fetching.posts = true
       this.$get('/content/posts')
         .then(res => {
-          console.log(res.data[0])
           PostModel.create({
             data: res.data
           })
