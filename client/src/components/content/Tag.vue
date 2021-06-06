@@ -1,6 +1,6 @@
 <template>
-  <q-item :to="'test'">
-    <q-badge outline color="primary" :label="item.title" />
+  <q-item :to="'test'" class="t-wrapper">
+      {{ item.title }}
   </q-item>
 </template>
 
@@ -16,3 +16,13 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.t-wrapper
+  background-color: #eee
+  padding: 0 5px
+  font-size: 0.7rem
+  margin: 0 2px 5px 2px
+  border-radius: 11px
+  min-height: unset
+</style>
