@@ -5,6 +5,6 @@ export default [
     meta: {
       title: 'home_page'
     },
-    component: () => import('pages/Index')
+    component: () => import('pages/feed/Main')
   }
 ]

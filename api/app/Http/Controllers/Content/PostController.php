@@ -5,15 +5,21 @@ namespace App\Http\Controllers\Content;
 use App\Http\Controllers\Controller;
 use App\Models\Content\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class PostController extends Controller
 {
-    public function index(): Collection
+    public function index(Request $r)
     {
+        sleep(1);
+        $offset = intval($r->offset);
+
+        if ($offset >= Post::count()){
+            return response()->json([]);
+        }
+
         return Post::with([
             'user:id,name,rating',
             'tags:id,title,slug,body'
-        ])->get();
+        ])->limit(4)->offset($offset)->get();
     }
 }

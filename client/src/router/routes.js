@@ -1,5 +1,5 @@
 import AuthRoutes from './routes/auth'
-import PageRoutes from './routes/pages'
+import FeedRoutes from './routes/feed'
 
 const routes = [
   {
@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: PageRoutes
+    children: FeedRoutes
   },
 
   // Always leave this as last one,
