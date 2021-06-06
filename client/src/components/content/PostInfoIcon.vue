@@ -4,8 +4,8 @@
       anchor="top middle"
       self="bottom middle"
       :offset="[10, 10]"
-      transition-show="rotate"
-      transition-hide="rotate"
+      transition-show="scale"
+      transition-hide="scale"
     >
       {{ tooltipLabel }}
     </q-tooltip>

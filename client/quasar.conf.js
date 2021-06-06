@@ -22,7 +22,8 @@ module.exports = function (/* ctx */) {
     boot: [
       'i18n',
       'axios',
-      'router'
+      'router',
+      'vue'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

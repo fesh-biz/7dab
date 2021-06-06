@@ -8,9 +8,11 @@
       </div>
 
       <!-- Title -->
-      <div :dusk="'post-' + item.id + '-title'">
-        {{ item.title }}
-      </div>
+      <q-item dense :to="'test'" :dusk="'post-' + item.id + '-title'" class="font-lobster q-px-none">
+        <q-item-section style="font-size: 1.2rem">
+          {{ item.title }}
+        </q-item-section>
+      </q-item>
     </q-card-section>
 
     <!-- Body -->

@@ -13,7 +13,7 @@ class PostController extends Controller
     {
         return Post::with([
             'user:id,name,rating',
-            'tags:id,title,slug'
+            'tags:id,title,slug,body'
         ])->get();
     }
 }
