@@ -7,7 +7,7 @@ export default class SettingsModel extends AppModel {
     return {
       id: this.attr(null),
       feed_offset: this.number(0),
-      feed_entries_per_request: this.number(4)
+      feed_entries_per_request: this.number(10)
     }
   }
 }

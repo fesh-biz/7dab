@@ -11,9 +11,9 @@ use Tests\DuskTestCase;
 
 class PostPreviewTest extends DuskTestCase
 {
-    private $author;
-    private $post;
-    private $postSelector;
+    private User $author;
+    private Post $post;
+    private string $postSelector;
 
     /**
      * @test
@@ -78,6 +78,8 @@ class PostPreviewTest extends DuskTestCase
 
     private function prepareTestData()
     {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        Post::truncate();
         $this->author = User::factory()->create();
         $this->post = Post::factory()->create([
             'user_id' => $this->author->id

@@ -1,4 +1,5 @@
 export default {
+  there_is_no_new_posts: 'В данной ленте больше нет постов',
   rating: 'Рейтинг',
   views: 'Просмотров',
   comments: 'Комментариев',

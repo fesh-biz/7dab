@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center">
-    <div ref="posts" class="col-sm-12 col-xs-12 col-md-10 col-lg-9 col-xl-7">
-      <q-linear-progress v-if="!posts.length" indeterminate/>
+    <div class="col-sm-12 col-xs-12 col-md-10 col-lg-9 col-xl-7">
+      <q-linear-progress v-if="fetching.posts" indeterminate/>
 
       <post
         v-for="(post, index) in posts"
@@ -9,7 +9,11 @@
         :item="post"
       />
 
-      <q-linear-progress v-if="fetching.posts && posts.length" indeterminate/>
+      <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
+        {{ $t('there_is_no_new_posts') }}
+      </q-banner>
+
+      <q-linear-progress dusk="main-new-posts-loading" v-if="fetching.posts && posts.length" indeterminate/>
     </div>
   </div>
 </template>

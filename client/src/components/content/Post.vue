@@ -21,7 +21,7 @@
     </q-card-section>
 
     <!-- Info -->
-    <q-card-section>
+    <q-card-section :dusk="'post-' + item.id + '-info'">
       <post-info
         :post="item"
       />

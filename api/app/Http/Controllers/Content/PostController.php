@@ -10,7 +10,6 @@ class PostController extends Controller
 {
     public function index(Request $r)
     {
-        sleep(1);
         $offset = intval($r->offset);
 
         if ($offset >= Post::count()){
@@ -20,6 +19,6 @@ class PostController extends Controller
         return Post::with([
             'user:id,name,rating',
             'tags:id,title,slug,body'
-        ])->limit(4)->offset($offset)->get();
+        ])->limit(10)->offset($offset)->get();
     }
 }
