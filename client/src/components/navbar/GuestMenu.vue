@@ -1,14 +1,12 @@
 <template>
   <q-list dense>
     <!-- Guest -->
-    <template>
       <q-item dusk="gm-login-link" exact clickable :to="{ name: 'login' }">
         <q-item-section>{{ $t('login') }}</q-item-section>
       </q-item>
       <q-item dusk="gm-registration-link" exact clickable :to="{ name: 'register' }">
         <q-item-section>{{ $t('register') }}</q-item-section>
       </q-item>
-    </template>
   </q-list>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column items-center">
     <user-avatar :src="me.avatar"/>
 
     <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">{{ me.name }}</div>

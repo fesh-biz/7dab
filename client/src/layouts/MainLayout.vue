@@ -2,16 +2,22 @@
   <q-layout view="lHh Lpr lFf">
     <q-header style="background-color: unset" class="text-grey">
       <q-toolbar>
-        <q-toolbar-title class="flex">
-          <q-item :to="{ name: 'home'}">
-            <img width="24px" src="~assets/quasar-logo-full.svg" alt="">
-          </q-item>
-          <q-item>7dab</q-item>
-        </q-toolbar-title>
+        <q-space />
 
-        <q-btn-dropdown class="ml-menu" dusk="ml-menu" no-caps flat dense rounded icon="account_circle">
+        <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded icon="account_circle">
           <div class="row no-wrap q-pa-md">
-            <div class="column items-center">
+            <div class="column">
+              <q-list dense>
+                <!-- General Menu  -->
+                  <q-item exact clickable :to="{ name: 'home' }">
+                    <q-item-section>7dab</q-item-section>
+                  </q-item>
+              </q-list>
+            </div>
+
+            <q-separator vertical inset class="q-mx-lg" />
+
+            <div class="column">
               <guest-menu v-if="!me"/>
               <user-menu v-if="me"/>
             </div>
@@ -20,8 +26,8 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
-      <q-page padding>
+    <q-page-container style="padding-top: unset">
+      <q-page>
         <router-view/>
       </q-page>
     </q-page-container>

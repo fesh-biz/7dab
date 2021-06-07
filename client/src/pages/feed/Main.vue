@@ -1,7 +1,7 @@
 <template>
-  <div class="row justify-center">
-    <div class="col-sm-12 col-xs-12 col-md-10 col-lg-9 col-xl-7">
-      <q-linear-progress v-if="fetching.posts" indeterminate/>
+  <div class="row justify-center q-px-sm">
+    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="fetching.posts" indeterminate/>
 
       <post
         v-for="(post, index) in posts"
@@ -13,7 +13,7 @@
         {{ $t('there_is_no_new_posts') }}
       </q-banner>
 
-      <q-linear-progress dusk="main-new-posts-loading" v-if="fetching.posts && posts.length" indeterminate/>
+      <q-linear-progress class="q-mb-xl" dusk="main-new-posts-loading" v-if="fetching.posts && posts.length" indeterminate/>
     </div>
   </div>
 </template>
