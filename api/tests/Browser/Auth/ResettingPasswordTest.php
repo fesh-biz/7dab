@@ -26,8 +26,8 @@ class ResettingPasswordTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
 
             $browser->visit($this->routeByName('home'))
-                ->waitFor('@gm-guest-menu')
-                ->click('@gm-guest-menu')
+                ->waitFor('@ml-menu')
+                ->click('@ml-menu')
                 ->waitFor('@gm-login-link')
                 ->click('@gm-login-link')
                 ->waitFor('@l-forgot-password-link')

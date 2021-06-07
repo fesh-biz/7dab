@@ -24,8 +24,8 @@ class RegistrationTest extends DuskTestCase
             $user = User::factory()->make();
 
             $browser->visit($this->routeByName('home'))
-                ->waitFor('@gm-guest-menu')
-                ->click('@gm-guest-menu')
+                ->waitFor('@ml-menu')
+                ->click('@ml-menu')
 
                 ->waitFor('@gm-registration-link')
                 ->click('@gm-registration-link')

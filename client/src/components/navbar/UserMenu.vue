@@ -1,23 +1,19 @@
 <template>
-  <q-btn-dropdown dusk="um-user-menu" no-caps flat dense rounded icon="account_circle">
-    <div class="row no-wrap q-pa-md">
-      <div class="column items-center">
-        <user-avatar :src="me.avatar"/>
+  <div>
+    <user-avatar :src="me.avatar"/>
 
-        <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">{{ me.name }}</div>
+    <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">{{ me.name }}</div>
 
-        <q-btn
-          dusk="um-logout-link"
-          color="primary"
-          :label="$t('logout')"
-          @click="logout"
-          push
-          size="sm"
-          v-close-popup
-        />
-      </div>
-    </div>
-  </q-btn-dropdown>
+    <q-btn
+      dusk="um-logout-link"
+      color="primary"
+      :label="$t('logout')"
+      @click="logout"
+      push
+      size="sm"
+      v-close-popup
+    />
+  </div>
 </template>
 
 <script>

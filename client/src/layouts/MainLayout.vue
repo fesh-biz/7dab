@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-white text-grey">
+    <q-header style="background-color: unset" class="text-grey">
       <q-toolbar>
         <q-toolbar-title class="flex">
           <q-item :to="{ name: 'home'}">
@@ -9,10 +9,14 @@
           <q-item>7dab</q-item>
         </q-toolbar-title>
 
-        <div>
-          <guest-menu v-if="!me"/>
-          <user-menu v-if="me"/>
-        </div>
+        <q-btn-dropdown class="ml-menu" dusk="ml-menu" no-caps flat dense rounded icon="account_circle">
+          <div class="row no-wrap q-pa-md">
+            <div class="column items-center">
+              <guest-menu v-if="!me"/>
+              <user-menu v-if="me"/>
+            </div>
+          </div>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
@@ -46,3 +50,10 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.ml-menu
+  .q-btn__wrapper
+    &:before
+      background-color: #ffffff
+</style>

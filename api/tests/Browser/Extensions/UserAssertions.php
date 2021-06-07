@@ -10,7 +10,7 @@ trait UserAssertions
 {
     public function assertThatUserLoggedIn(Browser $browser, string $userName): Browser
     {
-        return $browser->click('@um-user-menu')
+        return $browser->click('@ml-menu')
             ->waitFor('@um-user-name')
             ->assertSeeIn('@um-user-name', $userName);
     }

@@ -65,7 +65,7 @@ class LoginTest extends DuskTestCase
 
             $browser = $this->logout($browser);
 
-            $browser->assertVisible('@gm-guest-menu');
+            $browser->assertNotPresent('@um-user-name');
         });
     }
 
