@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import SettingsModel from 'src/models/App/SettingsModel'
 import PostModel from 'src/models/content/PostModel'
 import Post from 'components/content/Post'
 import { isScrollBottom } from 'src/plugins/scroll'
@@ -32,17 +31,14 @@ export default {
       fetching: {
         posts: false
       },
-      isLastFetched: false
+      isLastFetched: false,
+      currentPage: 0
     }
   },
 
   computed: {
     posts () {
       return PostModel.query().withAll().all()
-    },
-
-    settings () {
-      return SettingsModel.query().first()
     }
   },
 
@@ -62,31 +58,24 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
-      this.fetching.posts = true
-      this.$get(`/content/posts?offset=${this.settings.feed_offset}`)
-        .then(async res => {
-          if (!res.data.length) {
-            this.isLastFetched = true
-            this.fetching.posts = false
-            return
-          }
+      if (this.isLastFetched) {
+        return
+      }
 
+      this.fetching.posts = true
+      this.$get(`/content/posts?page=${++this.currentPage}`)
+        .then(async res => {
           if (isFirstTime) {
             await PostModel.create({
-              data: res.data
+              data: res.data.data
             })
           } else {
             await PostModel.insert({
-              data: res.data
+              data: res.data.data
             })
           }
+          this.isLastFetched = res.data.meta.is_last
 
-          await SettingsModel.update({
-            where: this.settings.id,
-            data: {
-              feed_offset: this.settings.feed_offset + this.settings.feed_entries_per_request
-            }
-          })
           this.$nextTick(() => {
             this.fetching.posts = false
           })

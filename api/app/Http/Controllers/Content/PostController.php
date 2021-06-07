@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
 use App\Models\Content\Post;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
-    public function index(Request $r)
+    public function index(): JsonResponse
     {
-        $offset = intval($r->offset);
-
-        if ($offset >= Post::count()){
-            return response()->json([]);
-        }
-
-        return Post::with([
+        $posts = Post::with([
             'user:id,name,rating',
             'tags:id,title,slug,body'
-        ])->limit(10)->offset($offset)->get();
+        ])->paginate(10);
+
+        return $this->sendPaginationResponse($posts);
     }
 }

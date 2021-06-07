@@ -5,7 +5,6 @@
 </template>
 <script>
 import Me from 'src/models/user/Me'
-import SettingsModel from 'src/models/App/SettingsModel'
 
 export default {
   name: 'App',
@@ -25,12 +24,6 @@ export default {
   },
 
   async created () {
-    await SettingsModel.create({
-      data: {
-        id: 1
-      }
-    })
-
     if (this.$q.cookies.get('me')) {
       await Me.create({ data: this.$q.cookies.get('me') })
     }
