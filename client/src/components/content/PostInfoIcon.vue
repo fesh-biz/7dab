@@ -1,21 +1,18 @@
 <template>
-  <div>
-    <q-tooltip
-      anchor="top middle"
-      self="bottom middle"
-      :offset="[10, 10]"
-      transition-show="scale"
-      transition-hide="scale"
-    >
-      {{ tooltipLabel }}
-    </q-tooltip>
-    <q-icon :name="icon" class="q-mr-xs" />{{ amount }}
+  <div class="flex">
+    <tooltip-icon icon-size="xs" :icon-name="icon" :tooltip="tooltipLabel"/> {{ amount }}
   </div>
 </template>
 
 <script>
+import TooltipIcon from 'components/common/TooltipIcon'
+
 export default {
   name: 'PostInfoIcon',
+
+  components: {
+    TooltipIcon
+  },
 
   props: {
     amount: {

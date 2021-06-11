@@ -4,14 +4,19 @@
       <q-toolbar>
         <q-space />
 
-        <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded icon="account_circle">
+        <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded>
           <div class="row no-wrap q-pa-md">
             <div class="column">
+              <!-- General Menu  -->
               <q-list dense>
-                <!-- General Menu  -->
-                  <q-item exact clickable :to="{ name: 'home' }">
-                    <q-item-section>7dab</q-item-section>
-                  </q-item>
+                <q-item exact clickable :to="{ name: 'home' }">
+                  <q-item-section>7dab</q-item-section>
+                </q-item>
+                <q-item exact clickable :to="{ name: 'add_post' }">
+                  <q-item-section>
+                    {{ $t('add_post') }}
+                  </q-item-section>
+                </q-item>
               </q-list>
             </div>
 

@@ -1,4 +1,10 @@
 export default {
+  add_section: 'Добавить секцию',
+  delete_section: 'Удалить секцию',
+  move_vertically: 'Переместить по вертикали',
+  title: 'Название',
+  post_adding: 'Добавление поста',
+  add_post: 'Добавить пост',
   there_is_no_new_posts: 'В данной ленте больше нет постов',
   rating: 'Рейтинг',
   views: 'Просмотров',

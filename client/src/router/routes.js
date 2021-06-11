@@ -1,5 +1,6 @@
 import AuthRoutes from './routes/auth'
 import FeedRoutes from './routes/feed'
+import PostRoutes from './routes/post'
 
 const routes = [
   {
@@ -7,10 +8,17 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: AuthRoutes
   },
+  // Feed routes
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: FeedRoutes
+  },
+  // Post routes
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout'),
+    children: PostRoutes
   },
 
   // Always leave this as last one,
