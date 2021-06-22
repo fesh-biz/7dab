@@ -20,7 +20,7 @@ class PostFactory extends Factory
             'user_id' => 1,
             'title' => $this->faker->text(50),
             'rating' => mt_rand(-100, 100),
-            'is_approved' => false,
+            'status' => ['pending', 'reviewing', 'approved', 'declined', 'editing'][mt_rand(0, 4)],
             'total_views' => mt_rand(10000, 100000),
             'total_comments' => mt_rand(100, 1000)
         ];

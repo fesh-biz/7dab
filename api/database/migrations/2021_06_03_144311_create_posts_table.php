@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->integer('rating')->default(0);
             $table->string('slug')->unique();
-            $table->boolean('is_approved')->default(false);
+            $table->enum('status', ['pending', 'reviewing', 'approved', 'declined', 'editing'])->default('pending');
             $table->unsignedInteger('total_views')->default(0);
             $table->unsignedInteger('total_comments')->default(0);
 

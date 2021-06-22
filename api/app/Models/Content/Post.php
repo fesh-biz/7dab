@@ -48,6 +48,12 @@ class Post extends Model
 {
     use HasFactory, Slugable;
 
+    public static string $PENDING = 'pending';
+    public static string $REVIEWING = 'reviewing';
+    public static string $APPROVED = 'approved';
+    public static string $DECLINED = 'declined';
+    public static string $EDITING = 'editing';
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
