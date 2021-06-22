@@ -1,0 +1,14 @@
+@startuml
+object post_texts {
+    App\Models\Content\PostText
+    __
+    + id
+    - post_id (UBI)
+    order (UTI)
+
+    body (text)
+
+    created_at
+    updated_at
+}
+@enduml

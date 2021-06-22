@@ -19,7 +19,6 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->string('title');
-            $table->text('body');
             $table->integer('rating')->default(0);
             $table->string('slug')->unique();
             $table->boolean('is_approved')->default(false);
@@ -37,6 +36,8 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('posts');
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -9,7 +9,8 @@ object tags {
     body (text)
     slug (string)
     rating (integer)
-    total_posts (integer)
+    total_posts (UI)
+    total_views (UI)
 
     created_at
     updated_at

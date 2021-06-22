@@ -6,7 +6,6 @@ object posts {
     - user_id (UBI)
 
     title (string)
-    body (text)
     rating (integer)
     slug (string)
     total_views (UI)

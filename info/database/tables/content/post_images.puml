@@ -1,0 +1,20 @@
+@startuml
+object post_images {
+    App\Models\Content\PostImage
+    __
+    + id
+    - post_id (UBI)
+    order (UTI)
+
+    original_name (string)
+    title (string)
+    recognized_text (string)
+    filename(string|unique)
+    width (UI)
+    height (UI)
+    size_kb (UI)
+
+    created_at
+    updated_at
+}
+@enduml

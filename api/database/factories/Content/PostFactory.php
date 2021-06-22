@@ -19,7 +19,6 @@ class PostFactory extends Factory
         return [
             'user_id' => 1,
             'title' => $this->faker->text(50),
-            'body' => $this->faker->text(mt_rand(400, 1000)),
             'rating' => mt_rand(-100, 100),
             'is_approved' => false,
             'total_views' => mt_rand(10000, 100000),
