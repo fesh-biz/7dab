@@ -6,7 +6,7 @@
       <post
         v-for="(post, index) in posts"
         :key="'post' + index"
-        :item="post"
+        :post="post"
       />
 
       <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">

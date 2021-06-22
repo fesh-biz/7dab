@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Content\Post;
 use App\Models\User;
+use App\Repository\Content\PostRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -62,7 +63,8 @@ class Controller extends BaseController
 
     public function test()
     {
-        $posts = Post::paginate();
+        $postRepo = new PostRepository();
+        $posts = $postRepo->getPaginatedPosts();
 
         return $this->sendPaginationResponse($posts);
     }

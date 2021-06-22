@@ -1,29 +1,32 @@
 <template>
-  <q-card :dusk="'post-' + item.id" :flat="$q.platform.is.mobile" class="q-my-md">
+  <q-card :dusk="'post-' + post.id" :flat="$q.platform.is.mobile" class="q-my-md">
     <!-- Title, Author -->
     <q-card-section class="q-pb-none">
       <!-- Author -->
-      <div :dusk="'post-' + item.id + '-author'">
-        {{ item.user.name }}
+      <div :dusk="'post-' + post.id + '-author'">
+        {{ post.user.name }}
       </div>
 
       <!-- Title -->
-      <q-item dense :to="'test'" :dusk="'post-' + item.id + '-title'" class="font-lobster q-px-none">
+      <q-item dense :to="'test'" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
         <q-item-section style="font-size: 1.2rem">
-          {{ item.title }}
+          {{ post.title }}
         </q-item-section>
       </q-item>
     </q-card-section>
 
     <!-- Body -->
-    <q-card-section  :dusk="'post-' + item.id + '-body'">
-      {{ item.body }}
+    <q-card-section>
+      <template v-for="postSection in post.content">
+        <post-text :post-text="postSection" v-if="postSection.type === 'text'" :key="'postSection-' + postSection.order"/>
+        <post-image :post-image="postSection" v-if="postSection.type === 'image'" :key="'postSection-' + postSection.order"/>
+      </template>
     </q-card-section>
 
     <!-- Info -->
-    <q-card-section :dusk="'post-' + item.id + '-info'">
+    <q-card-section :dusk="'post-' + post.id + '-info'">
       <post-info
-        :post="item"
+        :post="post"
       />
     </q-card-section>
 
@@ -33,12 +36,15 @@
 
 <script>
 import PostInfo from 'components/content/PostInfo'
+import PostModel from 'src/models/content/PostModel'
+import PostText from 'components/content/PostText'
+import PostImage from 'components/content/PostImage'
 export default {
   name: 'Post',
-  components: { PostInfo },
+  components: { PostImage, PostText, PostInfo },
   props: {
-    item: {
-      type: Object,
+    post: {
+      type: PostModel,
       required: true
     }
   }
