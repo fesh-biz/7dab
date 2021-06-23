@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $size_kb
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $type
  * @method static \Database\Factories\Content\PostImageFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage newQuery()

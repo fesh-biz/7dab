@@ -27,4 +27,5 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
 
 Route::group(['prefix' => 'content'], function() {
     Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/{id}', [PostController::class, 'post']);
 });

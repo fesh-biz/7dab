@@ -43,7 +43,9 @@ export default {
   },
 
   created () {
-    this.fetchPosts(true)
+    if (!this.posts.length) {
+      this.fetchPosts(true)
+    }
   },
 
   mounted () {
@@ -58,6 +60,7 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
+      console.log('fetching posts')
       if (this.isLastFetched) {
         return
       }

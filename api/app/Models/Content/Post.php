@@ -4,6 +4,7 @@ namespace App\Models\Content;
 
 use App\Models\User;
 use App\Traits\Slugable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,30 +20,35 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string $title
  * @property int $rating
  * @property string $slug
- * @property int $is_approved
+ * @property string $status
  * @property int $total_views
  * @property int $total_comments
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\Comment[] $comments
  * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\PostImage[] $postImages
+ * @property-read int|null $post_images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\PostText[] $postTexts
+ * @property-read int|null $post_texts_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\Tag[] $tags
  * @property-read int|null $tags_count
  * @property-read User $user
  * @method static \Database\Factories\Content\PostFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Post query()
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereIsApproved($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereRating($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereTotalComments($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereTotalViews($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Post whereUserId($value)
+ * @method static Builder|Post newModelQuery()
+ * @method static Builder|Post newQuery()
+ * @method static Builder|Post query()
+ * @method static Builder|Post whereCreatedAt($value)
+ * @method static Builder|Post whereId($value)
+ * @method static Builder|Post whereRating($value)
+ * @method static Builder|Post whereSlug($value)
+ * @method static Builder|Post whereStatus($value)
+ * @method static Builder|Post whereTitle($value)
+ * @method static Builder|Post whereTotalComments($value)
+ * @method static Builder|Post whereTotalViews($value)
+ * @method static Builder|Post whereUpdatedAt($value)
+ * @method static Builder|Post whereUserId($value)
+ * @method static Builder|Post withTagsAuthorContent()
  * @mixin \Eloquent
  */
 class Post extends Model
@@ -78,5 +84,21 @@ class Post extends Model
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /*
+    * ----------------------------------
+    *          Scopes
+    * ----------------------------------
+    */
+
+    public function scopeWithTagsAuthorContent(Builder $q): Builder
+    {
+        return $q->with([
+            'tags:id,title',
+            'user:id,name',
+            'postImages',
+            'postTexts'
+        ]);
     }
 }

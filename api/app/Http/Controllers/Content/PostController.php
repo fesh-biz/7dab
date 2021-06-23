@@ -22,4 +22,21 @@ class PostController extends Controller
 
         return $this->sendPaginationResponse($posts);
     }
+
+    public function post(int $postId): JsonResponse
+    {
+        $post = $this->postRepo->findPost($postId);
+
+        if (!$post) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $post,
+            'status' => 'success'
+        ]);
+    }
 }

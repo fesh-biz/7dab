@@ -9,11 +9,13 @@ class PostRepository
 {
     public function getPaginatedPosts(): LengthAwarePaginator
     {
-        return Post::with([
-            'tags:id,title',
-            'user:id,name',
-            'postImages',
-            'postTexts'
-        ])->paginate(10);
+        return Post::withTagsAuthorContent()
+            ->paginate(10);
+    }
+
+    public function findPost(int $postId):? Post
+    {
+        return Post::withTagsAuthorContent()
+            ->find($postId);
     }
 }

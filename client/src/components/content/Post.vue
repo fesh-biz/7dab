@@ -8,7 +8,7 @@
       </div>
 
       <!-- Title -->
-      <q-item dense :to="'test'" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
+      <q-item dense :to="{ name: 'postPage', params: {id: post.id }}" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
         <q-item-section style="font-size: 1.2rem">
           {{ post.title }}
         </q-item-section>
