@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header style="background-color: unset" class="text-grey">
+    <q-header class="ml-header text-grey">
       <q-toolbar>
         <q-space />
 
@@ -63,6 +63,10 @@ export default {
 </script>
 
 <style lang="sass">
+.ml-header.fixed-top
+  left: unset
+  background-color: unset
+
 .ml-menu
   .q-btn__wrapper
     &:before
