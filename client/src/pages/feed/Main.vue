@@ -13,7 +13,12 @@
         {{ $t('there_is_no_new_posts') }}
       </q-banner>
 
-      <q-linear-progress class="q-mb-xl" dusk="main-new-posts-loading" v-if="fetching.posts && posts.length" indeterminate/>
+      <q-linear-progress
+        class="q-mb-xl"
+        dusk="main-new-posts-loading"
+        v-if="fetching.posts && posts.length"
+        indeterminate
+      />
     </div>
   </div>
 </template>
@@ -46,13 +51,33 @@ export default {
     if (!this.posts.length) {
       this.fetchPosts(true)
     }
+    console.log('created')
   },
 
   mounted () {
+    console.log('mounted')
     window.addEventListener('scroll', this.maybeFetchNextPosts)
+
+    this.scrollToPost('post-id-10')
   },
 
   methods: {
+    scrollToPost (postAnchor) {
+      const el = document.getElementById(postAnchor)
+
+      console.log(el)
+
+      if (!el) {
+        setTimeout(() => {
+          this.scrollToPost(postAnchor)
+        }, 100)
+      } else {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    },
+
     maybeFetchNextPosts () {
       if (!this.fetching.posts && isScrollBottom(500) && !this.isLastFetched) {
         this.fetchPosts()

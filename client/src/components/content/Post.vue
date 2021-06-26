@@ -1,5 +1,5 @@
 <template>
-  <q-card :dusk="'post-' + post.id" :flat="$q.platform.is.mobile" class="q-my-md">
+  <q-card :id="'post-id-' + post.id" :dusk="'post-' + post.id" :flat="$q.platform.is.mobile" class="q-my-md">
     <!-- Title, Author -->
     <q-card-section class="q-pb-none">
       <!-- Author -->
@@ -8,7 +8,13 @@
       </div>
 
       <!-- Title -->
-      <q-item dense :to="{ name: 'postPage', params: {id: post.id }}" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
+      <q-item v-if="isPostPage" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
+        <q-item-section style="font-size: 1.2rem">
+          {{ post.title }}
+        </q-item-section>
+      </q-item>
+
+      <q-item v-if="!isPostPage" dense :to="{ name: 'postPage', params: {id: post.id }}" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
         <q-item-section style="font-size: 1.2rem">
           {{ post.title }}
         </q-item-section>
@@ -46,6 +52,10 @@ export default {
     post: {
       type: PostModel,
       required: true
+    },
+    isPostPage: {
+      type: Boolean,
+      default: false
     }
   }
 }
