@@ -51,11 +51,9 @@ export default {
     if (!this.posts.length) {
       this.fetchPosts(true)
     }
-    console.log('created')
   },
 
   mounted () {
-    console.log('mounted')
     window.addEventListener('scroll', this.maybeFetchNextPosts)
 
     this.scrollToPost('post-id-10')
@@ -64,8 +62,6 @@ export default {
   methods: {
     scrollToPost (postAnchor) {
       const el = document.getElementById(postAnchor)
-
-      console.log(el)
 
       if (!el) {
         setTimeout(() => {
