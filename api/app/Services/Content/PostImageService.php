@@ -29,22 +29,33 @@ class PostImageService
 
         //$originalImageSizeKb = intval($image->filesize() / 1024);
 
-        //$image->save(config('7dab.post_original_images_folder') . '/' . $filename . '.' . $imageExt, 100);
+        $image->save($this->getFilePath($this->originalFolder, $filename, $imageExt), 100);
 
-        $desktopThumb = $this->maybeResizeImage($image, $this->desktopThumbWidth);
-        dump($image->width());
-        dd($desktopThumb->width());
+        if ($this->maybeResizeImage($image, $this->desktopThumbWidth)) {
+            $image->save($this->getFilePath($this->desktopThumbnailFolder, $filename, $imageExt), 100);
+        }
+
+        if ($this->maybeResizeImage($image, $this->mobileThumbWidth)) {
+            $image->save($this->getFilePath($this->mobileThumbnailFolder, $filename, $imageExt), 100);
+        }
     }
 
-    private function maybeResizeImage(Image $image, int $width):? Image
+    private function maybeResizeImage(Image $image, int $width):? bool
     {
         if ($image->getWidth() > $width) {
             $thumb = $image;
-            return $thumb->resize($width, null, function ($constraint) {
+            $thumb->resize($width, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
+
+            return true;
         }
 
         return null;
+    }
+
+    private function getFilePath(string $folder, string $filename, string $extension): string
+    {
+        return "${folder}/${filename}.${extension}";
     }
 }

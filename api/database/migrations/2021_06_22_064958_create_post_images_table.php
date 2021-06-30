@@ -30,9 +30,9 @@ class CreatePostImagesTable extends Migration
             $table->timestamps();
         });
 
-        if (!File::exists(config('7dab.post_original_images_folder'))) {
-            File::makeDirectory(config('7dab.post_original_images_folder'), 0777, true, true);
-        }
+        File::makeDirectory(config('7dab.post_original_images_folder'), 0777, true, true);
+        File::makeDirectory(config('7dab.post_desktop_thumbnail_images_folder'), 0777, true, true);
+        File::makeDirectory(config('7dab.post_mobile_thumbnail_images_folder'), 0777, true, true);
     }
 
     /**
