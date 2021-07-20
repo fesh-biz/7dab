@@ -56,7 +56,7 @@ export default {
   mounted () {
     window.addEventListener('scroll', this.maybeFetchNextPosts)
 
-    this.scrollToPost('post-id-10')
+    // this.scrollToPost('post-id-10')
   },
 
   methods: {

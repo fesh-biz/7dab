@@ -84,13 +84,13 @@ class PostImageFactory extends Factory
         return [
             'post_id' => 1,
             'order' => 1,
-            'original_name' => $this->faker->text,
+            'original_filename' => $this->faker->text,
             'title' => mt_rand(0, 1) ? $this->faker->text(mt_rand(30, 250)) : null,
             'recognized_text' => mt_rand(0, 1) ? $this->faker->text(mt_rand(30, 250)) : null,
             'filename' => $filename,
-            'width' => $this->images[$imageIndex]['width'],
-            'height' => $this->images[$imageIndex]['height'],
-            'size_kb' => $this->images[$imageIndex]['size_kb'],
+            'original_width' => $this->images[$imageIndex]['width'],
+            'original_height' => $this->images[$imageIndex]['height'],
+            'original_size_kb' => $this->images[$imageIndex]['size_kb'],
         ];
     }
 }

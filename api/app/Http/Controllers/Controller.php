@@ -69,6 +69,6 @@ class Controller extends BaseController
 
         $imageService = new PostImageService();
 
-        $imageService->saveImage($image, 'test');
+        $imageService->saveImageFile($image, 'test');
     }
 }

@@ -1,7 +1,6 @@
 <template>
   <div ref="image" style="width: 100%" class="flex justify-center">
     <q-img
-      v-if="this.isImageWiderThanWrapper !== null"
       :src="getImageUrl()"
       spinner-color="white"
       :style="{
@@ -46,7 +45,7 @@ export default {
 
   methods: {
     getImageUrl () {
-      const originalStorage = '/storage/post-images/original/'
+      const originalStorage = '/storage/post-images/original'
 
       return `${originalStorage}/${this.postImage.filename}`
     }

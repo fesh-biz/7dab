@@ -18,14 +18,14 @@ class CreatePostImagesTable extends Migration
             $table->foreignId('post_id')->constrained();
             $table->unsignedTinyInteger('order');
 
-            $table->string('original_name');
+            $table->string('original_filename');
             $table->string('title')->nullable();
             $table->string('recognized_text')->nullable();
 
             $table->string('filename')->unique();
-            $table->unsignedInteger('width');
-            $table->unsignedInteger('height');
-            $table->unsignedInteger('size_kb');
+            $table->unsignedInteger('original_width');
+            $table->unsignedInteger('original_height');
+            $table->unsignedInteger('original_size_kb');
 
             $table->timestamps();
         });

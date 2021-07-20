@@ -23,8 +23,11 @@ class PostImageService
         $this->mobileThumbWidth = config('7dab.post_image_mobile_thumbnail_size');
     }
 
-    public function saveImage(Image $image, string $filename)
+    public function saveImageFile(Image $image, string $filename)
     {
+        $dateFolder = $this->getDateFolderPath();
+        die;
+
         $imageExt = $image->extension;
 
         //$originalImageSizeKb = intval($image->filesize() / 1024);
@@ -57,5 +60,12 @@ class PostImageService
     private function getFilePath(string $folder, string $filename, string $extension): string
     {
         return "${folder}/${filename}.${extension}";
+    }
+
+    private function getDateFolderPath(): string
+    {
+        $now = now();
+
+        return "$now->year/$now->month/$now->day/$now->hour";
     }
 }
