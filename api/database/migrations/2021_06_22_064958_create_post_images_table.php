@@ -22,17 +22,14 @@ class CreatePostImagesTable extends Migration
             $table->string('title')->nullable();
             $table->string('recognized_text')->nullable();
 
-            $table->string('filename')->unique();
-            $table->unsignedInteger('original_width');
-            $table->unsignedInteger('original_height');
-            $table->unsignedInteger('original_size_kb');
+            $table->string('original_file_path')->unique();
+            $table->string('desktop_file_path')->nullable();
+            $table->string('mobile_file_path')->nullable();
+
+            $table->json('data');
 
             $table->timestamps();
         });
-
-        File::makeDirectory(config('7dab.post_original_images_folder'), 0777, true, true);
-        File::makeDirectory(config('7dab.post_desktop_thumbnail_images_folder'), 0777, true, true);
-        File::makeDirectory(config('7dab.post_mobile_thumbnail_images_folder'), 0777, true, true);
     }
 
     /**
@@ -43,9 +40,5 @@ class CreatePostImagesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('post_images');
-
-        if (File::exists(config('7dab.post_images_folder'))) {
-            File::deleteDirectory(config('7dab.post_images_folder'));
-        }
     }
 }

@@ -65,10 +65,10 @@ class Controller extends BaseController
 
     public function test()
     {
-        $image = Image::make(__DIR__ . '/2.png');
+        $imageService = app(PostImageService::class);
 
-        $imageService = new PostImageService();
+        $imageData = $imageService->saveImageFile(__DIR__ . '/2.png');
 
-        $imageService->saveImageFile($image, 'test');
+        dd($imageData);
     }
 }

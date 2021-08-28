@@ -1,5 +1,37 @@
+- [] Image seeding
+  - [] `images` columns to delete
+    - [] `filename`
+    - [] `original_width`
+    - [] `original_height`
+    - [] `original_size`
+  - [] `images` columns to add
+    - [] `date_path` string /2021/8/22
+    - [] `desktop_file_path` string
+    - [] `original_file_path` string
+    - [] `data` json
+```json
+{
+  "original": {
+    "size": "1024",
+    "width": "940",
+    "height": "430"
+  },
+  "desktop": {
+    "size": "1024",
+    "width": "940",
+    "height": "430"
+  },
+  "mobile": {
+    "size": "1024",
+    "width": "940",
+    "height": "430"
+  }
+}
+```
+
+
 - [] PostImageService
-  - [] Создание папки вида `/год/месяц/день/час` если ее нет
+  - [] Создание папки вида `/год/месяц/день` если ее нет
   - [] Права на папку 755
   - [] имя файла `time() + random string (10chars) + fileExtension`
 
