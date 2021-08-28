@@ -4,63 +4,75 @@ namespace App\Services\Content;
 
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as MaidImage;
-use JetBrains\PhpStorm\ArrayShape;
 
 class PostImageService
 {
-    protected string $originalFolder;
-    protected string $desktopThumbnailFolder;
-    protected string $mobileThumbnailFolder;
+    protected string $storageBasePath;
+    protected string $publicBasePath;
 
     protected int $desktopThumbWidth;
     protected int $mobileThumbWidth;
 
+    protected array $imageAttributes;
+
     public function __construct()
     {
-        $this->originalFolder = config('7dab.post_original_images_folder');
-        $this->desktopThumbnailFolder = config('7dab.post_desktop_thumbnail_images_folder');
-        $this->mobileThumbnailFolder = config('7dab.post_mobile_thumbnail_images_folder');
+        $this->storageBasePath = config('7dab.post_image_storage_base_path');
+        $this->publicBasePath = config('7dab.post_image_public_base_path');
 
         $this->desktopThumbWidth = config('7dab.post_image_desktop_thumbnail_size');
         $this->mobileThumbWidth = config('7dab.post_image_mobile_thumbnail_size');
     }
 
-    #[ArrayShape([
-        'imageSizesKb' => 'array',
-        'fileName' => 'string',
-        'originalDimensions' => 'array'
-    ])]
+
     public function saveImageFile(string $filePath): array
     {
         $image = Image::make($filePath);
+        $imageQuality = $this->getImageQuality($image);
 
-        $imageExt = $image->extension;
-        $fileName = $this->getFileName($imageExt);
+        $fileName = $this->getFileName($image->extension);
 
-        $imageData['imageSizesKb'] = [
-            'original' => intval($image->filesize() / 1024),
-            'desktop' => null,
-            'mobile' => null
+        $filePath = $this->getImageFolderPath() . '/' . $fileName;
+        $image->save($filePath, $imageQuality);
+
+        $this->imageAttributes['data'] = [
+            'original' => [
+                'size' => intval($image->filesize() / 1024),
+                'with' => $image->getWidth(),
+                'height' => $image->getHeight()
+            ]
         ];
-        $imageData['fileName'] = $fileName;
-        $imageData['originalDimensions'] = [
-            'width' => $image->getWidth(),
-            'height' => $image->getHeight()
-        ];
 
-        $image->save($this->getFilePath($this->originalFolder, $fileName), 100);
+        $this->imageAttributes['original_file_path'] = $this->getPublicPath($filePath);
 
-        if ($this->maybeResizeImage($image, $this->desktopThumbWidth)) {
-            $image->save($this->getFilePath($this->desktopThumbnailFolder, $fileName), 100);
-            $imageData['imageSizesKb']['desktop'] = intval($image->filesize() / 1024);
+        $this->maybeResizeAndSaveResizedImage($image, $fileName, $imageQuality);
+
+        $this->maybeResizeAndSaveResizedImage($image, $fileName, $imageQuality, 'mobile');
+
+        return $this->imageAttributes;
+    }
+
+    private function maybeResizeAndSaveResizedImage(
+        MaidImage $image,
+        string $fileName,
+        int $imageQuality,
+        string $imageType = 'desktop'
+    ): void
+    {
+        $imageWidth = $imageType === 'desktop' ? $this->desktopThumbWidth : $this->mobileThumbWidth;
+
+        if ($this->maybeResizeImage($image, $imageWidth)) {
+            $filePath = $this->getImageFolderPath($imageType) . '/' . $fileName;
+
+            $image->save($filePath, $imageQuality);
+
+            $this->imageAttributes[$imageType . '_file_path']  = $this->getPublicPath($filePath);
+            $this->imageAttributes['data'][$imageType] = [
+                'size' => intval($image->filesize() / 1024),
+                'with' => $image->getWidth(),
+                'height' => $image->getHeight()
+            ];
         }
-
-        if ($this->maybeResizeImage($image, $this->mobileThumbWidth)) {
-            $image->save($this->getFilePath($this->mobileThumbnailFolder, $fileName), 100);
-            $imageData['imageSizesKb']['mobile'] = intval($image->filesize() / 1024);
-        }
-
-        return $imageData;
     }
 
     private function maybeResizeImage(MaidImage $image, int $width): ?bool
@@ -79,25 +91,43 @@ class PostImageService
 
     private function getFileName(string $extension): string
     {
-        return str_replace(['0.', ' '], ['', ''], microtime()) . '.' . $extension;
+        list($milliseconds, $seconds) = explode(' ', microtime());
+        $milliseconds = str_replace('0.', '', $milliseconds);
+
+        return $seconds . $milliseconds . '.' . $extension;
     }
 
-    private function getFilePath(string $folder, string $fileName): string
+    private function maybeCreateFolder(string $imageFolderPath): void
     {
-        $datePath = $this->getDateFolderPath();
-        $dirName = "$folder/$datePath";
-
-        if (!is_dir($dirName)) {
-            mkdir($dirName, 755, true);
+        if (!is_dir($imageFolderPath)) {
+            mkdir($imageFolderPath, 755, true);
         }
+    }
 
-        return "$dirName/$fileName";
+    public function getImageFolderPath(string $imageType = 'original'): string
+    {
+        $dateFolderPath = $this->getDateFolderPath();
+
+        $dateFolderPath = $this->storageBasePath . '/' . $dateFolderPath . '/' . $imageType;
+        $this->maybeCreateFolder($dateFolderPath);
+
+        return $dateFolderPath;
     }
 
     private function getDateFolderPath(): string
     {
-        $now = now();
+        return now()->format('Y/m/d');
+    }
 
-        return "$now->year/$now->month/$now->day";
+    private function getImageQuality(MaidImage $image): int
+    {
+        $quality = 101-(($image->getWidth() * $image->getHeight()) * 3) / intval($image->filesize());
+
+        return round($quality);
+    }
+
+    private function getPublicPath(string $storageFilePath): string
+    {
+        return $this->publicBasePath . explode($this->storageBasePath, $storageFilePath)[1];
     }
 }
