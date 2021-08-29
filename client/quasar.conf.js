@@ -80,7 +80,7 @@ module.exports = function (/* ctx */) {
       open: false, // opens browser window automatically
       proxy: {
         '/storage': {
-          target: 'http://7dab',
+          target: 'http://7dab.loc',
           changeOrigin: true
         }
       }

@@ -38,7 +38,7 @@ class PostImageService
         $this->imageAttributes['data'] = [
             'original' => [
                 'size' => intval($image->filesize() / 1024),
-                'with' => $image->getWidth(),
+                'width' => $image->getWidth(),
                 'height' => $image->getHeight()
             ]
         ];
@@ -54,9 +54,9 @@ class PostImageService
 
     private function maybeResizeAndSaveResizedImage(
         MaidImage $image,
-        string $fileName,
-        int $imageQuality,
-        string $imageType = 'desktop'
+        string    $fileName,
+        int       $imageQuality,
+        string    $imageType = 'desktop'
     ): void
     {
         $imageWidth = $imageType === 'desktop' ? $this->desktopThumbWidth : $this->mobileThumbWidth;
@@ -66,10 +66,10 @@ class PostImageService
 
             $image->save($filePath, $imageQuality);
 
-            $this->imageAttributes[$imageType . '_file_path']  = $this->getPublicPath($filePath);
+            $this->imageAttributes[$imageType . '_file_path'] = $this->getPublicPath($filePath);
             $this->imageAttributes['data'][$imageType] = [
                 'size' => intval($image->filesize() / 1024),
-                'with' => $image->getWidth(),
+                'width' => $image->getWidth(),
                 'height' => $image->getHeight()
             ];
         }
@@ -121,7 +121,7 @@ class PostImageService
 
     private function getImageQuality(MaidImage $image): int
     {
-        $quality = 101-(($image->getWidth() * $image->getHeight()) * 3) / intval($image->filesize());
+        $quality = 101 - (($image->getWidth() * $image->getHeight()) * 3) / intval($image->filesize());
 
         return round($quality);
     }

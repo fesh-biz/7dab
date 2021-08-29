@@ -13,7 +13,7 @@ class PostRepository
             ->paginate(10);
     }
 
-    public function findPost(int $postId):? Post
+    public function findPost(int $postId): ?Post
     {
         return Post::withTagsAuthorContent()
             ->find($postId);
