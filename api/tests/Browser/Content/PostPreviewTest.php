@@ -19,6 +19,7 @@ class PostPreviewTest extends DuskTestCase
      * @test
      * @group content
      * @group postPreview
+     * @group postPreview1
      */
     public function any_sees_post_title_author_body()
     {
@@ -28,8 +29,7 @@ class PostPreviewTest extends DuskTestCase
             $browser->visit('/')
                 ->waitFor($this->postSelector)
                 ->assertSeeIn($this->postSelector . '-title', $this->post->title)
-                ->assertSeeIn($this->postSelector . '-author', $this->author->name)
-                ->assertSeeIn($this->postSelector . '-body', $this->post->body);
+                ->assertSeeIn($this->postSelector . '-author', $this->author->name);
         });
     }
 
@@ -70,7 +70,7 @@ class PostPreviewTest extends DuskTestCase
             $browser->visit('/')
                 ->waitFor($this->postSelector);
 
-            foreach ($tags as $tag){
+            foreach ($tags as $tag) {
                 $browser->assertSeeIn($this->postSelector . '-info-tags', $tag->title);
             }
         });

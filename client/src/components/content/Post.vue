@@ -4,7 +4,7 @@
     <q-card-section class="q-pb-none">
       <!-- Author -->
       <div :dusk="'post-' + post.id + '-author'">
-        {{ post.id }} {{ post.user.name }}
+        {{ post.user.name }}
       </div>
 
       <!-- Title -->
@@ -15,11 +15,11 @@
       </q-item>
 
       <q-item
-        v-if="!isPostPage"
-        dense
-        :to="{ name: 'postPage', params: {id: post.id }}"
-        :dusk="'post-' + post.id + '-title'"
-        class="font-lobster q-px-none"
+          v-if="!isPostPage"
+          dense
+          :to="{ name: 'postPage', params: {id: post.id }}"
+          :dusk="'post-' + post.id + '-title'"
+          class="font-lobster q-px-none"
       >
         <q-item-section style="font-size: 1.2rem">
           {{ post.title }}
@@ -31,14 +31,14 @@
     <q-card-section>
       <template v-for="postSection in post.content">
         <post-text
-          :post-text="postSection"
-          v-if="postSection.type === 'text'"
-          :key="'postSection-' + postSection.order"
+            :post-text="postSection"
+            v-if="postSection.type === 'text'"
+            :key="'postSection-' + postSection.order"
         />
         <post-image
-          :post-image="postSection"
-          v-if="postSection.type === 'image'"
-          :key="'postSection-' + postSection.order"
+            :post-image="postSection"
+            v-if="postSection.type === 'image'"
+            :key="'postSection-' + postSection.order"
         />
       </template>
     </q-card-section>
@@ -46,7 +46,7 @@
     <!-- Info -->
     <q-card-section :dusk="'post-' + post.id + '-info'">
       <post-info
-        :post="post"
+          :post="post"
       />
     </q-card-section>
 
