@@ -14,6 +14,7 @@
     - [] К контенту
     - [] К другим комментариям
 
+- [] Change all `TooltipIcon` on `IconWithTooltip`
 
 - [] Сделать соглашение с куками
 
