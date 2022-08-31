@@ -4,9 +4,9 @@
       <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="fetching.posts" indeterminate/>
 
       <post
-        v-for="(post, index) in posts"
-        :key="'post' + index"
-        :post="post"
+          v-for="(post, index) in posts"
+          :key="'post' + index"
+          :post="post"
       />
 
       <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
@@ -14,10 +14,10 @@
       </q-banner>
 
       <q-linear-progress
-        class="q-mb-xl"
-        dusk="main-new-posts-loading"
-        v-if="fetching.posts && posts.length"
-        indeterminate
+          class="q-mb-xl"
+          dusk="main-new-posts-loading"
+          v-if="fetching.posts && posts.length"
+          indeterminate
       />
     </div>
   </div>
@@ -81,7 +81,6 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
-      console.log('fetching posts')
       if (this.isLastFetched) {
         return
       }

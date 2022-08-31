@@ -29,18 +29,12 @@
 
     <!-- Body -->
     <q-card-section>
-      <template v-for="postSection in post.content">
-        <post-text
-            :post-text="postSection"
-            v-if="postSection.type === 'text'"
-            :key="'postSection-' + postSection.order"
-        />
-        <post-image
-            :post-image="postSection"
-            v-if="postSection.type === 'image'"
-            :key="'postSection-' + postSection.order"
-        />
-      </template>
+      <component
+          v-for="postSection in post.content"
+          :key="'postSection-' + postSection.order"
+          :is="'post-' + postSection.type"
+          :data="postSection"
+      />
     </q-card-section>
 
     <!-- Info -->

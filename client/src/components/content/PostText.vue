@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ postText.body }}
+    {{ data.body }}
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   name: 'PostText',
 
   props: {
-    postText: {
+    data: {
       type: PostTextModel,
       required: true
     }

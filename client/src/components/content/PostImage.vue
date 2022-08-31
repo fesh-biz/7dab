@@ -13,9 +13,9 @@
     <div
         class="font-lobster q-mb-lg text-center"
         style="font-size: 20px; background-color: #eee; border-radius: 5px"
-        v-if="postImage.title"
+        v-if="data.title"
     >
-      {{ postImage.title }}
+      {{ data.title }}
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
   name: 'PostImage',
 
   props: {
-    postImage: {
+    data: {
       type: PostImageModel,
       required: true
     }
@@ -41,20 +41,20 @@ export default {
     imageUrl () {
       const isDesktop = this.$q.platform.is.desktop
 
-      if (isDesktop) return this.postImage.desktop_file_path || this.postImage.original_file_path
+      if (isDesktop) return this.data.desktop_file_path || this.data.original_file_path
 
-      return this.postImage.mobile_file_path || this.postImage.original_file_path
+      return this.data.mobile_file_path || this.data.original_file_path
     },
 
     imageWidth () {
-      const data = this.postImage.imageData
+      const data = this.data.imageData
 
       if (this.isDesktop) {
-        if (this.postImage.desktop_file_path) return data.desktop.width
+        if (this.data.desktop_file_path) return data.desktop.width
 
         return data.original.width
       } else {
-        if (this.postImage.mobile_file_path) return data.mobile.width
+        if (this.data.mobile_file_path) return data.mobile.width
 
         return data.original.width
       }
@@ -68,7 +68,7 @@ export default {
   },
 
   mounted () {
-    this.isImageWiderThanWrapper = this.$refs.image.offsetWidth < this.postImage.width
+    this.isImageWiderThanWrapper = this.$refs.image.offsetWidth < this.data.width
   }
 }
 </script>
