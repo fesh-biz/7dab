@@ -2,11 +2,6 @@
   <div class="row justify-center q-px-sm">
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5 q-mt-md">
       <q-card :flat="$q.platform.is.mobile" class="q-my-md">
-        <!-- Title -->
-        <q-card-section class="text-center">
-          <span class="text-h5">{{ $t('post_adding') }}</span>
-        </q-card-section>
-
         <!-- Post Form -->
         <q-card-section>
 
@@ -23,20 +18,26 @@
               @input="validator.resetFieldError('title')"
           />
 
-          <!-- Content -->
+          <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
                 v-for="(bodySection, index) in form.bodySections"
                 :key="'body-element' + bodySection.index"
             >
-              <!-- Buttons -->
+              <!-- Movement, Deleting Section -->
               <div v-if="form.bodySections.length > 1" class="flex q-my-sm">
-                <tooltip-icon @mouseup="movingEnded"
-                              v-touch-pan.prevent.mouse="($event) => moveSection($event, bodySection.index)"
-                              :tooltip="$t('move_vertically')" icon-name="swap_vert"/>
+                <!-- Movement -->
+                <tooltip-icon
+                    @mouseup="movingEnded"
+                    v-touch-pan.prevent.mouse="($event) => moveSection($event, bodySection.index)"
+                    :tooltip="$t('move_vertically')" icon-name="swap_vert"
+                />
+
+                <!-- Deleting -->
                 <tooltip-icon @click="deleteSection(index)" :tooltip="$t('delete_section')" icon-name="delete"/>
               </div>
 
+              <!-- Content -->
               <component
                   :ref="'editor[' + bodySection.index + ']'"
                   :is="bodySection.type + '-field'"
@@ -47,8 +48,31 @@
         </q-card-section>
 
         <!-- Post controls -->
-        <q-card-section class="flex">
-          <tooltip-icon @click="addSection" :tooltip="$t('add_section')" icon-name="add_circle"/>
+        <q-card-section class="flex flex-center">
+          <!-- Add Section -->
+          <icon-with-tooltip
+              :tooltip="$t('add_section')"
+              color="positive"
+              size="xl"
+              icon="add_circle"
+              @click="addSection"
+          />
+
+          <!-- Cancel -->
+          <icon-with-tooltip
+              :tooltip="$t('cancel')"
+              color="negative"
+              size="xl"
+              icon="cancel"
+          />
+
+          <!-- Save -->
+          <icon-with-tooltip
+              :tooltip="$t('save')"
+              color="positive"
+              size="xl"
+              icon="check_circle"
+          />
         </q-card-section>
       </q-card>
     </div>
@@ -60,6 +84,7 @@ import TextField from 'components/form/post/TextField'
 
 import Validator from 'src/plugins/Validator'
 import TooltipIcon from 'components/common/TooltipIcon'
+import IconWithTooltip from 'components/common/IconWithTooltip'
 
 const formModel = {
   title: '',
@@ -74,7 +99,8 @@ export default {
 
   components: {
     TooltipIcon,
-    TextField
+    TextField,
+    IconWithTooltip
   },
 
   data () {

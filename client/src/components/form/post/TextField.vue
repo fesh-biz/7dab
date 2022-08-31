@@ -1,16 +1,8 @@
 <template>
-  <div>
-    <q-editor
-        :class="{'border-red': !!error_message}"
-        v-model="model"
-        @input="input"
-        :toolbar="toolbar"
-        max-height="200px"
-    />
-    <div v-if="!!error_message" style="color: red; font-size: 11px">
-      {{ error_message }}
-    </div>
-  </div>
+  <textarea
+      class="text-field"
+      v-model="model"
+  />
 </template>
 
 <script>
@@ -30,23 +22,16 @@ export default {
 
   data () {
     return {
-      model: '',
-      toolbar: [
-        [
-          {
-            label: this.$q.lang.editor.align,
-            icon: this.$q.iconSet.editor.align,
-            fixedLabel: true,
-            list: 'only-icons',
-            options: ['left', 'center', 'right', 'justify']
-          }
-        ],
-        ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
-        ['token', 'hr', 'link', 'custom_btn'],
-        ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
+      model: ''
+    }
+  },
 
-        ['undo', 'redo']
-      ]
+  watch: {
+    model: {
+      handler (val) {
+        console.log('val', val)
+      },
+      deep: true
     }
   },
 
@@ -61,3 +46,13 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.text-field
+  width: 100%
+  min-height: 200px
+  border-radius: 5px
+  border: 1px solid lightblue
+  resize: none
+  padding: 5px 10px
+</style>
