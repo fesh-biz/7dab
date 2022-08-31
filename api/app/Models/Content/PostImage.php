@@ -42,13 +42,4 @@ use Illuminate\Database\Eloquent\Model;
 class PostImage extends Model
 {
     use HasFactory;
-
-    protected $appends = [
-        'type'
-    ];
-
-    public function getTypeAttribute(): string
-    {
-        return 'image';
-    }
 }

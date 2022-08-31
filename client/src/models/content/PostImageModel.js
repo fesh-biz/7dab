@@ -17,7 +17,7 @@ export default class PostImageModel extends AppModel {
       data: this.attr(null),
       created_at: this.string(''),
       updated_at: this.string(''),
-      type: this.string('')
+      type: this.string('image')
     }
   }
 

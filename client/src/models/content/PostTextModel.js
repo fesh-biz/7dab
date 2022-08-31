@@ -6,7 +6,7 @@ export default class PostTextModel extends AppModel {
   static fields () {
     return {
       id: this.attr(null),
-      type: this.string(''),
+      type: this.string('text'),
       post_id: this.attr(null),
       order: this.number(0),
       body: this.string('')
