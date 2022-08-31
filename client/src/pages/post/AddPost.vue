@@ -9,35 +9,38 @@
 
         <!-- Post Form -->
         <q-card-section>
-          <!-- title -->
+
+          <!-- Title -->
           <q-input
-            outlined=""
-            dense=""
-            v-model="form.title"
-            :label="$t('title')"
+              outlined
+              dense
+              v-model="form.title"
+              :label="$t('title')"
 
-            :error="!!validator.errors.title"
-            :error-message="validator.errors.title"
+              :error="!!validator.errors.title"
+              :error-message="validator.errors.title"
 
-            @input="validator.resetFieldError('title')"
+              @input="validator.resetFieldError('title')"
           />
 
-          <!-- body -->
+          <!-- Content -->
           <div class="ap-body">
             <div
-              v-for="(bodySection, index) in form.bodySections"
-              :key="'body-element' + bodySection.index"
+                v-for="(bodySection, index) in form.bodySections"
+                :key="'body-element' + bodySection.index"
             >
               <!-- Buttons -->
               <div v-if="form.bodySections.length > 1" class="flex q-my-sm">
-                <tooltip-icon @mouseup="movingEnded" v-touch-pan.prevent.mouse="($event) => moveSection($event, bodySection.index)" :tooltip="$t('move_vertically')" icon-name="swap_vert" />
-                <tooltip-icon @click="deleteSection(index)" :tooltip="$t('delete_section')" icon-name="delete" />
+                <tooltip-icon @mouseup="movingEnded"
+                              v-touch-pan.prevent.mouse="($event) => moveSection($event, bodySection.index)"
+                              :tooltip="$t('move_vertically')" icon-name="swap_vert"/>
+                <tooltip-icon @click="deleteSection(index)" :tooltip="$t('delete_section')" icon-name="delete"/>
               </div>
 
-              <editor
-                :ref="'editor[' + bodySection.index + ']'"
-                v-if="bodySection.type === 'text'"
-                :value="bodySection.model"
+              <component
+                  :ref="'editor[' + bodySection.index + ']'"
+                  :is="bodySection.type + '-field'"
+                  :value="bodySection.model"
               />
             </div>
           </div>
@@ -53,7 +56,7 @@
 </template>
 
 <script>
-import Editor from 'components/form/Editor'
+import TextField from 'components/form/post/TextField'
 
 import Validator from 'src/plugins/Validator'
 import TooltipIcon from 'components/common/TooltipIcon'
@@ -71,7 +74,7 @@ export default {
 
   components: {
     TooltipIcon,
-    Editor
+    TextField
   },
 
   data () {

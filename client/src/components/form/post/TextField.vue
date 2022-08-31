@@ -1,11 +1,11 @@
 <template>
   <div>
     <q-editor
-      :class="{'border-red': !!error_message}"
-      v-model="model"
-      @input="input"
-      :toolbar="toolbar"
-      max-height="200px"
+        :class="{'border-red': !!error_message}"
+        v-model="model"
+        @input="input"
+        :toolbar="toolbar"
+        max-height="200px"
     />
     <div v-if="!!error_message" style="color: red; font-size: 11px">
       {{ error_message }}
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: 'Editor',
+  name: 'PostForm',
 
   props: {
     error_message: {
