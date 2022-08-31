@@ -1,4 +1,6 @@
 export default {
+  cancel: 'Cancel',
+  save: 'Save',
   check_your_data: 'Check your data',
   wrong_credentials: 'These credentials do not match our records',
   you_ll_be_redirected_in_3_seconds: 'You\'ll be redirected in 3 seconds',

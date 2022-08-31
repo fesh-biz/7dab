@@ -1,4 +1,6 @@
 export default {
+  cancel: 'Отмена',
+  save: 'Сохранить',
   add_section: 'Добавить секцию',
   delete_section: 'Удалить секцию',
   move_vertically: 'Переместить по вертикали',
