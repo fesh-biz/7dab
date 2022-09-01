@@ -26,7 +26,7 @@ export default class TokenCookies {
   }
 
   getCookiesData () {
-    return JSON.parse(Cookies.get('token'))
+    return Cookies.get('token')
   }
 
   set (tokenData) {

@@ -54,7 +54,7 @@ class Controller extends BaseController
         $response = $response->object();
 
         return response()->json([
-            'access_token' => $response->access_token,
+            'token' => $response,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,

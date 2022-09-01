@@ -5,13 +5,13 @@
     <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">{{ me.name }}</div>
 
     <q-btn
-      dusk="um-logout-link"
-      color="primary"
-      :label="$t('logout')"
-      @click="logout"
-      push
-      size="sm"
-      v-close-popup
+        dusk="um-logout-link"
+        color="primary"
+        :label="$t('logout')"
+        @click="logout"
+        push
+        size="sm"
+        v-close-popup
     />
   </div>
 </template>
@@ -19,6 +19,8 @@
 <script>
 import Me from 'src/models/user/Me'
 import UserAvatar from 'components/common/UserAvatar'
+import UserApi from 'src/plugins/api/user'
+import TokenCookies from 'src/plugins/cookies/tokenCookies'
 
 export default {
   name: 'UserMenu',
@@ -28,7 +30,10 @@ export default {
   },
 
   data () {
-    return {}
+    return {
+      userApi: new UserApi(),
+      tokenCookies: new TokenCookies()
+    }
   },
 
   computed: {
@@ -38,16 +43,22 @@ export default {
   },
 
   methods: {
-    logout () {
-      this.$post('/logout')
+    async logout () {
+      await this.userApi.logout()
         .then(() => {
-          this.$q.cookies.remove('bearer')
-          this.$q.cookies.remove('me')
-          Me.deleteAll()
-          if (this.$route.name !== 'home') {
-            this.$router.push({ name: 'home' })
-          }
+          this.deleteUserData()
         })
+        .catch(() => {
+          this.deleteUserData()
+        })
+    },
+
+    deleteUserData () {
+      this.tokenCookies.delete()
+      Me.deleteAll()
+      if (this.$route.name !== 'home') {
+        this.$router.push({ name: 'home' })
+      }
     }
   }
 }
