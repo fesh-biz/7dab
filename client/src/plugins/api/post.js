@@ -11,6 +11,32 @@ export default class PostApi {
     PostApi.instance = this
   }
 
+  fetchPost (id) {
+    return new Promise((resolve, reject) => {
+      this.api(`content/posts/${id}`)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  }
+
+  fetchPosts (page) {
+    return new Promise((resolve, reject) => {
+      this.api(`/content/posts?page=${page}`)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  }
+
   store (data) {
     return new Promise((resolve, reject) => {
       this.api.post('/content/posts', data)

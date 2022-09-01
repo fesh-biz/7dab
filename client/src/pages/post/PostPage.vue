@@ -4,9 +4,9 @@
       <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="!post" indeterminate/>
 
       <post
-        :is-post-page="true"
-        v-if="post"
-        :post="post"
+          :is-post-page="true"
+          v-if="post"
+          :post="post"
       />
     </div>
   </div>
@@ -14,6 +14,7 @@
 
 <script>
 import Post from 'components/content/Post'
+import PostApi from 'src/plugins/api/post'
 
 import PostModel from 'src/models/content/PostModel'
 
@@ -28,7 +29,8 @@ export default {
     return {
       fetching: {
         post: true
-      }
+      },
+      postApi: new PostApi()
     }
   },
 
@@ -50,8 +52,7 @@ export default {
 
   methods: {
     fetchPost () {
-      console.log('fetching post')
-      this.$get(`content/posts/${this.postId}`)
+      this.postApi.fetchPost(this.postId)
         .then(res => {
           PostModel.insert({
             data: res.data.data

@@ -32,5 +32,7 @@ class AuthServiceProvider extends ServiceProvider
                 $router->forAccessTokens();
             }, ['prefix' => 'api']);
         }
+
+        Passport::tokensExpireIn(now()->addSeconds(10));
     }
 }

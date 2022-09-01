@@ -26,6 +26,7 @@
 <script>
 import PostModel from 'src/models/content/PostModel'
 import Post from 'components/content/Post'
+import PostApi from 'src/plugins/api/post'
 import { isScrollBottom } from 'src/plugins/scroll'
 
 export default {
@@ -37,7 +38,8 @@ export default {
         posts: false
       },
       isLastFetched: false,
-      currentPage: 0
+      currentPage: 0,
+      postApi: new PostApi()
     }
   },
 
@@ -55,8 +57,6 @@ export default {
 
   mounted () {
     window.addEventListener('scroll', this.maybeFetchNextPosts)
-
-    // this.scrollToPost('post-id-10')
   },
 
   methods: {
@@ -86,7 +86,7 @@ export default {
       }
 
       this.fetching.posts = true
-      this.$get(`/content/posts?page=${++this.currentPage}`)
+      this.postApi.fetchPosts(++this.currentPage)
         .then(async res => {
           if (isFirstTime) {
             await PostModel.create({
