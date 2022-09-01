@@ -3,8 +3,8 @@
     <div class="col-sm-12 col-xs-12 col-md-6 col-lg-4 col-xl-4">
       <div class="flex column justify-center q-pa-md" style="height: 100vh">
         <q-form
-          @submit="onSubmit"
-          class="q-gutter-md"
+            @submit="onSubmit"
+            class="q-gutter-md"
         >
           <!-- Title -->
           <q-card>
@@ -18,32 +18,32 @@
             <q-card-section>
               <!-- password -->
               <q-input
-                dusk="rp-password-input"
-                outlined
-                dense
-                autocomplete
-                type="password"
-                v-model="form.password"
-                :label="$t('password')"
-                :error="!!validator.errors.password"
-                :error-message="validator.errors.password"
-                @input="validator.resetErrors()"
+                  dusk="rp-password-input"
+                  outlined
+                  dense
+                  autocomplete
+                  type="password"
+                  v-model="form.password"
+                  :label="$t('password')"
+                  :error="!!validator.errors.password"
+                  :error-message="validator.errors.password"
+                  @input="validator.resetErrors()"
               />
 
               <!-- password_confirmation -->
               <q-input
-                dusk="rp-password-confirmation-input"
-                outlined=""
-                dense=""
-                type="password"
-                v-model="form.password_confirmation"
-                :label="$t('password_confirmation')"
-                autocomplete
+                  dusk="rp-password-confirmation-input"
+                  outlined=""
+                  dense=""
+                  type="password"
+                  v-model="form.password_confirmation"
+                  :label="$t('password_confirmation')"
+                  autocomplete
 
-                :error="!!validator.errors.password_confirmation"
-                :error-message="validator.errors.password_confirmation"
+                  :error="!!validator.errors.password_confirmation"
+                  :error-message="validator.errors.password_confirmation"
 
-                @input="validator.resetFieldError('password_confirmation')"
+                  @input="validator.resetFieldError('password_confirmation')"
               />
 
               <q-banner v-if="infoMessage" rounded inline-actions class="text-white bg-positive">
@@ -60,12 +60,12 @@
             <!-- Buttons -->
             <q-card-actions class="q-pa-md">
               <q-btn
-                dusk="rp-submit-button"
-                :disable="formIsBusy"
-                :loading="formIsBusy"
-                :label="$t('reset_password')"
-                type="submit"
-                color="primary"
+                  dusk="rp-submit-button"
+                  :disable="formIsBusy"
+                  :loading="formIsBusy"
+                  :label="$t('reset_password')"
+                  type="submit"
+                  color="primary"
               />
             </q-card-actions>
           </q-card>
@@ -77,7 +77,10 @@
 
 <script>
 import Validator from '../../plugins/Validator'
-import auth from 'src/plugins/auth'
+import UserApi from 'src/plugins/api/user'
+import { api } from 'boot/axios'
+import Me from 'src/models/user/Me'
+import TokenCookies from 'src/plugins/cookies/tokenCookies'
 
 const formModel = {
   password: '',
@@ -91,7 +94,9 @@ export default {
       form: formModel,
       formIsBusy: false,
       validator: new Validator(formModel),
-      infoMessage: null
+      infoMessage: null,
+      userApi: new UserApi(),
+      tokenCookies: new TokenCookies()
     }
   },
 
@@ -104,17 +109,19 @@ export default {
   methods: {
     onSubmit () {
       this.formIsBusy = true
-      this.$post('password-reset', {
-        token: this.token,
-        password: this.form.password,
-        password_confirmation: this.form.password_confirmation
-      }).then((res) => {
-        this.infoMessage = this.$t('your_password_has_been_successfully_reset') + '. ' + this.$t('you_ll_be_redirected_in_3_seconds')
+      this.userApi.passwordReset(this.token, this.form.password, this.form.password_confirmation)
+        .then((res) => {
+          this.infoMessage = this.$t('your_password_has_been_successfully_reset') + '. ' + this.$t('you_ll_be_redirected_in_3_seconds')
+          this.tokenCookies.set(res.data.token)
+          api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+          Me.create({
+            data: res.data.user
+          })
 
-        setTimeout(() => {
-          auth.loginAndRedirect(res.data.access_token, res.data.user)
-        }, 3000)
-      })
+          setTimeout(() => {
+            this.$router.push({ name: 'home' })
+          }, 3000)
+        })
         .catch((err) => {
           this.formIsBusy = false
           this.validator.setErrors(err)

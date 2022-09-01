@@ -50,6 +50,23 @@ export default class UserApi {
     })
   }
 
+  passwordReset (token, password, passwordConfirmation) {
+    return new Promise((resolve, reject) => {
+      this.api.post('password-reset', {
+        token: token,
+        password: password,
+        password_confirmation: passwordConfirmation
+      })
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  }
+
   register (data) {
     return new Promise((resolve, reject) => {
       this.api.post('register', data)
