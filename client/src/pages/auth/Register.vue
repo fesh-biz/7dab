@@ -102,10 +102,10 @@ import TokenCookies from 'src/plugins/cookies/tokenCookies'
 import { api } from 'boot/axios'
 
 const formModel = {
-  name: 'Test',
-  email: new Date().getTime() + '@gmail.com',
-  password: 'password',
-  password_confirmation: 'password'
+  name: null,
+  email: null,
+  password: null,
+  password_confirmation: null
 }
 
 export default {
