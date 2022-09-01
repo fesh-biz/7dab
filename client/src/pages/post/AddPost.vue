@@ -9,7 +9,7 @@
           <q-input
               outlined
               dense
-              v-model="form.title"
+              v-model="model.title"
               :label="$t('title')"
 
               :error="!!validator.errors.title"
@@ -21,27 +21,20 @@
           <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
-                v-for="(bodySection, index) in form.bodySections"
-                :key="'body-element' + bodySection.index"
+                v-for="(section, index) in model.data"
+                :key="'body-element' + section.index"
             >
-              <!-- Movement, Deleting Section -->
-              <div v-if="form.bodySections.length > 1" class="flex q-my-sm">
-                <!-- Movement -->
-                <tooltip-icon
-                    @mouseup="movingEnded"
-                    v-touch-pan.prevent.mouse="($event) => moveSection($event, bodySection.index)"
-                    :tooltip="$t('move_vertically')" icon-name="swap_vert"
-                />
-
+              <!-- Deleting Section -->
+              <div v-if="model.data.length > 1" class="flex q-my-sm">
                 <!-- Deleting -->
                 <tooltip-icon @click="deleteSection(index)" :tooltip="$t('delete_section')" icon-name="delete"/>
               </div>
 
               <!-- Content -->
               <component
-                  :ref="'editor[' + bodySection.index + ']'"
-                  :is="bodySection.type + '-field'"
-                  :value="bodySection.model"
+                  :ref="'editor[' + section.index + ']'"
+                  :is="section.type + '-field'"
+                  :value="section.model"
               />
             </div>
           </div>
@@ -72,6 +65,7 @@
               color="positive"
               size="xl"
               icon="check_circle"
+              @click="saveOrUpdate()"
           />
         </q-card-section>
       </q-card>
@@ -85,10 +79,11 @@ import TextField from 'components/form/post/TextField'
 import Validator from 'src/plugins/Validator'
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
+import PostApi from 'src/plugins/api/post'
 
 const formModel = {
-  title: '',
-  bodySections: [
+  title: 'Test Title',
+  data: [
     { index: 1, type: 'text', model: 'Section 1' },
     { index: 2, type: 'text', model: 'Section 2' }
   ]
@@ -105,16 +100,16 @@ export default {
 
   data () {
     return {
-      form: JSON.parse(JSON.stringify(formModel)),
+      model: JSON.parse(JSON.stringify(formModel)),
       validator: new Validator(formModel),
-      movedSectionIndex: null
+      postApi: new PostApi()
     }
   },
 
   methods: {
     addSection () {
-      const lastIndex = this.form.bodySections[this.form.bodySections.length - 1].index + 1
-      this.form.bodySections.push({
+      const lastIndex = this.model.data[this.model.data.length - 1].index + 1
+      this.model.data.push({
         index: lastIndex,
         type: 'text',
         model: 'Section ' + lastIndex
@@ -122,17 +117,11 @@ export default {
     },
 
     deleteSection (index) {
-      this.form.bodySections.splice(index, 1)
-      console.log(this.form.bodySections)
+      this.model.data.splice(index, 1)
     },
 
-    moveSection (e, index) {
-      // console.log(this.$refs)
-      // console.log(e.position)
-    },
-
-    movingEnded (e) {
-      console.log(e.position)
+    saveOrUpdate () {
+      this.postApi.store(this.model)
     }
   }
 }
