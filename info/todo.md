@@ -1,9 +1,14 @@
 - [] Как пользователь, я хочу добавлять контент
-    - [] Возможность добавить:
+    - [] Возможность добавить пост:
         - [] Заголовок
+            - [] Show error if empty
+            - [] Test that error showed to user
+            - [] Test that the database has that title
         - [] Текст
-            - [] Добавить markdown editor
-            - [] Show info how to use in popup
+            - [] Show error if no sections for posts
+            - [] Remove sections if they are empty
+            - [] Test that error showed to user
+            - [] Test that the database has all texts inside
         - [] Картинку
         - [] Теги
             - [] Если тег новый
