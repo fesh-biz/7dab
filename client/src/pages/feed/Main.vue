@@ -45,7 +45,7 @@ export default {
 
   computed: {
     posts () {
-      return PostModel.query().withAll().all()
+      return PostModel.query().withAll().orderBy('id', 'desc').all()
     }
   },
 

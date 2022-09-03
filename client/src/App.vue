@@ -37,10 +37,6 @@ export default {
       this.userApi.fetchMe()
         .then(res => {
           Me.create({ data: res.data })
-            .then(() => {
-              console.log(res.data)
-              console.log(Me.query().all())
-            })
         })
     }
   }
