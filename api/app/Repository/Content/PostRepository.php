@@ -10,6 +10,7 @@ class PostRepository
     public function getPaginatedPosts(): LengthAwarePaginator
     {
         return Post::withTagsAuthorContent()
+            ->orderBy('id', 'desc')
             ->paginate(10);
     }
 

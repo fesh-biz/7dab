@@ -15,6 +15,8 @@ class PostTextRepository
 
     public function create(int $postId, int $order, string $body): PostText
     {
+        $body = str_replace("\n", '<br>', $body);
+
         return PostText::create([
             'post_id' => $postId,
             'order' => $order,

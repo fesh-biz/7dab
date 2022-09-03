@@ -23,7 +23,7 @@ export default class PostEditor {
     this.sections.push({
       order: nextOrder,
       type: 'text',
-      content: 'Section ' + nextOrder
+      content: ''
     })
   }
 

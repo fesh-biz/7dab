@@ -100,8 +100,6 @@ export default {
   },
 
   created () {
-    this.postEditor.title = 'Test'
-    this.postEditor.addSection()
     this.postEditor.addSection()
   },
 
