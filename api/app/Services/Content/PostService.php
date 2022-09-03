@@ -36,7 +36,7 @@ class PostService
     {
         switch ($section['type']) {
             case 'text':
-                $this->postTextRepo->create($postId, $section['index'], $section['content']);
+                $this->postTextRepo->create($postId, $section['order'], $section['content']);
                 break;
             default:
                 break;

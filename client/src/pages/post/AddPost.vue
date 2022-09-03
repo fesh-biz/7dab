@@ -9,32 +9,34 @@
           <q-input
               outlined
               dense
-              v-model="model.title"
+              v-model="postEditor.title"
               :label="$t('title')"
 
-              :error="!!validator.errors.title"
-              :error-message="validator.errors.title"
+              :error="!!postEditor.validator.errors.title"
+              :error-message="postEditor.validator.errors.title"
 
-              @input="validator.resetFieldError('title')"
+              @input="postEditor.validator.resetFieldError('title')"
           />
 
           <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
-                v-for="(section, index) in model.data"
-                :key="'body-element' + section.index"
+                v-for="(section, index) in postEditor.sections"
+                :key="'body-element' + section.order"
             >
               <!-- Deleting Section -->
-              <div v-if="model.data.length > 1" class="flex q-my-sm">
+              <div v-if="postEditor.sections.length > 1" class="flex q-my-sm">
                 <!-- Deleting -->
-                <tooltip-icon @click="deleteSection(index)" :tooltip="$t('delete_section')" icon-name="delete"/>
+                <tooltip-icon @click="postEditor.deleteSection(index)" :tooltip="$t('delete_section')"
+                              icon-name="delete"/>
               </div>
 
               <!-- Content -->
               <component
-                  :ref="'editor[' + section.index + ']'"
+                  :ref="'editor[' + section.order + ']'"
                   :is="section.type + '-field'"
                   :value="section.content"
+                  :order="section.order"
               />
             </div>
           </div>
@@ -48,7 +50,7 @@
               color="positive"
               size="xl"
               icon="add_circle"
-              @click="addSection"
+              @click="postEditor.addSection()"
           />
 
           <!-- Cancel -->
@@ -76,18 +78,10 @@
 <script>
 import TextField from 'components/form/post/TextField'
 
-import Validator from 'src/plugins/Validator'
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostApi from 'src/plugins/api/post'
-
-const formModel = {
-  title: 'русский українська',
-  data: [
-    { index: 1, type: 'text', content: 'Section 1' },
-    { index: 2, type: 'text', content: 'Section 2' }
-  ]
-}
+import PostEditor from 'src/plugins/state/post-editor'
 
 export default {
   name: 'AddPost',
@@ -100,28 +94,23 @@ export default {
 
   data () {
     return {
-      model: JSON.parse(JSON.stringify(formModel)),
-      validator: new Validator(formModel),
-      postApi: new PostApi()
+      postApi: new PostApi(),
+      postEditor: new PostEditor()
     }
   },
 
+  created () {
+    this.postEditor.title = 'Test'
+    this.postEditor.addSection()
+    this.postEditor.addSection()
+  },
+
   methods: {
-    addSection () {
-      const lastIndex = this.model.data[this.model.data.length - 1].index + 1
-      this.model.data.push({
-        index: lastIndex,
-        type: 'text',
-        content: 'Section ' + lastIndex
-      })
-    },
-
-    deleteSection (index) {
-      this.model.data.splice(index, 1)
-    },
-
     saveOrUpdate () {
-      this.postApi.store(this.model)
+      this.postApi.store({
+        title: this.postEditor.title,
+        data: this.postEditor.sections
+      })
         .then(res => console.log('res', res))
     }
   }

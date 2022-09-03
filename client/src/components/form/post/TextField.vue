@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import PostEditor from 'src/plugins/state/post-editor'
+
 export default {
   name: 'PostForm',
 
@@ -17,12 +19,23 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    order: {
+      type: Number,
+      required: true
     }
   },
 
   data () {
     return {
-      model: ''
+      model: '',
+      postEditor: new PostEditor()
+    }
+  },
+
+  watch: {
+    model (val) {
+      this.postEditor.updateSection(this.order, val)
     }
   },
 
