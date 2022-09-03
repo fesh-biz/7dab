@@ -44,8 +44,8 @@ class AuthController extends Controller
     public function passwordForgot(Request $r): JsonResponse
     {
         $email = $r->validate(
-            [ 'email' => 'email|required|exists:users,email|max:255' ],
-            [ 'email.exists' => trans('passwords.user') ]
+            ['email' => 'email|required|exists:users,email|max:255'],
+            ['email.exists' => trans('passwords.user')]
         )['email'];
 
         $resetPasswordData = [
@@ -82,7 +82,7 @@ class AuthController extends Controller
             \DB::table('password_resets')->where('token', $input['token'])->delete();
 
             return $this->authUser($user, $input['password']);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return $this->sendErrorMessage(trans('common.something_went_wrong'));
         }
     }

@@ -1,16 +1,21 @@
 <template>
   <div id="q-app">
-    <router-view />
+    <router-view/>
   </div>
 </template>
 <script>
 import Me from 'src/models/user/Me'
+import TokenCookies from 'src/plugins/cookies/tokenCookies'
+import UserApi from 'src/plugins/api/user'
 
 export default {
   name: 'App',
 
   data () {
-    return {}
+    return {
+      tokenCookies: new TokenCookies(),
+      userApi: new UserApi()
+    }
   },
 
   watch: {
@@ -23,9 +28,20 @@ export default {
     }
   },
 
-  async created () {
-    if (this.$q.cookies.get('me')) {
-      await Me.create({ data: this.$q.cookies.get('me') })
+  created () {
+    if (this.tokenCookies.getIsExpired()) {
+      this.tokenCookies.delete()
+    }
+
+    if (this.tokenCookies.getAuthorizationToken()) {
+      this.userApi.fetchMe()
+        .then(res => {
+          Me.create({ data: res.data })
+            .then(() => {
+              console.log(res.data)
+              console.log(Me.query().all())
+            })
+        })
     }
   }
 }

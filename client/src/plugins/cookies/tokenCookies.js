@@ -29,10 +29,27 @@ export default class TokenCookies {
     return Cookies.get('token')
   }
 
+  getIsExpired () {
+    let res = false
+
+    const token = this.getCookiesData()
+
+    if (token && token.expiresIn) {
+      const now = Math.floor(Date.now() / 1000)
+      const day = 60 * 60 * 24
+
+      if (token.expiresIn - now < day) {
+        res = true
+      }
+    }
+
+    return res
+  }
+
   set (tokenData) {
     tokenData = JSON.stringify({
       accessToken: tokenData.access_token,
-      expiresIn: tokenData.expires_in,
+      expiresIn: Math.floor(Date.now() / 1000) + tokenData.expires_in,
       refreshToken: tokenData.refresh_token,
       tokenType: tokenData.token_type
     })

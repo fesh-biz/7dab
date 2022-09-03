@@ -30,4 +30,17 @@ export default class TokenApi {
         })
     })
   }
+
+  refreshToken () {
+    return new Promise((resolve, reject) => {
+      this.api.post('/oauth/token')
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          console.error(err)
+          reject(err)
+        })
+    })
+  }
 }

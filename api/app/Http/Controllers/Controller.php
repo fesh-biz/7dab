@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Content\Post;
 use App\Models\User;
-use App\Repository\Content\PostRepository;
 use App\Services\Content\PostImageService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -12,7 +10,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller as BaseController;
-use Intervention\Image\Facades\Image;
 use Laravel\Passport\Client;
 
 class Controller extends BaseController
