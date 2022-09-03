@@ -26,15 +26,6 @@ export default {
     }
   },
 
-  watch: {
-    model: {
-      handler (val) {
-        console.log('val', val)
-      },
-      deep: true
-    }
-  },
-
   created () {
     this.model = this.value
   },

@@ -30,4 +30,10 @@ use Illuminate\Database\Eloquent\Model;
 class PostText extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'post_id',
+        'order',
+        'body'
+    ];
 }

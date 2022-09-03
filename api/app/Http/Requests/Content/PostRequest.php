@@ -13,7 +13,7 @@ class PostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'string',
-            
+            'data' => 'array'
         ];
     }
 }

@@ -61,6 +61,10 @@ class Post extends Model
     public static string $DECLINED = 'declined';
     public static string $EDITING = 'editing';
 
+    protected $fillable = [
+        'title', 'user_id'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

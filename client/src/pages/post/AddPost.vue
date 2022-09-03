@@ -34,7 +34,7 @@
               <component
                   :ref="'editor[' + section.index + ']'"
                   :is="section.type + '-field'"
-                  :value="section.model"
+                  :value="section.content"
               />
             </div>
           </div>
@@ -82,10 +82,10 @@ import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostApi from 'src/plugins/api/post'
 
 const formModel = {
-  title: 'Test Title',
+  title: 'русский українська',
   data: [
-    { index: 1, type: 'text', model: 'Section 1' },
-    { index: 2, type: 'text', model: 'Section 2' }
+    { index: 1, type: 'text', content: 'Section 1' },
+    { index: 2, type: 'text', content: 'Section 2' }
   ]
 }
 
@@ -112,7 +112,7 @@ export default {
       this.model.data.push({
         index: lastIndex,
         type: 'text',
-        model: 'Section ' + lastIndex
+        content: 'Section ' + lastIndex
       })
     },
 
@@ -122,6 +122,7 @@ export default {
 
     saveOrUpdate () {
       this.postApi.store(this.model)
+        .then(res => console.log('res', res))
     }
   }
 }

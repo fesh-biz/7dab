@@ -18,4 +18,12 @@ class PostRepository
         return Post::withTagsAuthorContent()
             ->find($postId);
     }
+
+    public function create(string $title): Post
+    {
+        return Post::create([
+            'title' => $title,
+            'user_id' => auth()->id()
+        ]);
+    }
 }
