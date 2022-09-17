@@ -46,6 +46,8 @@ export default class Api {
   }
 
   showError (response) {
+    if (response.response.data.error === 'invalid_grant') return
+
     Notify.create({
       message: response.response.data.message,
       position: 'center',
