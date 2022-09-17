@@ -1,4 +1,4 @@
-import { api } from 'boot/axios'
+import Api from 'src/plugins/api/api'
 
 export default class UserApi {
   constructor () {
@@ -6,7 +6,7 @@ export default class UserApi {
       return UserApi.instance
     }
 
-    this.api = api
+    this.api = new Api()
 
     UserApi.instance = this
   }

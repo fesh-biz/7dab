@@ -1,4 +1,4 @@
-import { api } from 'boot/axios'
+import Api from 'src/plugins/api/api'
 
 export default class TokenApi {
   constructor () {
@@ -6,7 +6,7 @@ export default class TokenApi {
       return TokenApi.instance
     }
 
-    this.api = api
+    this.api = new Api()
 
     this.token = null
     this.expiresIn = null

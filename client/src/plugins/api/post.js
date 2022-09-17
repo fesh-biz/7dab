@@ -1,4 +1,4 @@
-import { api } from 'boot/axios'
+import Api from 'src/plugins/api/api'
 
 export default class PostApi {
   constructor () {
@@ -6,19 +6,18 @@ export default class PostApi {
       return PostApi.instance
     }
 
-    this.api = api
+    this.api = new Api()
 
     PostApi.instance = this
   }
 
   fetchPost (id) {
     return new Promise((resolve, reject) => {
-      this.api(`content/posts/${id}`)
+      this.api.get(`content/posts/${id}`)
         .then(res => {
           resolve(res)
         })
         .catch(err => {
-          console.error(err)
           reject(err)
         })
     })
@@ -26,12 +25,11 @@ export default class PostApi {
 
   fetchPosts (page) {
     return new Promise((resolve, reject) => {
-      this.api(`/content/posts?page=${page}`)
+      this.api.get(`/content/posts?page=${page}`)
         .then(res => {
           resolve(res)
         })
         .catch(err => {
-          console.error(err)
           reject(err)
         })
     })
@@ -42,7 +40,6 @@ export default class PostApi {
       this.api.post('/content/posts', data)
         .then(res => resolve(res))
         .catch(err => {
-          console.error(err)
           reject(err)
         })
     })
