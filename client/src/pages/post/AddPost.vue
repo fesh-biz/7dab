@@ -81,7 +81,7 @@ import TextField from 'components/form/post/TextField'
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostApi from 'src/plugins/api/post'
-import PostEditor from 'src/plugins/state/post-editor'
+import PostEditor from 'src/plugins/editor/post'
 
 export default {
   name: 'AddPost',

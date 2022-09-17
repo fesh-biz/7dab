@@ -1,10 +1,10 @@
 import Validator from 'src/plugins/Validator'
 import _ from 'lodash'
 
-export default class PostEditor {
+export default class Post {
   constructor () {
-    if (PostEditor.instance) {
-      return PostEditor.instance
+    if (Post.instance) {
+      return Post.instance
     }
 
     this.title = ''
@@ -15,7 +15,7 @@ export default class PostEditor {
       data: []
     })
 
-    PostEditor.instance = this
+    Post.instance = this
   }
 
   addSection () {

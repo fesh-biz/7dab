@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import PostEditor from 'src/plugins/state/post-editor'
+import PostEditor from 'src/plugins/editor/post'
 
 export default {
   name: 'PostForm',
