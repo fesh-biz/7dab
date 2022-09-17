@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import Validator from '../../plugins/Validator'
+import Validator from '../../plugins/tools/validator'
 import UserApi from 'src/plugins/api/user'
 
 const formModel = {

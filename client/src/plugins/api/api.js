@@ -46,7 +46,11 @@ export default class Api {
   }
 
   showError (response) {
-    if (response.response.data.error === 'invalid_grant') return
+    const error = response.response.data.error
+
+    console.log('error', response.response)
+
+    if (['invalid_grant', 'invalid_request'].includes(error)) return
 
     Notify.create({
       message: response.response.data.message,

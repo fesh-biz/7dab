@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import Validator from '../../plugins/Validator'
+import Validator from '../../plugins/tools/validator'
 import UserApi from 'src/plugins/api/user'
 import { api } from 'boot/axios'
 import Me from 'src/models/user/Me'

@@ -1,4 +1,4 @@
-import Validator from 'src/plugins/Validator'
+import Validator from 'src/plugins/tools/validator'
 import _ from 'lodash'
 
 export default class Post {

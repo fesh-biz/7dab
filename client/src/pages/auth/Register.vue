@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import Validator from 'src/plugins/Validator'
+import Validator from 'src/plugins/tools/validator'
 import Me from 'src/models/user/Me'
 import UserApi from 'src/plugins/api/user'
 import TokenCookies from 'src/plugins/cookies/tokenCookies'
