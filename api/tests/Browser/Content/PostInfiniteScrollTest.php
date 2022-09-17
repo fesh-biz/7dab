@@ -24,16 +24,15 @@ class PostInfiniteScrollTest extends DuskTestCase
 
             $browser
                 ->visit($this->routeByName('home'))
-                ->waitFor('@post-1')
-                ->assertNotPresent('@post-12')
+                ->waitFor('@post-30')
+                ->assertNotPresent('@post-18')
                 ->scrollTo('@page-bottom')
                 ->waitUntilMissing('@main-new-posts-loading')
-                ->assertPresent('@post-12')
-
-                ->assertNotPresent('@post-30')
+                ->assertPresent('@post-18')
+                ->assertNotPresent('@post-1')
                 ->scrollTo('@page-bottom')
                 ->waitUntilMissing('@main-new-posts-loading')
-                ->assertPresent('@post-30');
+                ->assertPresent('@post-1');
         });
     }
 
