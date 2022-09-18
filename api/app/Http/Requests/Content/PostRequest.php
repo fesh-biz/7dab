@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'data' => 'array'
+            'sections' => 'array'
         ];
     }
 }

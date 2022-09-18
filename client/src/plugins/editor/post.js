@@ -31,7 +31,7 @@ export default class Post {
   }
 
   updateSection (sectionOrder, content) {
-    const section = _.find(this.sections, { order: sectionOrder })
+    const section = _.find(this.formModel.sections, { order: sectionOrder })
     section.content = content
   }
 
@@ -41,10 +41,11 @@ export default class Post {
 
   saveOrUpdate () {
     return new Promise((resolve, reject) => {
-      this.api.store('/content/posts', this.formModel)
+      console.log('this.formModel', this.formModel)
+      this.api.store(this.formModel)
         .then(res => resolve(res))
         .catch(res => {
-          console.log('err.response', res.response)
+          console.log('err.response', res.response.data.errors)
           this.validator.setErrors(res)
           reject(res)
         })

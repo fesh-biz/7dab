@@ -21,9 +21,10 @@ class PostService
 
     public function create(PostRequest $data): Post
     {
+        ddh($data);
         $post = $this->repo->create($data['title']);
 
-        $sections = $data['data'];
+        $sections = $data['sections'];
 
         foreach ($sections as $section) {
             $this->createSection($post->id, $section);
