@@ -1,4 +1,5 @@
 export default {
+  something_went_wrong: 'Something went wrong.',
   cancel: 'Cancel',
   save: 'Save',
   check_your_data: 'Check your data',

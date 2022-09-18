@@ -1,4 +1,5 @@
 export default {
+  something_went_wrong: 'Щось пішло не так, спробуйте пізніше',
   cancel: 'Отмена',
   save: 'Сохранить',
   add_section: 'Добавить секцию',

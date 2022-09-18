@@ -9,6 +9,10 @@
             - [] Remove sections if they are empty
             - [] Test that error showed to user
             - [] Test that the database has all texts inside
+        - [] Sections Tests
+            - [] User can add new section text
+            - [] User can add new section image
+            - [] User can delete section
         - [] Картинку
         - [] Теги
             - [] Если тег новый

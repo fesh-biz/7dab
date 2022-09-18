@@ -9,27 +9,24 @@
           <q-input
               outlined
               dense
-              v-model="postEditor.title"
+              v-model="post.formModel.title"
               :label="$t('title')"
 
-              :error="!!postEditor.validator.errors.title"
-              :error-message="postEditor.validator.errors.title"
+              :error="!!post.validator.errors.title"
+              :error-message="post.validator.errors.title"
 
-              @input="postEditor.validator.resetFieldError('title')"
+              @input="post.validator.resetFieldError('title')"
           />
 
           <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
-                v-for="(section, index) in postEditor.sections"
+                v-for="(section, index) in post.formModel.sections"
                 :key="'body-element' + section.order"
             >
               <!-- Deleting Section -->
-              <div v-if="postEditor.sections.length > 1" class="flex q-my-sm">
-                <!-- Deleting -->
-                <tooltip-icon @click="postEditor.deleteSection(index)" :tooltip="$t('delete_section')"
-                              icon-name="delete"/>
-              </div>
+              <tooltip-icon @click="post.deleteSection(index)" :tooltip="$t('delete_section')"
+                            icon-name="delete"/>
 
               <!-- Content -->
               <component
@@ -50,7 +47,7 @@
               color="positive"
               size="xl"
               icon="add_circle"
-              @click="postEditor.addSection()"
+              @click="post.addSection()"
           />
 
           <!-- Cancel -->
@@ -67,7 +64,7 @@
               color="positive"
               size="xl"
               icon="check_circle"
-              @click="saveOrUpdate()"
+              @click="post.saveOrUpdate()"
           />
         </q-card-section>
       </q-card>
@@ -80,8 +77,7 @@ import TextField from 'components/form/post/TextField'
 
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
-import PostApi from 'src/plugins/api/post'
-import PostEditor from 'src/plugins/editor/post'
+import Post from 'src/plugins/editor/post'
 
 export default {
   name: 'AddPost',
@@ -94,23 +90,12 @@ export default {
 
   data () {
     return {
-      postApi: new PostApi(),
-      postEditor: new PostEditor()
+      post: new Post()
     }
   },
 
   created () {
-    this.postEditor.addSection()
-  },
-
-  methods: {
-    saveOrUpdate () {
-      this.postApi.store({
-        title: this.postEditor.title,
-        data: this.postEditor.sections
-      })
-        .then(res => console.log('res', res))
-    }
+    this.post.addSection()
   }
 }
 </script>

@@ -1,5 +1,6 @@
 import { api } from 'boot/axios'
 import { Notify } from 'quasar'
+import { i18n } from 'boot/i18n'
 
 export default class Api {
   constructor () {
@@ -50,8 +51,10 @@ export default class Api {
 
     if (['invalid_grant', 'invalid_request'].includes(error)) return
 
+    const message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
+
     Notify.create({
-      message: response.response.data.message,
+      message: message,
       position: 'center',
       color: 'negative'
     })

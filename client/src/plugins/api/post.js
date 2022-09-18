@@ -1,14 +1,14 @@
 import Api from 'src/plugins/api/api'
 
-export default class PostApi {
+export default class Post {
   constructor () {
-    if (PostApi.instance) {
-      return PostApi.instance
+    if (Post.instance) {
+      return Post.instance
     }
 
     this.api = new Api()
 
-    PostApi.instance = this
+    Post.instance = this
   }
 
   fetchPost (id) {
