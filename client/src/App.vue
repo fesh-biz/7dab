@@ -38,6 +38,9 @@ export default {
         .then(res => {
           Me.create({ data: res.data })
         })
+        .catch(() => {
+          this.tokenCookies.delete()
+        })
     }
   }
 }
