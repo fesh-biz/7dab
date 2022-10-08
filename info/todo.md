@@ -1,10 +1,12 @@
 - [] Как пользователь, я хочу добавлять контент
     - [] Возможность добавить пост:
         - [] Заголовок
+            - [x] Ability
             - [] Show error if empty
             - [] Test that error showed to user
             - [] Test that the database has that title
         - [] Текст
+            - [x] Ability
             - [] Show error if no sections for posts
             - [] Remove sections if they are empty
             - [] Test that error showed to user
