@@ -6,6 +6,7 @@ use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
 use App\Repository\Content\PostRepository;
 use App\Repository\Content\PostTextRepository;
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class PostService
@@ -21,7 +22,7 @@ class PostService
 
     public function create(PostRequest $data): Post
     {
-        ddh($data);
+        DB::beginTransaction();
         $post = $this->repo->create($data['title']);
 
         $sections = $data['sections'];
@@ -29,6 +30,7 @@ class PostService
         foreach ($sections as $section) {
             $this->createSection($post->id, $section);
         }
+        DB::commit();
 
         return $post;
     }
