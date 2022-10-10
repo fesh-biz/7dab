@@ -1,7 +1,5 @@
-import { Cookies } from 'quasar'
+import Me from 'src/models/user/Me'
 
 export default function isUser ({ next }) {
-  const me = Cookies.get('me')
-
-  return me ? next() : next({ name: 'login' })
+  return Me.query().first() ? next() : next({ name: 'login' })
 }

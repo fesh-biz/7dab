@@ -6,7 +6,7 @@ export default [
     name: 'add_post',
     meta: {
       title: 'add_post',
-      middleware: isUser
+      middleware: [isUser]
     },
     component: () => import('pages/post/AddPost')
   },

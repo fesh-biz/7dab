@@ -1,3 +1,9 @@
+- [] On `Add post`
+    - [x] if not logged in - redirect to login route
+    - [] Test:
+        - [] Check that auth in user can reach `/add-post` page
+        - [] Check that guest redirects from `/add-post` page to `/login` page
+
 - [] Как пользователь, я хочу добавлять контент
     - [] Возможность добавить пост:
         - [] Заголовок
