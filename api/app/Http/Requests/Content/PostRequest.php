@@ -25,7 +25,30 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'sections' => 'array'
+            'sections' => [function ($attribute, $value, $fail) {
+                $this->checkSections($attribute, $value, $fail);
+            }]
         ];
+    }
+
+    private function checkSections($attribute, $sections, $fail): void
+    {
+        $errors = [];
+
+        foreach ($sections as $section) {
+            if ($section['type'] === 'text' && !$this->checkTextSection($section['content'])) {
+                $errors['sections'][$section['order']] = trans('errors.can_not_be_empty');
+            }
+        }
+
+        if (count($errors) > 0) {
+            $validator = $this->getValidatorInstance();
+            $validator->errors()->merge($errors);
+        }
+    }
+
+    private function checkTextSection($content): bool
+    {
+        return !!$content;
     }
 }

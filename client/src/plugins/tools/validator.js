@@ -38,14 +38,18 @@ export default class Validator {
           this.errors.error_message = validation[field]
           continue
         }
-        this.errors[field] = validation[field][0]
+        this.errors[field] = validation[field][0] || validation[field]
       }
     }
   }
 
-  resetFieldError (fieldName) {
-    if (this.errors.hasOwnProperty(fieldName)) {
-      this.errors[fieldName] = null
+  resetFieldError (fieldName, order) {
+    if (this.errors[fieldName]) {
+      if (order) {
+        delete this.errors[fieldName][order]
+      } else {
+        this.errors[fieldName] = null
+      }
     }
     this.errors.error_message = null
   }

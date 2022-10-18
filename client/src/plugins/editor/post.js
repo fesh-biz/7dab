@@ -41,11 +41,9 @@ export default class Post {
 
   saveOrUpdate () {
     return new Promise((resolve, reject) => {
-      console.log('this.formModel', this.formModel)
       this.api.store(this.formModel)
         .then(res => resolve(res))
         .catch(res => {
-          console.log('err.response', res.response.data.errors)
           this.validator.setErrors(res)
           reject(res)
         })

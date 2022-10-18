@@ -1,8 +1,13 @@
 <template>
-  <textarea
-      class="text-field"
-      v-model="model"
-  />
+  <div :class="{error: errorMessage}" :style="{padding: errorMessage ? '5px' : '' }">
+    <textarea
+        class="text-field"
+        v-model="model"
+        @input="$emit('input')"
+    />
+
+    <span v-if="errorMessage" style="color: red">{{ errorMessage }}</span>
+  </div>
 </template>
 
 <script>
@@ -12,10 +17,6 @@ export default {
   name: 'PostForm',
 
   props: {
-    error_message: {
-      type: String,
-      default: null
-    },
     value: {
       type: String,
       required: true
@@ -23,6 +24,9 @@ export default {
     order: {
       type: Number,
       required: true
+    },
+    errorMessage: {
+      type: [String]
     }
   },
 

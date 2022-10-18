@@ -22,6 +22,8 @@
             - [] User can add new section image
             - [] User can delete section
         - [] Картинку
+            - [] ability
+            - [] tests:
         - [] Теги
             - [] Если тег новый
                 - [] Сообщить пользователю, что список его новых тегов будет проверен и утвержден

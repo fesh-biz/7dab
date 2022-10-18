@@ -24,9 +24,15 @@
                 v-for="(section, index) in post.formModel.sections"
                 :key="'body-element' + section.order"
             >
-              <!-- Deleting Section -->
-              <tooltip-icon @click="post.deleteSection(index)" :tooltip="$t('delete_section')"
-                            icon-name="delete"/>
+              <!-- Delete -->
+              <div>
+                <!-- Delete -->
+                <icon-with-tooltip
+                    @click="post.deleteSection(index)"
+                    :tooltip="$t('delete_section')"
+                    icon="delete"
+                />
+              </div>
 
               <!-- Content -->
               <component
@@ -34,7 +40,11 @@
                   :is="section.type + '-field'"
                   :value="section.content"
                   :order="section.order"
+                  :error-message="post.validator.errors.sections ? post.validator.errors.sections[section.order] : null"
+                  @input="post.validator.resetFieldError('sections', section.order)"
               />
+
+              <q-separator spaced/>
             </div>
           </div>
         </q-card-section>
@@ -64,7 +74,7 @@
               color="positive"
               size="xl"
               icon="check_circle"
-              @click="post.saveOrUpdate()"
+              @click="saveOrUpdate()"
           />
         </q-card-section>
       </q-card>
@@ -94,8 +104,23 @@ export default {
     }
   },
 
+  computed: {
+    sectionsErrors (val) {
+      return this.post.validator.errors.sections
+    }
+  },
+
   created () {
     this.post.addSection()
+  },
+
+  methods: {
+    saveOrUpdate () {
+      this.post.saveOrUpdate()
+        .then((res) => {
+          // to make redirect on post page
+        })
+    }
   }
 }
 </script>
