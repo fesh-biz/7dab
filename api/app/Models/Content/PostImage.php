@@ -38,6 +38,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereWidth($value)
  * @mixin \Eloquent
+ * @property string $original_filename
+ * @property string $original_file_path
+ * @property string|null $desktop_file_path
+ * @property string|null $mobile_file_path
+ * @property mixed $data
+ * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereDesktopFilePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereMobileFilePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereOriginalFilePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PostImage whereOriginalFilename($value)
  */
 class PostImage extends Model
 {

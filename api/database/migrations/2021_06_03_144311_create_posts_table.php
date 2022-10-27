@@ -19,11 +19,8 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->string('title');
-            $table->integer('rating')->default(0);
             $table->string('slug')->unique();
             $table->enum('status', ['pending', 'reviewing', 'approved', 'declined', 'editing'])->default('pending');
-            $table->unsignedInteger('total_views')->default(0);
-            $table->unsignedInteger('total_comments')->default(0);
 
             $table->timestamps();
         });

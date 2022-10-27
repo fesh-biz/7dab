@@ -1,6 +1,7 @@
 @startuml
 !include ../tables/content/comments.puml
 !include ../tables/content/post_images.puml
+!include ../tables/content/post_stats.puml
 !include ../tables/content/post_tag.puml
 !include ../tables/content/post_texts.puml
 !include ../tables/content/posts.puml
@@ -8,12 +9,13 @@
 !include ../tables/users.puml
 
 comments }- posts
-post_tag - tags
-posts - post_tag
-posts -- users
+post_tag }- tags
+posts -{ post_tag
+posts }-- users
 comments -- users
 tags -- users
 comments -{ comments
 post_images }-- posts
+post_stats -- posts
 post_texts }-- posts
 @enduml

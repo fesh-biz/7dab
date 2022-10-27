@@ -6,10 +6,8 @@ object posts {
     - user_id (UBI)
 
     title (string)
-    rating (integer)
     slug (string)
-    total_views (UI)
-    total_comments (UI)
+    status (enum)
 
     created_at
     updated_at
