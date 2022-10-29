@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -90,11 +91,10 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    /*
-    * ----------------------------------
-    *          Scopes
-    * ----------------------------------
-    */
+    public function postStat(): HasOne
+    {
+        return $this->hasOne(PostStat::class);
+    }
 
     public function scopeWithTagsAuthorContent(Builder $q): Builder
     {
@@ -102,7 +102,8 @@ class Post extends Model
             'tags:id,title',
             'user:id,name',
             'postImages',
-            'postTexts'
+            'postTexts',
+            'postStat'
         ]);
     }
 }

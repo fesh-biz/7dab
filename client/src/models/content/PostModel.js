@@ -6,6 +6,7 @@ import TagModel from 'src/models/content/TagModel'
 import PostTagModel from 'src/models/content/PostTagModel'
 import PostTextModel from 'src/models/content/PostTextModel'
 import PostImageModel from 'src/models/content/PostImageModel'
+import PostStat from 'src/models/content/PostStat'
 
 export default class PostModel extends AppModel {
   static entity = 'posts'
@@ -18,16 +19,13 @@ export default class PostModel extends AppModel {
       user: this.belongsTo(User, 'user_id'),
 
       title: this.string(''),
-      body: this.string(''),
-      rating: this.number(0),
       slug: this.string(''),
-      is_approved: this.boolean(false),
-      total_views: this.number(0),
-      total_comments: this.number(0),
+      status: this.string(''),
 
       tags: this.belongsToMany(TagModel, PostTagModel, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostTextModel, 'post_id'),
-      post_images: this.hasMany(PostImageModel, 'post_id')
+      post_images: this.hasMany(PostImageModel, 'post_id'),
+      post_stat: this.hasOne(PostStat, 'post_id')
     }
   }
 

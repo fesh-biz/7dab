@@ -4,26 +4,26 @@
     <div class="flex cursor-default">
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
-        <post-info-icon icon="thumbs_up_down" :amount="post.rating" :tooltip-label="$t('rating')"/>
+        <post-info-icon icon="thumbs_up_down" :amount="post.post_stat.rating" :tooltip-label="$t('rating')"/>
       </div>
 
       <!-- Total Views -->
       <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
-        <post-info-icon icon="visibility" :amount="post.total_views" :tooltip-label="$t('views')"/>
+        <post-info-icon icon="visibility" :amount="post.post_stat.views" :tooltip-label="$t('views')"/>
       </div>
 
       <!-- Total Comments -->
       <div :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
-        <post-info-icon icon="question_answer" :amount="post.total_comments" :tooltip-label="$t('comments')"/>
+        <post-info-icon icon="question_answer" :amount="post.post_stat.comments" :tooltip-label="$t('comments')"/>
       </div>
     </div>
 
     <!-- Tags -->
     <div :dusk="'post-' + post.id + '-info-tags'" class="q-mt-md flex">
       <tag
-        v-for="(tag, index) in post.tags"
-        :key="'tag' + index"
-        :item="tag"
+          v-for="(tag, index) in post.tags"
+          :key="'tag' + index"
+          :item="tag"
       />
     </div>
   </div>
@@ -32,6 +32,7 @@
 <script>
 import Tag from 'components/content/Tag'
 import PostInfoIcon from 'components/content/PostInfoIcon'
+
 export default {
   name: 'PostInfo',
 

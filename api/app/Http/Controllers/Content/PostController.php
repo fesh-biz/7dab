@@ -45,7 +45,7 @@ class PostController extends Controller
 
     public function store(PostRequest $r): JsonResponse
     {
-        
+
         $post = $this->postService->create($r);
 
         return $this->response($post);
