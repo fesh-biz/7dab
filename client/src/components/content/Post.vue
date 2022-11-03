@@ -50,7 +50,7 @@
 
 <script>
 import PostInfo from 'components/content/PostInfo'
-import PostModel from 'src/models/content/PostModel'
+import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
 
@@ -59,7 +59,7 @@ export default {
   components: { PostImage, PostText, PostInfo },
   props: {
     post: {
-      type: PostModel,
+      type: Post,
       required: true
     },
     isPostPage: {

@@ -3,14 +3,14 @@
 </template>
 
 <script>
-import PostTextModel from 'src/models/content/PostTextModel'
+import PostText from 'src/models/content/post-text'
 
 export default {
   name: 'PostText',
 
   props: {
     data: {
-      type: PostTextModel,
+      type: PostText,
       required: true
     }
   }

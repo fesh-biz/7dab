@@ -1,6 +1,6 @@
-import AppModel from 'src/models/AppModel'
+import AppModel from 'src/models/app-model'
 
-export default class PostTextModel extends AppModel {
+export default class PostText extends AppModel {
   static entity = 'post_texts'
 
   static fields () {

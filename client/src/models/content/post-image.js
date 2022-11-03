@@ -1,6 +1,6 @@
-import AppModel from 'src/models/AppModel'
+import AppModel from 'src/models/app-model'
 
-export default class PostImageModel extends AppModel {
+export default class PostImage extends AppModel {
   static entity = 'post_images'
 
   static fields () {

@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header class="ml-header text-grey">
       <q-toolbar>
-        <q-space />
+        <q-space/>
 
         <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded>
           <div class="row no-wrap q-pa-md">
@@ -20,7 +20,7 @@
               </q-list>
             </div>
 
-            <q-separator vertical inset class="q-mx-lg" />
+            <q-separator vertical inset class="q-mx-lg"/>
 
             <div class="column">
               <guest-menu v-if="!me"/>
@@ -42,7 +42,7 @@
 <script>
 import UserMenu from 'components/navbar/UserMenu'
 import GuestMenu from 'components/navbar/GuestMenu'
-import Me from 'src/models/user/Me'
+import Me from 'src/models/user/me'
 
 export default {
   name: 'MainLayout',

@@ -1,4 +1,4 @@
-import AppModel from 'src/models/AppModel'
+import AppModel from 'src/models/app-model'
 
 export default class User extends AppModel {
   static entity = 'users'

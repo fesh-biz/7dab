@@ -16,7 +16,7 @@
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 
-import PostModel from 'src/models/content/PostModel'
+import PostModel from 'src/models/content/post'
 
 export default {
   name: 'PostPage',

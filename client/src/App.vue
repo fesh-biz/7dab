@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import Me from 'src/models/user/Me'
+import Me from 'src/models/user/me'
 import TokenCookies from 'src/plugins/cookies/token-cookies'
 import UserApi from 'src/plugins/api/user'
 

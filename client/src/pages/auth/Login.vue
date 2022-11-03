@@ -76,7 +76,7 @@ import { api } from 'boot/axios'
 import TokenApi from 'src/plugins/api/token'
 import UserApi from 'src/plugins/api/user'
 import TokenCookies from 'src/plugins/cookies/token-cookies'
-import Me from 'src/models/user/Me'
+import Me from 'src/models/user/me'
 
 const formModel = {
   email: null,

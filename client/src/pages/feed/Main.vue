@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import PostModel from 'src/models/content/PostModel'
-import Post from 'components/content/Post'
+import Post from 'src/models/content/post'
+import PostModel from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 import { isScrollBottom } from 'src/plugins/scroll'
 

@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import PostImageModel from 'src/models/content/PostImageModel'
+import PostImage from 'src/models/content/post-image'
 
 export default {
   name: 'PostImage',
 
   props: {
     data: {
-      type: PostImageModel,
+      type: PostImage,
       required: true
     }
   },
