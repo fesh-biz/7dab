@@ -80,7 +80,7 @@ import Validator from '../../plugins/tools/validator'
 import UserApi from 'src/plugins/api/user'
 import { api } from 'boot/axios'
 import Me from 'src/models/user/me'
-import TokenCookies from 'src/plugins/cookies/token-cookies'
+import Token from 'src/plugins/cookies/token'
 
 const formModel = {
   password: '',
@@ -96,7 +96,7 @@ export default {
       validator: new Validator(formModel),
       infoMessage: null,
       userApi: new UserApi(),
-      tokenCookies: new TokenCookies()
+      tokenCookies: new Token()
     }
   },
 

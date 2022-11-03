@@ -20,7 +20,7 @@
 import Me from 'src/models/user/me'
 import UserAvatar from 'components/common/UserAvatar'
 import UserApi from 'src/plugins/api/user'
-import TokenCookies from 'src/plugins/cookies/token-cookies'
+import Token from 'src/plugins/cookies/token'
 
 export default {
   name: 'UserMenu',
@@ -32,7 +32,7 @@ export default {
   data () {
     return {
       userApi: new UserApi(),
-      tokenCookies: new TokenCookies()
+      tokenCookies: new Token()
     }
   },
 

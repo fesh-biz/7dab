@@ -5,7 +5,7 @@
 </template>
 <script>
 import Me from 'src/models/user/me'
-import TokenCookies from 'src/plugins/cookies/token-cookies'
+import Token from 'src/plugins/cookies/token'
 import UserApi from 'src/plugins/api/user'
 
 export default {
@@ -13,7 +13,7 @@ export default {
 
   data () {
     return {
-      tokenCookies: new TokenCookies(),
+      tokenCookies: new Token(),
       userApi: new UserApi()
     }
   },

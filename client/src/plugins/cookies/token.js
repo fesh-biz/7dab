@@ -1,12 +1,12 @@
 import { Cookies } from 'quasar'
 
-export default class TokenCookies {
+export default class Token {
   constructor () {
-    if (TokenCookies.instance) {
-      return TokenCookies.instance
+    if (Token.instance) {
+      return Token.instance
     }
 
-    TokenCookies.instance = this
+    Token.instance = this
   }
 
   delete () {
