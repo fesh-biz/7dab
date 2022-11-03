@@ -18,6 +18,7 @@
 
 <script>
 import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
 import UserAvatar from 'components/common/UserAvatar'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
@@ -32,7 +33,8 @@ export default {
   data () {
     return {
       userApi: new UserApi(),
-      tokenCookies: new Token()
+      tokenCookies: new Token(),
+      meCookies: new MeCookies()
     }
   },
 
@@ -55,6 +57,7 @@ export default {
 
     deleteUserData () {
       this.tokenCookies.delete()
+      this.meCookies.delete()
       Me.deleteAll()
       if (this.$route.name !== 'home') {
         this.$router.push({ name: 'home' })
