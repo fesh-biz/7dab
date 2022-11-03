@@ -97,6 +97,7 @@
 <script>
 import Validator from 'src/plugins/tools/validator'
 import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
 import { api } from 'boot/axios'
@@ -117,7 +118,8 @@ export default {
       validator: new Validator(formModel),
       isSubmitting: false,
       userApi: new UserApi(),
-      tokenCookies: new Token()
+      tokenCookies: new Token(),
+      meCookies: new MeCookies()
     }
   },
 
@@ -127,8 +129,11 @@ export default {
         .then(res => {
           this.tokenCookies.set(res.data.token)
           api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+
+          const me = res.data.user
+          this.meCookies.set(me)
           Me.create({
-            data: res.data.user
+            data: me
           })
           this.$router.push({ name: 'home' })
         })

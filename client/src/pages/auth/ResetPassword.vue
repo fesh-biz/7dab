@@ -80,6 +80,7 @@ import Validator from '../../plugins/tools/validator'
 import UserApi from 'src/plugins/api/user'
 import { api } from 'boot/axios'
 import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
 import Token from 'src/plugins/cookies/token'
 
 const formModel = {
@@ -96,7 +97,8 @@ export default {
       validator: new Validator(formModel),
       infoMessage: null,
       userApi: new UserApi(),
-      tokenCookies: new Token()
+      tokenCookies: new Token(),
+      meCookies: new MeCookies()
     }
   },
 
@@ -114,8 +116,11 @@ export default {
           this.infoMessage = this.$t('your_password_has_been_successfully_reset') + '. ' + this.$t('you_ll_be_redirected_in_3_seconds')
           this.tokenCookies.set(res.data.token)
           api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+
+          const me = res.data.user
+          this.meCookies.set(me)
           Me.create({
-            data: res.data.user
+            data: me
           })
 
           setTimeout(() => {

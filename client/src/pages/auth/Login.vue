@@ -77,6 +77,7 @@ import TokenApi from 'src/plugins/api/token'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
 import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
 
 const formModel = {
   email: null,
@@ -92,7 +93,8 @@ export default {
       validator: new Validator(formModel),
       tokenApi: new TokenApi(),
       userApi: new UserApi(),
-      tokenCookies: new Token()
+      tokenCookies: new Token(),
+      meCookies: new MeCookies()
     }
   },
 
@@ -112,8 +114,10 @@ export default {
 
           this.userApi.fetchMe()
             .then(res => {
+              const me = res.data
+              this.meCookies.set(me)
               Me.create({
-                data: res.data
+                data: me
               })
               this.$router.push({ name: 'home' })
             })

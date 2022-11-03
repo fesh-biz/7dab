@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
 import Token from 'src/plugins/cookies/token'
 import UserApi from 'src/plugins/api/user'
 
@@ -14,7 +14,8 @@ export default {
   data () {
     return {
       tokenCookies: new Token(),
-      userApi: new UserApi()
+      userApi: new UserApi(),
+      meCookies: new MeCookies()
     }
   },
 
@@ -31,16 +32,7 @@ export default {
   created () {
     if (this.tokenCookies.getIsExpired()) {
       this.tokenCookies.delete()
-    }
-
-    if (this.tokenCookies.getAuthorizationToken()) {
-      this.userApi.fetchMe()
-        .then(res => {
-          Me.create({ data: res.data })
-        })
-        .catch(() => {
-          this.tokenCookies.delete()
-        })
+      this.meCookies.delete()
     }
   }
 }

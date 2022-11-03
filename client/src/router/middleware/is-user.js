@@ -1,5 +1,9 @@
-import Me from 'src/models/user/me'
+import MeCookies from 'src/plugins/cookies/me'
+import Token from 'src/plugins/cookies/token'
+
+const me = new MeCookies()
+const token = new Token()
 
 export default function isUser ({ next }) {
-  return Me.query().first() ? next() : next({ name: 'login' })
+  return me.get() && !token.getIsExpired() ? next() : next({ name: 'login' })
 }
