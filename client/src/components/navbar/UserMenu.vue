@@ -20,7 +20,7 @@
 import Me from 'src/models/user/Me'
 import UserAvatar from 'components/common/UserAvatar'
 import UserApi from 'src/plugins/api/user'
-import TokenCookies from 'src/plugins/cookies/tokenCookies'
+import TokenCookies from 'src/plugins/cookies/token-cookies'
 
 export default {
   name: 'UserMenu',

@@ -5,7 +5,7 @@
 </template>
 <script>
 import Me from 'src/models/user/Me'
-import TokenCookies from 'src/plugins/cookies/tokenCookies'
+import TokenCookies from 'src/plugins/cookies/token-cookies'
 import UserApi from 'src/plugins/api/user'
 
 export default {

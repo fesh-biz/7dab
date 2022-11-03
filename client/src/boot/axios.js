@@ -1,5 +1,5 @@
 import axios from 'axios'
-import TokenCookies from 'src/plugins/cookies/tokenCookies'
+import TokenCookies from 'src/plugins/cookies/token-cookies'
 
 const api = axios.create({
   baseURL: process.env.API_URL
