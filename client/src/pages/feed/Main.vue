@@ -49,8 +49,9 @@ export default {
     }
   },
 
-  created () {
-    if (!this.posts.length) {
+  async created () {
+    if (this.posts.length < 2) {
+      await PostModel.deleteAll()
       this.fetchPosts(true)
     }
   },
