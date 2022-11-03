@@ -13,7 +13,7 @@ export default class Post {
       return Post.instance
     }
 
-    this.formModel = formModel
+    this.formModel = _.cloneDeep(formModel)
     this.api = new PostApi()
 
     this.validator = new Validator(formModel)
@@ -30,13 +30,17 @@ export default class Post {
     })
   }
 
+  deleteSection (sectionIndex) {
+    this.formModel.sections.splice(sectionIndex, 1)
+  }
+
   updateSection (sectionOrder, content) {
     const section = _.find(this.formModel.sections, { order: sectionOrder })
     section.content = content
   }
 
-  deleteSection (sectionIndex) {
-    this.formModel.sections.splice(sectionIndex, 1)
+  resetFormModel () {
+    this.formModel = _.cloneDeep(formModel)
   }
 
   saveOrUpdate () {

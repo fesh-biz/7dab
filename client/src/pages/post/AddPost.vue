@@ -114,6 +114,10 @@ export default {
     this.post.addSection()
   },
 
+  beforeDestroy () {
+    this.post.resetFormModel()
+  },
+
   methods: {
     saveOrUpdate () {
       this.post.saveOrUpdate()
