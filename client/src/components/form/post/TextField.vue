@@ -1,9 +1,12 @@
 <template>
   <div :class="{error: errorMessage}" :style="{padding: errorMessage ? '5px' : '' }">
-    <textarea
-        class="text-field"
+    <q-input
+        type="textarea"
         v-model="model"
-        @input="$emit('input')"
+        ref="textField"
+        @input="input"
+        autogrow
+        outlined
     />
 
     <span v-if="errorMessage" style="color: red">{{ errorMessage }}</span>
@@ -54,13 +57,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass">
-.text-field
-  width: 100%
-  min-height: 200px
-  border-radius: 5px
-  border: 1px solid lightblue
-  resize: none
-  padding: 5px 10px
-</style>
