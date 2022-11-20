@@ -82,9 +82,7 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
-      if (this.isLastFetched) {
-        return
-      }
+      console.log('fetching, page ', this.currentPage)
 
       this.fetching.posts = true
       this.postApi.fetchPosts(++this.currentPage)
@@ -108,6 +106,10 @@ export default {
           this.fetching.posts = false
         })
     }
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.maybeFetchNextPosts)
   }
 }
 </script>
