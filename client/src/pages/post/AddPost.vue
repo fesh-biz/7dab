@@ -38,7 +38,7 @@
               <component
                   :ref="'editor[' + section.order + ']'"
                   :is="section.type + '-field'"
-                  :value="section.content"
+                  :content="section.content"
                   :order="section.order"
                   :error-message="post.validator.errors.sections ? post.validator.errors.sections[section.order] : null"
                   @input="post.validator.resetFieldError('sections', section.order)"
@@ -50,32 +50,47 @@
         </q-card-section>
 
         <!-- Post controls -->
-        <q-card-section class="flex flex-center">
+        <q-card-section class="flex justify-between">
           <!-- Add Section -->
-          <icon-with-tooltip
+          <div class="inline-block">
+            <!-- Text -->
+            <icon-with-tooltip
               :tooltip="$t('add_section')"
               color="positive"
               size="xl"
-              icon="add_circle"
-              @click="post.addSection()"
-          />
+              icon="notes"
+              @click="post.addSection('text')"
+            />
 
-          <!-- Cancel -->
-          <icon-with-tooltip
+            <!-- Image -->
+            <icon-with-tooltip
+              :tooltip="$t('add_section')"
+              color="positive"
+              size="xl"
+              icon="image"
+              @click="post.addSection('image')"
+            />
+          </div>
+
+          <!-- Cancel, Save -->
+          <div class="inline-block">
+            <!-- Cancel -->
+            <icon-with-tooltip
               :tooltip="$t('cancel')"
               color="negative"
               size="xl"
               icon="cancel"
-          />
+            />
 
-          <!-- Save -->
-          <icon-with-tooltip
+            <!-- Save -->
+            <icon-with-tooltip
               :tooltip="$t('save')"
               color="positive"
               size="xl"
               icon="check_circle"
               @click="saveOrUpdate()"
-          />
+            />
+          </div>
         </q-card-section>
       </q-card>
     </div>
@@ -83,6 +98,7 @@
 </template>
 
 <script>
+import ImageField from 'components/form/post/ImageField'
 import TextField from 'components/form/post/TextField'
 
 import TooltipIcon from 'components/common/TooltipIcon'
@@ -94,6 +110,7 @@ export default {
 
   components: {
     TooltipIcon,
+    ImageField,
     TextField,
     IconWithTooltip
   },
@@ -108,10 +125,6 @@ export default {
     sectionsErrors (val) {
       return this.post.validator.errors.sections
     }
-  },
-
-  created () {
-    this.post.addSection()
   },
 
   beforeDestroy () {

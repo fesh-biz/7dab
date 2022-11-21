@@ -21,13 +21,17 @@ export default class Post {
     Post.instance = this
   }
 
-  addSection () {
+  addSection (sectionType, content) {
     const nextOrder = !this.formModel.sections.length ? 1 : this.formModel.sections[this.formModel.sections.length - 1].order + 1
     this.formModel.sections.push({
       order: nextOrder,
-      type: 'text',
-      content: ''
+      type: sectionType,
+      content: content || null
     })
+  }
+
+  addSections (sectionType, offsetOrder, items) {
+
   }
 
   deleteSection (sectionIndex) {

@@ -20,9 +20,9 @@ export default {
   name: 'PostForm',
 
   props: {
-    value: {
+    content: {
       type: String,
-      required: true
+      required: ''
     },
     order: {
       type: Number,
@@ -47,7 +47,7 @@ export default {
   },
 
   created () {
-    this.model = this.value
+    this.model = this.content
   },
 
   methods: {
