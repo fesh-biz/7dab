@@ -127,6 +127,11 @@ export default {
     }
   },
 
+  created () {
+    this.post.addSection('text', 'First Section')
+    this.post.addSection('text', 'Second Section')
+  },
+
   beforeDestroy () {
     this.post.resetFormModel()
   },

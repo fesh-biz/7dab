@@ -31,7 +31,11 @@ export default class Post {
   }
 
   addSections (sectionType, offsetOrder, items) {
-
+    items.forEach((item) => {
+      if (item instanceof File) {
+        this.addSection(sectionType, { file: item })
+      }
+    })
   }
 
   deleteSection (sectionIndex) {

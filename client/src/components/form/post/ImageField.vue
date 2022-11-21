@@ -44,9 +44,10 @@ export default {
 
     if (!this.content) {
       this.addImages()
-    } else {
-      this.drawImage(this.file)
+      return
     }
+
+    if (this.content.file) this.drawImage(this.content.file)
   },
 
   methods: {
@@ -70,7 +71,7 @@ export default {
         if (i > 0) images.push(files[i])
       }
 
-      this.postEditor.addSections('text', this.order, images)
+      this.postEditor.addSections('image', this.order, images)
     },
 
     drawImage (file) {
