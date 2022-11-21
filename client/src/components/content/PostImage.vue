@@ -1,6 +1,7 @@
 <template>
-  <div ref="image" style="width: 100%" class="flex justify-center">
-    <q-img
+  <div>
+    <div ref="image" style="width: 100%" class="flex justify-center">
+      <q-img
         :src="imageUrl"
         spinner-color="white"
         :style="{
@@ -8,12 +9,13 @@
         borderRadius: '5px',
         width: isImageWiderThanWrapper ? '100%' : imageWidth + 'px'
       }"
-    />
+      />
+    </div>
 
+    <!-- Image Title -->
     <div
-        class="font-lobster q-mb-lg text-center"
-        style="font-size: 20px; background-color: #eee; border-radius: 5px"
-        v-if="data.title"
+      class="font-lobster q-mb-lg text-center"
+      v-if="data.title"
     >
       {{ data.title }}
     </div>
