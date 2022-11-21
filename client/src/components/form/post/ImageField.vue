@@ -85,12 +85,7 @@ export default {
           let width = img.width
           let height = img.height
           if (width > this.wrapperWidth) {
-            if (width > height) {
-              height = height * (this.wrapperWidth / width)
-            } else {
-              height = height * (width / this.wrapperWidth)
-            }
-
+            height = height * (this.wrapperWidth / width)
             width = this.wrapperWidth
           }
 
