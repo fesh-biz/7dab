@@ -1,4 +1,6 @@
 export default {
+  add_text: 'Add Text',
+  add_image: 'Add Image',
   something_went_wrong: 'Something went wrong.',
   cancel: 'Cancel',
   save: 'Save',

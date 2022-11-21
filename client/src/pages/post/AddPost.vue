@@ -55,7 +55,7 @@
           <div class="inline-block">
             <!-- Text -->
             <icon-with-tooltip
-              :tooltip="$t('add_section')"
+              :tooltip="$t('add_text')"
               color="positive"
               size="xl"
               icon="notes"
@@ -64,7 +64,7 @@
 
             <!-- Image -->
             <icon-with-tooltip
-              :tooltip="$t('add_section')"
+              :tooltip="$t('add_image')"
               color="positive"
               size="xl"
               icon="image"

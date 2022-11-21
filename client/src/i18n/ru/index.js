@@ -1,5 +1,7 @@
 export default {
-  something_went_wrong: 'Щось пішло не так, спробуйте пізніше',
+  add_text: 'Добавить текст',
+  add_image: 'Добавить изображение',
+  something_went_wrong: 'Что-то пошло не так, попробуйте повторить позже',
   cancel: 'Отмена',
   save: 'Сохранить',
   add_section: 'Добавить секцию',
