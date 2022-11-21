@@ -1,4 +1,5 @@
 export default {
+  add_image_label: 'Add an image label',
   add_text: 'Add Text',
   add_image: 'Add Image',
   something_went_wrong: 'Something went wrong.',
