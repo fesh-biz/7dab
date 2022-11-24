@@ -85,19 +85,6 @@ export default {
       input.click()
     },
 
-    handleImages (files) {
-      const firstImage = files[0]
-      this.drawImage(firstImage)
-      this.postEditor.updateSection(this.order, { file: firstImage })
-
-      const images = []
-      for (let i = 0; i < files.length; i++) {
-        if (i > 0) images.push(files[i])
-      }
-
-      this.postEditor.addSections('image', this.order, images)
-    },
-
     drawImage (file) {
       const canvas = this.$refs.canvas
       const ctx = canvas.getContext('2d')
@@ -122,6 +109,51 @@ export default {
         img.src = event.target.result
       }
       reader.readAsDataURL(file)
+    },
+
+    handleImages (files) {
+      const message = this.validateImages(files)
+
+      if (message) {
+        this.$q.notify({
+          message: message,
+          position: 'center',
+          color: 'negative'
+        })
+
+        return
+      }
+
+      const firstImage = files[0]
+      this.drawImage(firstImage)
+      this.postEditor.updateSection(this.order, { file: firstImage })
+
+      const images = []
+      for (let i = 0; i < files.length; i++) {
+        if (i > 0) images.push(files[i])
+      }
+
+      this.postEditor.addSections('image', this.order, images)
+    },
+
+    validateImages (files) {
+      let message = null
+
+      const allowedTypes = /(jpg)|(png)|(jpeg)/i
+      for (let i = 0; i < files.length; i++) {
+        if (!allowedTypes.test(files[i].type)) {
+          message = this.$t('wrong_image_file_allowed_types') + ': jpg, png'
+        }
+
+        const maxSizeKb = 500
+        if (files[i].size > maxSizeKb * 1024) {
+          message = this.$t('max_allowed_filesize') + ' ' + maxSizeKb + 'Kb'
+        }
+
+        if (message) break
+      }
+
+      return message
     }
   }
 }

@@ -1,4 +1,6 @@
 export default {
+  max_allowed_filesize: 'Максимально допустимый размер',
+  wrong_image_file_allowed_types: 'Неверный тип изображения, разрешенные',
   add_image_label: 'Добавить описание к изображению',
   add_text: 'Добавить текст',
   add_image: 'Добавить изображение',

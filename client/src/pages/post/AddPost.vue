@@ -23,6 +23,7 @@
             <div
                 v-for="(section, index) in post.formModel.sections"
                 :key="'body-element' + section.order"
+                class="q-mb-md"
             >
               <!-- Delete -->
               <div>
@@ -43,8 +44,6 @@
                   :error-message="post.validator.errors.sections ? post.validator.errors.sections[section.order] : null"
                   @input="post.validator.resetFieldError('sections', section.order)"
               />
-
-              <q-separator spaced/>
             </div>
           </div>
         </q-card-section>
