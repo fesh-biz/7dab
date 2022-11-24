@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Content;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 
 class PostRequest extends FormRequest
 {
@@ -59,6 +60,18 @@ class PostRequest extends FormRequest
         $title = $content['title'] ?? null;
         if ($title && strlen($title) > 255) {
             return trans('errors.max_255_symbols');
+        }
+
+        /** @var UploadedFile $file */
+        $file = $content['file'] ?? null;
+        if ($file) {
+            $mime = mime_content_type($file->getRealPath());
+            $mimes = '/(jpg)|(png)|(jpeg)/';
+            $res = preg_match($mimes, $mime);
+
+            if (!$res) {
+                return trans('errors.wrong_file_type');
+            }
         }
     }
 

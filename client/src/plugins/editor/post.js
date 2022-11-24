@@ -39,7 +39,9 @@ export default class Post {
   }
 
   deleteSection (sectionIndex) {
+    const section = this.formModel.sections[sectionIndex]
     this.formModel.sections.splice(sectionIndex, 1)
+    this.validator.resetFieldError('sections', section.order)
   }
 
   updateSection (sectionOrder, content) {

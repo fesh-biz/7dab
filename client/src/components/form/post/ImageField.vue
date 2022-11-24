@@ -23,7 +23,7 @@
       dense
       :label="$t('add_image_label')"
       stack-label
-      @input="$emit('input')"
+      @input="input"
     />
 
     <!-- Error Message -->
@@ -84,7 +84,12 @@ export default {
   },
 
   methods: {
+    input () {
+      this.$emit('input')
+    },
+
     addImages () {
+      this.$emit('input')
       const input = document.createElement('input')
       input.type = 'file'
       input.multiple = true
@@ -153,7 +158,7 @@ export default {
       const allowedTypes = /(jpg)|(png)|(jpeg)/i
       for (let i = 0; i < files.length; i++) {
         if (!allowedTypes.test(files[i].type)) {
-          message = this.$t('wrong_image_file_allowed_types') + ': jpg, png'
+          message = this.$t('wrong_image_file_allowed_types') + ': jpg, jpeg, png'
         }
 
         const maxSizeKb = 500
