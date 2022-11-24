@@ -57,7 +57,7 @@ class PostRequest extends FormRequest
     private function checkImageSection ($content):? string
     {
         $title = $content['title'] ?? null;
-        if ($title && strlen($title) > 5) {
+        if ($title && strlen($title) > 255) {
             return trans('errors.max_255_symbols');
         }
     }

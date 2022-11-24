@@ -2,16 +2,13 @@ import { i18n } from 'boot/i18n'
 
 export default class Validator {
   constructor (formModel) {
+    this.formModel = formModel
     this.errors = {
       error_message: null
     }
 
-    if (formModel) {
-      for (const name in formModel) {
-        if (formModel.hasOwnProperty(name)) {
-          this.errors[name] = null
-        }
-      }
+    if (this.formModel) {
+      this.resetErrors()
     }
   }
 
@@ -44,9 +41,9 @@ export default class Validator {
   }
 
   resetFieldError (fieldName, order) {
-    if (this.errors[fieldName]) {
+    if (this.errors[fieldName] && order) {
       if (order) {
-        delete this.errors[fieldName][order]
+        this.errors[fieldName][order] = null
       } else {
         this.errors[fieldName] = null
       }
@@ -55,9 +52,9 @@ export default class Validator {
   }
 
   resetErrors () {
-    for (const error in this.errors) {
-      if (this.errors.hasOwnProperty(error)) {
-        this.errors[error] = null
+    for (const name in this.formModel) {
+      if (this.formModel.hasOwnProperty(name)) {
+        this.errors[name] = null
       }
     }
   }
