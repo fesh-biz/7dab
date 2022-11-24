@@ -1,5 +1,9 @@
 <template>
-  <div ref="wrapper" class="flex justify-center">
+  <div
+    ref="wrapper"
+    class="flex justify-center"
+    :class="{error: errorMessage}"
+  >
     <!-- Add Image -->
     <q-icon
       class="cursor-pointer"
@@ -19,7 +23,11 @@
       dense
       :label="$t('add_image_label')"
       stack-label
+      @input="$emit('input')"
     />
+
+    <!-- Error Message -->
+    <span v-if="errorMessage" style="color: red; width: 100%">{{ errorMessage }}</span>
   </div>
 </template>
 
@@ -37,6 +45,9 @@ export default {
     order: {
       type: Number,
       required: true
+    },
+    errorMessage: {
+      type: [String]
     }
   },
 

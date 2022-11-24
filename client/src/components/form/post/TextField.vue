@@ -1,5 +1,5 @@
 <template>
-  <div :class="{error: errorMessage}" :style="{padding: errorMessage ? '5px' : '' }">
+  <div :class="{error: errorMessage}">
     <q-input
         type="textarea"
         v-model="model"

@@ -127,6 +127,7 @@ export default {
   },
 
   created () {
+    this.post.formModel.title = 'test'
     this.post.addSection('text', 'First Section')
     this.post.addSection('text', 'Second Section')
   },

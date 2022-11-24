@@ -66,7 +66,6 @@ export default class Post {
 
   getFormData () {
     const model = this.formModel
-    console.log('model', model)
     const formData = new FormData()
     formData.append('title', model.title)
 
@@ -78,15 +77,12 @@ export default class Post {
           formData.append(`sections[${i}][content][file]`, section.content.file)
         }
 
-        if (section.content.url) {
-          formData.append(`sections[${i}][content][url]`, section.content.url)
-        }
-
-        formData.append(`sections[${i}][content][title]`, section.content.title)
+        formData.append(`sections[${i}][content][url]`, section.content.url || '')
+        formData.append(`sections[${i}][content][title]`, section.content.title || '')
       }
 
       if (section.type === 'text') {
-        formData.append(`sections[${i}][content]`, section.content)
+        formData.append(`sections[${i}][content]`, section.content || '')
       }
 
       formData.append(`sections[${i}][type]`, section.type)

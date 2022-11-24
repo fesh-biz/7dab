@@ -40,9 +40,12 @@ class PostRequest extends FormRequest
                 $errors['sections'][$section['order']] = trans('errors.can_not_be_empty');
             }
 
-//            if ($section['type'] === 'image') {
-//                $checkRes = $this->checkImageSection($section['content']);
-//            }
+            if ($section['type'] === 'image') {
+                $checkRes = $this->checkImageSection($section['content']);
+                if ($checkRes) {
+                    $errors['sections'][$section['order']] = $checkRes;
+                }
+            }
         }
 
         if (count($errors) > 0) {
@@ -53,8 +56,10 @@ class PostRequest extends FormRequest
 
     private function checkImageSection ($content):? string
     {
-        ddh($content);
-        return null;
+        $title = $content['title'] ?? null;
+        if ($title && strlen($title) > 5) {
+            return trans('errors.max_255_symbols');
+        }
     }
 
     private function checkTextSection($content): bool
