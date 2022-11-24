@@ -11,6 +11,15 @@
     />
 
     <canvas :width="this.wrapperWidth" height="0" ref="canvas"/>
+
+    <!-- Title -->
+    <q-input
+      v-model="title"
+      style="width: 100%"
+      dense
+      :label="$t('add_image_label')"
+      stack-label
+    />
   </div>
 </template>
 
@@ -39,6 +48,19 @@ export default {
     }
   },
 
+  computed: {
+    title: {
+      get () {
+        return this.content?.title || ''
+      },
+      set (val) {
+        this.postEditor.updateSection(this.order, {
+          title: val
+        })
+      }
+    }
+  },
+
   mounted () {
     this.wrapperWidth = this.$refs.wrapper.offsetWidth
 
@@ -64,7 +86,9 @@ export default {
     },
 
     handleImages (files) {
-      this.drawImage(files[0])
+      const firstImage = files[0]
+      this.drawImage(firstImage)
+      this.postEditor.updateSection(this.order, { file: firstImage })
 
       const images = []
       for (let i = 0; i < files.length; i++) {

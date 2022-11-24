@@ -44,7 +44,16 @@ export default class Post {
 
   updateSection (sectionOrder, content) {
     const section = _.find(this.formModel.sections, { order: sectionOrder })
-    section.content = content
+
+    if (section.type === 'text') {
+      section.content = content
+      return
+    }
+
+    if (section.type === 'image') {
+      section.content = section.content || {}
+      section.content = Object.assign(section.content, content)
+    }
   }
 
   resetFormModel () {
