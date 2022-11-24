@@ -51,7 +51,11 @@ export default class Post {
     }
 
     if (section.type === 'image') {
-      section.content = section.content || {}
+      section.content = section.content || {
+        file: null,
+        url: null,
+        title: null
+      }
       section.content = Object.assign(section.content, content)
     }
   }
@@ -60,9 +64,41 @@ export default class Post {
     this.formModel = _.cloneDeep(formModel)
   }
 
+  getFormData () {
+    const model = this.formModel
+    console.log('model', model)
+    const formData = new FormData()
+    formData.append('title', model.title)
+
+    for (let i = 0; i < model.sections.length; i++) {
+      const section = model.sections[i]
+
+      if (section.type === 'image') {
+        if (section.content.file) {
+          formData.append(`sections[${i}][content][file]`, section.content.file)
+        }
+
+        if (section.content.url) {
+          formData.append(`sections[${i}][content][url]`, section.content.url)
+        }
+
+        formData.append(`sections[${i}][content][title]`, section.content.title)
+      }
+
+      if (section.type === 'text') {
+        formData.append(`sections[${i}][content]`, section.content)
+      }
+
+      formData.append(`sections[${i}][type]`, section.type)
+      formData.append(`sections[${i}][order]`, section.order)
+    }
+
+    return formData
+  }
+
   saveOrUpdate () {
     return new Promise((resolve, reject) => {
-      this.api.store(this.formModel)
+      this.api.store(this.getFormData())
         .then(res => resolve(res))
         .catch(res => {
           this.validator.setErrors(res)

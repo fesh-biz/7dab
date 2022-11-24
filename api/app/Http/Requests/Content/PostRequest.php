@@ -39,12 +39,22 @@ class PostRequest extends FormRequest
             if ($section['type'] === 'text' && !$this->checkTextSection($section['content'])) {
                 $errors['sections'][$section['order']] = trans('errors.can_not_be_empty');
             }
+
+//            if ($section['type'] === 'image') {
+//                $checkRes = $this->checkImageSection($section['content']);
+//            }
         }
 
         if (count($errors) > 0) {
             $validator = $this->getValidatorInstance();
             $validator->errors()->merge($errors);
         }
+    }
+
+    private function checkImageSection ($content):? string
+    {
+        ddh($content);
+        return null;
     }
 
     private function checkTextSection($content): bool
