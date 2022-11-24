@@ -28,5 +28,8 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
 Route::group(['prefix' => 'content'], function () {
     Route::get('/posts', [PostController::class, 'index']);
     Route::get('/posts/{id}', [PostController::class, 'post']);
-    Route::post('/posts', [PostController::class, 'store'])->middleware('auth:api');
+    Route::post('/posts', [PostController::class, 'store'])->middleware([
+        'auth:api',
+        'image-sanitize'
+    ]);
 });
