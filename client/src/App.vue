@@ -7,6 +7,7 @@
 import MeCookies from 'src/plugins/cookies/me'
 import Token from 'src/plugins/cookies/token'
 import UserApi from 'src/plugins/api/user'
+import Me from 'src/models/user/me'
 
 export default {
   name: 'App',
@@ -33,6 +34,10 @@ export default {
     if (this.tokenCookies.getIsExpired()) {
       this.tokenCookies.delete()
       this.meCookies.delete()
+    } else {
+      Me.create({
+        data: this.meCookies.get()
+      })
     }
   }
 }
