@@ -5,19 +5,23 @@ namespace App\Services\Content;
 use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
 use App\Repository\Content\PostRepository;
-use App\Repository\Content\PostTextRepository;
 use DB;
-use Illuminate\Database\Eloquent\Model;
 
 class PostService
 {
     protected PostRepository $repo;
-    protected PostTextRepository $postTextRepo;
+    protected PostTextService $postTextService;
+    protected PostImageService $postImageService;
 
-    public function __construct(PostRepository $repo, PostTextRepository $postTextRepo)
+    public function __construct(
+        PostRepository $repo,
+        PostTextService $postTextService,
+        PostImageService $postImageService
+    )
     {
         $this->repo = $repo;
-        $this->postTextRepo = $postTextRepo;
+        $this->postTextService = $postTextService;
+        $this->postImageService = $postImageService;
     }
 
     public function create(PostRequest $data): Post
@@ -30,6 +34,8 @@ class PostService
         foreach ($sections as $section) {
             $this->createSection($post->id, $section);
         }
+
+
         DB::commit();
 
         return $post;
@@ -37,9 +43,15 @@ class PostService
 
     private function createSection(int $postId, array $section): void
     {
+        $order = $section['order'];
+        $content = $section['content'];
+
         switch ($section['type']) {
             case 'text':
-                $this->postTextRepo->create($postId, $section['order'], $section['content']);
+                $this->postTextService->create($postId, $order, $content);
+                break;
+            case 'image':
+                $this->postImageService->create($postId, $order, $content);
                 break;
             default:
                 break;

@@ -2,11 +2,16 @@
 
 namespace App\Services\Content;
 
+use App\Models\Content\PostImage;
+use App\Repository\Content\PostImageRepository;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as MaidImage;
 
 class PostImageService
 {
+    protected PostImageRepository $repo;
+
     protected string $storageBasePath;
     protected string $publicBasePath;
 
@@ -15,8 +20,16 @@ class PostImageService
 
     protected array $imageAttributes;
 
-    public function __construct()
+    protected array $imageTypesToExtension = [
+        'image/jpg' => 'jpg',
+        'image/jpeg' => 'jpeg',
+        'image/png' => 'png'
+    ];
+
+    public function __construct(PostImageRepository $repo)
     {
+        $this->repo = $repo;
+
         $this->storageBasePath = config('7dab.post_image_storage_base_path');
         $this->publicBasePath = config('7dab.post_image_public_base_path');
 
@@ -24,13 +37,32 @@ class PostImageService
         $this->mobileThumbWidth = config('7dab.post_image_mobile_thumbnail_size');
     }
 
+    public function create(int $postId, int $order, array $content): PostImage
+    {
+        $this->imageAttributes['url'] = $content['url'];
+        $this->imageAttributes['title'] = $content['title'];
+
+        /** @var UploadedFile $file */
+        $file = $content['file'];
+
+        $this->imageAttributes['original_filename'] = $file->getClientOriginalName();
+
+        $this->saveImageFile($file->getRealPath());
+
+        return $this->repo->create($postId, $order, $this->imageAttributes);
+    }
 
     public function saveImageFile(string $filePath): array
     {
         $image = Image::make($filePath);
         $imageQuality = $this->getImageQuality($image);
 
-        $fileName = $this->getFileName($image->extension);
+        $extension = $this->imageTypesToExtension[$image->mime] ?? null;
+        if (!$extension) {
+            throw new \Exception('Wrong image file type');
+        }
+
+        $fileName = $this->getFileName($extension);
 
         $filePath = $this->getImageFolderPath() . '/' . $fileName;
         $image->save($filePath, $imageQuality);

@@ -73,6 +73,8 @@ class PostRequest extends FormRequest
                 return trans('errors.wrong_file_type');
             }
         }
+
+        return null;
     }
 
     private function checkTextSection($content): bool

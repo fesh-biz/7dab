@@ -52,4 +52,16 @@ use Illuminate\Database\Eloquent\Model;
 class PostImage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'post_id',
+        'order',
+        'original_filename',
+        'title',
+        'recognized_text',
+        'original_file_path',
+        'desktop_file_path',
+        'mobile_file_path',
+        'data'
+    ];
 }
