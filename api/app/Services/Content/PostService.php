@@ -12,16 +12,19 @@ class PostService
     protected PostRepository $repo;
     protected PostTextService $postTextService;
     protected PostImageService $postImageService;
+    protected PostStatService $postStatService;
 
     public function __construct(
         PostRepository $repo,
         PostTextService $postTextService,
-        PostImageService $postImageService
+        PostImageService $postImageService,
+        PostStatService $postStatService
     )
     {
         $this->repo = $repo;
         $this->postTextService = $postTextService;
         $this->postImageService = $postImageService;
+        $this->postStatService = $postStatService;
     }
 
     public function create(PostRequest $data): Post
@@ -35,7 +38,7 @@ class PostService
             $this->createSection($post->id, $section);
         }
 
-
+        $this->postStatService->create($post->id);
         DB::commit();
 
         return $post;

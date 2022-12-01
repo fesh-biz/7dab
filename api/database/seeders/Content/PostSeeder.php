@@ -19,10 +19,6 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        if (File::exists(config('7dab.post_image_storage_base_path'))) {
-            File::deleteDirectory(config('7dab.post_image_storage_base_path'));
-        }
-
         $tags = Tag::all();
 
         $posts = Post::factory(30)->create();
