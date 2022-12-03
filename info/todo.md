@@ -1,36 +1,26 @@
-- [] Как пользователь, я хочу добавлять контент
-    - [] Возможность добавить пост:
-        - [] Заголовок
-            - [x] Ability
-            - [] Show error if empty
-            - [] Test that error showed to user
-            - [] Test that the database has that title
-        - [] Текст
-            - [x] Ability
-            - [] Show error if no sections for posts
-            - [] Remove sections if they are empty
-            - [] Test that error showed to user
-            - [] Test that the database has all texts inside
-        - [] Sections Tests
-            - [] User can add new section text
-            - [] User can add new section image
-            - [] User can delete section
-        - [] Картинку
-            - [] ability
-                - [] if added multiple images, add image section for each image
-            - [] tests:
-        - [] Теги
-            - [] Если тег новый
-                - [] Сообщить пользователю, что список его новых тегов будет проверен и утвержден
-
-- [] On `Add post`
-    - [x] if not logged in - redirect to login route
-    - [] Test:
-        - [] Check that auth in user can reach `/add-post` page
-        - [] Check that guest redirects from `/add-post` page to `/login` page
-
 - [] To fix
-    - [] Если открыть страницу поста и после перейти на главную, не загружаются остальные посты
+    - [] Add post, go to main page, then to add post again
+        - [] Form Model doesn't reset
+      
+- [] Добавление поста
+    - [x] Migration
+        - [x] Default post status `draft`
+    - [] Перенаправление пользователя на предпросмотр
+      - [] Подтверждение переводит пост в статус `pending`
+        - [] Показывать пользователю постоянное сообщение
+          сверху что ваш пост в статусе проверки/редактирования
+    - [] Перед отправкой удалить пустые секции
+    - [] Теги
+        - [] Если тег новый
+            - [] Сообщить пользователю, что список его новых тегов будет проверен и утвержден
+
+- [] Редактирование поста
+    - [] Remove section
+        - [] If section is image, remove prev image files
+    - [] Add section
+    - [] Change section
+        - [] If section is image, remove prev image files
+    - [] Change title
 
 - [] Как пользователь, я хочу оставлять комментарии
     - [] К контенту

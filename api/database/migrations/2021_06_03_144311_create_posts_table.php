@@ -20,7 +20,10 @@ class CreatePostsTable extends Migration
 
             $table->string('title');
             $table->string('slug')->unique();
-            $table->enum('status', ['pending', 'reviewing', 'approved', 'declined', 'editing'])->default('pending');
+            $table->enum(
+                'status',
+                ['draft', 'pending', 'reviewing', 'approved', 'declined', 'editing']
+            )->default('draft');
 
             $table->timestamps();
         });
