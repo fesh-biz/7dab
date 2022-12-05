@@ -2,10 +2,19 @@
     - [] Add post, go to main page, then to add post again
         - [] Form Model doesn't reset
       
-- [] Добавление поста
+- [] Пост
     - [x] Migration
         - [x] Default post status `draft`
+    - [] Редактирование поста
+        - [] Remove section
+            - [] Text
+            - [] If section is image, remove prev image files
+        - [] Add section
+        - [] Change section
+            - [] If section is image, remove prev image files
+        - [] Change title
     - [] Перенаправление пользователя на предпросмотр
+      - [] Сделать как вкладки (Создание/Редактирование)/Предпросмотр
       - [] Подтверждение переводит пост в статус `pending`
         - [] Показывать пользователю постоянное сообщение
           сверху что ваш пост в статусе проверки/редактирования
@@ -13,14 +22,7 @@
     - [] Теги
         - [] Если тег новый
             - [] Сообщить пользователю, что список его новых тегов будет проверен и утвержден
-
-- [] Редактирование поста
-    - [] Remove section
-        - [] If section is image, remove prev image files
-    - [] Add section
-    - [] Change section
-        - [] If section is image, remove prev image files
-    - [] Change title
+    - [] Если не залогиненный, предлагать на форме входа регистрацию
 
 - [] Как пользователь, я хочу оставлять комментарии
     - [] К контенту

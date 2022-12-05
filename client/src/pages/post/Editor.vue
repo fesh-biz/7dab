@@ -50,12 +50,18 @@
 
         <!-- Post controls -->
         <q-card-section class="flex justify-between">
+          <q-inner-loading
+            :showing="isBusy"
+            color="positive"
+          />
+
           <!-- Add Section -->
           <div class="inline-block">
             <!-- Text -->
             <icon-with-tooltip
               :tooltip="$t('add_text')"
               color="positive"
+              :disabled="isBusy"
               size="xl"
               icon="notes"
               @click="post.addSection('text')"
@@ -65,6 +71,7 @@
             <icon-with-tooltip
               :tooltip="$t('add_image')"
               color="positive"
+              :disabled="isBusy"
               size="xl"
               icon="image"
               @click="post.addSection('image')"
@@ -77,6 +84,7 @@
             <icon-with-tooltip
               :tooltip="$t('cancel')"
               color="negative"
+              :disabled="isBusy"
               size="xl"
               icon="cancel"
             />
@@ -85,6 +93,7 @@
             <icon-with-tooltip
               :tooltip="$t('save')"
               color="positive"
+              :disabled="isBusy"
               size="xl"
               icon="check_circle"
               @click="saveOrUpdate()"
@@ -103,6 +112,7 @@ import TextField from 'components/form/post/TextField'
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
 import Post from 'src/plugins/editor/post'
+import PostModel from 'src/models/content/post'
 
 export default {
   name: 'AddPost',
@@ -116,13 +126,17 @@ export default {
 
   data () {
     return {
-      post: new Post()
+      post: new Post(),
+      isBusy: false
     }
   },
 
   computed: {
-    sectionsErrors (val) {
+    sectionsErrors () {
       return this.post.validator.errors.sections
+    },
+    isEditing () {
+      return this.$route.name === 'editPost'
     }
   },
 
@@ -138,9 +152,22 @@ export default {
 
   methods: {
     saveOrUpdate () {
+      this.isBusy = true
       this.post.saveOrUpdate()
         .then((res) => {
-          // to make redirect on post page
+          this.isBusy = false
+          const post = res.data.data
+          const postId = post.id
+
+          if (!this.isEditing) {
+            PostModel.create({
+              data: res.data.data
+            })
+            this.$router.push({ name: 'editPost', params: { id: postId } })
+          }
+        })
+        .catch(() => {
+          this.isBusy = true
         })
     }
   }

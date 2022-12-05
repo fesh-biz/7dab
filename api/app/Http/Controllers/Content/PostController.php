@@ -48,6 +48,8 @@ class PostController extends Controller
 
         $post = $this->postService->create($r);
 
+        $post = $this->postRepo->findPost($post->id);
+
         return $this->response($post);
     }
 }

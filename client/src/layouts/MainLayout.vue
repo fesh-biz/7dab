@@ -12,7 +12,7 @@
                 <q-item exact clickable :to="{ name: 'home' }">
                   <q-item-section>7dab</q-item-section>
                 </q-item>
-                <q-item exact clickable :to="{ name: 'add_post' }">
+                <q-item exact clickable :to="{ name: 'createPost' }">
                   <q-item-section>
                     {{ $t('add_post') }}
                   </q-item-section>

@@ -1,4 +1,5 @@
 export default {
+  edit_post: 'Edit Post',
   max_allowed_filesize: 'Max allowed filesize',
   wrong_image_file_allowed_types: 'Wrong image. Allowed types',
   add_image_label: 'Add an image label',

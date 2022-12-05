@@ -2,10 +2,19 @@ import isUser from 'src/router/middleware/is-user'
 
 export default [
   {
-    path: '/add-post',
-    name: 'add_post',
+    path: '/posts/create',
+    name: 'createPost',
     meta: {
       title: 'add_post',
+      middleware: [isUser]
+    },
+    component: () => import('pages/post/Editor')
+  },
+  {
+    path: '/posts/:id/edit',
+    name: 'editPost',
+    meta: {
+      title: 'edit_post',
       middleware: [isUser]
     },
     component: () => import('pages/post/Editor')
