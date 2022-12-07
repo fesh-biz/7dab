@@ -45,7 +45,7 @@ export default {
 
       if (isDesktop) return this.data.desktop_file_path || this.data.original_file_path
 
-      return this.data.mobile_file_path || this.data.original_file_path
+      return this.data.mobile_file_path || this.data.desktop_file_path || this.data.original_file_path
     },
 
     imageWidth () {
