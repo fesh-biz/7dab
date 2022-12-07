@@ -15,7 +15,6 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Content\PostController;
 
-
 Route::post('register', [AuthController::class, 'register']);
 Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
 Route::post('password-reset', [AuthController::class, 'passwordReset']);
@@ -29,6 +28,10 @@ Route::group(['prefix' => 'content'], function () {
     Route::get('/posts', [PostController::class, 'index']);
     Route::get('/posts/{id}', [PostController::class, 'post']);
     Route::post('/posts', [PostController::class, 'store'])->middleware([
+        'auth:api',
+        'image-sanitize'
+    ]);
+    Route::put('/posts/{id}', [PostController::class, 'update'])->middleware([
         'auth:api',
         'image-sanitize'
     ]);

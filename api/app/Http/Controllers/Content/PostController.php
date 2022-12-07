@@ -52,4 +52,14 @@ class PostController extends Controller
 
         return $this->response($post);
     }
+
+    public function update(PostRequest $r, int $id): JsonResponse
+    {
+
+    }
+
+    public function destroy($id): JsonResponse
+    {
+
+    }
 }

@@ -72,7 +72,7 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     this.wrapperWidth = this.$refs.wrapper.offsetWidth
 
     if (!this.content) {
@@ -80,7 +80,14 @@ export default {
       return
     }
 
-    if (this.content.file) this.drawImage(this.content.file)
+    if (this.content.file) {
+      this.drawImage(this.content.file)
+      return
+    }
+
+    if (this.content.url) {
+      this.drawImageFromUrl(this.content.url)
+    }
   },
 
   methods: {
@@ -124,7 +131,21 @@ export default {
         }
         img.src = event.target.result
       }
+
       reader.readAsDataURL(file)
+    },
+
+    async drawImageFromUrl (url) {
+      const response = await fetch(url)
+      const data = await response.blob()
+      const metadata = {
+        type: 'image/jpeg'
+      }
+
+      let fileName = url
+      fileName = fileName.substr(fileName.lastIndexOf('/') + 1)
+      const file = new File([data], fileName, metadata)
+      this.drawImage(file)
     },
 
     handleImages (files) {

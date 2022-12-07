@@ -1,6 +1,7 @@
 import Validator from 'src/plugins/tools/validator'
 import PostApi from 'src/plugins/api/post'
 import _ from 'lodash'
+import PostModel from 'src/models/content/post'
 
 const formModel = {
   title: '',
@@ -21,9 +22,10 @@ export default class Post {
     Post.instance = this
   }
 
-  addSection (sectionType, content) {
+  addSection (sectionType, content, id) {
     const nextOrder = !this.formModel.sections.length ? 1 : this.formModel.sections[this.formModel.sections.length - 1].order + 1
     this.formModel.sections.push({
+      id: id,
       order: nextOrder,
       type: sectionType,
       content: content || null
@@ -42,6 +44,27 @@ export default class Post {
     const section = this.formModel.sections[sectionIndex]
     this.formModel.sections.splice(sectionIndex, 1)
     this.validator.resetFieldError('sections', section.order)
+  }
+
+  fillFormModel (postId) {
+    const post = PostModel.query().withAll().find(postId)
+    this.formModel.title = post.title
+
+    post.content.forEach(section => {
+      if (section.type === 'text') {
+        this.addSection('text', section.body, section.id)
+      }
+
+      if (section.type === 'image') {
+        this.addSection(
+          'image',
+          {
+            url: section.original_file_path,
+            title: section.title
+          },
+          section.id)
+      }
+    })
   }
 
   updateSection (sectionOrder, content) {

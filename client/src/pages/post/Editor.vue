@@ -9,19 +9,19 @@
           <q-input
               outlined
               dense
-              v-model="post.formModel.title"
+              v-model="postEditor.formModel.title"
               :label="$t('title')"
 
-              :error="!!post.validator.errors.title"
-              :error-message="post.validator.errors.title"
+              :error="!!postEditor.validator.errors.title"
+              :error-message="postEditor.validator.errors.title"
 
-              @input="post.validator.resetFieldError('title')"
+              @input="postEditor.validator.resetFieldError('title')"
           />
 
           <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
-                v-for="(section, index) in post.formModel.sections"
+                v-for="(section, index) in postEditor.formModel.sections"
                 :key="'body-element' + section.order"
                 class="q-mb-md"
             >
@@ -29,7 +29,7 @@
               <div>
                 <!-- Delete -->
                 <icon-with-tooltip
-                    @click="post.deleteSection(index)"
+                    @click="postEditor.deleteSection(index)"
                     :tooltip="$t('delete_section')"
                     icon="delete"
                 />
@@ -41,8 +41,8 @@
                   :is="section.type + '-field'"
                   :content="section.content"
                   :order="section.order"
-                  :error-message="post.validator.errors.sections ? post.validator.errors.sections[section.order] : null"
-                  @input="post.validator.resetFieldError('sections', section.order)"
+                  :error-message="postEditor.validator.errors.sections ? postEditor.validator.errors.sections[section.order] : null"
+                  @input="postEditor.validator.resetFieldError('sections', section.order)"
               />
             </div>
           </div>
@@ -64,7 +64,7 @@
               :disabled="isBusy"
               size="xl"
               icon="notes"
-              @click="post.addSection('text')"
+              @click="postEditor.addSection('text')"
             />
 
             <!-- Image -->
@@ -74,7 +74,7 @@
               :disabled="isBusy"
               size="xl"
               icon="image"
-              @click="post.addSection('image')"
+              @click="postEditor.addSection('image')"
             />
           </div>
 
@@ -111,8 +111,9 @@ import TextField from 'components/form/post/TextField'
 
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
-import Post from 'src/plugins/editor/post'
+import PostEditor from 'src/plugins/editor/post'
 import PostModel from 'src/models/content/post'
+import PostApi from 'src/plugins/api/post'
 
 export default {
   name: 'AddPost',
@@ -126,34 +127,63 @@ export default {
 
   data () {
     return {
-      post: new Post(),
+      postEditor: new PostEditor(),
+      postApi: new PostApi(),
       isBusy: false
     }
   },
 
   computed: {
     sectionsErrors () {
-      return this.post.validator.errors.sections
+      return this.postEditor.validator.errors.sections
     },
+
     isEditing () {
       return this.$route.name === 'editPost'
+    },
+
+    postId () {
+      return this.$route.params.id
+    },
+
+    post () {
+      return PostModel.query().withAll().find(this.postId)
     }
   },
 
   created () {
-    this.post.formModel.title = 'test'
-    this.post.addSection('text', 'First Section')
-    this.post.addSection('text', 'Second Section')
+    if (this.isEditing && !this.post) {
+      this.fetchPost()
+        .then(res => {
+          PostModel.insert({ data: res.data.data })
+
+          this.postEditor.fillFormModel(this.postId)
+        })
+    }
   },
 
   beforeDestroy () {
-    this.post.resetFormModel()
+    this.postEditor.resetFormModel()
   },
 
   methods: {
+    fetchPost () {
+      return new Promise((resolve, reject) => {
+        this.isBusy = true
+        this.postApi.fetchPost(this.postId)
+          .then(res => {
+            this.isBusy = false
+            resolve(res)
+          })
+          .catch(() => {
+            this.isBusy = false
+          })
+      })
+    },
+
     saveOrUpdate () {
       this.isBusy = true
-      this.post.saveOrUpdate()
+      this.postEditor.saveOrUpdate()
         .then((res) => {
           this.isBusy = false
           const post = res.data.data
