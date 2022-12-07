@@ -35,6 +35,12 @@ export default {
     }
   },
 
+  data () {
+    return {
+      isImageWiderThanWrapper: null
+    }
+  },
+
   computed: {
     isDesktop () {
       return this.$q.platform.is.desktop
@@ -60,12 +66,6 @@ export default {
 
         return data.original.width
       }
-    }
-  },
-
-  data () {
-    return {
-      isImageWiderThanWrapper: null
     }
   },
 
