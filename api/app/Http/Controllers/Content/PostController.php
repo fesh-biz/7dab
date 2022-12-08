@@ -55,7 +55,7 @@ class PostController extends Controller
 
     public function update(PostRequest $r, int $id): JsonResponse
     {
-
+        ddh($r->all());
     }
 
     public function destroy($id): JsonResponse

@@ -36,8 +36,14 @@ export default class Api {
   }
 
   put (url, data, config) {
+    if (data instanceof FormData) {
+      data.append('_method', 'PUT')
+    } else {
+      data._method = 'PUT'
+    }
+
     return new Promise((resolve, reject) => {
-      this.api.put(url, data, config)
+      this.api.post(url, data, config)
         .then(res => resolve(res))
         .catch(err => {
           this.showError(err)

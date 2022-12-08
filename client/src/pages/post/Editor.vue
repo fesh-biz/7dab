@@ -196,7 +196,7 @@ export default {
 
     saveOrUpdate () {
       this.isBusy = true
-      this.postEditor.saveOrUpdate()
+      this.postEditor.saveOrUpdate(this.postId)
         .then((res) => {
           this.isBusy = false
           const post = res.data.data

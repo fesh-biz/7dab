@@ -15,6 +15,8 @@
 - [] To fix
     - [] Add post, go to main page, then to add post again
         - [] Form Model doesn't reset
+    - [] Post validation
+        - [] When there is only one error, it displays it for all sections
       
 - [] Пост
     - [x] Migration

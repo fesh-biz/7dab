@@ -118,10 +118,13 @@ export default class Post {
     return formData
   }
 
-  saveOrUpdate () {
+  saveOrUpdate (postId) {
     return new Promise((resolve, reject) => {
       const formData = this.getFormData()
-      this.api.store(formData)
+
+      const apiMethod = postId ? 'update' : 'store'
+
+      this.api[apiMethod](formData, postId)
         .then(res => resolve(res))
         .catch(err => {
           this.validator.setErrors(err)
