@@ -98,6 +98,7 @@ export default class Post {
       const section = model.sections[i]
 
       if (section.type === 'image') {
+        if (!section.content) continue
         if (section.content.file) {
           formData.append(`sections[${i}][content][file]`, section.content.file)
         }
@@ -119,11 +120,12 @@ export default class Post {
 
   saveOrUpdate () {
     return new Promise((resolve, reject) => {
-      this.api.store(this.getFormData())
+      const formData = this.getFormData()
+      this.api.store(formData)
         .then(res => resolve(res))
-        .catch(res => {
-          this.validator.setErrors(res)
-          reject(res)
+        .catch(err => {
+          this.validator.setErrors(err)
+          reject(err)
         })
     })
   }

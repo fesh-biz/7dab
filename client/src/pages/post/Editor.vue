@@ -197,7 +197,7 @@ export default {
           }
         })
         .catch(() => {
-          this.isBusy = true
+          this.isBusy = false
         })
     }
   }
