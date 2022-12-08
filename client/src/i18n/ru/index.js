@@ -1,4 +1,5 @@
 export default {
+  all_fields_must_be_filled: 'Все поля должны быть заполнены',
   edit_post: 'Редактировать пост',
   max_allowed_filesize: 'Максимально допустимый размер',
   wrong_image_file_allowed_types: 'Неверный тип изображения, разрешенные',

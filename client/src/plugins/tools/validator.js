@@ -41,9 +41,13 @@ export default class Validator {
   }
 
   resetFieldError (fieldName, order) {
-    if (this.errors[fieldName] && order) {
+    if (this.errors[fieldName]) {
       if (order) {
-        this.errors[fieldName][order] = null
+        if (typeof this.errors[fieldName] === 'string') {
+          this.errors[fieldName] = null
+        } else {
+          this.errors[fieldName][order] = null
+        }
       } else {
         this.errors[fieldName] = null
       }

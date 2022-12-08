@@ -26,7 +26,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'sections' => [function ($attribute, $value, $fail) {
+            'sections' => ['required', function ($attribute, $value, $fail) {
                 $this->checkSections($attribute, $value, $fail);
             }]
         ];
@@ -55,7 +55,7 @@ class PostRequest extends FormRequest
         }
     }
 
-    private function checkImageSection ($content):? string
+    private function checkImageSection($content): ?string
     {
         $title = $content['title'] ?? null;
         if ($title && strlen($title) > 255) {

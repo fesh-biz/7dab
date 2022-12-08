@@ -41,7 +41,7 @@
                   :is="section.type + '-field'"
                   :content="section.content"
                   :order="section.order"
-                  :error-message="postEditor.validator.errors.sections ? postEditor.validator.errors.sections[section.order] : null"
+                  :error-message="getSectionError(section.order)"
                   @input="postEditor.validator.resetFieldError('sections', section.order)"
               />
             </div>
@@ -179,6 +179,19 @@ export default {
             this.isBusy = false
           })
       })
+    },
+
+    getSectionError (order) {
+      const sectionsErrors = this.postEditor.validator.errors.sections
+      if (sectionsErrors) {
+        if (typeof sectionsErrors === 'string') {
+          return this.$t('all_fields_must_be_filled')
+        }
+
+        return sectionsErrors[order]
+      }
+
+      return null
     },
 
     saveOrUpdate () {
