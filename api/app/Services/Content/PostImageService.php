@@ -37,6 +37,11 @@ class PostImageService
         $this->mobileThumbWidth = config('7dab.post_image_mobile_thumbnail_size');
     }
 
+    public function getModel(): PostImage
+    {
+        return $this->repo->getModel();
+    }
+
     public function create(int $postId, int $order, array $content): PostImage
     {
         $this->imageAttributes['url'] = $content['url'];
