@@ -97,6 +97,12 @@ export default class Post {
     for (let i = 0; i < model.sections.length; i++) {
       const section = model.sections[i]
 
+      if (section.id) {
+        formData.append(`sections[${i}][id]`, section.id)
+      }
+      formData.append(`sections[${i}][type]`, section.type)
+      formData.append(`sections[${i}][order]`, section.order)
+
       if (section.type === 'image') {
         if (!section.content) continue
         if (section.content.file) {
@@ -110,9 +116,6 @@ export default class Post {
       if (section.type === 'text') {
         formData.append(`sections[${i}][content]`, section.content || '')
       }
-
-      formData.append(`sections[${i}][type]`, section.type)
-      formData.append(`sections[${i}][order]`, section.order)
     }
 
     return formData
