@@ -4,8 +4,10 @@ namespace App\Services\Content;
 
 use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
+use App\Models\Content\PostText;
 use App\Repository\Content\PostRepository;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class PostService
 {
@@ -46,16 +48,12 @@ class PostService
 
     public function update(PostRequest $data, int $postId): Post
     {
-        $post = $this->repo->findPost($postId);
+        $post = $this->repo->find($postId);
 
         DB::beginTransaction();
         $post->title = $data['title'];
 
-        $sections = $data['sections'];
-
-        foreach ($sections as $section) {
-            $this->updateSection($post->id, $section);
-        }
+        $this->updateSections($postId, $data['sections']);
 
         $post->save();
         DB::commit();
@@ -63,8 +61,16 @@ class PostService
         return $post;
     }
 
-    public function getPostSections() {
+    public function getPostSections(int $postId): Collection
+    {
+        $postImages = $this->postImageService->getModel()
+            ->wherePostId($postId)
+            ->get();
+        $postTexts = $this->postTextService->getModel()
+            ->wherePostId($postId)
+            ->get();
 
+        return $postImages->concat($postTexts);
     }
 
     private function createSection(int $postId, array $section): void
@@ -84,7 +90,7 @@ class PostService
         }
     }
 
-    private function updateSection(int $postId, array $section): void
+    private function updateOrCreateSection(int $postId, array $section): void
     {
         $order = $section['order'];
         $content = $section['content'];
@@ -98,6 +104,29 @@ class PostService
                 break;
             default:
                 break;
+        }
+    }
+
+    private function updateSections(int $postId, array $sectionsFromInput): void
+    {
+        $postSections = $this->getPostSections($postId);
+
+        foreach ($sectionsFromInput as $i => $inputSection) {
+            if (!($inputSection['id'] ?? false)) {
+                abort(422, 'Section ID missing');
+            }
+
+            $id = $inputSection['id'];
+            if ($inputSection['type'] === 'text') {
+                /** @var PostText $section */
+                $section = $postSections->find($id);
+                if ($section->body !== $inputSection['content']) {
+                    $section->update([
+                        'order' => $inputSection['order'],
+                        'body' => $inputSection['content']
+                    ]);
+                }
+            }
         }
     }
 }
