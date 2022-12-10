@@ -28,7 +28,7 @@ class PostController extends Controller
 
     public function post(int $postId): JsonResponse
     {
-        $post = $this->postRepo->findPost($postId);
+        $post = $this->postRepo->findWithBasicRelationships($postId);
 
         if (!$post) {
             return response()->json([
@@ -47,7 +47,7 @@ class PostController extends Controller
     {
         $post = $this->postService->create($r);
 
-        $post = $this->postRepo->findPost($post->id);
+        $post = $this->postRepo->findWithBasicRelationships($post->id);
 
         return $this->response($post);
     }
@@ -56,7 +56,7 @@ class PostController extends Controller
     {
         $post = $this->postService->update($r, $id);
 
-        $post = $this->postRepo->findPost($id);
+        $post = $this->postRepo->findWithBasicRelationships($id);
 
         return $this->response($post);
     }
