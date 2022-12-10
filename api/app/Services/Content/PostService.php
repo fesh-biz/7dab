@@ -44,7 +44,47 @@ class PostService
         return $post;
     }
 
+    public function update(PostRequest $data, int $postId): Post
+    {
+        $post = $this->repo->findPost($postId);
+
+        DB::beginTransaction();
+        $post->title = $data['title'];
+
+        $sections = $data['sections'];
+
+        foreach ($sections as $section) {
+            $this->updateSection($post->id, $section);
+        }
+
+        $post->save();
+        DB::commit();
+
+        return $post;
+    }
+
+    public function getPostSections() {
+
+    }
+
     private function createSection(int $postId, array $section): void
+    {
+        $order = $section['order'];
+        $content = $section['content'];
+
+        switch ($section['type']) {
+            case 'text':
+                $this->postTextService->create($postId, $order, $content);
+                break;
+            case 'image':
+                $this->postImageService->create($postId, $order, $content);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private function updateSection(int $postId, array $section): void
     {
         $order = $section['order'];
         $content = $section['content'];

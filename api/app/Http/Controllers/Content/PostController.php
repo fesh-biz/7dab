@@ -45,7 +45,6 @@ class PostController extends Controller
 
     public function store(PostRequest $r): JsonResponse
     {
-
         $post = $this->postService->create($r);
 
         $post = $this->postRepo->findPost($post->id);
@@ -55,7 +54,11 @@ class PostController extends Controller
 
     public function update(PostRequest $r, int $id): JsonResponse
     {
-        ddh($r->all());
+        $post = $this->postService->update($r, $id);
+
+        $post = $this->postRepo->findPost($id);
+
+        return $this->response($post);
     }
 
     public function destroy($id): JsonResponse
