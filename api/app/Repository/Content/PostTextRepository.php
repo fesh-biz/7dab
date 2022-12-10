@@ -6,18 +6,23 @@ use App\Models\Content\PostText;
 
 class PostTextRepository
 {
-    protected PostText $repo;
+    protected PostText $model;
 
-    public function __construct(PostText $repo)
+    public function __construct(PostText $model)
     {
-        $this->repo = $repo;
+        $this->model = $model;
+    }
+
+    public function getModel(): PostText
+    {
+        return $this->model;
     }
 
     public function create(int $postId, int $order, string $body): PostText
     {
         $body = str_replace("\n", '<br>', $body);
 
-        return PostText::create([
+        return $this->model->create([
             'post_id' => $postId,
             'order' => $order,
             'body' => $body

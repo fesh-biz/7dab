@@ -13,6 +13,11 @@ class PostImageRepository
         $this->model = $model;
     }
 
+    public function getModel(): PostImage
+    {
+        return $this->model;
+    }
+
     public function create(int $postId, int $order, array $data): PostImage
     {
         return $this->model->create([

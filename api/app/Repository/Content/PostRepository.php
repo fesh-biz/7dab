@@ -7,22 +7,34 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostRepository
 {
+    protected Post $model;
+
+    public function __construct(Post $model)
+    {
+        $this->model = $model;
+    }
+
     public function getPaginatedPosts(): LengthAwarePaginator
     {
-        return Post::withTagsAuthorContent()
+        return $this->model->withTagsAuthorContent()
             ->orderBy('id', 'desc')
             ->paginate(10);
     }
 
-    public function findPost(int $postId): ?Post
+    public function find(int $postId): ?Post
     {
-        return Post::withTagsAuthorContent()
-            ->find($postId);
+        return $this->model->findOrFail($postId);
+    }
+
+    public function findWithBasicRelationships(int $postId): ?Post
+    {
+        return $this->model->withTagsAuthorContent()
+            ->findOrFail($postId);
     }
 
     public function create(string $title): Post
     {
-        return Post::create([
+        return $this->model->create([
             'title' => $title,
             'user_id' => auth()->id()
         ]);
