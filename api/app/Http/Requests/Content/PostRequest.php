@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
+            'title' => 'required|string|max:255',
             'sections' => ['required', function ($attribute, $value, $fail) {
                 $this->checkSections($attribute, $value, $fail);
             }]
