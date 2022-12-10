@@ -113,7 +113,8 @@ class PostService
 
         foreach ($sectionsFromInput as $i => $inputSection) {
             if (!($inputSection['id'] ?? false)) {
-                abort(422, 'Section ID missing');
+                $this->createSection($postId, $inputSection);
+                continue;
             }
 
             $id = $inputSection['id'];
