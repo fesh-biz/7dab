@@ -191,26 +191,28 @@ class PostService
         }
 
         // Deleting
-        if ($postSections->count() > count($sectionsFromInput)) {
-            $sectionsToDelete = [];
-            foreach ($postSections as $i => $section) {
-                $isSectionExistsInInput = false;
-                foreach ($sectionsFromInput as $inputSection) {
-                    if ((int) $section->id === (int) $inputSection['id'] && $section->type === $inputSection['type']) {
-                        $isSectionExistsInInput = true;
-                        break;
-                    }
+        $sectionsToDelete = [];
+        foreach ($postSections as $i => $section) {
+            $isSectionExistsInInput = false;
+            foreach ($sectionsFromInput as $inputSection) {
+                if (!array_key_exists('id', $inputSection)) {
+                    continue;
                 }
 
-                if (!$isSectionExistsInInput) {
-                    $sectionsToDelete[] = [
-                        'id' => $section->id,
-                        'type' => $section->type
-                    ];
+                if ((int)$section->id === (int)$inputSection['id'] && $section->type === $inputSection['type']) {
+                    $isSectionExistsInInput = true;
+                    break;
                 }
             }
 
-            $this->deleteSections($sectionsToDelete);
+            if (!$isSectionExistsInInput) {
+                $sectionsToDelete[] = [
+                    'id' => $section->id,
+                    'type' => $section->type
+                ];
+            }
         }
+
+        $this->deleteSections($sectionsToDelete);
     }
 }
