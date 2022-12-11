@@ -4,9 +4,21 @@
     class="flex justify-center"
     :class="{error: errorMessage}"
   >
+    <!-- Change Image -->
+    <div v-if="isImageAdded || (content && content.url)" style="width: 100%;">
+      <icon-with-tooltip
+        class="cursor-pointer"
+        size="2rem"
+        icon="change_circle"
+        :tooltip="$t('change_image')"
+        @click="addImages"
+      />
+    </div>
+
     <!-- Add Image -->
     <q-icon
       class="cursor-pointer"
+      style="background-color: white"
       size="10rem"
       color="blue-grey-2"
       name="add_a_photo"
@@ -32,10 +44,15 @@
 </template>
 
 <script>
+import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostEditor from 'src/plugins/editor/post'
 
 export default {
   name: 'ImageField',
+
+  components: {
+    IconWithTooltip
+  },
 
   props: {
     content: {

@@ -1,4 +1,5 @@
 export default {
+  change_image: 'Изменить изображение',
   all_fields_must_be_filled: 'Все поля должны быть заполнены',
   edit_post: 'Редактировать пост',
   max_allowed_filesize: 'Максимально допустимый размер',
