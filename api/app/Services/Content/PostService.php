@@ -135,7 +135,7 @@ class PostService
             if ($inputSection['type'] === 'text') {
                 /** @var PostText $section */
                 $section = $postSections->where('type', 'text')
-                    ->where('id', 1)
+                    ->where('id', $id)
                     ->first();
 
                 $data = [];
