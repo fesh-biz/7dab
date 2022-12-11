@@ -156,7 +156,7 @@ class PostService
                     ->first();
 
                 $data = [];
-                if ($section->order !== $inputSection['order']) {
+                if ($section->order !== (int)$inputSection['order']) {
                     $data['order'] = $inputSection['order'];
                 }
                 if ($section->body !== $inputSection['content']) {
@@ -176,12 +176,16 @@ class PostService
                     ->first();
 
                 $data = [];
-                if ($section->order !== $inputSection['order']) {
+                if ($section->order !== (int)$inputSection['order']) {
                     $data['order'] = $inputSection['order'];
                 }
 
                 if ($section->title !== $inputSection['content']['title']) {
                     $data['title'] = $inputSection['content']['title'];
+                }
+
+                if (array_key_exists('file', $inputSection['content'])) {
+                    $data['file'] = $inputSection['content']['file'];
                 }
 
                 if (count($data)) {

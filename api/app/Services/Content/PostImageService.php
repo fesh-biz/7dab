@@ -64,9 +64,18 @@ class PostImageService
             $postImage = $this->repo->getModel()->findOrFail($postImage);
         }
 
-        if (!in_array('file', $data)) {
-            return $this->repo->update($postImage->id, $data);
+        if(array_key_exists('file', $data)) {
+            $this->deleteFiles($postImage);
+
+            $file = $data['file'];
+            $this->saveImageFile($file);
+            $this->imageAttributes['original_filename'] = $file->getClientOriginalName();
+            unset($data['file']);
+
+            $data = array_merge($data, $this->imageAttributes);
         }
+
+        return $this->repo->update($postImage->id, $data);
     }
 
     public function saveImageFile(string $filePath): array
@@ -127,9 +136,9 @@ class PostImageService
 
     private function maybeResizeAndSaveResizedImage(
         MaidImage $image,
-        string    $fileName,
-        int       $imageQuality,
-        string    $imageType = 'desktop'
+        string $fileName,
+        int $imageQuality,
+        string $imageType = 'desktop'
     ): void
     {
         $imageWidth = $imageType === 'desktop' ? $this->desktopThumbWidth : $this->mobileThumbWidth;
