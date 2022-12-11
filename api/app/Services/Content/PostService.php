@@ -70,7 +70,21 @@ class PostService
             ->wherePostId($postId)
             ->get();
 
-        return $postImages->concat($postTexts);
+        $sections = $postImages->concat($postTexts);
+
+        foreach ($sections as $i => $section) {
+            $model = explode('\\', get_class($section));
+            $model = end($model);
+
+            $types = [
+                'PostImage' => 'image',
+                'PostText' => 'text'
+            ];
+
+            $section->setAttribute('type', $types[$model]);
+        }
+
+        return $sections;
     }
 
     private function createSection(int $postId, array $section): void
@@ -120,12 +134,20 @@ class PostService
             $id = $inputSection['id'];
             if ($inputSection['type'] === 'text') {
                 /** @var PostText $section */
-                $section = $postSections->find($id);
+                $section = $postSections->where('type', 'text')
+                    ->where('id', 1)
+                    ->first();
+
+                $data = [];
+                if ($section->order !== $inputSection['order']) {
+                    $data['order'] = $inputSection['order'];
+                }
                 if ($section->body !== $inputSection['content']) {
-                    $section->update([
-                        'order' => $inputSection['order'],
-                        'body' => $inputSection['content']
-                    ]);
+                    $data['body'] = $inputSection['content'];
+                }
+
+                if (count($data)) {
+                    $this->postTextService->update($section->id, $data);
                 }
             }
         }

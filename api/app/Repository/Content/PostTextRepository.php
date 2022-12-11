@@ -28,4 +28,12 @@ class PostTextRepository
             'body' => $body
         ]);
     }
+
+    public function update(int $id, array $data): PostText
+    {
+        $model = $this->model->findOrFail($id);
+        $model->update($data);
+
+        return $model;
+    }
 }

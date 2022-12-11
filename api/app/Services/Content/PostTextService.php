@@ -23,4 +23,9 @@ class PostTextService
     {
         return $this->repo->create($postId, $order, $body);
     }
+
+    public function update(int $id, array $data): PostText
+    {
+        return $this->repo->update($id, $data);
+    }
 }
