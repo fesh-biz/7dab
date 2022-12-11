@@ -105,6 +105,19 @@ class PostService
         }
     }
 
+    private function deleteSections(array $sectionsToDelete): void
+    {
+        foreach ($sectionsToDelete as $i => $section) {
+            if ($section['type'] === 'text') {
+                $this->postTextService->getModel()->whereId($section['id'])->delete();
+            }
+
+            if ($section['type'] === 'image') {
+                $this->postImageService->delete($section['id']);
+            }
+        }
+    }
+
     private function updateOrCreateSection(int $postId, array $section): void
     {
         $order = $section['order'];
@@ -126,6 +139,7 @@ class PostService
     {
         $postSections = $this->getPostSections($postId);
 
+        // Updating/Creating
         foreach ($sectionsFromInput as $i => $inputSection) {
             if (!($inputSection['id'] ?? false)) {
                 $this->createSection($postId, $inputSection);
@@ -174,6 +188,29 @@ class PostService
                     $this->postImageService->update($section->id, $data);
                 }
             }
+        }
+
+        // Deleting
+        if ($postSections->count() > count($sectionsFromInput)) {
+            $sectionsToDelete = [];
+            foreach ($postSections as $i => $section) {
+                $isSectionExistsInInput = false;
+                foreach ($sectionsFromInput as $inputSection) {
+                    if ((int) $section->id === (int) $inputSection['id'] && $section->type === $inputSection['type']) {
+                        $isSectionExistsInInput = true;
+                        break;
+                    }
+                }
+
+                if (!$isSectionExistsInInput) {
+                    $sectionsToDelete[] = [
+                        'id' => $section->id,
+                        'type' => $section->type
+                    ];
+                }
+            }
+
+            $this->deleteSections($sectionsToDelete);
         }
     }
 }

@@ -64,13 +64,4 @@ class PostImage extends Model
         'mobile_file_path',
         'data'
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::onDelete(function ($i) {
-            ddh($i);
-        });
-    }
 }

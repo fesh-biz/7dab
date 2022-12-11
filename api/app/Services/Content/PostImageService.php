@@ -4,6 +4,7 @@ namespace App\Services\Content;
 
 use App\Models\Content\PostImage;
 use App\Repository\Content\PostImageRepository;
+use File;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Image as MaidImage;
@@ -98,6 +99,30 @@ class PostImageService
         $this->maybeResizeAndSaveResizedImage($image, $fileName, $imageQuality, 'mobile');
 
         return $this->imageAttributes;
+    }
+
+    public function delete(int|PostImage $postImage): bool
+    {
+        if (is_int($postImage)) {
+            $postImage = $this->repo->getModel()->findOrFail($postImage);
+        }
+
+        $this->deleteFiles($postImage);
+
+        return $postImage->delete();
+    }
+
+    public function deleteFiles(int|PostImage $postImage): void
+    {
+        if (is_int($postImage)) {
+            $postImage = $this->repo->getModel()->findOrFail($postImage);
+        }
+
+        $originalFilePath = $this->storageBasePath . '/' . str_replace('storage/post-images/', '', $postImage->original_file_path);
+        $desktopFilePath = $this->storageBasePath . '/' . str_replace('storage/post-images/', '', $postImage->desktop_file_path);
+        $mobileFilePath = $this->storageBasePath . '/' . str_replace('storage/post-images/', '', $postImage->mobile_file_path);
+
+        File::delete([$originalFilePath, $desktopFilePath, $mobileFilePath]);
     }
 
     private function maybeResizeAndSaveResizedImage(
