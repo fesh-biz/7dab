@@ -57,6 +57,17 @@ class PostImageService
         return $this->repo->create($postId, $order, $this->imageAttributes);
     }
 
+    public function update(int|PostImage $postImage, array $data): PostImage
+    {
+        if (is_int($postImage)) {
+            $postImage = $this->repo->getModel()->findOrFail($postImage);
+        }
+
+        if (!in_array('file', $data)) {
+            return $this->repo->update($postImage->id, $data);
+        }
+    }
+
     public function saveImageFile(string $filePath): array
     {
         $image = Image::make($filePath);

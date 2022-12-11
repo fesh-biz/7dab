@@ -4,6 +4,7 @@ namespace App\Services\Content;
 
 use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
+use App\Models\Content\PostImage;
 use App\Models\Content\PostText;
 use App\Repository\Content\PostRepository;
 use DB;
@@ -132,6 +133,8 @@ class PostService
             }
 
             $id = $inputSection['id'];
+
+            // Text
             if ($inputSection['type'] === 'text') {
                 /** @var PostText $section */
                 $section = $postSections->where('type', 'text')
@@ -148,6 +151,27 @@ class PostService
 
                 if (count($data)) {
                     $this->postTextService->update($section->id, $data);
+                }
+            }
+
+            // Image
+            if ($inputSection['type'] === 'image') {
+                /** @var PostImage $section */
+                $section = $postSections->where('type', 'image')
+                    ->where('id', $id)
+                    ->first();
+
+                $data = [];
+                if ($section->order !== $inputSection['order']) {
+                    $data['order'] = $inputSection['order'];
+                }
+
+                if ($section->title !== $inputSection['content']['title']) {
+                    $data['title'] = $inputSection['content']['title'];
+                }
+
+                if (count($data)) {
+                    $this->postImageService->update($section->id, $data);
                 }
             }
         }

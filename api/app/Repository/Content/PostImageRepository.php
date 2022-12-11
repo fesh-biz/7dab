@@ -32,4 +32,12 @@ class PostImageRepository
             'data' => json_encode($data['data']),
         ]);
     }
+
+    public function update(int $id, array $data): PostImage
+    {
+        $model = $this->model->findOrFail($id);
+        $model->update($data);
+
+        return $model;
+    }
 }
