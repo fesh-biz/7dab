@@ -68,6 +68,9 @@ class PostImageService
             $this->deleteFiles($postImage);
 
             $file = $data['file'];
+            $data['original_file_path'] = null;
+            $data['desktop_file_path'] = null;
+            $data['mobile_file_path'] = null;
             $this->saveImageFile($file);
             $this->imageAttributes['original_filename'] = $file->getClientOriginalName();
             unset($data['file']);
