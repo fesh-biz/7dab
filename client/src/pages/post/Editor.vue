@@ -160,6 +160,10 @@ export default {
           this.postEditor.fillFormModel(this.postId)
         })
     }
+
+    if (!this.isEditing) {
+      this.postEditor.addSection('text')
+    }
   },
 
   beforeDestroy () {

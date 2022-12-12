@@ -47,12 +47,16 @@ export default {
   },
 
   created () {
-    this.model = this.content
+    this.model = this.replaceBr(this.content)
   },
 
   methods: {
     input () {
       this.$emit('input', this.model)
+    },
+
+    replaceBr (string) {
+      return string.replace(/<br>/g, '')
     }
   }
 }
