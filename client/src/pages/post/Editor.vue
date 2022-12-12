@@ -212,6 +212,18 @@ export default {
         .catch(() => {
           this.isBusy = false
         })
+    },
+
+    // @todo: To Apply this method to update post
+    crtlSHandler (e) {
+      document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 's') {
+          // Prevent the Save dialog to open
+          e.preventDefault()
+          // Place your code here
+          console.log('CTRL + S')
+        }
+      })
     }
   }
 }

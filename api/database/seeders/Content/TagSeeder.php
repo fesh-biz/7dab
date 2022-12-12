@@ -15,7 +15,11 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-
-            Tag::factory(30)->create();
+        Tag::factory()->create(['title' => 'Україна']);
+        Tag::factory()->create(['title' => 'Біла Церква']);
+        Tag::factory()->create(['title' => 'Ігри']);
+        Tag::factory()->create(['title' => 'Українська Промисловість']);
+        Tag::factory()->create(['title' => 'Українська Музика']);
+        Tag::factory()->create(['title' => 'Війна']);
     }
 }
