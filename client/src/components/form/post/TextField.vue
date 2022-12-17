@@ -56,7 +56,7 @@ export default {
     },
 
     replaceBr (string) {
-      return string.replace(/<br>/g, '')
+      return string ? string.replace(/<br>/g, '') : ''
     }
   }
 }
