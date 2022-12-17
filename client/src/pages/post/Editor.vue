@@ -46,6 +46,9 @@
               />
             </div>
           </div>
+
+          <!-- Tags -->
+          <tag-field />
         </q-card-section>
 
         <!-- Post controls -->
@@ -108,6 +111,7 @@
 <script>
 import ImageField from 'components/form/post/ImageField'
 import TextField from 'components/form/post/TextField'
+import TagField from 'components/form/post/TagField'
 
 import TooltipIcon from 'components/common/TooltipIcon'
 import IconWithTooltip from 'components/common/IconWithTooltip'
@@ -122,7 +126,8 @@ export default {
     TooltipIcon,
     ImageField,
     TextField,
-    IconWithTooltip
+    IconWithTooltip,
+    TagField
   },
 
   data () {

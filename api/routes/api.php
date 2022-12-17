@@ -14,6 +14,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Content\PostController;
+use App\Http\Controllers\Content\TagController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
@@ -22,6 +23,10 @@ Route::post('password-reset', [AuthController::class, 'passwordReset']);
 Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
+});
+
+Route::group(['prefix' => 'tags'], function () {
+    Route::get('/search', [TagController::class, 'search']);
 });
 
 Route::group(['prefix' => 'content'], function () {
