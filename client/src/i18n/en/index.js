@@ -1,4 +1,5 @@
 export default {
+  tags: 'Tags',
   change_image: 'Change Image',
   all_fields_must_be_filled: 'All fields must be filled',
   edit_post: 'Edit Post',
