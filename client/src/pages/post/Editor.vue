@@ -48,7 +48,10 @@
           </div>
 
           <!-- Tags -->
-          <tag-field />
+          <tag-field
+              @input="updatePostTags"
+              :error-message="tagError"
+          />
         </q-card-section>
 
         <!-- Post controls -->
@@ -153,6 +156,10 @@ export default {
 
     post () {
       return PostModel.query().withAll().find(this.postId)
+    },
+
+    tagError () {
+      return this.postEditor.validator.errors.tags || null
     }
   },
 
@@ -221,6 +228,11 @@ export default {
         .catch(() => {
           this.isBusy = false
         })
+    },
+
+    updatePostTags (tags) {
+      this.postEditor.formModel.tags = tags
+      this.postEditor.validator.errors.tags = null
     },
 
     // @todo: To Apply this method to update post

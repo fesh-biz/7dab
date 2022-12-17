@@ -1,18 +1,22 @@
 <template>
-  <q-select
-      :label="$t('tags')"
-      v-model="model"
-      :options="options"
-      use-input
-      use-chips
-      multiple
-      @filter="filterFn"
-      hide-dropdown-icon
-      outlined
-      input-debounce="300"
-      new-value-mode="add-unique"
-      style="width: 250px"
-  />
+  <div :class="{error: errorMessage}">
+    <q-select
+        :label="$t('tags')"
+        v-model="model"
+        @input="$emit('input', model)"
+        :options="options"
+        use-input
+        use-chips
+        multiple
+        @filter="filterFn"
+        hide-dropdown-icon
+        outlined
+        input-debounce="300"
+        new-value-mode="add-unique"
+    />
+
+    <span v-if="errorMessage" style="color: red">{{ errorMessage }}</span>
+  </div>
 </template>
 
 <script>
@@ -20,6 +24,13 @@ import TagApi from 'src/plugins/api/tag'
 
 export default {
   name: 'TagField',
+
+  props: {
+    errorMessage: {
+      type: String,
+      default: null
+    }
+  },
 
   data () {
     return {
@@ -33,22 +44,30 @@ export default {
   methods: {
     filterFn (val, update) {
       if (val === '') {
-        update(() => {})
+        update(() => {
+        })
         return
       }
 
-      update(() => {
-        const needle = val.toLowerCase()
+      const needle = val.toLowerCase()
+      this.options = []
 
-        this.tagApi.search(needle)
-          .then(res => {
-            console.log('res', res)
+      this.tagApi.search(needle)
+        .then(res => {
+          const tags = res.data.data
+
+          const options = []
+          tags.forEach(tag => {
+            options.push({
+              label: tag.title,
+              value: tag.id
+            })
           })
 
-        this.options = this.options.filter(v => {
-          return v.label.toLowerCase().indexOf(needle) > -1
+          update(() => {
+            this.options = options
+          })
         })
-      })
     }
   }
 }

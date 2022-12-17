@@ -5,7 +5,8 @@ import PostModel from 'src/models/content/post'
 
 const formModel = {
   title: '',
-  sections: []
+  sections: [],
+  tags: []
 }
 
 export default class Post {
@@ -115,6 +116,16 @@ export default class Post {
 
       if (section.type === 'text') {
         formData.append(`sections[${i}][content]`, section.content || '')
+      }
+    }
+
+    for (let i = 0; i < model.tags.length; i++) {
+      const tag = model.tags[i]
+
+      if (tag.value) {
+        formData.append('tags[].id', tag.value)
+      } else {
+        formData.append('tags[]', tag)
       }
     }
 
