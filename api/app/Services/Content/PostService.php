@@ -47,10 +47,7 @@ class PostService
         $this->postStatService->create($post->id);
         
         $tags = $data->tags;
-        $newTags = array_column($tags, 'new');
-        $existedTags = array_column($tags, 'id');
-        $existedTags = array_merge($existedTags, $this->tagService->createTags($newTags));
-        $post->tags()->sync($existedTags);
+        $this->syncWithTags($tags, $post);
         DB::commit();
         
         return $post;
@@ -66,6 +63,9 @@ class PostService
         $this->updateSections($postId, $data['sections']);
         
         $post->save();
+    
+        $tags = $data->tags;
+        $this->syncWithTags($tags, $post);
         DB::commit();
         
         return $post;
@@ -95,6 +95,14 @@ class PostService
         }
         
         return $sections;
+    }
+    
+    private function syncWithTags(array $tagsFromInput, Post $post)
+    {
+        $newTags = array_column($tagsFromInput, 'new');
+        $existedTags = array_column($tagsFromInput, 'id');
+        $existedTags = array_merge($existedTags, $this->tagService->createTags($newTags));
+        $post->tags()->sync($existedTags);
     }
     
     private function createSection(int $postId, array $section): void

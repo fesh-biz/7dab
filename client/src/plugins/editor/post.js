@@ -48,7 +48,10 @@ export default class Post {
   }
 
   fillFormModel (postId) {
+    this.formModel = _.cloneDeep(formModel)
+
     const post = PostModel.query().withAll().find(postId)
+    console.log('post', post)
     this.formModel.title = post.title
 
     post.content.forEach(section => {
@@ -66,6 +69,16 @@ export default class Post {
           section.id)
       }
     })
+
+    const tags = []
+    post.tags.forEach(t => {
+      tags.push({
+        label: t.title,
+        value: t.id
+      })
+    })
+
+    this.formModel.tags = tags
   }
 
   updateSection (sectionOrder, content) {

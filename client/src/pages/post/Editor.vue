@@ -170,6 +170,7 @@ export default {
           PostModel.insert({ data: res.data.data })
 
           this.postEditor.fillFormModel(this.postId)
+          console.log('this.postEditor', this.postEditor)
         })
     }
 
@@ -231,7 +232,7 @@ export default {
     },
 
     updatePostTags (tags) {
-      this.postEditor.formModel.tags = tags
+      // this.postEditor.formModel.tags = tags
       this.postEditor.validator.errors.tags = null
     },
 

@@ -21,6 +21,7 @@
 
 <script>
 import TagApi from 'src/plugins/api/tag'
+import PostEditor from 'src/plugins/editor/post'
 
 export default {
   name: 'TagField',
@@ -29,16 +30,35 @@ export default {
     errorMessage: {
       type: String,
       default: null
+    },
+    tags: {
+      type: Array,
+      default: null
     }
   },
 
   data () {
     return {
-      model: [],
       options: [],
       tagApi: new TagApi(),
+      postEditor: new PostEditor(),
       fetching: false
     }
+  },
+
+  computed: {
+    model: {
+      get () {
+        return this.postEditor.formModel.tags
+      },
+      set (val) {
+        this.postEditor.formModel.tags = val
+      }
+    }
+  },
+
+  created () {
+    console.log('this.postEditor', this.postEditor)
   },
 
   methods: {

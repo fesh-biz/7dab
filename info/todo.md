@@ -1,8 +1,9 @@
 - [] Tags
-    - [] Add `.tags.status`
-      - [] `enum: pending, aproved, rejected`
-      - [] default `penging`
-    - [] If there is no such tag, create new in DB with status `pending`
+    - [x] Add `.tags.status`
+      - [x] `enum: pending, aproved, rejected`
+      - [x] default `penging`
+    - [x] If there is no such tag, create new in DB with status `pending`
+    - [x] Update post tags
     - [] On type if tag is exists and `rejected`, display prohibited message
     - [] If tag is `penging or approved`, allow user to select
 
