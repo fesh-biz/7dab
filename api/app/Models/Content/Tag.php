@@ -42,7 +42,8 @@ class Tag extends Model
     
     protected $fillable = [
         'title',
-        'body'
+        'body',
+        'user_id'
     ];
     
     public static function boot()
@@ -50,7 +51,6 @@ class Tag extends Model
         parent::boot();
     
         self::creating(function($m){
-            $m->user_id = auth()->id();
             $m->slug = \Str::slug($m->title);
         });
     

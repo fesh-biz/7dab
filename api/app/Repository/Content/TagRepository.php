@@ -28,7 +28,8 @@ class TagRepository
     {
         return $this->model->create([
             'title' => $title,
-            'body' => $body
+            'body' => $body,
+            'user_id' => auth()->id()
         ]);
     }
 }
