@@ -21,5 +21,9 @@ class TagSeeder extends Seeder
         Tag::factory()->create(['title' => 'Українська Промисловість']);
         Tag::factory()->create(['title' => 'Українська Музика']);
         Tag::factory()->create(['title' => 'Війна']);
+        Tag::factory()->create(['title' => 'Test']);
+        Tag::factory()->create(['title' => 'Test 2']);
+        Tag::factory()->create(['title' => 'Test 3']);
+        Tag::factory()->create(['title' => 'Test 4']);
     }
 }
