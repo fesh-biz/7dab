@@ -17,4 +17,18 @@ class TagRepository
     {
         return $this->model;
     }
+    
+    public function isExists(string $title): bool
+    {
+        $slug = \Str::slug($title);
+        return $this->model->whereSlug($slug)->exists();
+    }
+    
+    public function create(string $title, string $body = null): Tag
+    {
+        return $this->model->create([
+            'title' => $title,
+            'body' => $body
+        ]);
+    }
 }

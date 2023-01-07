@@ -38,7 +38,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Tag extends Model
 {
-    use HasFactory, Slugable;
+    use HasFactory;
+    
+    protected $fillable = [
+        'title',
+        'body'
+    ];
+    
+    public static function boot()
+    {
+        parent::boot();
+    
+        self::creating(function($m){
+            $m->user_id = auth()->id();
+            $m->slug = \Str::slug($m->title);
+        });
+    
+        self::updating(function($m){
+            $m->slug = \Str::slug($m->title);
+        });
+    }
 
     public function posts(): BelongsToMany
     {

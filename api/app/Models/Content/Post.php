@@ -54,7 +54,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Post extends Model
 {
-    use HasFactory, Slugable;
+    use HasFactory;
 
     public static string $PENDING = 'pending';
     public static string $REVIEWING = 'reviewing';
@@ -65,6 +65,19 @@ class Post extends Model
     protected $fillable = [
         'title', 'user_id'
     ];
+    
+    public static function boot()
+    {
+        parent::boot();
+        
+        self::creating(function($m){
+            $m->slug = \Str::slug($m->title) . '-' . time();
+        });
+        
+        self::updating(function($m){
+            $m->slug = \Str::slug($m->title) . '-' . time();
+        });
+    }
 
     public function user(): BelongsTo
     {

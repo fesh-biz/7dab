@@ -123,9 +123,9 @@ export default class Post {
       const tag = model.tags[i]
 
       if (tag.value) {
-        formData.append('tags[].id', tag.value)
+        formData.append(`tags[${i}][id]`, tag.value)
       } else {
-        formData.append('tags[]', tag)
+        formData.append(`tags[${i}][new]`, tag)
       }
     }
 

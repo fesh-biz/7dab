@@ -1,44 +1,33 @@
-- [] Предпросмотр/редактирование поста
-    - [x] Обновление поста js side
-        - [x] Fill title
-        - [x] Fill form with texts sections
-        - [x] Convert image urls into canvas in form
-    - [] Вкладки Редактор/Просмотр
-        - [] Вкладка просмотра не активна, пока пост не сохранен на сервере
-            - [] Если редактирование, получать пост с сервера
-            - [] Обновлять vuexOrm
-        - [] При сохранении поста переходить на `/edit`, во вкладку просмотр
-    - [] При редактировании поста
-        - [] Переход на вкладку просмотра обновляет пост на сервере
+- [] Tags
+    - [] Add `.tags.status`
+      - [] `enum: pending, aproved, rejected`
+      - [] default `penging`
+    - [] If there is no such tag, create new in DB with status `pending`
+    - [] On type if tag is exists and `rejected`, display prohibited message
+    - [] If tag is `penging or approved`, allow user to select
 
+- [] Post Editor
+    - [] On cancel redirect to home
+    - [] Add two tabs Editing/Preview
+        - [] While editing click on Preview or Submit
+            - [] Store Post to DB with status `draft`
+            - [] Display post as common view
+        - [] If post status `draft` on Preview active button submit to approving
+    - [] Display somewhere post's status
+
+------------------------------- Next Steps ----------------------------------
+
+- [] Registration
+    - [] User can have up to 10 drafts, display total and available on creating/editing post
+    - [] Post can have max 20 tags
+    - [] User can create up to 40 tags with status `penging`
+    - [] Allow Registration
 
 - [] To fix
     - [] Add post, go to main page, then to add post again
         - [] Form Model doesn't reset
     - [] Post validation
         - [] When there is only one error, it displays it for all sections
-      
-- [] Пост
-    - [x] Migration
-        - [x] Default post status `draft`
-    - [] Редактирование поста
-        - [] Remove section
-            - [] Text
-            - [] If section is image, remove prev image files
-        - [] Add section
-        - [] Change section
-            - [] If section is image, remove prev image files
-        - [] Change title
-    - [] Перенаправление пользователя на предпросмотр
-      - [] Сделать как вкладки (Создание/Редактирование)/Предпросмотр
-      - [] Подтверждение переводит пост в статус `pending`
-        - [] Показывать пользователю постоянное сообщение
-          сверху что ваш пост в статусе проверки/редактирования
-    - [] Перед отправкой удалить пустые секции
-    - [] Теги
-        - [] Если тег новый
-            - [] Сообщить пользователю, что список его новых тегов будет проверен и утвержден
-    - [] Если не залогиненный, предлагать на форме входа регистрацию
 
 - [] Как пользователь, я хочу оставлять комментарии
     - [] К контенту
@@ -63,3 +52,6 @@
       href="https://www.reddit.com/r/AskReddit/comments/ntofxm/what_the_scariest_true_story_you_know/">
 - [] sitemap
     - [] https://developers.google.com/search/docs/advanced/crawling/overview?hl=ru
+    
+------------------------------ Ideas to implementation --------------------------
+- [] When user selected some existed tag(s) display recommended tags

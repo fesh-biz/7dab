@@ -26,4 +26,19 @@ class TagService
             ->limit(5)
             ->get();
     }
+    
+    public function createTags(array $titles): array
+    {
+        $ids = [];
+
+        foreach ($titles as $title) {
+            if ($this->repo->isExists($title)) {
+                continue;
+            }
+            
+            $ids[] = $this->repo->create($title)->id;
+        }
+        
+        return $ids;
+    }
 }
