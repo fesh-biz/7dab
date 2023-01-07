@@ -29,7 +29,7 @@ class PostRequest extends FormRequest
             'sections' => ['required', function ($attribute, $value, $fail) {
                 $this->checkSections($attribute, $value, $fail);
             }],
-            'tags' => 'required'
+            'tags' => 'required|array|max:20'
         ];
     }
 

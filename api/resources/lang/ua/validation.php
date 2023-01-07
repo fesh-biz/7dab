@@ -80,7 +80,7 @@ return [
         'numeric' => 'The :attribute must not be greater than :max.',
         'file' => 'The :attribute must not be greater than :max kilobytes.',
         'string' => 'Не може містити більше ніж :max символів.',
-        'array' => 'The :attribute must not have more than :max items.',
+        'array' => 'Не може мати більше :max елементів.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
