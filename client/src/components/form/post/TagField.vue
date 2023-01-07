@@ -8,6 +8,7 @@
         use-input
         use-chips
         multiple
+        option-disable="inactive"
         @filter="filterFn"
         hide-dropdown-icon
         outlined
@@ -80,7 +81,8 @@ export default {
           tags.forEach(tag => {
             options.push({
               label: tag.title,
-              value: tag.id
+              value: tag.id,
+              inactive: tag.status === 'rejected'
             })
           })
 
