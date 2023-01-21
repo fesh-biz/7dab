@@ -23,20 +23,20 @@ class DatabaseSeeder extends Seeder
             'name' => 'fesh',
             'password' => bcrypt('password')
         ]);
-
+        
         $this->call(PassportSeeder::class);
-
+        
         if (app()->environment() === 'dusk') {
             return;
         }
-
+        
         if (File::exists(config('7dab.post_image_storage_base_path'))) {
             File::deleteDirectory(config('7dab.post_image_storage_base_path'));
         }
-
+        
         // Content
         $this->call(TagSeeder::class);
-//        $this->call(PostSeeder::class);
-//        $this->call(CommentSeeder::class);
+        $this->call(PostSeeder::class);
+        $this->call(CommentSeeder::class);
     }
 }

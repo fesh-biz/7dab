@@ -18,4 +18,6 @@ Route::get('/', function () {
     echo 'index';
 });
 
-Route::get('/test', [Controller::class, 'test']);
+Route::get('/{any}', function () {
+    return view('quasar');
+})->where('any', '.*');

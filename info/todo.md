@@ -4,8 +4,8 @@
       - [x] default `penging`
     - [x] If there is no such tag, create new in DB with status `pending`
     - [x] Update post tags
-    - [] On type if tag is exists and `rejected`, display prohibited message
-    - [] If tag is `penging or approved`, allow user to select
+    - [x] On type if tag is exists and `rejected`, show as disabled
+    - [x] If tag is `penging or approved`, allow user to select
 
 - [] Post Editor
     - [] On cancel redirect to home
@@ -17,18 +17,19 @@
     - [] Display somewhere post's status
 
 ------------------------------- Next Steps ----------------------------------
+- [] To fix
+    - [] Add post, go to main page, then to add post again
+        - [] Form Model doesn't reset
+    - [] Post validation
+        - [] When there is only one error, it displays it for all sections
+    - [] Add image as empty field, fix 500 error
+        - [] Before submit remove all empty image fields
 
 - [] Registration
     - [] User can have up to 10 drafts, display total and available on creating/editing post
     - [] Post can have max 20 tags
     - [] User can create up to 40 tags with status `penging`
     - [] Allow Registration
-
-- [] To fix
-    - [] Add post, go to main page, then to add post again
-        - [] Form Model doesn't reset
-    - [] Post validation
-        - [] When there is only one error, it displays it for all sections
 
 - [] Как пользователь, я хочу оставлять комментарии
     - [] К контенту
