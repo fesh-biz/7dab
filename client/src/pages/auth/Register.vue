@@ -17,13 +17,13 @@
                   outlined=""
                   dense=""
                   dusk="r-name-input"
-                  v-model="form.name"
-                  :label="$t('name')"
+                  v-model="form.login"
+                  :label="$t('login')"
 
-                  :error="!!validator.errors.name"
-                  :error-message="validator.errors.name"
+                  :error="!!validator.errors.login"
+                  :error-message="validator.errors.login"
 
-                  @input="validator.resetFieldError('name')"
+                  @input="validator.resetFieldError('login')"
               />
 
               <!-- email -->
@@ -103,7 +103,7 @@ import Token from 'src/plugins/cookies/token'
 import { api } from 'boot/axios'
 
 const formModel = {
-  name: null,
+  login: null,
   email: null,
   password: null,
   password_confirmation: null
