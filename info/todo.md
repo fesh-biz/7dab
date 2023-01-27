@@ -1,26 +1,10 @@
 # MVP
-- [] Add roles to user
-    - [] Model `Role`
-        - [] `name`
-    - [] Roles: `admin`
 - [] Set max image size 5mb
     - [] Limit in JS
     - [] Limit in Request
 - [] Set max images to 10
     - [] Set in JS
     - [] Set in PHP
-- [] Create users
-    - [] `admin, fesh, svitlyk` all with admin role
-    - [] email approved
-
-- [] Tags
-    - [x] Add `.tags.status`
-      - [x] `enum: pending, aproved, rejected`
-      - [x] default `penging`
-    - [x] If there is no such tag, create new in DB with status `pending`
-    - [x] Update post tags
-    - [x] On type if tag is exists and `rejected`, show as disabled
-    - [x] If tag is `penging or approved`, allow user to select
 
 - [] Post Editor
     - [] On cancel redirect to home
