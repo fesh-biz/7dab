@@ -10,7 +10,7 @@
               <!-- General Menu  -->
               <q-list dense>
                 <q-item exact clickable :to="{ name: 'home' }">
-                  <q-item-section>7dab</q-item-section>
+                  <q-item-section>{{ $t('home_page') }}</q-item-section>
                 </q-item>
                 <q-item exact clickable :to="{ name: 'createPost' }">
                   <q-item-section>
