@@ -199,7 +199,7 @@ export default {
           message = this.$t('wrong_image_file_allowed_types') + ': jpg, jpeg, png'
         }
 
-        const maxSizeKb = 500
+        const maxSizeKb = 5000
         if (files[i].size > maxSizeKb * 1024) {
           message = this.$t('max_allowed_filesize') + ' ' + maxSizeKb + 'Kb'
         }
