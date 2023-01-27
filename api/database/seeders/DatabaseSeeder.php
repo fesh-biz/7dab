@@ -18,10 +18,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(RoleSeeder::class);
+        
         User::factory()->create([
-            'email' => 'user@gmail.com',
-            'name' => 'fesh',
-            'password' => bcrypt('password')
+            'email' => 'feshbiz@gmail.com',
+            'login' => 'admin',
+            'password' => bcrypt('Fesh761737'),
+            'rating' => 0,
+            'role_id' => 1
+        ]);
+        
+        User::factory()->create([
+            'email' => 'svitluk.vargetova@gmail.com',
+            'login' => 'Світлана',
+            'password' => bcrypt('vargetova1990'),
+            'rating' => 0,
+            'role_id' => 2
         ]);
         
         $this->call(PassportSeeder::class);

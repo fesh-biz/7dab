@@ -1,3 +1,18 @@
+# MVP
+- [] Add roles to user
+    - [] Model `Role`
+        - [] `name`
+    - [] Roles: `admin`
+- [] Set max image size 5mb
+    - [] Limit in JS
+    - [] Limit in Request
+- [] Set max images to 10
+    - [] Set in JS
+    - [] Set in PHP
+- [] Create users
+    - [] `admin, fesh, svitlyk` all with admin role
+    - [] email approved
+
 - [] Tags
     - [x] Add `.tags.status`
       - [x] `enum: pending, aproved, rejected`

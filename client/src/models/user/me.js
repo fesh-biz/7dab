@@ -6,7 +6,7 @@ export default class Me extends AppModel {
   static fields () {
     return {
       id: this.uid(null),
-      name: this.string(''),
+      login: this.string(''),
       email: this.string('')
     }
   }

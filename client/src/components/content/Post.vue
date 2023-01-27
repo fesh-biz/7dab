@@ -4,7 +4,7 @@
     <q-card-section class="q-pb-none">
       <!-- Author -->
       <div :dusk="'post-' + post.id + '-author'">
-        {{ post.user.name }}
+        {{ post.user.login }}
       </div>
 
       <!-- Title -->

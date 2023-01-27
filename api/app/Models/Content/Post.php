@@ -113,7 +113,7 @@ class Post extends Model
     {
         return $q->with([
             'tags:id,title',
-            'user:id,name',
+            'user:id,login',
             'postImages',
             'postTexts',
             'postStat'
