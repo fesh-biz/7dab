@@ -3,7 +3,7 @@ export default [
     path: '/',
     name: 'home',
     meta: {
-      title: 'home_page'
+      title: 'terevenky'
     },
     component: () => import('pages/feed/Main')
   }

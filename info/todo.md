@@ -1,8 +1,5 @@
 # MVP
 - [] Set favicon icon
-- [] Set correct title
-    - [] Delete Starter Kit
-    - [] Set title with post title on post page
 
 ------------------------------- Next Steps ----------------------------------
 - [] Fix all problems with auth

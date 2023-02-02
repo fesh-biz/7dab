@@ -54,9 +54,12 @@ export default {
     fetchPost () {
       this.postApi.fetchPost(this.postId)
         .then(res => {
+          const post = res.data.data
           PostModel.insert({
-            data: res.data.data
+            data: post
           })
+
+          window.document.title = post.title + ` - ${this.$t('terevenky')}`
         })
     }
   }

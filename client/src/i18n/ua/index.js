@@ -1,4 +1,5 @@
 export default {
+  terevenky: 'Теревеньки',
   tags: 'Теги',
   change_image: 'Змінити зображення',
   all_fields_must_be_filled: 'Усі поля мають бути заповнені',
