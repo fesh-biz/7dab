@@ -86,8 +86,8 @@ class User extends Authenticatable
         3 => 'user'
     ];
     
-    public function role(): BelongsTo
+    public function getRoleNameAttribute(): string
     {
-        return $this->belongsTo(Role::class);
+        return $this->roles[auth()->user()->role_id];
     }
 }

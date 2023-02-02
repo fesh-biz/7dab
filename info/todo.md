@@ -1,5 +1,4 @@
 # MVP
-- [] If post was added by admin role, status is approved
 - [] Set favicon icon
 - [] Set correct title
     - [] Delete Starter Kit

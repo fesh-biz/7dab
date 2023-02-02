@@ -40,7 +40,7 @@ class PostRepository
             'user_id' => auth()->id()
         ];
         
-        if (auth()->user()->role()->name === 'admin') {
+        if (auth()->user()->roleName === 'admin') {
             $data['status'] = 'approved';
         }
         
