@@ -23,7 +23,7 @@ export default {
   watch: {
     '$route' (toRoute, fromRoute) {
       if (this.$route.meta && this.$route.meta.title) {
-        window.document.title = `${this.$t(this.$route.meta.title)} ${this.$t('terevenky')}`
+        window.document.title = `${this.$t(this.$route.meta.title)} - ${this.$t('terevenky')}`
       } else {
         window.document.title = this.$t('terevenky')
       }
