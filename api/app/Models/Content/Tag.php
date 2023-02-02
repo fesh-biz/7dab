@@ -43,7 +43,8 @@ class Tag extends Model
     protected $fillable = [
         'title',
         'body',
-        'user_id'
+        'user_id',
+        'status'
     ];
     
     public static function boot()

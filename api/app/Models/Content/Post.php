@@ -63,7 +63,7 @@ class Post extends Model
     public static string $EDITING = 'editing';
 
     protected $fillable = [
-        'title', 'user_id'
+        'title', 'user_id', 'status'
     ];
     
     public static function boot()
