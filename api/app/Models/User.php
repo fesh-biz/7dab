@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\User\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -64,6 +66,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'email',
         'password',
         'remember_token',
     ];
@@ -76,9 +79,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function myUniqueMethod()
+    
+    private array $roles = [
+        1 => 'admin',
+        2 => 'moderator',
+        3 => 'user'
+    ];
+    
+    public function role(): BelongsTo
     {
-
+        return $this->belongsTo(Role::class);
     }
 }

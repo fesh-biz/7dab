@@ -17,6 +17,7 @@ class PostRepository
     public function getPaginatedPosts(): LengthAwarePaginator
     {
         return $this->model->withTagsAuthorContent()
+            ->whereStatus('approved')
             ->orderBy('id', 'desc')
             ->paginate(10);
     }
@@ -34,9 +35,15 @@ class PostRepository
 
     public function create(string $title): Post
     {
-        return $this->model->create([
+        $data = [
             'title' => $title,
             'user_id' => auth()->id()
-        ]);
+        ];
+        
+        if (auth()->user()->role()->name === 'admin') {
+            $data['status'] = 'approved';
+        }
+        
+        return $this->model->create($data);
     }
 }

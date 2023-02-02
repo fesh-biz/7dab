@@ -1,5 +1,10 @@
 <template>
-  <q-card :id="'post-id-' + post.id" :dusk="'post-' + post.id" :flat="$q.platform.is.mobile" class="q-my-md">
+  <q-card
+      :id="'post-id-' + post.id"
+      :dusk="'post-' + post.id"
+      :flat="$q.platform.is.mobile"
+      class="q-my-md"
+  >
     <!-- Title, Author -->
     <q-card-section class="q-pb-none">
       <!-- Author -->
@@ -8,7 +13,11 @@
       </div>
 
       <!-- Title -->
-      <q-item v-if="isPostPage" :dusk="'post-' + post.id + '-title'" class="font-lobster q-px-none">
+      <q-item
+          v-if="isPostPage"
+          :dusk="'post-' + post.id + '-title'"
+          class="font-lobster q-px-none"
+      >
         <q-item-section style="font-size: 1.2rem">
           {{ post.title }}
         </q-item-section>
@@ -22,7 +31,7 @@
           class="font-lobster q-px-none"
       >
         <q-item-section style="font-size: 1.2rem">
-          {{ post.title }} {{ post.id }}
+          {{ post.title }} {{ post.status }}
         </q-item-section>
       </q-item>
     </q-card-section>
