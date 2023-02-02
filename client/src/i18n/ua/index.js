@@ -8,7 +8,7 @@ export default {
   add_image_label: 'Додати опис к зображенню',
   add_text: 'Додати текст',
   add_image: 'Додати зображення',
-  something_went_wrong: 'От халепа, щось трапилось. Спробуйте пізніше',
+  something_went_wrong: 'От халепа, щось трапилось',
   cancel: 'Скасувати',
   save: 'Зберегти',
   add_section: 'Додати секцію',

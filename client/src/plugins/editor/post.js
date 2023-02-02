@@ -2,6 +2,7 @@ import Validator from 'src/plugins/tools/validator'
 import PostApi from 'src/plugins/api/post'
 import _ from 'lodash'
 import PostModel from 'src/models/content/post'
+import { Notify } from 'quasar'
 
 const formModel = {
   title: '',
@@ -145,8 +146,24 @@ export default class Post {
     return formData
   }
 
+  clearAllEmptyFields () {
+    this.formModel.sections = this.formModel.sections.filter(section => section.content)
+  }
+
   saveOrUpdate (postId) {
     return new Promise((resolve, reject) => {
+      this.clearAllEmptyFields()
+
+      if (!this.formModel.sections.length) {
+        Notify.create({
+          position: 'center',
+          color: 'negative',
+          message: 'Теревенька маэ мати хоча б одне текстове поле або поле з зображенням'
+        })
+
+        return reject()
+      }
+
       const formData = this.getFormData()
 
       const apiMethod = postId ? 'update' : 'store'

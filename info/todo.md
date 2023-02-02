@@ -1,21 +1,12 @@
 # MVP
-- [] Set max image size 5mb
-    - [] Limit in JS
-    - [] Limit in Request
-- [] Set max images to 10
-    - [] Set in JS
-    - [] Set in PHP
-
-- [] Post Editor
-    - [] On cancel redirect to home
-    - [] Add two tabs Editing/Preview
-        - [] While editing click on Preview or Submit
-            - [] Store Post to DB with status `draft`
-            - [] Display post as common view
-        - [] If post status `draft` on Preview active button submit to approving
-    - [] Display somewhere post's status
+- [] Max image size up to 5mb
+    - [] Check on back-end side
+- [] Show only approved posts
+- [] If post was added by admin role, status is approved
+- [] Set favicon icon
 
 ------------------------------- Next Steps ----------------------------------
+- [] Fix all problems with auth
 - [] To fix
     - [] Add post, go to main page, then to add post again
         - [] Form Model doesn't reset
