@@ -84,6 +84,7 @@ class PostImageService
     public function saveImageFile(string $filePath): array
     {
         $image = Image::make($filePath);
+        $image->orientate();
         $imageQuality = $this->getImageQuality($image);
 
         $extension = $this->imageTypesToExtension[$image->mime] ?? null;
