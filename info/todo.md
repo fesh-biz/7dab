@@ -1,4 +1,8 @@
 # MVP
+- [] Refactor database for rating system
+    - [] At this moment enough is
+        - [] Remove all rating columns
+        - [] Hide Post bottom info (rating, views, comments)
 - [] Set favicon icon
 
 ------------------------------- Next Steps ----------------------------------

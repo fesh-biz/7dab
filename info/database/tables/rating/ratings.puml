@@ -1,0 +1,13 @@
+@startuml
+object ratings {
+    App\Models\Rating\Rating
+    __
+    + id
+    - ratingable_id (uint)
+    - ratingable_type (string)
+    positive_votes (uint)
+    negative_votes (uint)
+    created_at
+    updated_at
+}
+@enduml

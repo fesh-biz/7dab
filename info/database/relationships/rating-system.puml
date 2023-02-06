@@ -1,0 +1,19 @@
+@startuml
+!include ../tables/content/comments.puml
+!include ../tables/content/posts.puml
+!include ../tables/rating/rating_votes.puml
+!include ../tables/rating/ratings.puml
+!include ../tables/users.puml
+
+ratings -- comments
+ratings -- posts
+ratings -- users
+
+comments -- rating_votes
+posts -- rating_votes
+users -- rating_votes
+
+rating_votes - "User As Voter"
+users -- "User As Voter"
+
+@enduml

@@ -9,7 +9,6 @@ object comments {
     - commentable_type (string)
 
     body (text)
-    rating (integer)
     created_at
     updated_at
 }

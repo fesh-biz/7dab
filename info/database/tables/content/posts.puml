@@ -6,7 +6,6 @@ object posts {
     - user_id (UBI)
 
     title (string)
-    slug (string)
     status (enum)
 
     created_at
