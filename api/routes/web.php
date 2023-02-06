@@ -17,5 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/{any}', function () {
     return view('quasar');
 })
-    ->middleware(['auth.basic'])
     ->where('any', '.*');
