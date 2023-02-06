@@ -82,8 +82,6 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
-      console.log('fetching, page ', this.currentPage)
-
       this.fetching.posts = true
       this.postApi.fetchPosts(++this.currentPage)
         .then(async res => {
