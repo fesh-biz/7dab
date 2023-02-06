@@ -34,7 +34,7 @@ export default {
     if (this.tokenCookies.getIsExpired()) {
       this.tokenCookies.delete()
       this.meCookies.delete()
-    } else {
+    } else if (this.meCookies.get()) {
       Me.create({
         data: this.meCookies.get()
       })
