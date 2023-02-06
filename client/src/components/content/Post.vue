@@ -31,7 +31,7 @@
           class="font-lobster q-px-none"
       >
         <q-item-section style="font-size: 1.2rem">
-          {{ post.title }} {{ post.status }}
+          {{ post.title }}
         </q-item-section>
       </q-item>
     </q-card-section>
