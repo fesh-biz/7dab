@@ -18,7 +18,7 @@
                   dense=""
                   dusk="r-name-input"
                   v-model="form.login"
-                  :label="$t('login')"
+                  :label="$t('user_login')"
 
                   :error="!!validator.errors.login"
                   :error-message="validator.errors.login"

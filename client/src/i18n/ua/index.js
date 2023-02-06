@@ -1,4 +1,5 @@
 export default {
+  user_login: 'Логін',
   terevenky: 'Теревеньки',
   tags: 'Теги',
   change_image: 'Змінити зображення',

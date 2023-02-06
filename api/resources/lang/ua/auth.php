@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'check_your_data' => 'Проверьте введенные данные',
-    'wrong_credentials' => 'Пользователь с такими данными не найден',
+    'check_your_data' => 'Перевірте введені дані',
+    'wrong_credentials' => 'Користувача з такими даними не існує',
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
