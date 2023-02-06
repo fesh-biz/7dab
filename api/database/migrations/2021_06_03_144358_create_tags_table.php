@@ -20,11 +20,8 @@ class CreateTagsTable extends Migration
 
             $table->string('title')->unique();
             $table->string('body')->nullable();
-            $table->string('slug')->unique();
-            $table->integer('total_post_rating')->default(0);
             $table->enum('status', ['pending', 'approved', 'rejected'])
                 ->default('pending');
-            $table->integer('total_posts')->default(0);
 
             $table->timestamps();
         });

@@ -2,7 +2,6 @@
 
 namespace App\Models\Content;
 
-use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string|null $body
  * @property string $slug
  * @property int $total_post_rating
+ * @property string $status
  * @property int $total_posts
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tag whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereTotalPostRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereTotalPosts($value)
@@ -47,19 +48,6 @@ class Tag extends Model
         'status'
     ];
     
-    public static function boot()
-    {
-        parent::boot();
-    
-        self::creating(function($m){
-            $m->slug = \Str::slug($m->title);
-        });
-    
-        self::updating(function($m){
-            $m->slug = \Str::slug($m->title);
-        });
-    }
-
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class);

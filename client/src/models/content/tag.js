@@ -7,7 +7,6 @@ export default class Tag extends AppModel {
     return {
       id: this.attr(null),
       title: this.string(''),
-      slug: this.string(''),
       body: this.string('')
     }
   }

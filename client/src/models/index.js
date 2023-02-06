@@ -9,13 +9,11 @@ import Me from 'src/models/user/me'
 import User from 'src/models/user/user'
 import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
-import PostStat from 'src/models/content/post-stat'
 
 database.register(PostImage)
 database.register(Post)
 database.register(PostTag)
 database.register(PostText)
-database.register(PostStat)
 database.register(Tag)
 database.register(Me)
 database.register(User)

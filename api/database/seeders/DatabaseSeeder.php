@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'feshbiz@gmail.com',
             'login' => 'admin',
             'password' => bcrypt('Fesh761737'),
-            'rating' => 0,
             'role_id' => 1
         ]);
         
@@ -32,7 +31,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'svitluk.vargetova@gmail.com',
             'login' => 'Світлана',
             'password' => bcrypt('vargetova1990'),
-            'rating' => 0,
             'role_id' => 2
         ]);
         
@@ -47,8 +45,8 @@ class DatabaseSeeder extends Seeder
         }
         
         // Content
-        // $this->call(TagSeeder::class);
-        // $this->call(PostSeeder::class);
-        // $this->call(CommentSeeder::class);
+        $this->call(TagSeeder::class);
+        $this->call(PostSeeder::class);
+        $this->call(CommentSeeder::class);
     }
 }

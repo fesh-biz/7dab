@@ -21,7 +21,6 @@ class CreateCommentsTable extends Migration
             $table->string('commentable_type');
 
             $table->text('body');
-            $table->integer('rating');
 
             $table->timestamps();
         });

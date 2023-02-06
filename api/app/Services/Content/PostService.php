@@ -15,21 +15,18 @@ class PostService
     protected PostRepository $repo;
     protected PostTextService $postTextService;
     protected PostImageService $postImageService;
-    protected PostStatService $postStatService;
     protected TagService $tagService;
     
     public function __construct(
         PostRepository $repo,
         PostTextService $postTextService,
         PostImageService $postImageService,
-        PostStatService $postStatService,
         TagService $tagService
     )
     {
         $this->repo = $repo;
         $this->postTextService = $postTextService;
         $this->postImageService = $postImageService;
-        $this->postStatService = $postStatService;
         $this->tagService = $tagService;
     }
     
@@ -43,8 +40,6 @@ class PostService
         foreach ($sections as $section) {
             $this->createSection($post->id, $section);
         }
-        
-        $this->postStatService->create($post->id);
         
         $tags = $data->tags;
         $this->syncWithTags($tags, $post);

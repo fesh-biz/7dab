@@ -4,17 +4,17 @@
     <div class="flex cursor-default">
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
-        <post-info-icon icon="thumbs_up_down" :amount="post.post_stat.rating" :tooltip-label="$t('rating')"/>
+        <post-info-icon icon="thumbs_up_down" :amount="0" :tooltip-label="$t('rating')"/>
       </div>
 
       <!-- Total Views -->
       <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
-        <post-info-icon icon="visibility" :amount="post.post_stat.views" :tooltip-label="$t('views')"/>
+        <post-info-icon icon="visibility" :amount="0" :tooltip-label="$t('views')"/>
       </div>
 
       <!-- Total Comments -->
       <div :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
-        <post-info-icon icon="question_answer" :amount="post.post_stat.comments" :tooltip-label="$t('comments')"/>
+        <post-info-icon icon="question_answer" :amount="0" :tooltip-label="$t('comments')"/>
       </div>
     </div>
 

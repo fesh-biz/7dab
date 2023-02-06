@@ -19,7 +19,6 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->string('title');
-            $table->string('slug')->unique();
             $table->enum(
                 'status',
                 ['draft', 'pending', 'reviewing', 'approved', 'declined', 'editing']

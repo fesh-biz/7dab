@@ -3,7 +3,6 @@
 namespace App\Models\Content;
 
 use App\Models\User;
-use App\Traits\Slugable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,11 +18,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int $id
  * @property int $user_id
  * @property string $title
- * @property int $rating
  * @property string $slug
  * @property string $status
- * @property int $total_views
- * @property int $total_comments
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\Comment[] $comments
@@ -41,12 +37,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static Builder|Post query()
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereId($value)
- * @method static Builder|Post whereRating($value)
  * @method static Builder|Post whereSlug($value)
  * @method static Builder|Post whereStatus($value)
  * @method static Builder|Post whereTitle($value)
- * @method static Builder|Post whereTotalComments($value)
- * @method static Builder|Post whereTotalViews($value)
  * @method static Builder|Post whereUpdatedAt($value)
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post withTagsAuthorContent()
@@ -65,19 +58,6 @@ class Post extends Model
     protected $fillable = [
         'title', 'user_id', 'status'
     ];
-    
-    public static function boot()
-    {
-        parent::boot();
-        
-        self::creating(function($m){
-            $m->slug = \Str::slug($m->title) . '-' . time();
-        });
-        
-        self::updating(function($m){
-            $m->slug = \Str::slug($m->title) . '-' . time();
-        });
-    }
 
     public function user(): BelongsTo
     {
@@ -105,19 +85,13 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function postStat(): HasOne
-    {
-        return $this->hasOne(PostStat::class);
-    }
-
     public function scopeWithTagsAuthorContent(Builder $q): Builder
     {
         return $q->with([
             'tags:id,title',
             'user:id,login',
             'postImages',
-            'postTexts',
-            'postStat'
+            'postTexts'
         ]);
     }
 }

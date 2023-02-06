@@ -4,7 +4,6 @@ namespace Database\Seeders\Content;
 
 use App\Models\Content\Post;
 use App\Models\Content\PostImage;
-use App\Models\Content\PostStat;
 use App\Models\Content\PostText;
 use App\Models\Content\Tag;
 use File;
@@ -26,7 +25,6 @@ class PostSeeder extends Seeder
         foreach ($posts as $post) {
             $post->tags()->attach($tags->random(mt_rand(1, 6))->pluck('id'));
             $this->createPostBody($post->id);
-            PostStat::factory()->create(['post_id' => $post->id]);
         }
     }
 

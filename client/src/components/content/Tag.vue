@@ -1,6 +1,7 @@
 <template>
   <q-item :to="'test'" class="t-wrapper">
     <q-tooltip
+      v-if="item.body"
       anchor="top middle"
       self="bottom middle"
       :offset="[10, 10]"
