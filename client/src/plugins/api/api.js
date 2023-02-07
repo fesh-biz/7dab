@@ -1,24 +1,70 @@
-import { api } from 'boot/axios'
+import axios from 'axios'
 import { Notify } from 'quasar'
 import { i18n } from 'boot/i18n'
+import Token from 'src/plugins/cookies/token'
+import Me from 'src/plugins/cookies/me'
 
 export default class Api {
   constructor () {
-    if (Api.instance) {
-      return Api.instance
+    this.axios = axios.create({
+      baseURL: process.env.API_URL,
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    this.tokenCookies = new Token()
+    this.meCookies = new Me()
+
+    if (this.tokenCookies.getAuthorizationToken()) {
+      this.axios.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
     }
-
-    this.api = api
-
-    Api.instance = this
   }
 
-  get (url, config) {
+  get (url, params) {
     return new Promise((resolve, reject) => {
-      if (process.env.ENV_DEV === 'Development') {
-        console.log('url', url)
-      }
-      this.api.get(url, config)
+      return this.request(url, 'get', params)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
+  post (url, data) {
+    return new Promise((resolve, reject) => {
+      return this.request(url, 'post', data)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
+  put (url, data) {
+    return new Promise((resolve, reject) => {
+      return this.request(url, 'put', data)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
+  request (url, method, params) {
+    if (process.env.ENV_DEV === 'Development') {
+      console.log('----rqst start-----')
+      console.log('requesting url:', url)
+      console.log('method:', method)
+      console.log('params:', params)
+      console.log('----rqst end-----')
+    }
+
+    const conf = {
+      url: url,
+      method: method
+    }
+
+    if (['post', 'put'].includes(method)) {
+      conf.data = params
+    } else {
+      conf.params = params
+    }
+
+    return new Promise((resolve, reject) => {
+      this.axios(conf)
         .then(res => {
           if (process.env.ENV_DEV === 'Development') {
             console.log('res', res)
@@ -26,35 +72,11 @@ export default class Api {
           resolve(res)
         })
         .catch(err => {
-          this.showError(err)
-          reject(err)
-        })
-    })
-  }
+          if (err.response && err.response.status === 401) {
+            this.tokenCookies.delete()
+            this.meCookies.delete()
+          }
 
-  post (url, data, config) {
-    return new Promise((resolve, reject) => {
-      this.api.post(url, data, config)
-        .then(res => resolve(res))
-        .catch(err => {
-          this.showError(err)
-          reject(err)
-        })
-    })
-  }
-
-  put (url, data, config) {
-    if (data instanceof FormData) {
-      data.append('_method', 'PUT')
-    } else {
-      data._method = 'PUT'
-    }
-
-    return new Promise((resolve, reject) => {
-      this.api.post(url, data, config)
-        .then(res => resolve(res))
-        .catch(err => {
-          this.showError(err)
           reject(err)
         })
     })
