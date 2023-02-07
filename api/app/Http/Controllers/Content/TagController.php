@@ -25,6 +25,12 @@ class TagController extends Controller
     
     public function paginatedSearch(Request $r): JsonResponse
     {
-        return response()->json($this->service->paginatedSearch($r->keyword, $r->order_by, $r->descending));
+        $desc = $r->descending === 'true' ? 'desc' : 'asc';
+        $orderBy = $r->sortBy;
+        $keyword = $r->keyword;
+
+        return response()->json(
+            $this->service->paginatedSearch($keyword, $orderBy, $desc)
+        );
     }
 }

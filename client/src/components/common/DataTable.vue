@@ -91,7 +91,6 @@ export default {
           this.rowsPerPage = '' + res.data.per_page
           this.data = res.data.data
 
-          console.log('res?.config?.params?.sortBy', res?.config?.params?.sortBy)
           this.pagination = {
             sortBy: res?.config?.params?.sortBy,
             descending: res?.config?.params?.descending,
@@ -99,8 +98,6 @@ export default {
             rowsPerPage: res.data.per_page,
             rowsNumber: res.data.total
           }
-
-          console.log('pagination', this.pagination)
         })
         .catch(() => {
           this.loading = false

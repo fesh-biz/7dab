@@ -35,7 +35,6 @@ class TagService
             ->when($keyword, function ($q) use ($keyword) {
                 $q->where('title', 'like', "%$keyword%");
             })
-
             ->when($orderBy, function ($q) use ($orderBy, $descending) {
                 $q->orderBy($orderBy, $descending);
             });
