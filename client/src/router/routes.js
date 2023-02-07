@@ -1,6 +1,9 @@
 import AuthRoutes from './routes/auth'
 import FeedRoutes from './routes/feed'
 import PostRoutes from './routes/post'
+import AdminRoutes from './routes/admin'
+
+import isAdmin from 'src/router/middleware/is-admin'
 
 const routes = [
   {
@@ -19,6 +22,15 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout'),
     children: PostRoutes
+  },
+  // Admin routes
+  {
+    path: '/',
+    meta: {
+      middleware: [isAdmin]
+    },
+    component: () => import('layouts/Admin'),
+    children: AdminRoutes
   },
 
   // Always leave this as last one,
