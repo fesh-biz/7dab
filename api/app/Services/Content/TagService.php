@@ -2,8 +2,10 @@
 
 namespace App\Services\Content;
 
+use App\Models\Content\Tag;
 use App\Repository\Content\TagRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TagService
 {
@@ -14,9 +16,9 @@ class TagService
         $this->repo = $repo;
     }
     
-    public function getModel(): TagRepository
+    public function getModel(): Tag
     {
-        return $this->repo;
+        return $this->repo->getModel();
     }
     
     public function search(string $title): Collection
@@ -27,10 +29,24 @@ class TagService
             ->get();
     }
     
+    public function paginatedSearch(string $keyword = null, string $orderBy = null, string $descending = null): LengthAwarePaginator
+    {
+        $query = $this->getModel()
+            ->when($keyword, function ($q) use ($keyword) {
+                $q->where('title', 'like', "%$keyword%");
+            })
+
+            ->when($orderBy, function ($q) use ($orderBy, $descending) {
+                $q->orderBy($orderBy, $descending);
+            });
+        
+        return $query->paginate(10);
+    }
+    
     public function createTags(array $titles): array
     {
         $ids = [];
-
+        
         foreach ($titles as $title) {
             if ($this->repo->isExists($title)) {
                 continue;

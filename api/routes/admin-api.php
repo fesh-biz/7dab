@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Content\TagController;
+
 Route::group(['prefix' => 'tags'], function () {
-    Route::get('/', function () {
-        return 'yep';
-    });
+    Route::get('paginated-search', [TagController::class, 'paginatedSearch']);
 });

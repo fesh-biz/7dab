@@ -3,11 +3,30 @@
     <!-- Tags Table -->
     <data-table
       :columns="columns"
-      url="admin/tags"
+      url="admin/tags/paginated-search"
       rowKey="id"
       title="Tags"
-      useBody
-    />
+      use-body
+    >
+      <template #table="props">
+        <q-tr>
+          <!-- ID -->
+          <q-td>
+            {{ props.props.row.id }}
+          </q-td>
+
+          <!-- Title -->
+          <q-td>
+            {{ props.props.row.title }}
+          </q-td>
+
+          <!-- Title -->
+          <q-td>
+            {{ props.props.row.status }}
+          </q-td>
+        </q-tr>
+      </template>
+    </data-table>
   </div>
 </template>
 

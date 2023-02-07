@@ -15,8 +15,16 @@ export default class Api {
 
   get (url, config) {
     return new Promise((resolve, reject) => {
+      if (process.env.ENV_DEV === 'Development') {
+        console.log('url', url)
+      }
       this.api.get(url, config)
-        .then(res => resolve(res))
+        .then(res => {
+          if (process.env.ENV_DEV === 'Development') {
+            console.log('res', res)
+          }
+          resolve(res)
+        })
         .catch(err => {
           this.showError(err)
           reject(err)

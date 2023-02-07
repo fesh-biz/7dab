@@ -22,4 +22,9 @@ class TagController extends Controller
         
         return $this->response($data);
     }
+    
+    public function paginatedSearch(Request $r): JsonResponse
+    {
+        return response()->json($this->service->paginatedSearch($r->keyword, $r->order_by, $r->descending));
+    }
 }

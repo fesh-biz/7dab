@@ -43,6 +43,7 @@
       href="https://www.reddit.com/r/AskReddit/comments/ntofxm/what_the_scariest_true_story_you_know/">
 - [] sitemap
     - [] https://developers.google.com/search/docs/advanced/crawling/overview?hl=ru
-    
+- [] Admin tags page
+
 ------------------------------ Ideas to implementation --------------------------
 - [] When user selected some existed tag(s) display recommended tags
