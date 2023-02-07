@@ -25,10 +25,16 @@ class TagRepository
     
     public function create(string $title, string $body = null): Tag
     {
-        return $this->model->create([
+        $data = [
             'title' => $title,
             'body' => $body,
             'user_id' => auth()->id()
-        ]);
+        ];
+        
+        if (auth()->user()->roleName === 'admin') {
+            $data['status'] = 'approved';
+        }
+        
+        return $this->model->create($data);
     }
 }
