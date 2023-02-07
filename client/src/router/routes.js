@@ -3,8 +3,6 @@ import FeedRoutes from './routes/feed'
 import PostRoutes from './routes/post'
 import AdminRoutes from './routes/admin'
 
-import isAdmin from 'src/router/middleware/is-admin'
-
 const routes = [
   {
     path: '/auth',
@@ -26,9 +24,6 @@ const routes = [
   // Admin routes
   {
     path: '/',
-    meta: {
-      middleware: [isAdmin]
-    },
     component: () => import('layouts/Admin'),
     children: AdminRoutes
   },
