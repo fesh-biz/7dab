@@ -47,6 +47,8 @@ export default {
   created () {
     if (!this.post) {
       this.fetchPost()
+    } else {
+      window.document.title = this.post.title + ` - ${this.$t('terevenky')}`
     }
   },
 
