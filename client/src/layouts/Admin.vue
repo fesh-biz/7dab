@@ -55,7 +55,7 @@ const menuList = [
   {
     icon: 'home',
     label: 'home_page',
-    routeName: 'admin.home',
+    routeName: 'home',
     separator: false
   },
   {
