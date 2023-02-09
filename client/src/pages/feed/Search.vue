@@ -10,6 +10,10 @@ export default {
 
   data () {
     return {}
+  },
+
+  created () {
+    window.document.title = this.$t('search') + ` - ${this.$t('terevenky')}`
   }
 }
 </script>

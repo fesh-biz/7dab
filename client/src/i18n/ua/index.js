@@ -1,4 +1,5 @@
 export default {
+  search: 'Пошук',
   home: 'Головна',
   user_login: 'Логін',
   terevenky: 'Теревеньки',
