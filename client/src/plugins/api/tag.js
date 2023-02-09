@@ -18,4 +18,12 @@ export default class Tag {
         .catch(err => reject(err))
     })
   }
+
+  update (id, data) {
+    return new Promise((resolve, reject) => {
+      this.api.put(`admin/tags/${id}`, data)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
 }
