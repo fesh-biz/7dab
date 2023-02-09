@@ -1,5 +1,9 @@
 # MVP
 - [] Tag page
+    - [] Search page
+    - [] Input fields:
+        - [] Text
+        - [] Tags
 
 
 ------------------------------- Next Steps ----------------------------------
