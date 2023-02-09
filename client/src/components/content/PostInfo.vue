@@ -1,7 +1,7 @@
 <template>
   <div style="color: #757575">
     <!-- Views, Comments, Rating-->
-    <div class="flex cursor-default">
+    <div v-if="false" class="flex cursor-default">
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
         <post-info-icon icon="thumbs_up_down" :amount="0" :tooltip-label="$t('rating')"/>
