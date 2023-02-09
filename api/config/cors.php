@@ -15,7 +15,13 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => (function () {
+        if (env('APP_ENV') === 'local') {
+            return ['api/*', 'sanctum/csrf-cookie'];
+        }
+    
+        return [];
+    })(),
 
     'allowed_methods' => ['*'],
 

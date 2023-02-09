@@ -69,12 +69,8 @@ class Controller extends BaseController
         ]);
     }
 
-    public function test()
+    public function test(): void
     {
-        $imageService = app(PostImageService::class);
-
-        $imageData = $imageService->saveImageFile(__DIR__ . '/2.png');
-
-        dd($imageData);
+        dd(config('cors'));
     }
 }
