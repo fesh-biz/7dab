@@ -170,7 +170,6 @@ export default {
           PostModel.insert({ data: res.data.data })
 
           this.postEditor.fillFormModel(this.postId)
-          console.log('this.postEditor', this.postEditor)
         })
     }
 

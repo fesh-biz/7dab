@@ -58,10 +58,6 @@ export default {
     }
   },
 
-  created () {
-    console.log('this.postEditor', this.postEditor)
-  },
-
   methods: {
     filterFn (val, update) {
       if (val === '') {

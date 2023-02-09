@@ -52,7 +52,6 @@ export default class Post {
     this.formModel = _.cloneDeep(formModel)
 
     const post = PostModel.query().withAll().find(postId)
-    console.log('post', post)
     this.formModel.title = post.title
 
     post.content.forEach(section => {
