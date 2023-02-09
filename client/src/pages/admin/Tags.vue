@@ -22,9 +22,9 @@
             <q-popup-edit
               buttons
               v-model="props.props.row.title"
-              @save="storeTag(props.props.row)"
+              @save="storeTag(props.props.row, 'title')"
             >
-              <q-input v-model="props.props.row.title" />
+              <q-input @focus="setTagPrevData(props.props.row)" @input="updateTag(props.props.row)" v-model="props.props.row.title" />
             </q-popup-edit>
           </q-td>
 
@@ -34,7 +34,7 @@
             <q-popup-edit
               buttons
               v-model="props.props.row.status"
-              @save="storeTag(props.props.row)"
+              @save="storeTag(props.props.row, 'status')"
             >
               <status
                 :tag="props.props.row"
@@ -89,11 +89,16 @@ export default {
   data () {
     return {
       columns,
-      tagApi: new Tag()
+      tagApi: new Tag(),
+      tagPrevData: {}
     }
   },
 
   methods: {
+    setTagPrevData (tag) {
+      this.tagPrevData = _.cloneDeep(tag)
+    },
+
     updateTag (tag) {
       const tableData = _.cloneDeep(this.$refs.datatable.data)
 
@@ -103,8 +108,11 @@ export default {
       this.$refs.datatable.data = tableData
     },
 
-    storeTag (tag) {
-      this.tagApi.update(tag.id, tag)
+    storeTag (tag, propName) {
+      const data = {}
+      data[propName] = tag[propName]
+
+      this.tagApi.update(tag.id, data)
         .then(() => {
           this.$q.notify({
             message: 'Ok',
@@ -112,6 +120,7 @@ export default {
           })
         })
         .catch(() => {
+          this.updateTag(this.tagPrevData)
           this.$q.notify({
             message: 'Fail',
             color: 'negative'
