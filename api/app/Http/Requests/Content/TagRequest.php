@@ -25,7 +25,7 @@ class TagRequest extends FormRequest
     {
         return [
             'status' => 'string|nullable',
-            'title' => 'string|nullable'
+            'title' => 'string|nullable|unique:tags,title'
         ];
     }
 }
