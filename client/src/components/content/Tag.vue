@@ -1,5 +1,5 @@
 <template>
-  <q-item :to="{ name: 'search', query: { tag: item.title }}" class="t-wrapper">
+  <q-item :to="{ name: 'search', query: { t: item.title.replace() }}" class="t-wrapper">
     <q-tooltip
       v-if="item.body"
       anchor="top middle"

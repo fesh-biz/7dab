@@ -1,9 +1,13 @@
 # MVP
+- [] Max post height
+    - [] 80% of client height
 - [] Tag page
     - [] Search page
     - [] Input fields:
         - [] Text
         - [] Tags
+- [] Fix log in
+    - [] Logout and try to log in
 
 
 ------------------------------- Next Steps ----------------------------------
