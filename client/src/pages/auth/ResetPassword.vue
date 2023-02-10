@@ -78,10 +78,10 @@
 <script>
 import Validator from '../../plugins/tools/validator'
 import UserApi from 'src/plugins/api/user'
-import { api } from 'boot/axios'
 import Me from 'src/models/user/me'
 import MeCookies from 'src/plugins/cookies/me'
 import Token from 'src/plugins/cookies/token'
+import Api from 'src/plugins/api/api'
 
 const formModel = {
   password: '',
@@ -98,7 +98,8 @@ export default {
       infoMessage: null,
       userApi: new UserApi(),
       tokenCookies: new Token(),
-      meCookies: new MeCookies()
+      meCookies: new MeCookies(),
+      api: new Api()
     }
   },
 
@@ -115,7 +116,7 @@ export default {
         .then((res) => {
           this.infoMessage = this.$t('your_password_has_been_successfully_reset') + '. ' + this.$t('you_ll_be_redirected_in_3_seconds')
           this.tokenCookies.set(res.data.token)
-          api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+          this.api.setBearer(this.tokenCookies.getAuthorizationToken())
 
           const me = res.data.user
           this.meCookies.set(me)

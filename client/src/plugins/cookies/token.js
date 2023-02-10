@@ -10,7 +10,7 @@ export default class Token {
   }
 
   delete () {
-    Cookies.remove('token')
+    Cookies.remove('token', { path: '/' })
   }
 
   getAuthorizationToken () {

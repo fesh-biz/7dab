@@ -22,6 +22,7 @@ import MeCookies from 'src/plugins/cookies/me'
 import UserAvatar from 'components/common/UserAvatar'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
+import Api from 'src/plugins/api/api'
 
 export default {
   name: 'UserMenu',
@@ -34,7 +35,8 @@ export default {
     return {
       userApi: new UserApi(),
       tokenCookies: new Token(),
-      meCookies: new MeCookies()
+      meCookies: new MeCookies(),
+      api: new Api()
     }
   },
 
@@ -46,6 +48,7 @@ export default {
 
   methods: {
     async logout () {
+      console.log('logout')
       await this.userApi.logout()
         .then(() => {
           this.deleteUserData()
@@ -56,6 +59,8 @@ export default {
     },
 
     deleteUserData () {
+      console.log('deleting user data')
+      this.api.deleteBearer()
       this.tokenCookies.delete()
       this.meCookies.delete()
       Me.deleteAll()

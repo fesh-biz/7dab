@@ -27,7 +27,7 @@ export default class Me {
   }
 
   delete () {
-    Cookies.remove('me')
+    Cookies.remove('me', { path: '/' })
     this.me = null
   }
 }

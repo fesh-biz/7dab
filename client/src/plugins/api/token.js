@@ -25,7 +25,6 @@ export default class TokenApi {
       })
         .then(res => resolve(res))
         .catch(err => {
-          console.error(err)
           reject(err)
         })
     })

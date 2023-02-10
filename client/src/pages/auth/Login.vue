@@ -72,12 +72,12 @@
 
 <script>
 import Validator from '../../plugins/tools/validator'
-import { api } from 'boot/axios'
 import TokenApi from 'src/plugins/api/token'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
 import Me from 'src/models/user/me'
 import MeCookies from 'src/plugins/cookies/me'
+import Api from 'src/plugins/api/api'
 
 const formModel = {
   email: null,
@@ -94,12 +94,9 @@ export default {
       tokenApi: new TokenApi(),
       userApi: new UserApi(),
       tokenCookies: new Token(),
-      meCookies: new MeCookies()
+      meCookies: new MeCookies(),
+      api: new Api()
     }
-  },
-
-  created () {
-    delete api.defaults.headers.common.Authorization
   },
 
   methods: {
@@ -110,7 +107,7 @@ export default {
           this.formIsBusy = false
 
           this.tokenCookies.set(res.data)
-          api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+          this.api.setBearer(this.tokenCookies.getAuthorizationToken())
 
           this.userApi.fetchMe()
             .then(res => {

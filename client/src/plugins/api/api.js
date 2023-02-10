@@ -6,6 +6,10 @@ import Me from 'src/plugins/cookies/me'
 
 export default class Api {
   constructor () {
+    if (Api.instance) {
+      return Api.instance
+    }
+
     this.axios = axios.create({
       baseURL: process.env.API_URL,
       headers: { 'Content-Type': 'application/json' }
@@ -15,8 +19,18 @@ export default class Api {
     this.meCookies = new Me()
 
     if (this.tokenCookies.getAuthorizationToken()) {
-      this.axios.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+      this.setBearer(this.tokenCookies.getAuthorizationToken())
     }
+
+    Api.instance = this
+  }
+
+  setBearer (bearer) {
+    this.axios.defaults.headers.common.Authorization = bearer
+  }
+
+  deleteBearer () {
+    delete this.axios.defaults.headers.common.Authorization
   }
 
   get (url, params) {

@@ -100,7 +100,7 @@ import Me from 'src/models/user/me'
 import MeCookies from 'src/plugins/cookies/me'
 import UserApi from 'src/plugins/api/user'
 import Token from 'src/plugins/cookies/token'
-import { api } from 'boot/axios'
+import Api from 'src/plugins/api/api'
 
 const formModel = {
   login: null,
@@ -119,7 +119,8 @@ export default {
       isSubmitting: false,
       userApi: new UserApi(),
       tokenCookies: new Token(),
-      meCookies: new MeCookies()
+      meCookies: new MeCookies(),
+      api: new Api()
     }
   },
 
@@ -128,7 +129,7 @@ export default {
       this.userApi.register(this.form)
         .then(res => {
           this.tokenCookies.set(res.data.token)
-          api.defaults.headers.common.Authorization = this.tokenCookies.getAuthorizationToken()
+          this.api.setBearer(this.tokenCookies.getAuthorizationToken())
 
           const me = res.data.user
           this.meCookies.set(me)
