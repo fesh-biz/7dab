@@ -20,6 +20,9 @@ export default class Post extends AppModel {
       title: this.string(''),
       status: this.string(''),
 
+      is_expanded: this.boolean(false),
+      is_images_loaded: this.boolean(false),
+
       tags: this.belongsToMany(Tag, PostTag, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostText, 'post_id'),
       post_images: this.hasMany(PostImage, 'post_id')

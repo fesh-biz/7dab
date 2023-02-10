@@ -1,4 +1,5 @@
 export default {
+  expand: 'Розгорнути',
   search: 'Пошук',
   home: 'Головна',
   user_login: 'Логін',

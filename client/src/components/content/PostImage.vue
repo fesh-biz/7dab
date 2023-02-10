@@ -1,14 +1,17 @@
 <template>
   <div>
-    <div ref="image" style="width: 100%" class="flex justify-center">
-      <q-img
+    <div
+      ref="image"
+      class="flex justify-center"
+    >
+      <img
         :src="imageUrl"
-        spinner-color="white"
+        alt="Зображення"
+        style="width: 100%"
         :style="{
-        margin: '10px 0 15px 0',
-        borderRadius: '5px',
-        width: isImageWiderThanWrapper ? '100%' : imageWidth + 'px'
-      }"
+          margin: '10px 0 15px 0',
+          borderRadius: '5px',
+        }"
       />
     </div>
 

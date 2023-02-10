@@ -7,6 +7,7 @@
           v-for="(post, index) in posts"
           :key="'post' + index"
           :post="post"
+          :is-all-images-loaded="isAllImagesLoaded"
       />
 
       <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
@@ -28,6 +29,7 @@ import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 import { isScrollBottom } from 'src/plugins/scroll'
+import DocumentState from 'src/plugins/tools/document-state'
 
 export default {
   name: 'FeedMain',
@@ -39,7 +41,8 @@ export default {
       },
       isLastFetched: false,
       currentPage: 0,
-      postApi: new PostApi()
+      postApi: new PostApi(),
+      isAllImagesLoaded: false
     }
   },
 
@@ -98,6 +101,8 @@ export default {
 
           this.$nextTick(() => {
             this.fetching.posts = false
+            DocumentState.isAllImagesLoaded()
+              .then(() => { this.isAllImagesLoaded = true })
           })
         })
         .catch(() => {
