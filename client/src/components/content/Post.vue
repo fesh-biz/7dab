@@ -47,7 +47,7 @@
     </q-card-section>
 
     <!-- Expander -->
-    <q-card-section v-if="!isExpanded" class="q-pt-none">
+    <q-card-section v-if="!isExpanded && isReady" class="q-pt-none">
       <div
         @click="expand"
         class="expander"
@@ -91,7 +91,8 @@ export default {
 
   data () {
     return {
-      documentState: new DocumentState()
+      documentState: new DocumentState(),
+      isReady: false
     }
   },
 
@@ -108,19 +109,34 @@ export default {
     }
   },
 
+  created () {
+    if (this.hasNotImages()) {
+      this.isReady = true
+    }
+  },
+
   mounted () {
     addEventListener('imagesUploaded', this.onImagesLoaded)
   },
 
   methods: {
-    onImagesLoaded () {
+    hasNotImages () {
+      return !!this.post.post_images.length
+    },
+
+    isShortBody () {
       const postBodyHeight = this.$refs.postBody.$el.clientHeight
       const allowedBodyHeightWithoutFolding = window.innerHeight * 0.7
 
-      if (postBodyHeight < allowedBodyHeightWithoutFolding) {
+      return postBodyHeight < allowedBodyHeightWithoutFolding
+    },
+
+    onImagesLoaded () {
+      if (this.isShortBody()) {
         this.expand()
       }
       this.updateImagesLoadingStatus()
+      this.isReady = true
 
       removeEventListener('imagesUploaded', this.onImagesLoaded)
     },
