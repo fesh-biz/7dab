@@ -4,7 +4,6 @@
     :dusk="'post-' + post.id"
     :flat="$q.platform.is.mobile"
     class="q-my-md"
-    :style="{opacity: postImagesLoaded ? 1 : 0}"
   >
     <!-- Title, Author -->
     <q-card-section class="q-pb-none">
@@ -38,7 +37,7 @@
     </q-card-section>
 
     <!-- Body -->
-    <q-card-section ref="postBody" :class="{folded: postImagesLoaded && !isExpanded }">
+    <q-card-section ref="postBody" :class="{folded: !isExpanded }">
       <component
         v-for="postSection in post.content"
         :key="'postSection-' + postSection.order"
@@ -74,6 +73,7 @@ import PostInfo from 'components/content/PostInfo'
 import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
+import DocumentState from 'src/plugins/tools/document-state'
 
 export default {
   name: 'Post',
@@ -86,16 +86,19 @@ export default {
     isPostPage: {
       type: Boolean,
       default: false
-    },
-    isAllImagesLoaded: {
-      type: Boolean,
-      default: false
+    }
+  },
+
+  data () {
+    return {
+      documentState: new DocumentState()
     }
   },
 
   computed: {
     isExpanded () {
       if (this.isPostPage) return true
+      if (!this.postImagesLoaded) return false
 
       return this.post.is_expanded
     },
@@ -105,8 +108,12 @@ export default {
     }
   },
 
-  watch: {
-    isAllImagesLoaded () {
+  mounted () {
+    addEventListener('imagesUploaded', this.onImagesLoaded)
+  },
+
+  methods: {
+    onImagesLoaded () {
       const postBodyHeight = this.$refs.postBody.$el.clientHeight
       const allowedBodyHeightWithoutFolding = window.innerHeight * 0.7
 
@@ -114,10 +121,10 @@ export default {
         this.expand()
       }
       this.updateImagesLoadingStatus()
-    }
-  },
 
-  methods: {
+      removeEventListener('imagesUploaded', this.onImagesLoaded)
+    },
+
     expand () {
       Post.update({
         where: this.post.id,

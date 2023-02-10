@@ -7,7 +7,6 @@
           v-for="(post, index) in posts"
           :key="'post' + index"
           :post="post"
-          :is-all-images-loaded="isAllImagesLoaded"
       />
 
       <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
@@ -41,8 +40,7 @@ export default {
       },
       isLastFetched: false,
       currentPage: 0,
-      postApi: new PostApi(),
-      isAllImagesLoaded: false
+      postApi: new PostApi()
     }
   },
 
@@ -101,8 +99,7 @@ export default {
 
           this.$nextTick(() => {
             this.fetching.posts = false
-            DocumentState.isAllImagesLoaded()
-              .then(() => { this.isAllImagesLoaded = true })
+            DocumentState.emitImagesUploaded()
           })
         })
         .catch(() => {

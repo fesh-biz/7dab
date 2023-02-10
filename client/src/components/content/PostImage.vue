@@ -7,7 +7,7 @@
       <img
         :src="imageUrl"
         alt="Зображення"
-        style="width: 100%"
+        style="max-width: 100%"
         :style="{
           margin: '10px 0 15px 0',
           borderRadius: '5px',
