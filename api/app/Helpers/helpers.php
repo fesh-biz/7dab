@@ -1,5 +1,27 @@
 <?php
 
+
+use Hashids\Hashids;
+
+if (!function_exists('encodeId')) {
+    function encodeId($id): string
+    {
+        $hash = new Hashids(config('7dab.salt'), 10);
+        
+        return $hash->encode($id);
+    }
+}
+
+if (!function_exists('decodeId')) {
+    function decodeId($id): int
+    {
+        $hash = new Hashids(config('7dab.salt'), 10);
+
+        return $hash->decode($id)[0];
+    }
+}
+
+
 /**
  * dd() with headers
  */

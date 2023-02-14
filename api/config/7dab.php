@@ -11,4 +11,7 @@ return [
     // Post images sizes
     'post_image_desktop_thumbnail_size' => 800,
     'post_image_mobile_thumbnail_size' => 400,
+    
+    // Hash
+    'salt' => 'sTKw$@3d093sdlfkjSDFjlk21412'
 ];

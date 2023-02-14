@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Auth\EmailVerification;
 use App\Models\User;
-use App\Services\Content\PostImageService;
+use App\Services\Jobs\MailService;
+use Hashids\Hashids;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -69,8 +71,12 @@ class Controller extends BaseController
         ]);
     }
 
-    public function test(): void
+    public function test()
     {
-        dd(config('cors'));
+        $hash = new Hashids('adsfsdaf', 10);
+        
+        $mailService = new MailService();
+        
+        $mailService->sendEmail('test@etse.sd', new EmailVerification(encodeId(5)));
     }
 }

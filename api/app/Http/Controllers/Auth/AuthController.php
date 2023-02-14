@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Mail\Auth\EmailVerification;
 use App\Mail\Auth\PasswordResetLinkRequested;
 use App\Models\User;
 use App\Repository\UserRepository;
+use App\Services\HashID;
+use App\Services\Jobs\MailService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -37,6 +40,9 @@ class AuthController extends Controller
         $userData = $r->getUserDataForRegistration();
 
         $user = $this->userRepo->createNewUser($userData);
+    
+        $mailService = new MailService();
+        $mailService->sendEmail($user->email, new EmailVerification(encodeId($user->id)));
 
         return $this->authUser($user, $userData['password']);
     }

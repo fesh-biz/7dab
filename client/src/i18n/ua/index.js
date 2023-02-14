@@ -1,4 +1,6 @@
 export default {
+  email_verification: 'Верифікація вашого Email',
+  your_email_verified: 'Ваш Email підтверджено',
   expand: 'Розгорнути',
   search: 'Пошук',
   home: 'Головна',
