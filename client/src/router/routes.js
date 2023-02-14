@@ -11,12 +11,6 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: AuthRoutes
   },
-  // External links routes
-  {
-    path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: ExternalLinks
-  },
   // Feed routes
   {
     path: '/',
@@ -28,6 +22,12 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout'),
     children: PostRoutes
+  },
+  // External links routes
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: ExternalLinks
   },
   // Admin routes
   {

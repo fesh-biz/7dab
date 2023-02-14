@@ -28,6 +28,8 @@ export default function ({ store, ssrContext }) {
 
   Router.beforeEach((to, from, next, store) => {
     if (!to.meta.middleware) {
+      console.log(to)
+      console.log(next())
       return next()
     }
 
