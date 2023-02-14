@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
     public function getUserDataForRegistration(): array
     {
         $userData = [];
-        foreach (['name', 'email', 'password'] as $inputField) {
+        foreach (['login', 'email', 'password'] as $inputField) {
             $userData[$inputField] = $this->$inputField;
         }
 

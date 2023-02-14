@@ -63,7 +63,7 @@ class Controller extends BaseController
             'token' => $response,
             'user' => [
                 'id' => $user->id,
-                'name' => $user->name,
+                'login' => $user->login,
                 'email' => $user->email
             ]
         ]);

@@ -1,5 +1,9 @@
 # MVP
 
+- [] Complete with mailing
+    - [] Registration, Reset Password emails translate to ua
+    - [] Set sender as `no-reply@terevenky.com`
+
 - [] Ability to rating
 - [] Comments
     - [] User can add comment to post
@@ -15,6 +19,9 @@
 ------------------------------- Next Steps ----------------------------------
 - [] Где-то применить этот слоган
   Українці зі всього світу спілкуються тут
+  
+- [] Замість Добавити Теревеньку - Теревенькнути
+    - [] 
 
 - [] Fix all problems with auth
 - [] To fix
