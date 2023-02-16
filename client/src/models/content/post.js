@@ -24,7 +24,7 @@ export default class Post extends AppModel {
       is_expanded: this.boolean(false),
       is_images_loaded: this.boolean(false),
 
-      rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type'),
+      rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type_name'),
 
       tags: this.belongsToMany(Tag, PostTag, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostText, 'post_id'),

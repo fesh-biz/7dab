@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\Auth\EmailVerification;
 use App\Models\Content\Post;
+use App\Models\Rating\Rating;
 use App\Models\User;
 use App\Services\Jobs\MailService;
 use Hashids\Hashids;
@@ -74,10 +75,8 @@ class Controller extends BaseController
 
     public function test()
     {
-        $res = Post::withTagsAuthorContent()
-            ->whereStatus('approved')
-            ->limit(10)
-            ->get();
+        $res = Rating::with('ratingable')
+            ->find(3);
         
         return response()->json($res);
     }

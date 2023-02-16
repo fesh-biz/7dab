@@ -40,8 +40,12 @@ class Rating extends Model
         'negative_votes'
     ];
     
-    protected $appends = [
+    protected $hidden = [
         'ratingable_type'
+    ];
+    
+    protected $appends = [
+        'ratingable_type_name'
     ];
     
     public function ratingable(): MorphTo
@@ -49,7 +53,7 @@ class Rating extends Model
         return $this->morphTo();
     }
     
-    public function getRatingableTypeAttribute(): string
+    public function getRatingableTypeNameAttribute(): string
     {
         $value = $this->attributes['ratingable_type'];
         $res = explode('\\', $value);

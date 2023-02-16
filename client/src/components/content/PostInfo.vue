@@ -5,10 +5,10 @@
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
         <!-- Thumb Up -->
-        <q-btn round color="green-4" size="sm" icon="thumb_up" />
+        <q-btn @click="vote('up')" round color="green-4" size="sm" icon="thumb_up" />
 
         <!-- Rating -->
-        <q-chip :color="rating.color" text-color="white">
+        <q-chip :color="rating.color" :text-color="rating.result === 0 ? 'black' : white">
           {{ rating.result }}
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
             {{ rating.positiveVotes }} - {{ rating.negativeVotes }}
@@ -16,7 +16,7 @@
         </q-chip>
 
         <!-- Thumb Down-->
-        <q-btn round color="red-4" size="sm" icon="thumb_down" />
+        <q-btn @click="vote('down')" round color="red-4" size="sm" icon="thumb_down" />
       </div>
 
       <!-- Total Views -->
@@ -44,6 +44,7 @@
 <script>
 import Tag from 'components/content/Tag'
 import PostInfoIcon from 'components/content/PostInfoIcon'
+import RatingApi from 'src/plugins/api/rating-api'
 
 export default {
   name: 'PostInfo',
@@ -60,10 +61,16 @@ export default {
     }
   },
 
+  data () {
+    return {
+      ratingApi: new RatingApi()
+    }
+  },
+
   computed: {
     rating () {
-      const pv = this.post.rating.positive_votes
-      const nv = this.post.rating.negative_votes
+      const pv = this.post?.rating?.positive_votes || 0
+      const nv = this.post?.rating?.negative_votes || 0
       const res = pv - nv
       return {
         positiveVotes: pv,
@@ -81,6 +88,15 @@ export default {
           return color
         })()
       }
+    }
+  },
+
+  methods: {
+    vote (name) {
+      this.ratingApi.vote('post', this.post.id, name === 'up')
+        .then(res => {
+          console.log('res', res)
+        })
     }
   }
 }

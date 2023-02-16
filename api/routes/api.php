@@ -15,6 +15,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Content\TagController;
+use App\Http\Controllers\Rating\RatingController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
@@ -24,6 +25,11 @@ Route::post('verify-email', [AuthController::class, 'verifyEmail']);
 Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
+});
+
+Route::group(['prefix' => 'ratings'], function() {
+    Route::post('vote', [RatingController::class, 'vote'])
+        ->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'tags'], function () {

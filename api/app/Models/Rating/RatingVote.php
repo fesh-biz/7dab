@@ -38,4 +38,20 @@ class RatingVote extends Model
         'ratingable_type',
         'is_positive'
     ];
+    
+    protected $hidden = [
+        'ratingable_type'
+    ];
+    
+    protected $appends = [
+        'ratingable_type_name'
+    ];
+    
+    public function getRatingableTypeNameAttribute(): string
+    {
+        $value = $this->attributes['ratingable_type'];
+        $res = explode('\\', $value);
+        $res = end($res);
+        return strtolower($res) . 's';
+    }
 }
