@@ -18,7 +18,6 @@ use Laravel\Passport\HasApiTokens;
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
- * @property int $rating
  * @property int $is_banned
  * @property int $role_id
  * @property string|null $remember_token
@@ -42,7 +41,6 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsBanned($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLogin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRating($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)

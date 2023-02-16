@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property int $id
  * @property int $user_id
  * @property string $title
- * @property string $slug
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -37,7 +36,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static Builder|Post query()
  * @method static Builder|Post whereCreatedAt($value)
  * @method static Builder|Post whereId($value)
- * @method static Builder|Post whereSlug($value)
  * @method static Builder|Post whereStatus($value)
  * @method static Builder|Post whereTitle($value)
  * @method static Builder|Post whereUpdatedAt($value)
