@@ -22,6 +22,8 @@ class EmailVerification extends Mailable
     {
         $hashedId = $this->hashedId;
         
-        return $this->from('no-reply@terevenky.com')->view('emails.auth.email-confirmation', compact('hashedId'));
+        return $this->from('no-reply@terevenky.com')
+            ->subject('Terevenky. Підтвердження email.')
+            ->view('emails.auth.email-confirmation', compact('hashedId'));
     }
 }
