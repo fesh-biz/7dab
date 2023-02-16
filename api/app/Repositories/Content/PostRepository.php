@@ -16,10 +16,15 @@ class PostRepository
 
     public function getPaginatedPosts(): LengthAwarePaginator
     {
-        return $this->model->withTagsAuthorContent()
+        $query = $this->model->withTagsAuthorContent()
             ->whereStatus('approved')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy('id', 'desc');
+        
+        if (auth()->user()) {
+        
+        }
+        
+        return $query->paginate(10);
     }
 
     public function find(int $postId): ?Post
