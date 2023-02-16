@@ -31,4 +31,11 @@ use Illuminate\Database\Eloquent\Model;
 class Rating extends Model
 {
     use HasFactory;
+    
+    protected $hidden = [
+        'ratingable_id',
+        'ratingable_type',
+        'positive_votes',
+        'negative_votes'
+    ];
 }

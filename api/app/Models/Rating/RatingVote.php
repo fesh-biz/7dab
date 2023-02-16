@@ -31,4 +31,11 @@ use Illuminate\Database\Eloquent\Model;
 class RatingVote extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'user_id',
+        'ratingable_id',
+        'ratingable_type',
+        'is_positive'
+    ];
 }

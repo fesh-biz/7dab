@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Content\Post;
+use App\Models\Rating\Rating;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +27,20 @@ class CreateRatingsTable extends Migration
             // Add indexes for faster querying
             $table->index(['ratingable_id', 'ratingable_type']);
         });
+        
+        foreach (User::all() as $user) {
+            Rating::create([
+                'ratingable_id' => $user->id,
+                'ratingable_type' => User::class
+            ]);
+        }
+        
+        foreach (Post::all() as $post) {
+            Rating::create([
+                'ratingable_id' => $post->id,
+                'ratingable_type' => Post::class
+            ]);
+        }
     }
     
     /**
