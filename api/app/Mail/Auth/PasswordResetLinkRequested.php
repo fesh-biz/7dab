@@ -34,9 +34,10 @@ class PasswordResetLinkRequested extends Mailable
         $token = $this->resetPasswordData['token'];
 
         $login = User::whereEmail($email)->first()->login;
-        $actionUrl = env('CLIENT_URL') . '/auth/reset-password/' . $token;
+        $actionUrl = env('APP_URL') . '/auth/reset-password/' . $token;
 
         return $this->from('noreply@terevenky.com','Terevenky')
+            ->subject('Terevenky. Відновлення паролю.')
             ->to($email)
             ->view(
                 'emails.auth.resetting-password',
