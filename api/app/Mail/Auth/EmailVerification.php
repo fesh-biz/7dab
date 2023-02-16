@@ -22,10 +22,7 @@ class EmailVerification extends Mailable
     {
         $hashedId = $this->hashedId;
         
-        return $this->from([
-            'address' => 'noreply@terevenky.com',
-            'name' => 'Terevenky'
-        ])
+        return $this->from('noreply@terevenky.com','Terevenky')
             ->subject('Terevenky. Підтвердження email.')
             ->view('emails.auth.email-confirmation', compact('hashedId'));
     }
