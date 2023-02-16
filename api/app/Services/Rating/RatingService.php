@@ -29,14 +29,19 @@ class RatingService
     
     public function vote(int $id, string $type, bool $isUpvote): RatingVote
     {
-        $userId = auth()->id();
+        sleep(1);
+        $authUserId = auth()->id();
         $model = $this->getRatingableModel($type);
+        
+        if ($this->getRatingable($id, $model)->user_id === $authUserId) {
+            abort(422, 'Не можна голосувати за себе.');
+        }
         
         DB::beginTransaction();
         $ratingVote = $this->voteRepo->getModel()
             ->whereRatingableId($id)
             ->whereRatingableType($model)
-            ->whereUserId($userId)
+            ->whereUserId($authUserId)
             ->first();
         
         $rating = $this->getModel()
@@ -48,6 +53,9 @@ class RatingService
         $isUpdatingVote = !!$ratingVote;
         $userRating = $this->getUserRatingOfRatingable($id, $model);
         if ($isUpdatingVote) {
+            if ((bool) $ratingVote->is_positive === $isUpvote) {
+                abort(422, 'Не можна однаково голосувати більш одного разу.');
+            }
             $ratingVote->is_positive = $isUpvote;
             $ratingVote->save();
             
@@ -69,7 +77,7 @@ class RatingService
                 ->create([
                     'ratingable_id' => $id,
                     'ratingable_type' => $model,
-                    'user_id' => $userId,
+                    'user_id' => $authUserId,
                     'is_positive' => $isUpvote
                 ]);
             
@@ -89,9 +97,14 @@ class RatingService
         return $ratingVote;
     }
     
+    public function getRatingable(int $id, string $modelName): Post|Comment|User
+    {
+        return $modelName::findOrFail($id);
+    }
+    
     public function getUserRatingOfRatingable(int $id, string $modelName): Rating
     {
-        $ratingable = $modelName::findOrFail($id);
+        $ratingable = $this->getRatingable($id, $modelName);
         
         return Rating::firstOrCreate([
             'ratingable_id' => $ratingable->user_id,

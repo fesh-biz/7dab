@@ -19,7 +19,7 @@ export default class RatingApi {
         is_upvote: isUpvote
       })
         .then(res => resolve(res))
-        .catch(err => resolve(err))
+        .catch(err => reject(err))
     })
   }
 }

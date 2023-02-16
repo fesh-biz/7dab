@@ -1,14 +1,16 @@
 <template>
   <div style="color: #757575">
+    <q-linear-progress v-if="isSubmitting" indeterminate/>
+
     <!-- Views, Comments, Rating-->
     <div class="flex cursor-default">
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
         <!-- Thumb Up -->
-        <q-btn @click="vote('up')" round color="green-4" size="sm" icon="thumb_up" />
+        <q-btn @click="vote('up')" round color="green-4" size="sm" icon="thumb_up"/>
 
         <!-- Rating -->
-        <q-chip :color="rating.color" :text-color="rating.result === 0 ? 'black' : white">
+        <q-chip :color="rating.color" :text-color="rating.result === 0 ? 'black' : 'white'">
           {{ rating.result }}
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
             {{ rating.positiveVotes }} - {{ rating.negativeVotes }}
@@ -16,7 +18,7 @@
         </q-chip>
 
         <!-- Thumb Down-->
-        <q-btn @click="vote('down')" round color="red-4" size="sm" icon="thumb_down" />
+        <q-btn @click="vote('down')" round color="red-4" size="sm" icon="thumb_down"/>
       </div>
 
       <!-- Total Views -->
@@ -33,9 +35,9 @@
     <!-- Tags -->
     <div :dusk="'post-' + post.id + '-info-tags'" class="q-mt-md flex">
       <tag
-          v-for="(tag, index) in post.tags"
-          :key="'tag' + index"
-          :item="tag"
+        v-for="(tag, index) in post.tags"
+        :key="'tag' + index"
+        :item="tag"
       />
     </div>
   </div>
@@ -63,6 +65,7 @@ export default {
 
   data () {
     return {
+      isSubmitting: false,
       ratingApi: new RatingApi()
     }
   },
@@ -72,6 +75,7 @@ export default {
       const pv = this.post?.rating?.positive_votes || 0
       const nv = this.post?.rating?.negative_votes || 0
       const res = pv - nv
+
       return {
         positiveVotes: pv,
         negativeVotes: nv,
@@ -93,9 +97,18 @@ export default {
 
   methods: {
     vote (name) {
+      this.isSubmitting = true
       this.ratingApi.vote('post', this.post.id, name === 'up')
         .then(res => {
-          console.log('res', res)
+          this.isSubmitting = false
+        })
+        .catch(err => {
+          this.isSubmitting = false
+          this.$q.notify({
+            message: err.response.data.message,
+            position: 'center',
+            color: 'red'
+          })
         })
     }
   }

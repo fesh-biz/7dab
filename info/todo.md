@@ -1,9 +1,7 @@
 # MVP
 - [] Ability to rating
-  - [] models
-    - [] `Rating/Rating`, `Rating/RatingVotes`
-  - [] seeders, factories
-  - [] display rating
+  - [] User can't vote own post/comment
+  - [] User can't vote more than one per Comment/Post
 - [] Comments
     - [] User can add comment to post
     - [] User can add comment to comment
