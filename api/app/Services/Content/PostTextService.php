@@ -3,7 +3,7 @@
 namespace App\Services\Content;
 
 use App\Models\Content\PostText;
-use App\Repository\Content\PostTextRepository;
+use App\Repositories\Content\PostTextRepository;
 
 class PostTextService
 {

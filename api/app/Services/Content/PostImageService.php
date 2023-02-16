@@ -3,7 +3,7 @@
 namespace App\Services\Content;
 
 use App\Models\Content\PostImage;
-use App\Repository\Content\PostImageRepository;
+use App\Repositories\Content\PostImageRepository;
 use File;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;

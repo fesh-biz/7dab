@@ -3,7 +3,7 @@
 namespace App\Services\Content;
 
 use App\Models\Content\Tag;
-use App\Repository\Content\TagRepository;
+use App\Repositories\Content\TagRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 

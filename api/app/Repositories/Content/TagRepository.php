@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Content;
+namespace App\Repositories\Content;
 
 use App\Models\Content\Tag;
 

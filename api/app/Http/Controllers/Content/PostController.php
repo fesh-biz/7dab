@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\PostRequest;
-use App\Repository\Content\PostRepository;
+use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostService;
 use Illuminate\Http\JsonResponse;
 

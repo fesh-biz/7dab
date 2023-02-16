@@ -6,7 +6,7 @@ use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
 use App\Models\Content\PostImage;
 use App\Models\Content\PostText;
-use App\Repository\Content\PostRepository;
+use App\Repositories\Content\PostRepository;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
 

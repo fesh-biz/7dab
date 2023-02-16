@@ -7,7 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Mail\Auth\EmailVerification;
 use App\Mail\Auth\PasswordResetLinkRequested;
 use App\Models\User;
-use App\Repository\UserRepository;
+use App\Repositories\UserRepository;
 use App\Services\HashID;
 use App\Services\Jobs\MailService;
 use Illuminate\Contracts\Auth\Authenticatable;
