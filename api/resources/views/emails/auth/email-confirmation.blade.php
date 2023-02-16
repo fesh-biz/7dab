@@ -17,9 +17,9 @@
                 <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                   <tr>
                     <td>
-                      <p>Вітаємо!</p>
+                      <p>Вітаємо, {{ $login }}!</p>
                       <p>
-                        Нещодавно ви зареєструвались на сайті terevenky.com.
+                        Нещодавно ви зареєструвались на сайті Terevenky.
                       </p>
                       <p>Щоб завершити реєстрацію, нам необхідно, щоб ви підтвердили ваш email.</p>
                       <table role="presentation" border="0" cellpadding="0" cellspacing="0"

@@ -57,7 +57,13 @@ class AuthController extends Controller
         $user = $this->userRepo->createNewUser($userData);
     
         $mailService = new MailService();
-        $mailService->sendEmail($user->email, new EmailVerification(encodeId($user->id)));
+        $mailService->sendEmail(
+            $user->email,
+            new EmailVerification(
+                encodeId($user->id),
+                $user->login
+            )
+        );
 
         return $this->authUser($user, $userData['password']);
     }
