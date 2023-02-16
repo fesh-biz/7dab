@@ -2,6 +2,7 @@
 
 namespace App\Models\Content;
 
+use App\Models\Rating\Rating;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Content\Post
@@ -46,49 +48,55 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Post extends Model
 {
     use HasFactory;
-
+    
     public static string $PENDING = 'pending';
     public static string $REVIEWING = 'reviewing';
     public static string $APPROVED = 'approved';
     public static string $DECLINED = 'declined';
     public static string $EDITING = 'editing';
-
+    
     protected $fillable = [
         'title', 'user_id', 'status'
     ];
-
+    
+    public function rating(): MorphOne
+    {
+        return $this->morphOne(Rating::class, 'ratingable');
+    }
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-
+    
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class)
             ->where('status', 'approved');
     }
-
+    
     public function postTexts(): HasMany
     {
         return $this->hasMany(PostText::class);
     }
-
+    
     public function postImages(): HasMany
     {
         return $this->hasMany(PostImage::class);
     }
-
+    
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-
+    
     public function scopeWithTagsAuthorContent(Builder $q): Builder
     {
         return $q->with([
             'tags:id,title',
             'user:id,login',
             'postImages',
+            'rating',
             'postTexts'
         ]);
     }

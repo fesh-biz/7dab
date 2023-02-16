@@ -4,6 +4,7 @@ namespace App\Models\Rating;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\Rating\Rating
@@ -32,10 +33,27 @@ class Rating extends Model
 {
     use HasFactory;
     
-    protected $hidden = [
+    protected $fillable = [
         'ratingable_id',
         'ratingable_type',
         'positive_votes',
         'negative_votes'
     ];
+    
+    protected $appends = [
+        'ratingable_type'
+    ];
+    
+    public function ratingable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+    
+    public function getRatingableTypeAttribute(): string
+    {
+        $value = $this->attributes['ratingable_type'];
+        $res = explode('\\', $value);
+        $res = end($res);
+        return strtolower($res) . 's';
+    }
 }

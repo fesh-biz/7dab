@@ -9,7 +9,9 @@ import Me from 'src/models/user/me'
 import User from 'src/models/user/user'
 import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
+import Rating from 'src/models/rating/rating'
 
+database.register(Rating)
 database.register(PostImage)
 database.register(Post)
 database.register(PostTag)

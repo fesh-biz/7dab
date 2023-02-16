@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Auth\EmailVerification;
+use App\Models\Content\Post;
 use App\Models\User;
 use App\Services\Jobs\MailService;
 use Hashids\Hashids;
@@ -73,10 +74,11 @@ class Controller extends BaseController
 
     public function test()
     {
-        $hash = new Hashids('adsfsdaf', 10);
+        $res = Post::withTagsAuthorContent()
+            ->whereStatus('approved')
+            ->limit(10)
+            ->get();
         
-        $mailService = new MailService();
-        
-        $mailService->sendEmail('test@etse.sd', new EmailVerification(encodeId(5)));
+        return response()->json($res);
     }
 }
