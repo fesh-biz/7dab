@@ -1,7 +1,7 @@
 export default [
   {
-    path: 'email-verify',
-    name: 'emailVerify',
+    path: 'verify-email',
+    name: 'verifyEmail',
     component: () => import('pages/external-links/EmailVerification')
   }
 ]

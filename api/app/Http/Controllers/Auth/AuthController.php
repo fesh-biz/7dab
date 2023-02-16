@@ -22,6 +22,21 @@ class AuthController extends Controller
     {
         $this->userRepo = new UserRepository();
     }
+    
+    public function verifyEmail(Request $r):? JsonResponse
+    {
+        sleep(1);
+        $userId = decodeId($r->token);
+        
+        $user = User::findOrFail($userId);
+        if ($user->email_verified_at) {
+            abort(422);
+        }
+        $user->email_verified_at = now();
+        $user->save();
+        
+        return response()->json('success');
+    }
 
     public function me(): Authenticatable
     {

@@ -8,17 +8,21 @@
           <div class="text-h6">{{ $t('email_verification') }}</div>
         </q-card-section>
 
-        <q-card-section class="q-pt-none flex justify-center">
-          <q-spinner
-            color="primary"
-            size="3em"
-            :thickness="10"
-          />
+        <q-card-section v-if="isSubmitting" class="q-pt-none flex justify-center">
+          <q-linear-progress indeterminate />
         </q-card-section>
 
-        <q-card-section>
+        <q-card-section v-if="isVerified">
           {{ $t('your_email_verified') }} <br>
-          {{ $t('you_ll_be_redirected_in_3_seconds') }}
+          {{ $t('thanks') }}
+        </q-card-section>
+
+        <q-card-section v-if="!isSubmitting">
+          <q-item class="bg-light-blue-1" :to="{name: 'home'}">
+            <q-item-section class="text-center">
+              {{ $t('home_page') }}
+            </q-item-section>
+          </q-item>
         </q-card-section>
       </q-card>
     </div>
@@ -33,7 +37,9 @@ export default {
 
   data () {
     return {
-      userApi: new UserApi()
+      userApi: new UserApi(),
+      isSubmitting: false,
+      isVerified: false
     }
   },
 
@@ -51,13 +57,19 @@ export default {
 
   methods: {
     verifyEmail () {
+      this.isSubmitting = true
       this.userApi.verifyEmail(this.token)
-        .then(() => {
+        .then((res) => {
+          this.isSubmitting = false
+          this.isVerified = true
+        })
+        .catch(() => {
+          this.isSubmitting = false
+
           this.$q.notify({
-            message: this.$t('your_email_verified'),
-            position: 'center',
-            color: 'positive',
-            timeout: 3000
+            message: this.$t('something_went_wrong') + ' Можливо ваш email вже підтверджено.',
+            color: 'negative',
+            position: 'center'
           })
         })
     }
