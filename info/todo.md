@@ -1,10 +1,9 @@
 # MVP
-
-- [] Complete with mailing
-    - [] Registration, Reset Password emails translate to ua
-    - [] Set sender as `no-reply@terevenky.com`
-
 - [] Ability to rating
+  - [] models
+    - [] `Rating/Rating`, `Rating/RatingVotes`
+  - [] seeders, factories
+  - [] display rating
 - [] Comments
     - [] User can add comment to post
     - [] User can add comment to comment
