@@ -1,4 +1,5 @@
 export default {
+  preview: 'Переглянути',
   rating_will_be_updated_soon: 'Рейтинг буде оновлено за хвилину',
   your_vote_is_accepted: 'Ваш голос збережено',
   thanks: 'Дякуємо!',

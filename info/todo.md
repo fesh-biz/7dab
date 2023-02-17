@@ -1,7 +1,5 @@
 # MVP
 - [] Ability to rating
-  - [] User can't vote own post/comment
-  - [] User can't vote more than one per Comment/Post
   - [] JS voting step equals 2. Should be 1.
 - [] Comments
     - [] User can add comment to post

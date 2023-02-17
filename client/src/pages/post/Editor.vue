@@ -86,6 +86,17 @@
 
           <!-- Cancel, Save -->
           <div class="inline-block">
+            <!-- Preview -->
+            <icon-with-tooltip
+              :tooltip="$t('preview')"
+              color="positive"
+              :disabled="isBusy"
+              v-if="canBeViewed"
+              size="xl"
+              icon="pageview"
+              @click="$router.push({name: 'postPage', params: {id: postId}})"
+            />
+
             <!-- Cancel -->
             <icon-with-tooltip
               @click="goBack"
@@ -138,7 +149,8 @@ export default {
     return {
       postEditor: new PostEditor(),
       postApi: new PostApi(),
-      isBusy: false
+      isBusy: false,
+      canBeViewed: false
     }
   },
 
@@ -165,13 +177,19 @@ export default {
   },
 
   created () {
-    if (this.isEditing && !this.post) {
-      this.fetchPost()
-        .then(res => {
-          PostModel.insert({ data: res.data.data })
+    if (this.isEditing) {
+      if (!this.post) {
+        this.fetchPost()
+          .then(res => {
+            PostModel.insert({ data: res.data.data })
 
-          this.postEditor.fillFormModel(this.postId)
-        })
+            this.postEditor.fillFormModel(this.postId)
+            this.canBeViewed = true
+          })
+      } else {
+        this.canBeViewed = true
+        this.postEditor.fillFormModel(this.postId)
+      }
     }
 
     if (!this.isEditing) {
