@@ -27,7 +27,7 @@
 import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
-import { isScrollBottom } from 'src/plugins/scroll'
+import Scroll from 'src/plugins/tools/scroll'
 import DocumentState from 'src/plugins/tools/document-state'
 
 export default {
@@ -40,7 +40,8 @@ export default {
       },
       isLastFetched: false,
       currentPage: 0,
-      postApi: new PostApi()
+      postApi: new PostApi(),
+      scroll: new Scroll()
     }
   },
 
@@ -77,21 +78,23 @@ export default {
     },
 
     maybeFetchNextPosts () {
-      if (!this.fetching.posts && isScrollBottom(500) && !this.isLastFetched) {
+      if (!this.fetching.posts && this.scroll.isScrollBottom(500) && !this.isLastFetched) {
         this.fetchPosts()
       }
     },
 
     fetchPosts (isFirstTime) {
+      console.log('fetching')
+
       this.fetching.posts = true
       this.postApi.fetchPosts(++this.currentPage)
-        .then(async res => {
+        .then(res => {
           if (isFirstTime) {
-            await PostModel.create({
+            PostModel.create({
               data: res.data.data
             })
           } else {
-            await PostModel.insert({
+            PostModel.insert({
               data: res.data.data
             })
           }
