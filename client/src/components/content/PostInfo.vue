@@ -11,6 +11,7 @@
           @click="vote('up')"
           round
           size="sm"
+          :disable="isMyVotePositive"
           :color="isMyVotePositive ? 'green-8' : 'grey-6'"
           icon="thumb_up"
         />
@@ -27,6 +28,7 @@
         <q-btn
           @click="vote('down')"
           round
+          :disable="isMyVoteNegative"
           :color="isMyVoteNegative ? 'red-8' : 'grey-6'"
           size="sm"
           icon="thumb_down"
