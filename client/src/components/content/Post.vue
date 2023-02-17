@@ -127,7 +127,7 @@ export default {
 
     isShortBody () {
       const postBodyHeight = this.$refs.postBody.$el.clientHeight
-      const allowedBodyHeightWithoutFolding = window.innerHeight * 0.7
+      const allowedBodyHeightWithoutFolding = window.innerHeight * 0.49
 
       return postBodyHeight < allowedBodyHeightWithoutFolding
     },
@@ -165,7 +165,7 @@ export default {
 
 <style lang="sass">
 .folded
-  max-height: 70vh
+  max-height: 50vh
   overflow: hidden
 
 .expander
