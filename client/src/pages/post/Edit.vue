@@ -232,8 +232,12 @@ export default {
           const post = res.data.data
           const postId = post.id
 
-          PostModel.update({
+          PostModel.delete({
             where: postId,
+            with: ['post_texts', 'post_images']
+          })
+
+          PostModel.insert({
             data: post
           })
 
