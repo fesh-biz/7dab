@@ -8,7 +8,7 @@ export default [
       title: 'add_post',
       middleware: [isUser]
     },
-    component: () => import('pages/post/Editor')
+    component: () => import('pages/post/Create')
   },
   {
     path: '/posts/:id/edit',
@@ -17,7 +17,7 @@ export default [
       title: 'edit_post',
       middleware: [isUser]
     },
-    component: () => import('pages/post/Editor')
+    component: () => import('pages/post/Edit')
   },
   {
     path: '/posts/:id',
