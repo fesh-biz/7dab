@@ -7,50 +7,50 @@
 
           <!-- Title -->
           <q-input
-              outlined
-              dense
-              v-model="postEditor.formModel.title"
-              :label="$t('title')"
+            outlined
+            dense
+            v-model="postEditor.formModel.title"
+            :label="$t('title')"
 
-              :error="!!postEditor.validator.errors.title"
-              :error-message="postEditor.validator.errors.title"
+            :error="!!postEditor.validator.errors.title"
+            :error-message="postEditor.validator.errors.title"
 
-              @input="postEditor.validator.resetFieldError('title')"
+            @input="postEditor.validator.resetFieldError('title')"
           />
 
           <!-- Movement, Deleting Section, Content -->
           <div class="ap-body">
             <div
-                v-for="(section, index) in postEditor.formModel.sections"
-                :key="'body-element' + section.order"
-                class="q-mb-md"
+              v-for="(section, index) in postEditor.formModel.sections"
+              :key="'body-element' + section.order"
+              class="q-mb-md"
             >
               <!-- Delete -->
               <div>
                 <!-- Delete -->
                 <icon-with-tooltip
-                    @click="postEditor.deleteSection(index)"
-                    :tooltip="$t('delete_section')"
-                    icon="delete"
+                  @click="postEditor.deleteSection(index)"
+                  :tooltip="$t('delete_section')"
+                  icon="delete"
                 />
               </div>
 
               <!-- Content -->
               <component
-                  :ref="'editor[' + section.order + ']'"
-                  :is="section.type + '-field'"
-                  :content="section.content"
-                  :order="section.order"
-                  :error-message="getSectionError(section.order)"
-                  @input="postEditor.validator.resetFieldError('sections', section.order)"
+                :ref="'editor[' + section.order + ']'"
+                :is="section.type + '-field'"
+                :content="section.content"
+                :order="section.order"
+                :error-message="getSectionError(section.order)"
+                @input="postEditor.validator.resetFieldError('sections', section.order)"
               />
             </div>
           </div>
 
           <!-- Tags -->
           <tag-field
-              @input="updatePostTags"
-              :error-message="tagError"
+            @input="updatePostTags"
+            :error-message="tagError"
           />
         </q-card-section>
 
@@ -177,28 +177,8 @@ export default {
   },
 
   created () {
-    if (this.isEditing) {
-      if (!this.post) {
-        this.fetchPost()
-          .then(res => {
-            PostModel.insert({ data: res.data.data })
-
-            this.postEditor.fillFormModel(this.postId)
-            this.canBeViewed = true
-          })
-      } else {
-        this.canBeViewed = true
-        this.postEditor.fillFormModel(this.postId)
-      }
-    }
-
-    if (!this.isEditing) {
-      this.postEditor.addSection('text')
-    }
-  },
-
-  beforeDestroy () {
     this.postEditor.resetFormModel()
+    this.postEditor.addSection('text')
   },
 
   methods: {
