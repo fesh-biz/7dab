@@ -15,6 +15,7 @@ Vue.use(VueRouter)
  */
 
 export default function ({ store, ssrContext }) {
+  const yPositions = {}
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -27,6 +28,16 @@ export default function ({ store, ssrContext }) {
   })
 
   Router.beforeEach((to, from, next, store) => {
+    if (from.name) {
+      yPositions[from.path] = window.pageYOffset
+    }
+
+    if (yPositions[to.path]) {
+      setTimeout(() => {
+        window.scrollTo(0, yPositions[to.path])
+      }, 10)
+    }
+
     if (!to.meta.middleware) {
       return next()
     }
