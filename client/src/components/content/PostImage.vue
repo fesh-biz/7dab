@@ -10,7 +10,7 @@
         style="max-width: 100%"
         :style="{
           margin: '10px 0 15px 0',
-          borderRadius: '5px',
+          borderRadius: '5px'
         }"
       />
     </div>

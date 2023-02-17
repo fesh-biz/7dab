@@ -51,7 +51,6 @@
       <div
         @click="expand"
         class="expander"
-        style="border-radius: 0px 0px 10px 10px"
       >
         {{ $t('expand') }}
       </div>

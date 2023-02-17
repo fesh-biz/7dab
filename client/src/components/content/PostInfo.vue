@@ -127,10 +127,6 @@ export default {
     }
   },
 
-  created () {
-    console.log('this.post', this.post)
-  },
-
   methods: {
     vote (name) {
       this.isSubmitting = true
