@@ -229,6 +229,12 @@ export default {
             })
             this.$router.push({ name: 'editPost', params: { id: postId } })
           }
+
+          this.$q.notify({
+            message: this.$t('success'),
+            position: 'center',
+            color: 'positive'
+          })
         })
         .catch(() => {
           this.isBusy = false

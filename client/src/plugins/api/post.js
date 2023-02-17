@@ -47,7 +47,7 @@ export default class Post {
 
   update (data, id) {
     return new Promise((resolve, reject) => {
-      this.api.put(`/content/posts/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } })
+      this.api.post(`/content/posts/${id}`, data, { headers: { 'Content-Type': 'multipartddd/form-data' } })
         .then(res => resolve(res))
         .catch(err => {
           reject(err)

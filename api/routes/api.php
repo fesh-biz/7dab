@@ -43,7 +43,7 @@ Route::group(['prefix' => 'content'], function () {
         'auth:api',
         'image-sanitize'
     ]);
-    Route::put('/posts/{id}', [PostController::class, 'update'])->middleware([
+    Route::post('/posts/{id}', [PostController::class, 'update'])->middleware([
         'auth:api',
         'image-sanitize'
     ]);

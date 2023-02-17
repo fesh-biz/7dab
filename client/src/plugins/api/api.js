@@ -41,23 +41,23 @@ export default class Api {
     })
   }
 
-  post (url, data) {
+  post (url, data, options) {
     return new Promise((resolve, reject) => {
-      return this.request(url, 'post', data)
+      return this.request(url, 'post', data, options)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  put (url, data) {
+  put (url, data, options) {
     return new Promise((resolve, reject) => {
-      return this.request(url, 'put', data)
+      return this.request(url, 'put', data, options)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  request (url, method, params) {
+  request (url, method, params, options) {
     if (process.env.ENV_DEV === 'Development') {
       console.log('----rqst start-----')
       console.log('requesting url:', url)
