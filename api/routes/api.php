@@ -13,6 +13,7 @@
 */
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Content\CommentController;
 use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Content\TagController;
 use App\Http\Controllers\Rating\RatingController;
@@ -47,4 +48,8 @@ Route::group(['prefix' => 'content'], function () {
         'auth:api',
         'image-sanitize'
     ]);
+    
+    Route::group(['prefix' => 'comments'], function() {
+        Route::get('/', [CommentController::class, 'comments']);
+    });
 });

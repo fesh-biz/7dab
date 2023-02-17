@@ -2,8 +2,11 @@
 
 namespace App\Models\Content;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
@@ -34,10 +37,45 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Comment extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'user_id',
+        'commentable_id',
+        'commentable_type',
+        'body'
+    ];
+    
+    protected $hidden = [
+        'commentable_type'
+    ];
+    
+    protected $appends = [
+        'commentable_type_name'
+    ];
 
     public function comments(): MorphMany
     {
         return $this->morphMany(self::class, 'commentable')
             ->with('comments');
+    }
+    
+    public function answers(): HasMany
+    {
+        return $this->hasMany(self::class, 'commentable_id', 'id')
+            ->where('commentable_type', self::class)
+            ->with('answers');
+    }
+    
+    public function author(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    
+    public function getCommentableTypeNameAttribute(): string
+    {
+        $value = $this->attributes['commentable_type'];
+        $res = explode('\\', $value);
+        $res = end($res);
+        return strtolower($res) . 's';
     }
 }

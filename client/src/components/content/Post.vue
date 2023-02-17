@@ -1,70 +1,75 @@
 <template>
-  <q-card
-    :id="'post-id-' + post.id"
-    :dusk="'post-' + post.id"
-    :flat="$q.platform.is.mobile"
-    class="q-my-md"
-  >
-    <!-- Title, Author -->
-    <q-card-section class="q-pb-none">
-      <!-- Author -->
-      <div :dusk="'post-' + post.id + '-author'">
-        {{ post.user.login }}
-      </div>
+  <div>
+    <!-- Post -->
+    <q-card
+      :id="'post-id-' + post.id"
+      :dusk="'post-' + post.id"
+      :flat="$q.platform.is.mobile"
+      class="q-my-md"
+    >
+      <!-- Title, Author -->
+      <q-card-section class="q-pb-none">
+        <!-- Author -->
+        <div :dusk="'post-' + post.id + '-author'">
+          {{ post.user.login }}
+        </div>
 
-      <!-- Title -->
-      <q-item
-        v-if="isPostPage"
-        :dusk="'post-' + post.id + '-title'"
-        class="font-lobster q-px-none"
-      >
-        <q-item-section style="font-size: 1.2rem">
-          {{ post.title }}
-        </q-item-section>
-      </q-item>
+        <!-- Title -->
+        <q-item
+          v-if="isPostPage"
+          :dusk="'post-' + post.id + '-title'"
+          class="font-lobster q-px-none"
+        >
+          <q-item-section style="font-size: 1.2rem">
+            {{ post.title }}
+          </q-item-section>
+        </q-item>
 
-      <q-item
-        v-if="!isPostPage"
-        dense
-        :to="{ name: 'postPage', params: {id: post.id }}"
-        :dusk="'post-' + post.id + '-title'"
-        class="font-lobster q-px-none"
-      >
-        <q-item-section style="font-size: 1.2rem">
-          {{ post.title }}
-        </q-item-section>
-      </q-item>
-    </q-card-section>
+        <q-item
+          v-if="!isPostPage"
+          dense
+          :to="{ name: 'postPage', params: {id: post.id }}"
+          :dusk="'post-' + post.id + '-title'"
+          class="font-lobster q-px-none"
+        >
+          <q-item-section style="font-size: 1.2rem">
+            {{ post.title }}
+          </q-item-section>
+        </q-item>
+      </q-card-section>
 
-    <!-- Body -->
-    <q-card-section ref="postBody" :class="{folded: !isExpanded }">
-      <component
-        v-for="postSection in post.content"
-        :key="'postSection-' + postSection.order"
-        :is="'post-' + postSection.type"
-        :data="postSection"
-      />
-    </q-card-section>
+      <!-- Body -->
+      <q-card-section ref="postBody" :class="{folded: !isExpanded }">
+        <component
+          v-for="postSection in post.content"
+          :key="'postSection-' + postSection.order"
+          :is="'post-' + postSection.type"
+          :data="postSection"
+        />
+      </q-card-section>
 
-    <!-- Expander -->
-    <q-card-section v-if="!isExpanded && isReady" class="q-pt-none">
-      <div
-        @click="expand"
-        class="expander"
-      >
-        {{ $t('expand') }}
-      </div>
-    </q-card-section>
+      <!-- Expander -->
+      <q-card-section v-if="!isExpanded && isReady" class="q-pt-none">
+        <div
+          @click="expand"
+          class="expander"
+        >
+          {{ $t('expand') }}
+        </div>
+      </q-card-section>
 
-    <!-- Info -->
-    <q-card-section :dusk="'post-' + post.id + '-info'">
-      <post-info
-        :post="post"
-      />
-    </q-card-section>
+      <!-- Info -->
+      <q-card-section :dusk="'post-' + post.id + '-info'">
+        <post-info
+          :post="post"
+        />
+      </q-card-section>
 
-    <q-separator v-if="$q.platform.is.mobile"/>
-  </q-card>
+      <q-separator v-if="$q.platform.is.mobile"/>
+    </q-card>
+
+    <post-comments :post-id="post.id"/>
+  </div>
 </template>
 
 <script>
@@ -73,10 +78,11 @@ import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
 import DocumentState from 'src/plugins/tools/document-state'
+import PostComments from 'components/content/PostComments'
 
 export default {
   name: 'Post',
-  components: { PostImage, PostText, PostInfo },
+  components: { PostComments, PostImage, PostText, PostInfo },
   props: {
     post: {
       type: Post,
