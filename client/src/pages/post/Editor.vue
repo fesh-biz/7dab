@@ -88,6 +88,7 @@
           <div class="inline-block">
             <!-- Cancel -->
             <icon-with-tooltip
+              @click="goBack"
               :tooltip="$t('cancel')"
               color="negative"
               :disabled="isBusy"
@@ -183,6 +184,10 @@ export default {
   },
 
   methods: {
+    goBack () {
+      window.history.back()
+    },
+
     fetchPost () {
       return new Promise((resolve, reject) => {
         this.isBusy = true
