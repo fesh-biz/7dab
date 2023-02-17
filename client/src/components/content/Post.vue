@@ -115,7 +115,9 @@ export default {
   },
 
   mounted () {
-    addEventListener('imagesUploaded', this.onImagesLoaded)
+    if (!this.postImagesLoaded) {
+      addEventListener('imagesUploaded', this.onImagesLoaded)
+    }
   },
 
   methods: {
