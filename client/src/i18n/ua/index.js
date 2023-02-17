@@ -1,4 +1,6 @@
 export default {
+  rating_will_be_updated_soon: 'Рейтинг буде оновлено за хвилину',
+  your_vote_is_accepted: 'Ваш голос збережено',
   thanks: 'Дякуємо!',
   we_waiting_on_email_verification: 'Ми надіслали вам листа з інструкціями для підтвердження email. Якщо ви не бачите листа, обов\'язково перевірте папку Спам.',
   email_verification: 'Верифікація вашого Email',

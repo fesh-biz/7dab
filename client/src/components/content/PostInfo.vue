@@ -7,7 +7,13 @@
       <!-- Rating -->
       <div :dusk="'post-' + post.id + '-info-rating'" class="q-mr-md">
         <!-- Thumb Up -->
-        <q-btn @click="vote('up')" round color="green-4" size="sm" icon="thumb_up"/>
+        <q-btn
+          @click="vote('up')"
+          round
+          size="sm"
+          :color="isMyVotePositive ? 'green-8' : 'grey-6'"
+          icon="thumb_up"
+        />
 
         <!-- Rating -->
         <q-chip :color="rating.color" :text-color="rating.result === 0 ? 'black' : 'white'">
@@ -18,7 +24,13 @@
         </q-chip>
 
         <!-- Thumb Down-->
-        <q-btn @click="vote('down')" round color="red-4" size="sm" icon="thumb_down"/>
+        <q-btn
+          @click="vote('down')"
+          round
+          :color="isMyVoteNegative ? 'red-8' : 'grey-6'"
+          size="sm"
+          icon="thumb_down"
+          />
       </div>
 
       <!-- Total Views -->
@@ -47,6 +59,8 @@
 import Tag from 'components/content/Tag'
 import PostInfoIcon from 'components/content/PostInfoIcon'
 import RatingApi from 'src/plugins/api/rating-api'
+import MyVote from 'src/models/rating/my-vote'
+import Rating from 'src/models/rating/rating'
 
 export default {
   name: 'PostInfo',
@@ -92,7 +106,27 @@ export default {
           return color
         })()
       }
+    },
+
+    isMyVotePositive () {
+      if (!this.post.my_vote) {
+        return false
+      }
+
+      return this.post.my_vote.is_positive
+    },
+
+    isMyVoteNegative () {
+      if (!this.post.my_vote) {
+        return false
+      }
+
+      return !this.post.my_vote.is_positive
     }
+  },
+
+  created () {
+    console.log('this.post', this.post)
   },
 
   methods: {
@@ -101,6 +135,18 @@ export default {
       this.ratingApi.vote('post', this.post.id, name === 'up')
         .then(res => {
           this.isSubmitting = false
+
+          MyVote.insertOrUpdate({
+            data: res.data
+          })
+
+          this.updateRating(name === 'up')
+
+          this.$q.notify({
+            message: this.$t('your_vote_is_accepted'),
+            position: 'center',
+            color: 'green'
+          })
         })
         .catch(err => {
           this.isSubmitting = false
@@ -110,6 +156,37 @@ export default {
             color: 'red'
           })
         })
+    },
+
+    updateRating (isUpVote) {
+      if (this.post.rating && this.post.my_vote) {
+        let positiveVotes = this.post.rating.positive_votes
+        let negativeVotes = this.post.rating.negative_votes
+        if (isUpVote) {
+          positiveVotes++
+          negativeVotes--
+        } else {
+          positiveVotes--
+          negativeVotes++
+        }
+
+        Rating.update({
+          where: this.post.rating.id,
+          data: {
+            positive_votes: positiveVotes,
+            negative_votes: negativeVotes
+          }
+        })
+      } else {
+        Rating.insert({
+          data: {
+            ratingable_id: this.post.id,
+            ratingable_type_name: 'posts',
+            positive_votes: isUpVote ? 1 : 0,
+            negative_votes: isUpVote ? 0 : 1
+          }
+        })
+      }
     }
   }
 }

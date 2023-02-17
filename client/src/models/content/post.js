@@ -7,6 +7,7 @@ import PostTag from 'src/models/content/post-tag'
 import PostText from 'src/models/content/post-text'
 import PostImage from 'src/models/content/post-image'
 import Rating from 'src/models/rating/rating'
+import MyVote from 'src/models/rating/my-vote'
 
 export default class Post extends AppModel {
   static entity = 'posts'
@@ -25,6 +26,7 @@ export default class Post extends AppModel {
       is_images_loaded: this.boolean(false),
 
       rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type_name'),
+      my_vote: this.morphOne(MyVote, 'ratingable_id', 'ratingable_type_name'),
 
       tags: this.belongsToMany(Tag, PostTag, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostText, 'post_id'),

@@ -10,7 +10,9 @@ import User from 'src/models/user/user'
 import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
 import Rating from 'src/models/rating/rating'
+import MyVote from 'src/models/rating/my-vote'
 
+database.register(MyVote)
 database.register(Rating)
 database.register(PostImage)
 database.register(Post)

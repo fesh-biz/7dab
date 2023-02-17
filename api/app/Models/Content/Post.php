@@ -3,6 +3,7 @@
 namespace App\Models\Content;
 
 use App\Models\Rating\Rating;
+use App\Models\Rating\RatingVote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,6 +63,12 @@ class Post extends Model
     public function rating(): MorphOne
     {
         return $this->morphOne(Rating::class, 'ratingable');
+    }
+    
+    public function myVote(): MorphOne
+    {
+        return $this->morphOne(RatingVote::class, 'ratingable', 'ratingable_type', 'ratingable_id')
+            ->where('user_id', auth('api')->id());
     }
     
     public function user(): BelongsTo

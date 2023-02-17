@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\Auth\EmailVerification;
-use App\Models\Content\Post;
-use App\Models\Rating\Rating;
 use App\Models\User;
-use App\Services\Jobs\MailService;
-use Hashids\Hashids;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -75,9 +70,6 @@ class Controller extends BaseController
 
     public function test()
     {
-        $res = Rating::with('ratingable')
-            ->find(3);
-        
-        return response()->json($res);
+    
     }
 }

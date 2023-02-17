@@ -20,8 +20,8 @@ class PostRepository
             ->whereStatus('approved')
             ->orderBy('id', 'desc');
         
-        if (auth()->user()) {
-        
+        if (auth('api')->user()) {
+            $query->with('myVote');
         }
         
         return $query->paginate(10);
