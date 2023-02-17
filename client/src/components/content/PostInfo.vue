@@ -61,6 +61,7 @@ import PostInfoIcon from 'components/content/PostInfoIcon'
 import RatingApi from 'src/plugins/api/rating-api'
 import MyVote from 'src/models/rating/my-vote'
 import Rating from 'src/models/rating/rating'
+import Me from 'src/plugins/cookies/me'
 
 export default {
   name: 'PostInfo',
@@ -80,7 +81,8 @@ export default {
   data () {
     return {
       isSubmitting: false,
-      ratingApi: new RatingApi()
+      ratingApi: new RatingApi(),
+      meCookies: new Me()
     }
   },
 
@@ -127,6 +129,16 @@ export default {
 
   methods: {
     vote (name) {
+      if (!this.meCookies.get()) {
+        this.$q.notify({
+          message: this.$t('need_to_login_or_register'),
+          position: 'center',
+          color: 'negative'
+        })
+
+        return
+      }
+
       if ((name === 'up' && this.isMyVotePositive) || (name === 'down' && this.isMyVoteNegative)) {
         return
       }

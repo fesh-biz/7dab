@@ -1,4 +1,5 @@
 export default {
+  need_to_login_or_register: 'Потрібно увійти або зареєструватись',
   preview: 'Переглянути',
   rating_will_be_updated_soon: 'Рейтинг буде оновлено за хвилину',
   your_vote_is_accepted: 'Ваш голос збережено',
