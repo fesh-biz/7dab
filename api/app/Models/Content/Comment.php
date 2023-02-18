@@ -52,18 +52,13 @@ class Comment extends Model
     protected $appends = [
         'commentable_type_name'
     ];
-
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(self::class, 'commentable')
-            ->with('comments');
-    }
     
     public function answers(): HasMany
     {
         return $this->hasMany(self::class, 'commentable_id', 'id')
             ->where('commentable_type', self::class)
-            ->with('answers');
+            ->with('answers')
+            ->with('author');
     }
     
     public function author(): BelongsTo

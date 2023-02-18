@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
             'role_id' => 2
         ]);
         
+        User::factory(5)->create();
+        
         $this->call(PassportSeeder::class);
         
         if (app()->environment() === 'dusk') {

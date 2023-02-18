@@ -68,7 +68,7 @@
       <q-separator v-if="$q.platform.is.mobile"/>
     </q-card>
 
-    <post-comments :post-id="post.id"/>
+    <post-comments v-if="isPostPage" :post-id="post.id"/>
   </div>
 </template>
 

@@ -31,7 +31,7 @@ class CommentSeeder extends Seeder
         foreach ($commentables as $commentable) {
             $createdComments = Comment::factory(mt_rand(2, 3))->create([
                 'commentable_id' => $commentable['id'],
-                'commentable_type' => $commentableType
+                'commentable_type' => $commentableType,
             ])->toArray();
 
             $comments = array_merge($comments, $createdComments);

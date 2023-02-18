@@ -18,7 +18,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
+            'user_id' => mt_rand(1, 7),
             'commentable_id' => 1,
             'commentable_type' => Post::class,
             'body' => $this->faker->text
