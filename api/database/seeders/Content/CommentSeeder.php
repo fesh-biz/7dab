@@ -19,16 +19,17 @@ class CommentSeeder extends Seeder
         $posts = Post::all();
 
         $comments = $this->seedComments($posts->toArray(), Post::class);
-
-        $comments = $this->seedComments($comments, Comment::class);
-        $this->seedComments($comments, Comment::class);
+        
+        foreach (range(1, 4) as $level) {
+            $comments = $this->seedComments($comments, Comment::class);
+        }
     }
 
     private function seedComments(array $commentables, string $commentableType): array
     {
         $comments = [];
         foreach ($commentables as $commentable) {
-            $createdComments = Comment::factory(mt_rand(2, 8))->create([
+            $createdComments = Comment::factory(mt_rand(2, 3))->create([
                 'commentable_id' => $commentable['id'],
                 'commentable_type' => $commentableType
             ])->toArray();

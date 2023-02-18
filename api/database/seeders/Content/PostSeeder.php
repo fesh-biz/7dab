@@ -20,7 +20,9 @@ class PostSeeder extends Seeder
     {
         $tags = Tag::all();
 
-        $posts = Post::factory(30)->create();
+        $posts = Post::factory(2)->create(
+            ['status' => 'approved']
+        );
 
         foreach ($posts as $post) {
             $post->tags()->attach($tags->random(mt_rand(1, 6))->pluck('id'));
