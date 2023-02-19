@@ -1,14 +1,19 @@
 <template>
-  <div>
-    <post-comment
-      v-for="(comment, index) in comments"
-      :key="comment.id"
-      :comment="comment"
-      :level="1"
-      :is-last="comments.length - 1 === index"
-      :post-author="postAuthor"
-    />
-  </div>
+  <q-card
+    flat
+    :bordered="!$q.platform.is.mobile"
+  >
+    <q-card-section>
+      <post-comment
+        v-for="(comment, index) in comments"
+        :key="comment.id"
+        :comment="comment"
+        :level="1"
+        :is-last="comments.length - 1 === index"
+        :post-author="postAuthor"
+      />
+    </q-card-section>
+  </q-card>
 </template>
 
 <script>

@@ -1,9 +1,5 @@
 <template>
   <div
-    :style="{
-      borderLeft: '1px solid ' + levelBorderColor,
-      marginLeft: level === 1 ? 0 : 10 + 'px'
-    }"
     class="comment"
   >
     <!-- Body -->
@@ -31,14 +27,21 @@
       </div>
     </div>
 
-    <comment
-      v-for="(comment, index) in answers"
-      :key="comment.id"
-      :comment="comment"
-      :level="level + 1"
-      :is-last="answers.length - 1 === index && !isLast"
-      :post-author="postAuthor"
-    />
+    <!-- Answers -->
+    <div
+      v-if="answers.length"
+      :style="{borderLeft: levelBorderColor,}"
+      style="margin-left: 10px"
+    >
+      <comment
+        v-for="(comment, index) in answers"
+        :key="comment.id"
+        :comment="comment"
+        :level="level + 1"
+        :is-last="answers.length - 1 === index && !isLast"
+        :post-author="postAuthor"
+      />
+    </div>
   </div>
 </template>
 
@@ -90,7 +93,7 @@ export default {
         '#e3f2fd'
       ]
 
-      return colors[(this.level + 2) % 10]
+      return '1px solid ' + colors[(this.level + 2) % 10]
     }
   },
 

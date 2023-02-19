@@ -4,7 +4,8 @@
     <q-card
       :id="'post-id-' + post.id"
       :dusk="'post-' + post.id"
-      :flat="$q.platform.is.mobile"
+      :bordered="!$q.platform.is.mobile"
+      flat
       class="q-my-md"
     >
       <!-- Title, Author -->
