@@ -33,7 +33,7 @@
 <script>
 import Tag from 'components/content/Tag'
 import PostInfoIcon from 'components/content/PostInfoIcon'
-import Rating from 'src/components/common/rating'
+import Rating from 'src/components/common/Rating'
 
 export default {
   name: 'PostInfo',

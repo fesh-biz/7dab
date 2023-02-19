@@ -8,18 +8,31 @@
   >
     <!-- Body -->
     <div style="padding-left: 5px; color: #5e5e5e">
-      <!-- Author -->
-      <div>
-        <q-chip class="glossy" :color="comment.author.id === postAuthor.id ? 'green-2' : 'light-blue-2'" size="0.8rem">
-          <q-avatar>
-            <q-icon name="account_circle"/>
-          </q-avatar>
-          <strong>{{ comment.author.login }}</strong>
-        </q-chip>
+      <!-- Rating, Author, Date -->
+      <div class="flex items-center q-pl-sm">
+        <rating
+          :ratingable-type="'comment'"
+          :ratingable="comment"
+        />
+
+        <!-- Author -->
+        <div>
+          <q-chip
+            class="glossy"
+            :color="comment.author.id === postAuthor.id ? 'green-1' : 'light-blue-1'"
+            size="0.8rem"
+          >
+            <q-avatar>
+              <!--<q-icon color="grey-8" name="account_circle" size="2.3rem" style="margin-top: -2px"/>-->
+              <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+            </q-avatar>
+            <strong style="color: #363636">{{ comment.author.login }}</strong>
+          </q-chip>
+        </div>
       </div>
 
       <!-- Body -->
-      <div style="margin-left: 10px">
+      <div style="margin: 10px 10px 0 10px">
         {{ comment.body }}
 
         <div style="border-bottom: 1px solid darkgrey; margin-left: 50%; margin-bottom: 15px"></div>
@@ -39,6 +52,7 @@
 
 <script>
 import CommentModel from 'src/models/content/comment'
+import Rating from 'components/common/Rating'
 
 export default {
   name: 'PostComment',
@@ -63,6 +77,7 @@ export default {
   },
 
   components: {
+    Rating,
     Comment: () => import('./PostComment.vue')
   },
 

@@ -2,15 +2,18 @@
   <div
     :dusk="`${ratingableType}-${ratingable.id}-rating`"
     class="q-mr-md"
-    :style="{marginTop: !isSubmitting ? '4px' : '' }"
   >
-    <q-linear-progress v-if="isSubmitting" indeterminate/>
+    <q-linear-progress
+      v-if="isSubmitting"
+      indeterminate
+      style="margin-top: -4px"
+    />
 
     <!-- Thumb Up -->
     <q-btn
       @click="vote('up')"
       round
-      size="sm"
+      size="0.6rem"
       :color="isMyVotePositive ? 'green-8' : 'grey-6'"
       icon="thumb_up"
     />
@@ -28,7 +31,7 @@
       @click="vote('down')"
       round
       :color="isMyVoteNegative ? 'red-8' : 'grey-6'"
-      size="sm"
+      size="0.6rem"
       icon="thumb_down"
     />
   </div>
@@ -37,7 +40,7 @@
 <script>
 import RatingApi from 'src/plugins/api/rating-api'
 import MyVote from 'src/models/rating/my-vote'
-import Rating from 'src/models/rating/rating'
+import RatingModel from 'src/models/rating/rating'
 import Me from 'src/plugins/cookies/me'
 
 export default {
@@ -158,7 +161,7 @@ export default {
           negativeVotes++
         }
 
-        Rating.update({
+        RatingModel.update({
           where: this.ratingable.rating.id,
           data: {
             positive_votes: positiveVotes,
@@ -166,7 +169,7 @@ export default {
           }
         })
       } else {
-        Rating.insert({
+        RatingModel.insert({
           data: {
             ratingable_id: this.ratingable.id,
             ratingable_type_name: 'posts',
