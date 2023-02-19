@@ -16,19 +16,11 @@
         />
 
         <!-- Author -->
-        <div>
-          <q-chip
-            class="glossy"
-            :color="comment.author.id === postAuthor.id ? 'green-1' : 'light-blue-1'"
-            size="0.8rem"
-          >
-            <q-avatar>
-              <!--<q-icon color="grey-8" name="account_circle" size="2.3rem" style="margin-top: -2px"/>-->
-              <img src="https://cdn.quasar.dev/img/avatar5.jpg">
-            </q-avatar>
-            <strong style="color: #363636">{{ comment.author.login }}</strong>
-          </q-chip>
-        </div>
+        <author
+          :name="comment.author.login"
+          :is-post-author="comment.author.id === postAuthor.id"
+          :avatar="comment.author.avatar"
+        />
       </div>
 
       <!-- Body -->
@@ -53,6 +45,7 @@
 <script>
 import CommentModel from 'src/models/content/comment'
 import Rating from 'components/common/Rating'
+import Author from 'components/common/Author'
 
 export default {
   name: 'PostComment',
@@ -77,6 +70,7 @@ export default {
   },
 
   components: {
+    Author,
     Rating,
     Comment: () => import('./PostComment.vue')
   },
@@ -120,5 +114,5 @@ export default {
 
 <style lang="sass">
 .comment
-  //background-color: #00b0ff
+//background-color: #00b0ff
 </style>

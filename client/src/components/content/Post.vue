@@ -10,9 +10,7 @@
       <!-- Title, Author -->
       <q-card-section class="q-pb-none">
         <!-- Author -->
-        <div :dusk="'post-' + post.id + '-author'">
-          {{ post.user.login }}
-        </div>
+        <author :name="post.user.login" :avatar="post.user.avatar"/>
 
         <!-- Title -->
         <q-item
@@ -79,10 +77,11 @@ import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
 import DocumentState from 'src/plugins/tools/document-state'
 import PostComments from 'components/content/PostComments'
+import Author from 'components/common/Author'
 
 export default {
   name: 'Post',
-  components: { PostComments, PostImage, PostText, PostInfo },
+  components: { PostComments, PostImage, PostText, PostInfo, Author },
   props: {
     post: {
       type: Post,
