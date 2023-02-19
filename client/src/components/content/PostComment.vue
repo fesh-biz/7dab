@@ -20,10 +20,8 @@
       </div>
 
       <!-- Body -->
-      <div style="margin: 10px 10px 0 10px">
+      <div style="margin: 10px 0 20px 10px">
         {{ comment.body }}
-
-        <div style="border-bottom: 1px solid darkgrey; margin-left: 50%; margin-bottom: 15px"></div>
       </div>
     </div>
 
