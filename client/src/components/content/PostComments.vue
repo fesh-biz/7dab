@@ -4,6 +4,12 @@
     :bordered="!$q.platform.is.mobile"
   >
     <q-card-section>
+      <q-linear-progress
+        v-if="isFetching"
+        indeterminate
+        style="margin-top: -4px"
+      />
+
       <post-comment
         v-for="(comment, index) in comments"
         :key="comment.id"
@@ -38,7 +44,8 @@ export default {
 
   data () {
     return {
-      api: new Comment()
+      api: new Comment(),
+      isFetching: true
     }
   },
 
@@ -59,12 +66,13 @@ export default {
   },
 
   async created () {
-    const res = await this.api.fetch(this.postId, 'post')
-    console.log('res', res)
+    await CommentModel.deleteAll()
 
+    const res = await this.api.fetch(this.postId, 'post')
     await CommentModel.create({
       data: res.data
     })
+    this.isFetching = false
   }
 }
 </script>

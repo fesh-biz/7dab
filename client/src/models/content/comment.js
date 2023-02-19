@@ -1,5 +1,7 @@
 import AppModel from 'src/models/app-model'
-import User from 'src/models/user/user'
+import Rating from 'src/models/rating/rating'
+import MyVote from 'src/models/rating/my-vote'
+import CommentAuthor from 'src/models/author/comment-author'
 
 export default class Comment extends AppModel {
   static entity = 'comments'
@@ -14,8 +16,11 @@ export default class Comment extends AppModel {
       commentable_type_name: this.attr(null),
       answers: this.morphMany(Comment, 'commentable_id', 'commentable_type_name'),
 
+      rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type_name'),
+      my_vote: this.morphOne(MyVote, 'ratingable_id', 'ratingable_type_name'),
+
       user_id: this.attr(null),
-      author: this.belongsTo(User, 'user_id', 'id')
+      comment_author: this.belongsTo(CommentAuthor, 'user_id', 'id')
     }
   }
 }

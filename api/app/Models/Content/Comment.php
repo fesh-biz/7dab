@@ -2,12 +2,15 @@
 
 namespace App\Models\Content;
 
+use App\Models\Rating\Rating;
+use App\Models\Rating\RatingVote;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Content\Comment
@@ -55,13 +58,20 @@ class Comment extends Model
     
     public function answers(): HasMany
     {
-        return $this->hasMany(self::class, 'commentable_id', 'id')
+        $query = $this->hasMany(self::class, 'commentable_id', 'id')
             ->where('commentable_type', self::class)
             ->with('answers')
-            ->with('author');
+            ->with('rating')
+            ->with('commentAuthor');
+    
+        if (auth('api')->user()) {
+            $query->with('myVote');
+        }
+        
+        return $query;
     }
     
-    public function author(): BelongsTo
+    public function commentAuthor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
@@ -72,5 +82,16 @@ class Comment extends Model
         $res = explode('\\', $value);
         $res = end($res);
         return strtolower($res) . 's';
+    }
+    
+    public function rating(): MorphOne
+    {
+        return $this->morphOne(Rating::class, 'ratingable');
+    }
+    
+    public function myVote(): MorphOne
+    {
+        return $this->morphOne(RatingVote::class, 'ratingable', 'ratingable_type', 'ratingable_id')
+            ->where('user_id', auth('api')->id());
     }
 }

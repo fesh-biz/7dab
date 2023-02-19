@@ -13,9 +13,9 @@
 
         <!-- Author -->
         <author
-          :name="comment.author.login"
-          :is-post-author="comment.author.id === postAuthor.id"
-          :avatar="comment.author.avatar"
+          :name="comment.comment_author.login"
+          :is-post-author="comment.comment_author.id === postAuthor.id"
+          :avatar="comment.comment_author.avatar"
         />
       </div>
 

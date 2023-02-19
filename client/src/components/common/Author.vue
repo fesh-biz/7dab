@@ -1,6 +1,5 @@
 <template>
   <q-chip
-    class="glossy"
     :color="bgColor"
     size="0.8rem"
   >
@@ -38,7 +37,7 @@ export default {
 
   computed: {
     bgColor () {
-      return this.isPostAuthor ? 'light-green-11' : 'light-blue-1'
+      return this.isPostAuthor ? 'green-4' : 'light-blue-1'
     }
   }
 }

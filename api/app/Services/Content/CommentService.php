@@ -23,12 +23,18 @@ class CommentService
     
     public function getComments(string $commentableType, int $commentableId): Collection
     {
-        return $this->getModel()
+        $query = $this->getModel()
             ->whereCommentableId($commentableId)
             ->whereCommentableType($this->getCommentableModel($commentableType))
             ->with('answers')
-            ->with('author')
-            ->get();
+            ->with('rating')
+            ->with('commentAuthor');
+        
+        if (auth('api')->user()) {
+            $query->with('myVote');
+        }
+        
+        return $query->get();
     }
     
     private function getCommentableModel(string $type): ?string

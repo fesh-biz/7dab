@@ -41,7 +41,8 @@
 import RatingApi from 'src/plugins/api/rating-api'
 import MyVote from 'src/models/rating/my-vote'
 import RatingModel from 'src/models/rating/rating'
-import Me from 'src/plugins/cookies/me'
+import MeCookies from 'src/plugins/cookies/me'
+import Me from 'src/models/user/me'
 
 export default {
   name: 'Rating',
@@ -61,11 +62,15 @@ export default {
     return {
       isSubmitting: false,
       ratingApi: new RatingApi(),
-      meCookies: new Me()
+      meCookies: new MeCookies()
     }
   },
 
   computed: {
+    me () {
+      return Me.query().first()
+    },
+
     rating () {
       const pv = this.ratingable?.rating?.positive_votes || 0
       const nv = this.ratingable?.rating?.negative_votes || 0
@@ -90,7 +95,7 @@ export default {
     },
 
     isMyVotePositive () {
-      if (!this.ratingable.my_vote) {
+      if (!this.me || !this.ratingable.my_vote) {
         return false
       }
 
@@ -98,7 +103,7 @@ export default {
     },
 
     isMyVoteNegative () {
-      if (!this.ratingable.my_vote) {
+      if (!this.me || !this.ratingable.my_vote) {
         return false
       }
 
@@ -123,13 +128,17 @@ export default {
       }
 
       this.isSubmitting = true
-      this.ratingApi.vote('post', this.ratingable.id, name === 'up')
+      this.ratingApi.vote(this.ratingableType, this.ratingable.id, name === 'up')
         .then(res => {
           this.isSubmitting = false
 
+          console.log('inserting or updating myVote')
           MyVote.insertOrUpdate({
             data: res.data
           })
+            .then(() => {
+              console.log('myVote', MyVote.query().find(res.data.id))
+            })
 
           this.updateRating(name === 'up')
 
@@ -161,6 +170,7 @@ export default {
           negativeVotes++
         }
 
+        console.log('updating rating')
         RatingModel.update({
           where: this.ratingable.rating.id,
           data: {
@@ -169,10 +179,12 @@ export default {
           }
         })
       } else {
+        console.log('inserting rating')
+
         RatingModel.insert({
           data: {
             ratingable_id: this.ratingable.id,
-            ratingable_type_name: 'posts',
+            ratingable_type_name: this.ratingableType,
             positive_votes: isUpVote ? 1 : 0,
             negative_votes: isUpVote ? 0 : 1
           }
