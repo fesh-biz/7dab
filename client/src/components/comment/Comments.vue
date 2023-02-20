@@ -10,7 +10,7 @@
         style="margin-top: -4px"
       />
 
-      <post-comment
+      <comment
         v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import PostComment from 'components/content/PostComment'
-import Comment from 'src/plugins/api/comment'
+import Comment from 'components/comment/Comment'
+import CommentApi from 'src/plugins/api/comment'
 import CommentModel from 'src/models/content/comment'
 import PostModel from 'src/models/content/post'
 
@@ -32,7 +32,7 @@ export default {
   name: 'PostComments',
 
   components: {
-    PostComment
+    Comment
   },
 
   props: {
@@ -44,7 +44,7 @@ export default {
 
   data () {
     return {
-      api: new Comment(),
+      api: new CommentApi(),
       isFetching: true
     }
   },

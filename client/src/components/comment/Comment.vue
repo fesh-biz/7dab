@@ -45,11 +45,11 @@
 
 <script>
 import CommentModel from 'src/models/content/comment'
-import Rating from 'components/common/Rating'
+import Rating from 'components/rating/Rating'
 import Author from 'components/common/Author'
 
 export default {
-  name: 'PostComment',
+  name: 'Comment',
 
   props: {
     comment: {
@@ -73,7 +73,7 @@ export default {
   components: {
     Author,
     Rating,
-    Comment: () => import('./PostComment.vue')
+    Comment: () => import('./Comment.vue')
   },
 
   computed: {

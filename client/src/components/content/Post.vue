@@ -67,7 +67,7 @@
       <q-separator v-if="$q.platform.is.mobile"/>
     </q-card>
 
-    <post-comments v-if="isPostPage" :post-id="post.id"/>
+    <comments v-if="isPostPage" :post-id="post.id"/>
   </div>
 </template>
 
@@ -77,12 +77,12 @@ import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
 import DocumentState from 'src/plugins/tools/document-state'
-import PostComments from 'components/content/PostComments'
+import Comments from 'components/comment/Comments'
 import Author from 'components/common/Author'
 
 export default {
   name: 'Post',
-  components: { PostComments, PostImage, PostText, PostInfo, Author },
+  components: { Comments, PostImage, PostText, PostInfo, Author },
   props: {
     post: {
       type: Post,
