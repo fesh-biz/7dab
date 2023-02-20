@@ -30,7 +30,7 @@
     <q-btn
       @click="vote('down')"
       round
-      :color="isMyVoteNegative ? 'red-8' : 'grey-6'"
+      :color="isMyVotePositive === false ? 'red-8' : 'grey-6'"
       size="0.6rem"
       icon="thumb_down"
     />
@@ -51,10 +51,6 @@ export default {
     ratingable: {
       type: Object,
       required: true
-    },
-    ratingableType: {
-      type: String,
-      required: true
     }
   },
 
@@ -72,8 +68,13 @@ export default {
     },
 
     rating () {
-      const pv = this.ratingable?.rating?.positive_votes || 0
-      const nv = this.ratingable?.rating?.negative_votes || 0
+      const rating = RatingModel.query().where(rating => {
+        return rating.ratingable_id === this.ratingable.id &&
+          rating.ratingable_type_name === this.ratingableTypePlural
+      }).first()
+
+      const pv = rating?.positive_votes || 0
+      const nv = rating?.negative_votes || 0
       const res = pv - nv
 
       return {
@@ -94,20 +95,26 @@ export default {
       }
     },
 
-    isMyVotePositive () {
-      if (!this.me || !this.ratingable.my_vote) {
-        return false
-      }
-
-      return this.ratingable.my_vote.is_positive
+    ratingableType () {
+      return this.ratingable.constructor.name.toLowerCase()
     },
 
-    isMyVoteNegative () {
-      if (!this.me || !this.ratingable.my_vote) {
-        return false
-      }
+    ratingableTypePlural () {
+      return this.ratingable.constructor.name.toLowerCase() + 's'
+    },
 
-      return !this.ratingable.my_vote.is_positive
+    isMyVotePositive () {
+      if (!this.me) return
+
+      const vote = MyVote.query().where(vote => {
+        return vote.user_id === this.me.id &&
+          vote.ratingable_id === this.ratingable.id &&
+          vote.ratingable_type_name === this.ratingableTypePlural
+      }).first()
+
+      if (!vote) return null
+
+      return vote.is_positive
     }
   },
 
@@ -129,18 +136,14 @@ export default {
 
       this.isSubmitting = true
       this.ratingApi.vote(this.ratingableType, this.ratingable.id, name === 'up')
-        .then(res => {
+        .then(async res => {
           this.isSubmitting = false
 
-          console.log('inserting or updating myVote')
           MyVote.insertOrUpdate({
             data: res.data
           })
-            .then(() => {
-              console.log('myVote', MyVote.query().find(res.data.id))
-            })
 
-          this.updateRating(name === 'up')
+          await this.updateRating(name === 'up')
 
           this.$q.notify({
             message: this.$t('your_vote_is_accepted'),
@@ -158,7 +161,7 @@ export default {
         })
     },
 
-    updateRating (isUpVote) {
+    async updateRating (isUpVote) {
       if (this.ratingable.rating && this.ratingable.my_vote) {
         let positiveVotes = this.ratingable.rating.positive_votes
         let negativeVotes = this.ratingable.rating.negative_votes
@@ -171,7 +174,7 @@ export default {
         }
 
         console.log('updating rating')
-        RatingModel.update({
+        await RatingModel.update({
           where: this.ratingable.rating.id,
           data: {
             positive_votes: positiveVotes,
@@ -181,15 +184,22 @@ export default {
       } else {
         console.log('inserting rating')
 
-        RatingModel.insert({
+        console.log('ins res rating', await RatingModel.insert({
           data: {
             ratingable_id: this.ratingable.id,
             ratingable_type_name: this.ratingableType,
             positive_votes: isUpVote ? 1 : 0,
             negative_votes: isUpVote ? 0 : 1
           }
-        })
+        }))
       }
+
+      const rating = RatingModel.query().where(rating => {
+        return rating.ratingable_id === this.ratingable.id &&
+          rating.ratingable_type_name === this.ratingableTypePlural
+      }).first()
+
+      console.log('rating', rating)
     }
   }
 }
