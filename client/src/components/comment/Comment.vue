@@ -6,8 +6,8 @@
     <div style="padding-left: 5px; color: #5e5e5e">
       <!-- Rating, Author, Date -->
       <div class="flex items-center q-pl-sm">
+        {{ comment.id }}
         <rating
-          :ratingable-type="'comment'"
           :ratingable="comment"
         />
 

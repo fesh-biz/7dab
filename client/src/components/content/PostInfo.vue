@@ -4,7 +4,6 @@
     <div class="flex cursor-default">
       <!-- Rating -->
       <rating
-        :ratingable-type="'post'"
         :ratingable="post"
       />
 
