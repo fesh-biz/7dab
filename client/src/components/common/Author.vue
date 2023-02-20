@@ -5,9 +5,15 @@
   >
     <q-avatar>
       <img v-if="avatar" src="https://cdn.quasar.dev/img/avatar5.jpg">
-      <q-icon v-if="!avatar" color="grey-8" name="account_circle" size="2.3rem" style="margin-top: -2px"/>
+      <q-icon
+        v-if="!avatar"
+        :color="isPostAuthor ? 'white' : 'grey-8'"
+        name="account_circle"
+        size="2.3rem"
+        style="margin-top: -3px"
+      />
     </q-avatar>
-    <strong style="color: #363636">{{ name }}</strong>
+    <strong :style="{color: isPostAuthor ? 'white' : '#363636'}">{{ name }}</strong>
   </q-chip>
 </template>
 
@@ -37,7 +43,7 @@ export default {
 
   computed: {
     bgColor () {
-      return this.isPostAuthor ? 'green-4' : 'light-blue-1'
+      return this.isPostAuthor ? 'green-5' : 'light-blue-1'
     }
   }
 }
