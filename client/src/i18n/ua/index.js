@@ -48,7 +48,7 @@ export default {
   email_password_reset_link: 'Надіслати посилання для скидання',
   reset_password: 'Скинути пароль',
   register: 'Реєстрація',
-  login: 'Вход',
+  login: 'Вхід',
   log_in: 'Увійти',
   submit: 'Надіслати',
   email: 'Email',

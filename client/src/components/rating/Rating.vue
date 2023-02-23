@@ -67,11 +67,15 @@ export default {
       return Me.query().first()
     },
 
-    rating () {
-      const rating = RatingModel.query().where(rating => {
+    ratingInstance () {
+      return RatingModel.query().where(rating => {
         return rating.ratingable_id === this.ratingable.id &&
           rating.ratingable_type_name === this.ratingableTypePlural
       }).first()
+    },
+
+    rating () {
+      const rating = this.ratingInstance
 
       const pv = rating?.positive_votes || 0
       const nv = rating?.negative_votes || 0
@@ -104,7 +108,7 @@ export default {
     },
 
     isMyVotePositive () {
-      if (!this.me) return
+      if (!this.me) return null
 
       const vote = MyVote.query().where(vote => {
         return vote.user_id === this.me.id &&
@@ -134,6 +138,7 @@ export default {
         return
       }
 
+      const isIHaveVotedBefore = this.isMyVotePositive !== null
       this.isSubmitting = true
       this.ratingApi.vote(this.ratingableType, this.ratingable.id, name === 'up')
         .then(async res => {
@@ -143,7 +148,7 @@ export default {
             data: res.data
           })
 
-          await this.updateRating(name === 'up')
+          await this.updateRating(name === 'up', isIHaveVotedBefore)
 
           this.$q.notify({
             message: this.$t('your_vote_is_accepted'),
@@ -161,21 +166,25 @@ export default {
         })
     },
 
-    async updateRating (isUpVote) {
-      if (this.ratingable.rating && this.ratingable.my_vote) {
-        let positiveVotes = this.ratingable.rating.positive_votes
-        let negativeVotes = this.ratingable.rating.negative_votes
+    async updateRating (isUpVote, isIHaveVotedBefore) {
+      if (this.ratingInstance) {
+        let positiveVotes = this.ratingInstance.positive_votes
+        let negativeVotes = this.ratingInstance.negative_votes
         if (isUpVote) {
           positiveVotes++
-          negativeVotes--
+          if (isIHaveVotedBefore) {
+            negativeVotes--
+          }
         } else {
           positiveVotes--
-          negativeVotes++
+          if (isIHaveVotedBefore) {
+            negativeVotes++
+          }
         }
 
         console.log('updating rating')
         await RatingModel.update({
-          where: this.ratingable.rating.id,
+          where: this.ratingInstance.id,
           data: {
             positive_votes: positiveVotes,
             negative_votes: negativeVotes
@@ -187,7 +196,7 @@ export default {
         console.log('ins res rating', await RatingModel.insert({
           data: {
             ratingable_id: this.ratingable.id,
-            ratingable_type_name: this.ratingableType,
+            ratingable_type_name: this.ratingableTypePlural,
             positive_votes: isUpVote ? 1 : 0,
             negative_votes: isUpVote ? 0 : 1
           }
