@@ -69,7 +69,7 @@ export default {
     await CommentModel.deleteAll()
 
     const res = await this.api.fetch(this.postId, 'post')
-    await CommentModel.create({
+    await CommentModel.insert({
       data: res.data
     })
     this.isFetching = false

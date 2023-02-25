@@ -99,12 +99,18 @@ class Post extends Model
     
     public function scopeWithTagsAuthorContent(Builder $q): Builder
     {
-        return $q->with([
+        $query = $q->with([
             'tags:id,title',
             'user:id,login',
             'postImages',
             'rating',
             'postTexts'
         ]);
+    
+        if (auth('api')->user()) {
+            $query->with('myVote');
+        }
+        
+        return $query;
     }
 }
