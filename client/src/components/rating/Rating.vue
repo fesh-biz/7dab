@@ -104,7 +104,7 @@ export default {
     },
 
     ratingableTypePlural () {
-      return this.ratingable.constructor.name.toLowerCase() + 's'
+      return this.ratingableType + 's'
     },
 
     isMyVotePositive () {
