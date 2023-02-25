@@ -17,7 +17,7 @@
 
     <!-- Image Title -->
     <div
-      class="font-lobster q-mb-lg text-center"
+      class="q-mb-lg text-center"
       v-if="data.title"
     >
       {{ data.title }}

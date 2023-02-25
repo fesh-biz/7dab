@@ -17,7 +17,7 @@
         <q-item
           v-if="isPostPage"
           :dusk="'post-' + post.id + '-title'"
-          class="font-lobster q-px-none"
+          class="q-px-none"
         >
           <q-item-section style="font-size: 1.2rem">
             {{ post.title }}
@@ -29,7 +29,7 @@
           dense
           :to="{ name: 'postPage', params: {id: post.id }}"
           :dusk="'post-' + post.id + '-title'"
-          class="font-lobster q-px-none"
+          class="q-px-none"
         >
           <q-item-section style="font-size: 1.2rem">
             {{ post.title }}
