@@ -16,7 +16,7 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('id', 'desc')->limit(1)->get();
 
         $comments = $this->seedComments($posts->toArray(), Post::class);
         

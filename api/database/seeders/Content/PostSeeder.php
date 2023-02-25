@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
     {
         $tags = Tag::all();
 
-        $posts = Post::factory(2)->create(
+        $posts = Post::factory(30)->create(
             ['status' => 'approved']
         );
 
