@@ -134,7 +134,7 @@ export default {
 
   methods: {
     isShortBody () {
-      const postBodyHeight = this.$refs.postBody.$el.clientHeight
+      const postBodyHeight = this.$refs.postBody.$el.scrollHeight
       const allowedBodyHeightWithoutFolding = window.innerHeight * 0.49
 
       return postBodyHeight < allowedBodyHeightWithoutFolding
