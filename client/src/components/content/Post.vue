@@ -109,26 +109,30 @@ export default {
 
     postImagesLoaded () {
       return this.post.is_images_loaded
+    },
+
+    hasImages () {
+      return !!this.post.post_images.length
     }
   },
 
   created () {
-    if (this.hasNotImages()) {
+    if (!this.hasImages || this.postImagesLoaded) {
       this.isReady = true
     }
   },
 
   mounted () {
-    if (!this.postImagesLoaded) {
-      // addEventListener('imagesUploaded', this.onImagesLoaded)
+    if (!this.hasImages && !this.isExpanded) {
+      this.maybeExpandBody()
+    }
+
+    if (!this.isPostPage && this.hasImages && !this.postImagesLoaded) {
+      this.imagesLoadedHandler()
     }
   },
 
   methods: {
-    hasNotImages () {
-      return !!this.post.post_images.length
-    },
-
     isShortBody () {
       const postBodyHeight = this.$refs.postBody.$el.clientHeight
       const allowedBodyHeightWithoutFolding = window.innerHeight * 0.49
@@ -136,12 +140,11 @@ export default {
       return postBodyHeight < allowedBodyHeightWithoutFolding
     },
 
-    onImagesLoaded () {
+    maybeExpandBody () {
       if (this.isShortBody()) {
         this.expand()
       }
       this.updateImagesLoadingStatus()
-      this.isReady = true
 
       removeEventListener('imagesUploaded', this.onImagesLoaded)
     },
@@ -155,29 +158,26 @@ export default {
       })
     },
 
-    updateImagesLoadingStatus () {
-      Post.update({
+    async updateImagesLoadingStatus () {
+      await Post.update({
         where: this.post.id,
         data: {
           is_images_loaded: true
         }
       })
+
+      this.isReady = true
     },
 
     imagesLoadedHandler () {
-      const imagesUploadedEvent = new Event('imagesUploaded')
-      const images = document.images
-      if (!images.length) {
-        dispatchEvent(imagesUploadedEvent)
-        return
-      }
+      const images = this.$refs.postBody.$el.getElementsByTagName('img')
 
       Promise.all(Array.from(images).filter(img => !img.complete).map(img => new Promise(resolve => {
         img.onload = img.onerror = resolve
       }))).then(() => {
         setTimeout(() => {
-          dispatchEvent(imagesUploadedEvent)
-        }, 100)
+          this.maybeExpandBody()
+        }, 10)
       })
     }
   }
