@@ -66,13 +66,15 @@ export default {
   },
 
   async created () {
-    await CommentModel.deleteAll()
-
     const res = await this.api.fetch(this.postId, 'post')
     await CommentModel.insert({
       data: res.data
     })
     this.isFetching = false
+  },
+
+  beforeDestroy () {
+    CommentModel.deleteAll()
   }
 }
 </script>

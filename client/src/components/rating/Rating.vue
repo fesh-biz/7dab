@@ -144,11 +144,11 @@ export default {
         .then(async res => {
           this.isSubmitting = false
 
-          MyVote.insertOrUpdate({
+          await MyVote.insertOrUpdate({
             data: res.data
           })
 
-          await this.updateRating(name === 'up', isIHaveVotedBefore)
+          await this.updateRating(name, isIHaveVotedBefore)
 
           this.$q.notify({
             message: this.$t('your_vote_is_accepted'),
@@ -166,23 +166,22 @@ export default {
         })
     },
 
-    async updateRating (isUpVote, isIHaveVotedBefore) {
+    async updateRating (voteType, isIHaveVotedBefore) {
       if (this.ratingInstance) {
         let positiveVotes = this.ratingInstance.positive_votes
         let negativeVotes = this.ratingInstance.negative_votes
-        if (isUpVote) {
+        if (voteType === 'up') {
           positiveVotes++
           if (isIHaveVotedBefore) {
             negativeVotes--
           }
         } else {
-          positiveVotes--
+          negativeVotes++
           if (isIHaveVotedBefore) {
-            negativeVotes++
+            positiveVotes--
           }
         }
 
-        console.log('updating rating')
         await RatingModel.update({
           where: this.ratingInstance.id,
           data: {
@@ -191,24 +190,15 @@ export default {
           }
         })
       } else {
-        console.log('inserting rating')
-
-        console.log('ins res rating', await RatingModel.insert({
+        await RatingModel.insert({
           data: {
             ratingable_id: this.ratingable.id,
             ratingable_type_name: this.ratingableTypePlural,
-            positive_votes: isUpVote ? 1 : 0,
-            negative_votes: isUpVote ? 0 : 1
+            positive_votes: voteType === 'up' ? 1 : 0,
+            negative_votes: voteType === 'down' ? 1 : 0
           }
-        }))
+        })
       }
-
-      const rating = RatingModel.query().where(rating => {
-        return rating.ratingable_id === this.ratingable.id &&
-          rating.ratingable_type_name === this.ratingableTypePlural
-      }).first()
-
-      console.log('rating', rating)
     }
   }
 }
