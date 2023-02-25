@@ -145,8 +145,6 @@ export default {
         this.expand()
       }
       this.updateImagesLoadingStatus()
-
-      removeEventListener('imagesUploaded', this.onImagesLoaded)
     },
 
     expand () {
