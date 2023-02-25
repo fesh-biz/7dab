@@ -134,7 +134,7 @@ export default {
         return
       }
 
-      if ((name === 'up' && this.isMyVotePositive) || (name === 'down' && this.isMyVoteNegative)) {
+      if ((name === 'up' && this.isMyVotePositive) || (name === 'down' && this.isMyVotePositive === false)) {
         return
       }
 
