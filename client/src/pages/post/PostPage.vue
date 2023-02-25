@@ -50,6 +50,13 @@ export default {
     } else {
       window.document.title = this.post.title + ` - ${this.$t('terevenky')}`
       this.postApi.incrementViews(this.postId)
+
+      PostModel.update({
+        where: this.post.id,
+        data: {
+          views: ++this.post.views
+        }
+      })
     }
   },
 
