@@ -103,10 +103,6 @@ export default {
       }
     },
 
-    ratingableType () {
-      return this.ratingable.constructor.name.toLowerCase()
-    },
-
     ratingableTypePlural () {
       return this.ratingable.constructor.name.toLowerCase() + 's'
     },
