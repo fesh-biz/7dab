@@ -83,8 +83,6 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
-      console.log('fetching')
-
       this.fetching.posts = true
       this.postApi.fetchPosts(++this.currentPage)
         .then(res => {
