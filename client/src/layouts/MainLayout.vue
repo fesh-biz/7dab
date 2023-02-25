@@ -5,6 +5,12 @@
         <q-space/>
 
         <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded>
+          <!-- Title -->
+          <div class="row no-wrap q-pa-md">
+            <strong>Теревеньки - </strong> Українці зі всього світу спілкуються тут
+          </div>
+
+          <!-- User Menu -->
           <div class="row no-wrap q-pa-md">
             <div class="column">
               <!-- General Menu  -->
