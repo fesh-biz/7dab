@@ -4,33 +4,44 @@
       <q-toolbar>
         <q-space/>
 
-        <q-btn-dropdown color="white" class="bg-primary glossy" dusk="ml-menu" no-caps flat dense rounded>
-          <!-- Title -->
-          <div class="row no-wrap q-pa-md">
-            <strong>Теревеньки - </strong> Українці зі всього світу спілкуються тут
-          </div>
-
-          <!-- User Menu -->
-          <div class="row no-wrap q-pa-md">
-            <div class="column">
-              <!-- General Menu  -->
-              <q-list dense>
-                <q-item exact clickable :to="{ name: 'home' }">
-                  <q-item-section>{{ $t('home_page') }}</q-item-section>
-                </q-item>
-                <q-item exact clickable :to="{ name: 'createPost' }">
-                  <q-item-section>
-                    {{ $t('add_post') }}
-                  </q-item-section>
-                </q-item>
-              </q-list>
+        <q-btn-dropdown
+          color="white"
+          class="bg-primary glossy"
+          dusk="ml-menu"
+          no-caps
+          flat
+          dense
+          rounded
+        >
+          <div style="width: 350px">
+            <!-- Title -->
+            <div class="q-pa-md bg-light-blue-1" style="border-radius: 5px 5px 0 0">
+              <strong>Теревеньки - </strong> Українці зі всього світу спілкуються тут!
+              Приєднуйся!
             </div>
 
-            <q-separator vertical inset class="q-mx-lg"/>
+            <!-- User Menu -->
+            <div class="row no-wrap q-pa-md">
+              <div class="column">
+                <!-- General Menu  -->
+                <q-list dense>
+                  <q-item exact clickable :to="{ name: 'home' }">
+                    <q-item-section>{{ $t('home_page') }}</q-item-section>
+                  </q-item>
+                  <q-item exact clickable :to="{ name: 'createPost' }">
+                    <q-item-section>
+                      {{ $t('add_post') }}
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
 
-            <div class="column">
-              <guest-menu v-if="!me"/>
-              <user-menu v-if="me"/>
+              <q-separator vertical inset class="q-mx-lg"/>
+
+              <div class="column">
+                <guest-menu v-if="!me"/>
+                <user-menu v-if="me"/>
+              </div>
             </div>
           </div>
         </q-btn-dropdown>
