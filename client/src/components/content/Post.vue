@@ -76,7 +76,6 @@ import PostInfo from 'components/content/PostInfo'
 import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
-import DocumentState from 'src/plugins/tools/document-state'
 import Comments from 'components/comment/Comments'
 import Author from 'components/common/Author'
 
@@ -96,7 +95,6 @@ export default {
 
   data () {
     return {
-      documentState: new DocumentState(),
       isReady: false
     }
   },
@@ -122,7 +120,7 @@ export default {
 
   mounted () {
     if (!this.postImagesLoaded) {
-      addEventListener('imagesUploaded', this.onImagesLoaded)
+      // addEventListener('imagesUploaded', this.onImagesLoaded)
     }
   },
 
@@ -163,6 +161,23 @@ export default {
         data: {
           is_images_loaded: true
         }
+      })
+    },
+
+    imagesLoadedHandler () {
+      const imagesUploadedEvent = new Event('imagesUploaded')
+      const images = document.images
+      if (!images.length) {
+        dispatchEvent(imagesUploadedEvent)
+        return
+      }
+
+      Promise.all(Array.from(images).filter(img => !img.complete).map(img => new Promise(resolve => {
+        img.onload = img.onerror = resolve
+      }))).then(() => {
+        setTimeout(() => {
+          dispatchEvent(imagesUploadedEvent)
+        }, 100)
       })
     }
   }

@@ -4,9 +4,9 @@
       <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="fetching.posts" indeterminate/>
 
       <post
-          v-for="(post, index) in posts"
-          :key="'post' + index"
-          :post="post"
+        v-for="(post, index) in posts"
+        :key="'post' + index"
+        :post="post"
       />
 
       <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
@@ -14,10 +14,10 @@
       </q-banner>
 
       <q-linear-progress
-          class="q-mb-xl"
-          dusk="main-new-posts-loading"
-          v-if="fetching.posts && posts.length"
-          indeterminate
+        class="q-mb-xl"
+        dusk="main-new-posts-loading"
+        v-if="fetching.posts && posts.length"
+        indeterminate
       />
     </div>
   </div>
@@ -28,7 +28,6 @@ import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 import { isScrollBottom } from 'src/plugins/scroll'
-import DocumentState from 'src/plugins/tools/document-state'
 
 export default {
   name: 'FeedMain',
@@ -97,10 +96,7 @@ export default {
           }
           this.isLastFetched = res.data.meta.is_last
 
-          this.$nextTick(() => {
-            this.fetching.posts = false
-            DocumentState.emitImagesUploaded()
-          })
+          this.fetching.posts = false
         })
         .catch(() => {
           this.fetching.posts = false
