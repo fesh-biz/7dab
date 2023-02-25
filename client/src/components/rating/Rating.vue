@@ -86,7 +86,7 @@ export default {
         negativeVotes: nv,
         result: res,
         color: (() => {
-          let color = 'cyan-1'
+          let color = 'light-blue-1'
 
           if (res > 0) {
             color = 'green-5'

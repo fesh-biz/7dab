@@ -1,7 +1,7 @@
 <template>
   <div style="color: #757575">
     <!-- Views, Comments, Rating-->
-    <div class="flex cursor-default">
+    <div class="flex cursor-default items-center">
       <!-- Rating -->
       <rating
         :ratingable="post"
@@ -9,12 +9,20 @@
 
       <!-- Total Views -->
       <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
-        <post-info-icon icon="visibility" :amount="0" :tooltip-label="$t('views')"/>
+        <chip-info
+          :label="post.views"
+          icon="visibility"
+          :tooltip="$t('views')"
+        />
       </div>
 
       <!-- Total Comments -->
-      <div v-if="false" :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
-        <post-info-icon icon="question_answer" :amount="0" :tooltip-label="$t('comments')"/>
+      <div :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
+        <chip-info
+          :label="post.comments"
+          icon="question_answer"
+          :tooltip="$t('comments')"
+        />
       </div>
     </div>
 
@@ -31,14 +39,14 @@
 
 <script>
 import Tag from 'components/content/Tag'
-import PostInfoIcon from 'components/content/PostInfoIcon'
 import Rating from 'src/components/rating/Rating'
+import ChipInfo from 'components/common/ChipInfo'
 
 export default {
   name: 'PostInfo',
 
   components: {
-    PostInfoIcon,
+    ChipInfo,
     Tag,
     Rating
   },
