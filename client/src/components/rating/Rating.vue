@@ -51,6 +51,10 @@ export default {
     ratingable: {
       type: Object,
       required: true
+    },
+    ratingableType: {
+      type: String,
+      required: true
     }
   },
 

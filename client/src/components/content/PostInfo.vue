@@ -5,6 +5,7 @@
       <!-- Rating -->
       <rating
         :ratingable="post"
+        ratingable-type="post"
       />
 
       <!-- Total Views -->

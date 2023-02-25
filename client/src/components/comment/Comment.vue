@@ -8,6 +8,7 @@
       <div class="flex items-center q-pl-sm">
         <rating
           :ratingable="comment"
+          ratingable-type="comment"
         />
 
         <!-- Author -->
