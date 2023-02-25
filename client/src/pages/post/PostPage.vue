@@ -49,6 +49,7 @@ export default {
       this.fetchPost()
     } else {
       window.document.title = this.post.title + ` - ${this.$t('terevenky')}`
+      this.postApi.incrementViews(this.postId)
     }
   },
 

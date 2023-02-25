@@ -8,7 +8,7 @@
       />
 
       <!-- Total Views -->
-      <div v-if="false" :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
+      <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
         <post-info-icon icon="visibility" :amount="0" :tooltip-label="$t('views')"/>
       </div>
 

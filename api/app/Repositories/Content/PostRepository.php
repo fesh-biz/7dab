@@ -26,6 +26,17 @@ class PostRepository
         
         return $query->paginate(10);
     }
+    
+    public function incrementViewsMultiple(array $ids)
+    {
+        $this->model->whereIn('id', $ids)
+            ->increment('views');
+    }
+    
+    public function incrementViews(int $id){
+        $this->model->where('id', $id)
+            ->increment('views');
+    }
 
     public function find(int $postId): ?Post
     {

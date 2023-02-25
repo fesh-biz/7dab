@@ -25,6 +25,9 @@ export default class Post extends AppModel {
       is_expanded: this.boolean(false),
       is_images_loaded: this.boolean(false),
 
+      views: this.number(0),
+      comments: this.number(0),
+
       rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type_name'),
       my_vote: this.morphOne(MyVote, 'ratingable_id', 'ratingable_type_name'),
 

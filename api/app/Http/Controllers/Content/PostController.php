@@ -10,25 +10,31 @@ use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
-    protected PostRepository $postRepo;
-    protected PostService $postService;
+    protected PostRepository $repo;
+    protected PostService $service;
 
-    public function __construct(PostRepository $postRepo, PostService $postService)
+    public function __construct(PostRepository $repo, PostService $service)
     {
-        $this->postRepo = $postRepo;
-        $this->postService = $postService;
+        $this->repo = $repo;
+        $this->service = $service;
     }
 
     public function index(): JsonResponse
     {
-        $posts = $this->postRepo->getPaginatedPosts();
+        $posts = $this->service->getPaginatedPostsWithIncrementingOfViews();
 
         return $this->sendPaginationResponse($posts);
     }
 
+    public function incrementViews(int $id)
+    {
+        $this->repo->incrementViews($id);
+    }
+
     public function post(int $postId): JsonResponse
     {
-        $post = $this->postRepo->findWithBasicRelationships($postId);
+        $post = $this->service
+            ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
 
         if (!$post) {
             return response()->json([
@@ -45,18 +51,18 @@ class PostController extends Controller
 
     public function store(PostRequest $r): JsonResponse
     {
-        $post = $this->postService->create($r);
+        $post = $this->service->create($r);
 
-        $post = $this->postRepo->findWithBasicRelationships($post->id);
+        $post = $this->repo->findWithBasicRelationships($post->id);
 
         return $this->response($post);
     }
 
     public function update(PostRequest $r, int $id): JsonResponse
     {
-        $post = $this->postService->update($r, $id);
+        $this->service->update($r, $id);
 
-        $post = $this->postRepo->findWithBasicRelationships($id);
+        $post = $this->repo->findWithBasicRelationships($id);
 
         return $this->response($post);
     }

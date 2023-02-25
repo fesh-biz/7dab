@@ -9,6 +9,7 @@ use App\Models\Content\PostText;
 use App\Repositories\Content\PostRepository;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PostService
 {
@@ -28,6 +29,24 @@ class PostService
         $this->postTextService = $postTextService;
         $this->postImageService = $postImageService;
         $this->tagService = $tagService;
+    }
+    
+    public function getPaginatedPostsWithIncrementingOfViews(): LengthAwarePaginator
+    {
+        $posts = $this->repo->getPaginatedPosts();
+        
+        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        
+        return $posts;
+    }
+    
+    public function findPostWithBasicRelationshipsWithIncrementingViews(int $id): Post
+    {
+        $post = $this->repo->findWithBasicRelationships($id);
+        
+        $this->repo->incrementViews($post->id);
+        
+        return $post;
     }
     
     public function create(PostRequest $data): Post

@@ -11,6 +11,14 @@ export default class Post {
     Post.instance = this
   }
 
+  incrementViews (id) {
+    return new Promise((resolve, reject) => {
+      this.api.post(`content/posts/increment-views/${id}`)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
   fetchPost (id) {
     return new Promise((resolve, reject) => {
       this.api.get(`content/posts/${id}`)

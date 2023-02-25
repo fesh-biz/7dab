@@ -38,16 +38,20 @@ Route::group(['prefix' => 'tags'], function () {
 });
 
 Route::group(['prefix' => 'content'], function () {
-    Route::get('/posts', [PostController::class, 'index']);
-    Route::get('/posts/{id}', [PostController::class, 'post']);
-    Route::post('/posts', [PostController::class, 'store'])->middleware([
-        'auth:api',
-        'image-sanitize'
-    ]);
-    Route::post('/posts/{id}', [PostController::class, 'update'])->middleware([
-        'auth:api',
-        'image-sanitize'
-    ]);
+    Route::group(['prefix' => 'posts'], function () {
+        Route::get('/', [PostController::class, 'index']);
+        Route::get('/{id}', [PostController::class, 'post']);
+        Route::post('/increment-views/{id}', [PostController::class, 'incrementViews']);
+        Route::post('/', [PostController::class, 'store'])->middleware([
+            'auth:api',
+            'image-sanitize'
+        ]);
+        Route::post('/{id}', [PostController::class, 'update'])->middleware([
+            'auth:api',
+            'image-sanitize'
+        ]);
+    });
+    
     
     Route::group(['prefix' => 'comments'], function() {
         Route::get('/', [CommentController::class, 'comments']);
