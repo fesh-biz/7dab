@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Rating whereRatingableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rating whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read string $ratingable_type_name
+ * @property-read Model|\Eloquent $ratingable
  */
 class Rating extends Model
 {

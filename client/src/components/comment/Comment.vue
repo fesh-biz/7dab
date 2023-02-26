@@ -23,6 +23,13 @@
       <div style="margin: 10px 0 20px 10px">
         {{ comment.body }}
       </div>
+
+      <add-comment
+        is-reply
+        :commentable-id="comment.id"
+        commentable-type="comment"
+        :post-id="postId"
+      />
     </div>
 
     <!-- Answers -->
@@ -38,6 +45,7 @@
         :level="level + 1"
         :is-last="answers.length - 1 === index && !isLast"
         :post-author="postAuthor"
+        :post-id="postId"
       />
     </div>
   </div>
@@ -47,11 +55,16 @@
 import CommentModel from 'src/models/content/comment'
 import Rating from 'components/rating/Rating'
 import Author from 'components/common/Author'
+import AddComment from 'components/comment/AddComment'
 
 export default {
   name: 'Comment',
 
   props: {
+    postId: {
+      type: Number,
+      required: true
+    },
     comment: {
       type: Object,
       required: true
@@ -71,6 +84,7 @@ export default {
   },
 
   components: {
+    AddComment,
     Author,
     Rating,
     Comment: () => import('./Comment.vue')

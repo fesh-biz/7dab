@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RatingVote whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RatingVote whereUserId($value)
  * @mixin \Eloquent
+ * @property-read string $ratingable_type_name
  */
 class RatingVote extends Model
 {

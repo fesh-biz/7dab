@@ -5,20 +5,35 @@ namespace App\Services\Content;
 use App\Models\Content\Comment;
 use App\Models\Content\Post;
 use App\Repositories\Content\CommentRepository;
+use App\Repositories\Content\PostRepository;
+use DB;
 use Illuminate\Support\Collection;
 
 class CommentService
 {
     protected CommentRepository $repo;
+    protected PostRepository $postRepository;
     
-    public function __construct(CommentRepository $repo)
+    public function __construct(CommentRepository $repo, PostRepository $postRepository)
     {
         $this->repo = $repo;
+        $this->postRepository = $postRepository;
     }
     
     public function getModel(): Comment
     {
         return $this->repo->getModel();
+    }
+    
+    public function createWithIncrementingPostCommentsCounter(int $commentableId, int $postId, string $commentableType, string $body): Comment
+    {
+        DB::beginTransaction();
+        $comment = $this->repo->create($commentableId, $this->getCommentableModel($commentableType), $body);
+        
+        $this->postRepository->incrementComments($postId);
+        DB::commit();
+        
+        return $comment;
     }
     
     public function getComments(string $commentableType, int $commentableId): Collection

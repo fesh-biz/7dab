@@ -16,16 +16,20 @@ class CommentRequest extends FormRequest
         return true;
     }
     
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
-        return [
-            'commentable_type' => 'required|in:post,comment',
-            'commentable_id' => 'required|integer',
+        $rules = [
+            'body' => 'required|string'
         ];
+        
+        if ($this->route()->getName() === 'content.comments.create') {
+            $rules = array_merge($rules, [
+                'commentable_type' => 'required|in:post,comment',
+                'commentable_id' => 'required|integer',
+                'post_id' => 'required|integer'
+            ]);
+        }
+        
+        return $rules;
     }
 }

@@ -37,7 +37,7 @@ Route::group(['prefix' => 'tags'], function () {
     Route::get('/search', [TagController::class, 'search']);
 });
 
-Route::group(['prefix' => 'content'], function () {
+Route::group(['prefix' => 'content', 'as' => 'content'], function () {
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', [PostController::class, 'index']);
         Route::get('/{id}', [PostController::class, 'post']);
@@ -53,7 +53,11 @@ Route::group(['prefix' => 'content'], function () {
     });
     
     
-    Route::group(['prefix' => 'comments'], function() {
+    Route::group(['prefix' => 'comments', 'as' => '.comments'], function() {
         Route::get('/', [CommentController::class, 'comments']);
+        Route::post('/', [CommentController::class, 'store'])
+            ->name('.create');
+        Route::post('/{id}', [CommentController::class, 'update'])
+            ->name('.update');
     });
 });

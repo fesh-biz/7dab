@@ -45,6 +45,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @method static Builder|Post whereUserId($value)
  * @method static Builder|Post withTagsAuthorContent()
  * @mixin \Eloquent
+ * @property int $views
+ * @property-read RatingVote|null $myVote
+ * @property-read Rating|null $rating
+ * @method static Builder|Post whereComments($value)
+ * @method static Builder|Post whereViews($value)
  */
 class Post extends Model
 {

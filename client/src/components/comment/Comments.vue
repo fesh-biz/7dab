@@ -5,6 +5,13 @@
     class="q-mb-xl"
   >
     <q-card-section>
+      <!-- Add a Comment -->
+      <add-comment
+        :commentable-id="postId"
+        commentable-type="post"
+        :post-id="postId"
+      />
+
       <q-linear-progress
         v-if="isFetching"
         indeterminate
@@ -23,6 +30,7 @@
         v-for="(comment, index) in comments"
         :key="comment.id"
         :comment="comment"
+        :post-id="postId"
         :level="1"
         :is-last="comments.length - 1 === index"
         :post-author="postAuthor"
@@ -36,11 +44,13 @@ import Comment from 'components/comment/Comment'
 import CommentApi from 'src/plugins/api/comment'
 import CommentModel from 'src/models/content/comment'
 import PostModel from 'src/models/content/post'
+import AddComment from 'components/comment/AddComment'
 
 export default {
   name: 'PostComments',
 
   components: {
+    AddComment,
     Comment
   },
 
@@ -53,6 +63,7 @@ export default {
 
   data () {
     return {
+      temp: '',
       api: new CommentApi(),
       isFetching: true
     }

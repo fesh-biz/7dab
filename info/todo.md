@@ -10,19 +10,13 @@
         - [] Tags
 
 - [] User login length 5 - 15
+- [] When a post has been edited, review doesn't show changes
+- [] Translate text 'We have emailed your password reset link!'
 
 ------------------------------- Next Steps ----------------------------------
-- [] Поменять шрифт на более читаемый
-- [] Где-то применить этот слоган
-  Українці зі всього світу спілкуються тут
-  
-- [] Замість Добавити Теревеньку - Теревенькнути
-    - [] 
 
 - [] Fix all problems with auth
 - [] To fix
-    - [] Add post, go to main page, then to add post again
-        - [] Form Model doesn't reset
     - [] Post validation
         - [] When there is only one error, it displays it for all sections
     - [] Add image as empty field, fix 500 error

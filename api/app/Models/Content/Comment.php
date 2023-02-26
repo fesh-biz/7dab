@@ -36,6 +36,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $answers
+ * @property-read int|null $answers_count
+ * @property-read User $commentAuthor
+ * @property-read string $commentable_type_name
+ * @property-read RatingVote|null $myVote
+ * @property-read Rating|null $rating
  */
 class Comment extends Model
 {

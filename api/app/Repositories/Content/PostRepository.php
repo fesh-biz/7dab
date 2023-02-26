@@ -4,6 +4,7 @@ namespace App\Repositories\Content;
 
 use App\Models\Content\Post;
 use Illuminate\Pagination\LengthAwarePaginator;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class PostRepository
 {
@@ -12,6 +13,11 @@ class PostRepository
     public function __construct(Post $model)
     {
         $this->model = $model;
+    }
+    
+    public function incrementComments(int $id): Boolean
+    {
+        return $this->model->whereId($id)->increment('comments');
     }
 
     public function getPaginatedPosts(): LengthAwarePaginator
