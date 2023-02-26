@@ -157,7 +157,7 @@ export default class Post {
         Notify.create({
           position: 'center',
           color: 'negative',
-          message: 'Теревенька маэ мати хоча б одне текстове поле або поле з зображенням'
+          message: 'Теревенька має мати хоча б одне текстове поле або поле з зображенням'
         })
 
         return reject()
