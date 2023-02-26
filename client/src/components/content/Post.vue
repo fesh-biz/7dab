@@ -123,6 +123,7 @@ export default {
       console.log('post image loaded', this.post.is_images_loaded)
       console.log('post image is expanded', this.post.is_expanded)
       console.log('is post page', this.isPostPage)
+      console.log('post', Post.query().find(this.post.id))
       console.log('--------------------------')
     }
   },
