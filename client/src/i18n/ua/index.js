@@ -1,4 +1,5 @@
 export default {
+  there_are_no_comments_yet: 'Поки що немає коментарів',
   need_to_login_or_register: 'Потрібно увійти або зареєструватись',
   preview: 'Переглянути',
   rating_will_be_updated_soon: 'Рейтинг буде оновлено за хвилину',

@@ -67,6 +67,7 @@
       <q-separator v-if="$q.platform.is.mobile"/>
     </q-card>
 
+    <div ref="commentsAnchor"></div>
     <comments v-if="isPostPage" :post-id="post.id"/>
   </div>
 </template>
@@ -86,10 +87,6 @@ export default {
     post: {
       type: Post,
       required: true
-    },
-    isPostPage: {
-      type: Boolean,
-      default: false
     }
   },
 
@@ -100,6 +97,10 @@ export default {
   },
 
   computed: {
+    isPostPage () {
+      return this.$route.name === 'postPage'
+    },
+
     isExpanded () {
       if (this.isPostPage) return true
       if (!this.postImagesLoaded) return false
@@ -113,6 +114,10 @@ export default {
 
     hasImages () {
       return !!this.post.post_images.length
+    },
+
+    isScrollToComments () {
+      return this.isPostPage && this.$route.params.toComments
     }
   },
 
@@ -129,6 +134,13 @@ export default {
 
     if (!this.isPostPage && this.hasImages && !this.postImagesLoaded) {
       this.imagesLoadedHandler()
+    }
+
+    if (this.isScrollToComments) {
+      setTimeout(() => {
+        this.$refs.commentsAnchor.scrollIntoView()
+        window.scrollBy(0, 50)
+      }, 10)
     }
   },
 

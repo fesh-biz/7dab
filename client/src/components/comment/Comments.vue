@@ -2,6 +2,7 @@
   <q-card
     flat
     :bordered="!$q.platform.is.mobile"
+    class="q-mb-xl"
   >
     <q-card-section>
       <q-linear-progress
@@ -9,6 +10,14 @@
         indeterminate
         style="margin-top: -4px"
       />
+
+      <!-- No Comments -->
+      <div
+        v-if="!isFetching && !comments.length"
+        class="text-center"
+      >
+        {{ $t('there_are_no_comments_yet') }}
+      </div>
 
       <comment
         v-for="(comment, index) in comments"

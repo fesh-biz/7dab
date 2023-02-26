@@ -23,6 +23,7 @@
       </q-icon>
     </q-avatar>
     <span style="font-size: 0.9rem">{{ label }}</span>
+    <slot></slot>
   </q-chip>
 </template>
 

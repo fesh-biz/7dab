@@ -4,7 +4,6 @@
       <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="!post" indeterminate/>
 
       <post
-          :is-post-page="true"
           v-if="post"
           :post="post"
       />

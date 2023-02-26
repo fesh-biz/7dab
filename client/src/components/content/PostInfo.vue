@@ -23,7 +23,13 @@
           :label="post.comments"
           icon="question_answer"
           :tooltip="$t('comments')"
-        />
+        >
+          <q-item v-if="!isPostPage" style="padding: 5px; margin-left: 5px" dense :to="{name: 'postPage', params: {id: post.id, toComments: true}}">
+            <q-item-section>
+              <q-icon color="grey-7" name="launch" size="sm"/>
+            </q-item-section>
+          </q-item>
+        </chip-info>
       </div>
     </div>
 
@@ -61,6 +67,12 @@ export default {
 
   data () {
     return {
+    }
+  },
+
+  computed: {
+    isPostPage () {
+      return this.$route.name === 'postPage'
     }
   }
 }
