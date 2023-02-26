@@ -9,7 +9,7 @@
         :post="post"
       />
 
-      <q-banner dusk="main-no-more-posts" rounded v-if="isLastFetched" class="text-center">
+      <q-banner dusk="main-no-more-posts" rounded v-if="mainPage.isLastFetched" class="text-center">
         {{ $t('there_is_no_new_posts') }}
       </q-banner>
 
@@ -28,6 +28,7 @@ import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 import { isScrollBottom } from 'src/plugins/scroll'
+import Main from 'src/plugins/pages/feed/main'
 
 export default {
   name: 'FeedMain',
@@ -37,8 +38,7 @@ export default {
       fetching: {
         posts: false
       },
-      isLastFetched: false,
-      currentPage: 0,
+      mainPage: new Main(),
       postApi: new PostApi()
     }
   },
@@ -76,14 +76,14 @@ export default {
     },
 
     maybeFetchNextPosts () {
-      if (!this.fetching.posts && isScrollBottom(500) && !this.isLastFetched) {
+      if (!this.fetching.posts && isScrollBottom(500) && !this.mainPage.isLastFetched) {
         this.fetchPosts()
       }
     },
 
     fetchPosts (isFirstTime) {
       this.fetching.posts = true
-      this.postApi.fetchPosts(++this.currentPage)
+      this.postApi.fetchPosts(++this.mainPage.currentPage)
         .then(res => {
           if (isFirstTime) {
             PostModel.create({
@@ -94,7 +94,7 @@ export default {
               data: res.data.data
             })
           }
-          this.isLastFetched = res.data.meta.is_last
+          this.mainPage.isLastFetched = res.data.meta.is_last
 
           this.fetching.posts = false
         })
