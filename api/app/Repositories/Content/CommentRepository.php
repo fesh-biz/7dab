@@ -19,13 +19,9 @@ class CommentRepository
         return $this->model;
     }
     
-    public function create(int $commentableId, string $commentableType, string $body): Comment
+    public function create(array $data): Comment
     {
-        return $this->model->create([
-            'commentable_id' => $commentableId,
-            'commentable_type' => $commentableType,
-            'body' => $body
-        ]);
+        return $this->model->create($data);
     }
     
     public function update(Comment $comment, string $body): Boolean

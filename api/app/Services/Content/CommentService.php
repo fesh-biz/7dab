@@ -28,7 +28,12 @@ class CommentService
     public function createWithIncrementingPostCommentsCounter(int $commentableId, int $postId, string $commentableType, string $body): Comment
     {
         DB::beginTransaction();
-        $comment = $this->repo->create($commentableId, $this->getCommentableModel($commentableType), $body);
+        $comment = $this->repo->create([
+            'user_id' => auth('api')->id(),
+            'commentable_id' => $commentableId,
+            'commentable_type' => $this->getCommentableModel($commentableType),
+            'body' => $body
+        ]);
         
         $this->postRepository->incrementComments($postId);
         DB::commit();
