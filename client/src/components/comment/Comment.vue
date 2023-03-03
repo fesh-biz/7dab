@@ -1,6 +1,7 @@
 <template>
   <div
     class="comment"
+    :id="'comment-' + comment.id"
   >
     <!-- Body -->
     <div style="padding-left: 5px; color: #5e5e5e">
@@ -106,23 +107,23 @@ export default {
       ]
 
       return '1px solid ' + colors[(this.level + 2) % 10]
+    },
+
+    answers () {
+      return CommentModel.query()
+        .where(comment => {
+          return comment.commentable_type_name === 'comments' &&
+            comment.commentable_id === this.comment.id
+        })
+        .with('rating')
+        .with('comment_author')
+        .get()
     }
   },
 
   data () {
     return {
-      answers: []
     }
-  },
-
-  created () {
-    this.answers = CommentModel.query()
-      .where(comment => {
-        return comment.commentable_type_name === 'comments' &&
-          comment.commentable_id === this.comment.id
-      })
-      .withAll()
-      .get()
   }
 }
 </script>

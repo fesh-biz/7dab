@@ -15,7 +15,7 @@ class PostRepository
         $this->model = $model;
     }
     
-    public function incrementComments(int $id): Boolean
+    public function incrementComments(int $id): int
     {
         return $this->model->whereId($id)->increment('comments');
     }

@@ -12,11 +12,13 @@
         <div>{{ isReply ? $t('to_reply') : $t('add_comment') }}</div>
 
         <q-input
-          type="textarea"
-          v-model="model"
           autogrow
           outlined
           @focus="checkAuth"
+          v-model="formModel.body"
+          :error="!!validator.errors.body"
+          :error-message="validator.errors.body"
+          @input="validator.resetErrors()"
         />
       </q-card-section>
 
@@ -42,6 +44,13 @@
 <script>
 import Me from 'src/models/user/me'
 import Comment from 'src/plugins/api/comment'
+import _ from 'lodash'
+import Validator from 'src/plugins/tools/validator'
+import CommentModel from 'src/models/content/comment'
+
+const formModel = {
+  body: null
+}
 
 export default {
   name: 'AddComment',
@@ -67,10 +76,11 @@ export default {
 
   data () {
     return {
-      model: '',
+      formModel: _.cloneDeep(formModel),
       isOpened: false,
       isSubmitting: false,
-      api: new Comment()
+      api: new Comment(),
+      validator: new Validator(formModel)
     }
   },
 
@@ -87,6 +97,10 @@ export default {
   },
 
   methods: {
+    input () {
+      console.log('yep')
+    },
+
     checkAuth () {
       if (!this.me) {
         this.showUnauthMessage()
@@ -100,16 +114,58 @@ export default {
       if (!this.checkAuth()) return
 
       this.isSubmitting = true
-      this.api.create(this.postId, this.commentableId, this.commentableType, this.model)
-        .then(() => {
-          console.log('yes')
+
+      const data = {
+        post_id: this.postId,
+        commentable_id: this.commentableId,
+        commentable_type: this.commentableType,
+        body: this.formModel.body
+      }
+
+      this.api.create(data)
+        .then((res) => {
+          this.formModel = _.cloneDeep(formModel)
+          CommentModel.insert({
+            data: res.data
+          })
+
+          this.$q.notify({
+            message: this.$t('success'),
+            position: 'center',
+            color: 'positive'
+          })
 
           this.isSubmitting = false
+
+          setTimeout(() => {
+            const element = document.getElementById('comment-' + res.data.id)
+            element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
+
+            window.addEventListener('scroll', () => {
+              this.flashComment(res.data.id)
+            })
+          }, 10)
         })
         .catch(err => {
-          console.log('err', err.response)
+          this.validator.setErrors(err)
           this.isSubmitting = false
         })
+    },
+
+    flashComment (id) {
+      const element = document.getElementById('comment-' + id)
+
+      const rect = element.getBoundingClientRect()
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0
+      if (isVisible) {
+        element.classList.add('flash')
+        setTimeout(() => {
+          element.classList.remove('flash')
+          window.removeEventListener('scroll', () => {
+            this.flashComment(id)
+          })
+        }, 2000) // remove the class after 2 seconds
+      }
     },
 
     showUnauthMessage () {

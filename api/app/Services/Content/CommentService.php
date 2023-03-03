@@ -35,6 +35,10 @@ class CommentService
             'body' => $body
         ]);
         
+        $comment->rating()->create();
+        
+        $comment->load('commentAuthor', 'rating');
+        
         $this->postRepository->incrementComments($postId);
         DB::commit();
         

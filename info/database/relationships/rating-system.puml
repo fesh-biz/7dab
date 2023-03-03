@@ -11,7 +11,6 @@ ratings -- users
 
 comments -- rating_votes
 posts -- rating_votes
-users -- rating_votes
 
 rating_votes - "User As Voter"
 users -- "User As Voter"

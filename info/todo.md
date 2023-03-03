@@ -2,6 +2,11 @@
 - [] Comments
     - [] User can add comment to post
     - [] User can add comment to comment
+    
+- [] If I'm the author of the post or not
+    - [] It would be cool to see two tabs to see comments in their usual way
+    - [] The second tab is to show comments by recent!
+    - [] To do the same for comment Author
 
 - [] Tag page
     - [] Search page
@@ -35,8 +40,6 @@
 - [] Change all `TooltipIcon` on `IconWithTooltip`
 
 - [] Сделать соглашение с куками
-
-- [] Как пользователь, я хочу оценивать комментарии и контент
 
 - [] Как пользователь, я хочу иметь возможность иметь приватную ленту интересных ссылок и статей
 

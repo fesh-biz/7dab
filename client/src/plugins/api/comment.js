@@ -24,14 +24,9 @@ export default class Comment {
     }
   }
 
-  create (postId, commentableId, commentableType, body) {
+  create (data) {
     return new Promise((resolve, reject) => {
-      this.api.post('content/comments', {
-        body: body,
-        post_id: postId,
-        commentable_type: commentableType,
-        commentable_id: commentableId
-      })
+      this.api.post('content/comments', data)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
