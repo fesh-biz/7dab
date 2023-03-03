@@ -36,6 +36,16 @@ const routes = [
     children: AdminRoutes
   },
 
+  // Test Only
+  {
+    path: '/test',
+    component: () => {
+      if (process.env.ENV_DEV === 'Development') {
+        return import('pages/test-only/Index')
+      }
+    }
+  },
+
   // Always leave this as last one,
   // but you can also remove it
   {
