@@ -1,4 +1,5 @@
 export default {
+  word_or_phrase: 'Слово або фраза',
   to_reply: 'Відповісти',
   add_comment: 'Додати коментар',
   there_are_no_comments_yet: 'Поки що немає коментарів',
