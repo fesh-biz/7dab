@@ -1,12 +1,10 @@
-# MVP 
-- [] Comments
-    - [] User can add comment to post
-    - [] User can add comment to comment
-    
-- [] If I'm the author of the post or not
-    - [] It would be cool to see two tabs to see comments in their usual way
-    - [] The second tab is to show comments by recent!
-    - [] To do the same for comment Author
+# MVP
+- [] Sitemap
+    - [] Create main sitemap that have links to sub sitemaps
+        - [] Sitemap for posts
+            - [] Each post has its images
+        - [] Sitemap for tags
+            - [] Create tag page
 
 - [] Tag page
     - [] Search page
@@ -36,6 +34,11 @@
 - [] Как пользователь, я хочу оставлять комментарии
     - [] К контенту
     - [] К другим комментариям
+
+- [] If I'm the author of the post or not
+    - [] It would be cool to see two tabs to see comments in their usual way
+    - [] The second tab is to show comments by recent!
+    - [] To do the same for comment Author
 
 - [] Change all `TooltipIcon` on `IconWithTooltip`
 
