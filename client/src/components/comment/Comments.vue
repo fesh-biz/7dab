@@ -76,6 +76,7 @@ export default {
           return comment.commentable_type_name === 'posts' &&
             comment.commentable_id === this.postId
         })
+        .orderBy('id', 'desc')
         .with('rating')
         .with('comment_author')
         .get()

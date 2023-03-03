@@ -14,6 +14,7 @@
         <q-input
           autogrow
           outlined
+          :autofocus="isReply"
           @focus="checkAuth"
           v-model="formModel.body"
           :error="!!validator.errors.body"
@@ -47,6 +48,7 @@ import Comment from 'src/plugins/api/comment'
 import _ from 'lodash'
 import Validator from 'src/plugins/tools/validator'
 import CommentModel from 'src/models/content/comment'
+import Scroll from 'src/plugins/tools/scroll'
 
 const formModel = {
   body: null
@@ -80,7 +82,8 @@ export default {
       isOpened: false,
       isSubmitting: false,
       api: new Comment(),
-      validator: new Validator(formModel)
+      validator: new Validator(formModel),
+      scroll: new Scroll()
     }
   },
 
@@ -137,13 +140,18 @@ export default {
 
           this.isSubmitting = false
 
+          if (this.isReply) {
+            this.isOpened = false
+          }
+
           setTimeout(() => {
             const element = document.getElementById('comment-' + res.data.id)
-            element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })
+            element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
 
-            window.addEventListener('scroll', () => {
-              this.flashComment(res.data.id)
-            })
+            this.scroll.whenScrollFinished()
+              .then(() => {
+                this.flashComment(res.data.id)
+              })
           }, 10)
         })
         .catch(err => {
@@ -161,9 +169,6 @@ export default {
         element.classList.add('flash')
         setTimeout(() => {
           element.classList.remove('flash')
-          window.removeEventListener('scroll', () => {
-            this.flashComment(id)
-          })
         }, 2000) // remove the class after 2 seconds
       }
     },
