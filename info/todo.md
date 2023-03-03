@@ -1,16 +1,24 @@
 # MVP
 - [] Sitemap
+    - [] Finish
+        - [] Tag page
+            - [] Search page
+            - [] Input fields:
+                - [] Text
+                - [] Tags
+    - [] Sitemap Service
+        - [] Creates sitemap.xml as index
+        - [] Each url has `lastmod`
+        - [] Each is for month
+        - [] methods:
+            - [] `createSitemap($fileName)`
+            - [] `updateSitemap($fileName, $newURLs, $type = 'post|index|pages|tags')`
+                - [] It should update `lastmod` for month too
     - [] Create main sitemap that have links to sub sitemaps
         - [] Sitemap for posts
             - [] Each post has its images
         - [] Sitemap for tags
             - [] Create tag page
-
-- [] Tag page
-    - [] Search page
-    - [] Input fields:
-        - [] Text
-        - [] Tags
 
 - [] User login length 5 - 15
 - [] When a post has been edited, review doesn't show changes

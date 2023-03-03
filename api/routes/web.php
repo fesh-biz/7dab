@@ -18,6 +18,10 @@ if (env('APP_ENV') === 'local') {
     Route::get('test', [Controller::class, 'test']);
 }
 
+Route::get('sitemap.xml', function () {
+    echo 'test';
+});
+
 Route::get('/{any}', function () {
     return view('quasar');
 })
