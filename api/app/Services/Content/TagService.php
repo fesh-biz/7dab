@@ -4,8 +4,8 @@ namespace App\Services\Content;
 
 use App\Models\Content\Tag;
 use App\Repositories\Content\TagRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class TagService
 {
@@ -21,11 +21,19 @@ class TagService
         return $this->repo->getModel();
     }
     
-    public function search(string $title): Collection
+    public function search(string $title = null, array $tagIds = null): Collection
     {
-        return $this->repo->getModel()
-            ->where('title', 'like', "%$title%")
-            ->limit(5)
+        $query = $this->repo->getModel();
+        
+        if ($title) {
+            $query = $query->where('title', 'like', "%$title%");
+        }
+        
+        if ($tagIds) {
+            $query = $query->whereIn('id', $tagIds);
+        }
+        
+        return $query->limit(10)
             ->get();
     }
     

@@ -7,6 +7,9 @@ export default [
   {
     path: '/search',
     name: 'search',
+    meta: {
+      title: 'search'
+    },
     component: () => import('pages/feed/Search')
   }
 ]

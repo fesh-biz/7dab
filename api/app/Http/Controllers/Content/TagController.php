@@ -7,6 +7,7 @@ use App\Http\Requests\Content\TagRequest;
 use App\Services\Content\TagService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
@@ -19,7 +20,7 @@ class TagController extends Controller
     
     public function search(Request $r): JsonResponse
     {
-        $data = $this->service->search($r->title);
+        $data = $this->service->search($r->title, $r->tids);
         
         return $this->response($data);
     }

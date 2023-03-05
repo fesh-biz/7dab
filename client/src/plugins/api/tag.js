@@ -11,6 +11,26 @@ export default class Tag {
     Tag.instance = this
   }
 
+  fetchByIds (ids) {
+    let query = ''
+    if (typeof ids === 'string') {
+      ids = [ids]
+    }
+
+    ids.forEach((id, i) => {
+      query += `tids[]=${id}`
+      if (i + 1 < ids.length) {
+        query += '&'
+      }
+    })
+
+    return new Promise((resolve, reject) => {
+      this.api.get(`/tags/search?${query}`)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
   search (name) {
     return new Promise((resolve, reject) => {
       this.api.get(`/tags/search?title=${name}`)
