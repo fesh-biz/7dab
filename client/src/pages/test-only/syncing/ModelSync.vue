@@ -22,13 +22,17 @@ export default {
 
   data () {
     return {
-      model: this.value
     }
   },
 
-  watch: {
-    model (newValue) {
-      this.$emit('input', newValue)
+  computed: {
+    model: {
+      get () {
+        return this.value
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
     }
   }
 }

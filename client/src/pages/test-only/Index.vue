@@ -24,12 +24,6 @@ export default {
     return {
       model: 'Start val'
     }
-  },
-
-  watch: {
-    model (val) {
-      console.log('model', val)
-    }
   }
 }
 </script>

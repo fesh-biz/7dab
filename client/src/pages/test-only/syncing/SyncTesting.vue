@@ -5,7 +5,6 @@
       dense
       outlined
       v-model="model"
-      @input="(val) => {$emit('update:variable', val)}"
     />
   </div>
 </template>
@@ -23,7 +22,17 @@ export default {
 
   data () {
     return {
-      model: this.variable
+    }
+  },
+
+  computed: {
+    model: {
+      get () {
+        return this.variable
+      },
+      set (val) {
+        this.$emit('update:variable', val)
+      }
     }
   }
 }
