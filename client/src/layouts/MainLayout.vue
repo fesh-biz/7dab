@@ -25,9 +25,19 @@
               <div class="column">
                 <!-- General Menu  -->
                 <q-list dense>
+                  <!-- Home Page -->
                   <q-item exact clickable :to="{ name: 'home' }">
                     <q-item-section>{{ $t('home_page') }}</q-item-section>
                   </q-item>
+
+                  <!-- Search Page -->
+                  <q-item exact clickable :to="{ name: 'search' }">
+                    <q-item-section>
+                      {{ $t('search') }}
+                    </q-item-section>
+                  </q-item>
+
+                  <!-- Add Post -->
                   <q-item exact clickable :to="{ name: 'createPost' }">
                     <q-item-section>
                       {{ $t('add_post') }}
