@@ -76,15 +76,23 @@ export default {
   computed: {
     tagIdsFromQuery () {
       return this.$route.query.tids || null
+    },
+
+    keywordFromQuery () {
+      return this.$route.query.kw
     }
   },
 
   created () {
-    this.maybeSetTagsFromQuery()
+    this.maybeSetTagsAndKeywordFromQuery()
   },
 
   methods: {
-    maybeSetTagsFromQuery () {
+    maybeSetTagsAndKeywordFromQuery () {
+      if (this.keywordFromQuery) {
+        this.formModel.keyword = this.keywordFromQuery
+      }
+
       if (this.tagIdsFromQuery) {
         this.tagsIsFetching = true
         this.tagApi.fetchByIds(this.tagIdsFromQuery)
@@ -110,7 +118,12 @@ export default {
         query.tids = this.formModel.tags.map(tag => tag.value)
       }
 
+      if (this.formModel.keyword) {
+        query.kw = this.formModel.keyword = this.formModel.keyword.trim().replace(/\s+/g, ' ')
+      }
+
       this.$router.push({ name: 'search', query: query })
+      console.log('keyword', this.$route.query.kw)
     },
 
     fetchPosts () {
