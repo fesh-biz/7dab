@@ -64,7 +64,7 @@ export default {
   data () {
     return {
       api: new SearchApi(),
-      page: new Search(formModel),
+      page: new Search(),
       formModel: _.cloneDeep(formModel),
       tagOptions: [],
       test: false,
@@ -76,7 +76,17 @@ export default {
 
   computed: {
     tagIdsFromQuery () {
-      return this.$route.query.tids || null
+      let res = null
+
+      const tagIds = this.$route.query.tids
+      if (tagIds) {
+        if (typeof tagIds === 'object') {
+          res = tagIds.map(val => parseInt(val))
+        } else {
+          res = [parseInt(tagIds)]
+        }
+      }
+      return res || null
     },
 
     keywordFromQuery () {
@@ -91,25 +101,34 @@ export default {
       }
 
       if (this.tagIdsFromQuery) {
-        if (typeof this.tagIdsFromQuery === 'object') {
-          query.tids = this.tagIdsFromQuery.map(val => parseInt(val))
-        } else {
-          query.tids = [parseInt(this.tagIdsFromQuery)]
-        }
+        query.tids = this.tagIdsFromQuery
       }
 
       return query
     }
   },
 
+  watch: {
+    '$route' (toRoute, fromRoute) {
+      this.init()
+    }
+  },
+
   created () {
-    this.maybeSetTagsAndKeywordFromQuery()
-      .then(() => {
-        this.fetchPosts()
-      })
+    this.init()
   },
 
   methods: {
+    init () {
+      this.formModel = _.cloneDeep(formModel)
+      this.maybeSetTagsAndKeywordFromQuery()
+        .then(() => {
+          if (this.tagIdsFromQuery && this.keywordFromQuery) {
+            this.fetchPosts()
+          }
+        })
+    },
+
     maybeSetTagsAndKeywordFromQuery () {
       return new Promise((resolve, reject) => {
         if (this.keywordFromQuery) {
@@ -158,6 +177,17 @@ export default {
 
     fetchPosts () {
       this.changeURI()
+
+      console.log('this.requestData', this.requestData)
+      if (!this.requestData.kw && !this.requestData.tids.length) {
+        this.$q.notify({
+          message: this.$t('empty_form'),
+          position: 'center',
+          color: 'negative'
+        })
+
+        return
+      }
 
       this.api.search(this.requestData)
         .then(res => console.log('res', res.data.data))

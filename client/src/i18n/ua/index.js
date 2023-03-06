@@ -1,4 +1,5 @@
 export default {
+  empty_form: 'Нічого не введено',
   word_or_phrase: 'Слово або фраза',
   to_reply: 'Відповісти',
   add_comment: 'Додати коментар',

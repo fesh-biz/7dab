@@ -31,7 +31,9 @@ class PostRepository
         
         if ($tagsIds) {
             $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
-                $q->whereIn('id', $tagsIds);
+                foreach ($tagsIds as $id) {
+                    $q->where('id', $id);
+                }
             });
         }
         
