@@ -31,9 +31,12 @@ class PostService
         $this->tagService = $tagService;
     }
     
-    public function getPaginatedPostsWithIncrementingOfViews(): LengthAwarePaginator
+    public function getPaginatedPostsWithIncrementingOfViews(
+        array $tagsIds = null,
+        string $keyword = null
+    ): LengthAwarePaginator
     {
-        $posts = $this->repo->getPaginatedPosts();
+        $posts = $this->repo->getPaginatedPosts($tagsIds, $keyword);
         
         $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
         

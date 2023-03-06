@@ -20,17 +20,27 @@ class PostRepository
         return $this->model->whereId($id)->increment('comments');
     }
 
-    public function getPaginatedPosts(): LengthAwarePaginator
+    public function getPaginatedPosts(
+        array $tagsIds = null,
+        string $keyword = null
+    ): LengthAwarePaginator
     {
-        $query = $this->model->withTagsAuthorContent()
+        $query = $this->model
             ->whereStatus('approved')
             ->orderBy('id', 'desc');
+        
+        if ($tagsIds) {
+            $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
+                $q->whereIn('id', $tagsIds);
+            });
+        }
         
         if (auth('api')->user()) {
             $query->with('myVote');
         }
         
-        return $query->paginate(10);
+        return $query->withTagsAuthorContent()
+            ->paginate(10);
     }
     
     public function incrementViewsMultiple(array $ids)

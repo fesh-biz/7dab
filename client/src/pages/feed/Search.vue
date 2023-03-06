@@ -69,7 +69,8 @@ export default {
       tagOptions: [],
       test: false,
       tagApi: new TagApi(),
-      tagsIsFetching: false
+      tagsIsFetching: false,
+      requestData: null
     }
   },
 
@@ -80,37 +81,63 @@ export default {
 
     keywordFromQuery () {
       return this.$route.query.kw
+    },
+
+    query () {
+      const query = {}
+
+      if (this.keywordFromQuery) {
+        query.kw = this.keywordFromQuery
+      }
+
+      if (this.tagIdsFromQuery) {
+        if (typeof this.tagIdsFromQuery === 'object') {
+          query.tids = this.tagIdsFromQuery.map(val => parseInt(val))
+        } else {
+          query.tids = [parseInt(this.tagIdsFromQuery)]
+        }
+      }
+
+      return query
     }
   },
 
   created () {
-    console.log('created')
     this.maybeSetTagsAndKeywordFromQuery()
+      .then(() => {
+        this.fetchPosts()
+      })
   },
 
   methods: {
     maybeSetTagsAndKeywordFromQuery () {
-      if (this.keywordFromQuery) {
-        this.formModel.keyword = this.keywordFromQuery
-      }
+      return new Promise((resolve, reject) => {
+        if (this.keywordFromQuery) {
+          this.formModel.keyword = this.keywordFromQuery
+        }
 
-      if (this.tagIdsFromQuery) {
-        this.tagsIsFetching = true
-        this.tagApi.fetchByIds(this.tagIdsFromQuery)
-          .then(res => {
-            this.tagsIsFetching = false
-            const tags = res.data.data
-            tags.forEach(tag => {
-              this.formModel.tags.push({
-                label: tag.title,
-                value: tag.id
+        if (this.tagIdsFromQuery) {
+          this.tagsIsFetching = true
+          this.tagApi.fetchByIds(this.tagIdsFromQuery)
+            .then(res => {
+              this.tagsIsFetching = false
+              const tags = res.data.data
+              tags.forEach(tag => {
+                this.formModel.tags.push({
+                  label: tag.title,
+                  value: tag.id
+                })
               })
+              resolve()
             })
-          })
-          .catch(() => {
-            this.tagsIsFetching = false
-          })
-      }
+            .catch(() => {
+              this.tagsIsFetching = false
+              reject()
+            })
+        } else {
+          resolve()
+        }
+      })
     },
 
     changeURI () {
@@ -123,22 +150,17 @@ export default {
         query.kw = this.formModel.keyword = this.formModel.keyword.trim().replace(/\s+/g, ' ')
       }
 
-      this.$router.push({ name: 'search', query: query })
-      console.log('keyword', this.$route.query.kw)
+      this.requestData = query
+      if (!_.isEqual(this.query, query)) {
+        this.$router.push({ name: 'search', query: query })
+      }
     },
 
     fetchPosts () {
       this.changeURI()
-      // const requestData = {}
 
-      // if (this.formModel.tags) {
-      //   for (const tag of this.formModel.tags) {
-      //     console.log(tag)
-      //   }
-      // }
-      //
-      // this.api.search(this.formModel)
-      //   .then(res => console.log('res', res))
+      this.api.search(this.requestData)
+        .then(res => console.log('res', res.data.data))
     },
 
     filterTags (val, update) {
