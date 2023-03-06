@@ -14,9 +14,10 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
+let Router = null
 export default function ({ store, ssrContext }) {
   const yPositions = {}
-  const Router = new VueRouter({
+  Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
 
@@ -57,4 +58,8 @@ export default function ({ store, ssrContext }) {
   })
 
   return Router
+}
+
+export {
+  Router
 }

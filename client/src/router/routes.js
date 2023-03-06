@@ -39,6 +39,7 @@ const routes = [
   // Test Only
   {
     path: '/test',
+    name: 'test',
     component: () => {
       if (process.env.ENV_DEV === 'Development') {
         return import('pages/test-only/Index')
