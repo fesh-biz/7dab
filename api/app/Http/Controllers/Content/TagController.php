@@ -20,7 +20,7 @@ class TagController extends Controller
     
     public function search(Request $r): JsonResponse
     {
-        $data = $this->service->search($r->title, $r->tids);
+        $data = $this->service->search($r->title, $r->tids, $r->limit);
         
         return $this->response($data);
     }

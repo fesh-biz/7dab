@@ -1,8 +1,4 @@
 # MVP
-- Search page
-    - проблема. Введи 2 тега, после удали один, нажми поиск, куча запросов
-        - Проблему ущи в методе init(), он отрабатывает при смене URI там дважды вызывается поиск постов
-
 - [] Sitemap
     - [] Finish
         - [] Tag page
@@ -27,7 +23,7 @@
 - [] User login length 5 - 15
 - [] When a post has been edited, review doesn't show changes
 - [] Translate text 'We have emailed your password reset link!'
-
+- [] Refactor Post TagField to common/TagField
 ------------------------------- Next Steps ----------------------------------
 
 - [] Fix all problems with auth

@@ -31,9 +31,9 @@ export default class Tag {
     })
   }
 
-  search (name) {
+  search (name, limit = 5) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/tags/search?title=${name}`)
+      this.api.get(`/tags/search?title=${name}&limit=${limit}`)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

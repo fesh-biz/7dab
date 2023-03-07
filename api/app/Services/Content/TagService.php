@@ -21,9 +21,10 @@ class TagService
         return $this->repo->getModel();
     }
     
-    public function search(string $title = null, array $tagIds = null): Collection
+    public function search(string $title = null, array $tagIds = null, int $limit = null): Collection
     {
         $query = $this->repo->getModel();
+        
         
         if ($title) {
             $query = $query->where('title', 'like', "%$title%");
@@ -32,8 +33,9 @@ class TagService
         if ($tagIds) {
             $query = $query->whereIn('id', $tagIds);
         }
-        
-        return $query->limit(10)
+    
+        $limit = $limit ?? 5;
+        return $query->limit($limit)
             ->get();
     }
     
