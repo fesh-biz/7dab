@@ -52,6 +52,7 @@ import SearchApi from 'src/plugins/api/search'
 import Search from 'src/plugins/pages/feed/search'
 import _ from 'lodash'
 import TagApi from 'src/plugins/api/tag'
+import Tag from 'src/models/content/tag'
 
 const formModel = {
   tags: [],
@@ -121,32 +122,47 @@ export default {
   methods: {
     init () {
       this.formModel = _.cloneDeep(formModel)
-      this.maybeSetTagsAndKeywordFromQuery()
+      this.fillFormFromQuery()
         .then(() => {
-          if (this.tagIdsFromQuery && this.keywordFromQuery) {
+          if (this.tagIdsFromQuery || this.keywordFromQuery) {
+            console.log('fetching from init')
             this.fetchPosts()
           }
         })
     },
 
-    maybeSetTagsAndKeywordFromQuery () {
+    fillTags (tags) {
+      tags.forEach(tag => {
+        this.formModel.tags.push({
+          label: tag.title,
+          value: tag.id
+        })
+      })
+    },
+
+    fillFormFromQuery () {
       return new Promise((resolve, reject) => {
         if (this.keywordFromQuery) {
           this.formModel.keyword = this.keywordFromQuery
         }
 
-        if (this.tagIdsFromQuery) {
+        if (this.tagIdsFromQuery?.length) {
+          const tags = Tag.query().whereIdIn(this.tagIdsFromQuery).get()
+          if (tags.length === this.tagIdsFromQuery.length) {
+            this.fillTags(tags)
+            resolve()
+            return
+          }
+
           this.tagsIsFetching = true
           this.tagApi.fetchByIds(this.tagIdsFromQuery)
             .then(res => {
               this.tagsIsFetching = false
               const tags = res.data.data
-              tags.forEach(tag => {
-                this.formModel.tags.push({
-                  label: tag.title,
-                  value: tag.id
-                })
-              })
+
+              Tag.insert({ data: tags })
+
+              this.fillTags(tags)
               resolve()
             })
             .catch(() => {
@@ -178,7 +194,6 @@ export default {
     fetchPosts () {
       this.changeURI()
 
-      console.log('this.requestData', this.requestData)
       if (!this.requestData.kw && !this.requestData.tids.length) {
         this.$q.notify({
           message: this.$t('empty_form'),
@@ -190,7 +205,7 @@ export default {
       }
 
       this.api.search(this.requestData)
-        .then(res => console.log('res', res.data.data))
+        .then(res => console.log('posts res', res.data.data))
     },
 
     filterTags (val, update) {

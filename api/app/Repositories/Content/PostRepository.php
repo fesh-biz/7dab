@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 class PostRepository
 {
     protected Post $model;
-
+    
     public function __construct(Post $model)
     {
         $this->model = $model;
@@ -19,7 +19,7 @@ class PostRepository
     {
         return $this->model->whereId($id)->increment('comments');
     }
-
+    
     public function getPaginatedPosts(
         array $tagsIds = null,
         string $keyword = null
@@ -31,10 +31,8 @@ class PostRepository
         
         if ($tagsIds) {
             $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
-                foreach ($tagsIds as $id) {
-                    $q->where('id', $id);
-                }
-            });
+                $q->whereIn('id', $tagsIds);
+            }, '=', count($tagsIds));
         }
         
         if (auth('api')->user()) {
@@ -51,22 +49,23 @@ class PostRepository
             ->increment('views');
     }
     
-    public function incrementViews(int $id){
+    public function incrementViews(int $id)
+    {
         $this->model->where('id', $id)
             ->increment('views');
     }
-
+    
     public function find(int $postId): ?Post
     {
         return $this->model->findOrFail($postId);
     }
-
+    
     public function findWithBasicRelationships(int $postId): ?Post
     {
         return $this->model->withTagsAuthorContent()
             ->findOrFail($postId);
     }
-
+    
     public function create(string $title): Post
     {
         $data = [
