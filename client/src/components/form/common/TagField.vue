@@ -26,6 +26,10 @@ export default {
     value: {
       type: Array,
       required: false
+    },
+    filterLimit: {
+      type: Number,
+      default: 5
     }
   },
 
