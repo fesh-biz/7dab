@@ -6,10 +6,19 @@ export default class Search {
       return Search.instance
     }
 
+    this.currentRequest = null
     this.requests = []
     this.postIds = []
 
     Search.instance = this
+  }
+
+  setCurrentRequest (queryVars) {
+    this.currentRequest = queryVars
+  }
+
+  isNextRequestSameAsCurrent (queryVars) {
+    return _.isEqual(this.currentRequest, queryVars)
   }
 
   getRequestIndex (queryVars) {
@@ -37,9 +46,10 @@ export default class Search {
       throw new Error('Request with given queryVars not found')
     }
 
-    const requestPostIds = this.postIds[requestIndex]
+    let requestPostIds = this.postIds[requestIndex]
     if (!requestPostIds) {
       this.postIds.push(postIds)
+      requestPostIds = postIds
     } else {
       postIds.forEach(id => {
         if (!requestPostIds.includes(id)) {
@@ -47,10 +57,14 @@ export default class Search {
         }
       })
     }
+
+    return requestPostIds
   }
 
   getPostIds (queryVars) {
     const requestIndex = this.getRequestIndex(queryVars)
+
+    if (!this.postIds.length) return null
 
     if (requestIndex !== null) {
       return this.postIds[requestIndex]

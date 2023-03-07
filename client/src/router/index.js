@@ -29,13 +29,13 @@ export default function ({ store, ssrContext }) {
   })
 
   Router.beforeEach((to, from, next, store) => {
-    if (from.name) {
-      yPositions[from.path] = window.pageYOffset
+    if (from.fullPath) {
+      yPositions[from.fullPath] = window.pageYOffset
     }
 
-    if (yPositions[to.path]) {
+    if (yPositions[to.fullPath]) {
       setTimeout(() => {
-        window.scrollTo(0, yPositions[to.path])
+        window.scrollTo(0, yPositions[to.fullPath])
       }, 10)
     }
 

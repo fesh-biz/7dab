@@ -1,6 +1,7 @@
 <template>
   <div class="row justify-center q-pt-lg">
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+      <!-- Search -->
       <q-card>
         <q-card-section>
           <div class="text-h6">{{ $t('search') }}</div>
@@ -33,6 +34,32 @@
           <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
         </q-card-actions>
       </q-card>
+
+      <!-- Search Result -->
+      <q-card class="q-mt-lg" style="min-height: 30px">
+        <q-linear-progress
+          v-if="isFetchingSearchResult"
+          indeterminate
+        />
+        <!-- Fill Form Message -->
+        <q-card-section v-if="!hasFormModelVars">
+          {{ $t('fill_form') }}
+        </q-card-section>
+
+        <!-- Posts -->
+        <q-card-section v-if="posts.length">
+          <post
+            v-for="(post, index) in posts"
+            :key="'post' + index"
+            :post="post"
+          />
+        </q-card-section>
+
+        <!-- No Result -->
+        <q-card-section v-if="hasFormModelVars && !isFetchingSearchResult && !posts.length">
+          {{ $t('no_posts_for_request') }}
+        </q-card-section>
+      </q-card>
     </div>
   </div>
 </template>
@@ -44,6 +71,8 @@ import _ from 'lodash'
 import Tag from 'src/models/content/tag'
 import TagApi from 'src/plugins/api/tag'
 import Api from 'src/plugins/api/search'
+import Post from 'src/models/content/post'
+import PostComponent from 'src/components/content/Post'
 
 const formModel = {
   tags: [],
@@ -54,7 +83,8 @@ export default {
   name: 'Search',
 
   components: {
-    TagField
+    TagField,
+    post: PostComponent
   },
 
   data () {
@@ -65,7 +95,8 @@ export default {
       tagApi: new TagApi(),
       isFetchingTags: false,
       isFetchingSearchResult: false,
-      api: new Api()
+      api: new Api(),
+      posts: []
     }
   },
 
@@ -83,32 +114,65 @@ export default {
       }
 
       return vars
+    },
+
+    hasFormModelVars () {
+      return !!this.formModel.keyword || !!this.formModel.tags.length
     }
   },
 
   watch: {
     $route () {
+      this.posts = []
+
       this.fillForm()
         .then(() => {
           this.search()
         })
+
+      this.$nextTick(() => {
+        window.scrollTo(0, 0)
+      })
     }
   },
 
   async created () {
     await this.fillForm()
 
-    if (this.hasFormModelVars()) {
+    if (this.hasFormModelVars) {
       this.search()
     }
   },
 
   methods: {
     search () {
+      this.posts = []
       this.page.addRequest(this.queryVarsFromFormModel)
+
+      if (!this.hasFormModelVars) return
+
+      if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
+        const postIds = this.page.getPostIds(this.queryVarsFromFormModel)
+
+        if (postIds) {
+          this.posts = Post.query().withAll()
+            .whereIdIn(this.page.getPostIds(this.queryVarsFromFormModel))
+            .get()
+
+          return
+        }
+      }
+
       this.isFetchingSearchResult = true
       this.api.search(this.queryVarsFromFormModel)
-        .then(() => {
+        .then((res) => {
+          const posts = res.data.data
+          Post.insert({ data: posts })
+
+          let postIds = posts.map(post => post.id)
+          postIds = this.page.addPostIds(this.queryVarsFromFormModel, postIds)
+
+          this.posts = Post.query().withAll().whereIdIn(postIds).get()
           this.isFetchingSearchResult = false
         })
     },
@@ -117,28 +181,32 @@ export default {
       return new Promise(resolve => {
         this.formModel.keyword = this.getQueryVars().kw
 
-        const fillModel = (tags) => {
+        const fillModelTags = (tags) => {
           this.formModel.tags = []
-          tags.forEach(tag => {
-            if (tag.status !== 'rejected') {
-              this.formModel.tags.push({
-                label: tag.title,
-                value: tag.id
-              })
-            }
-          })
+
+          if (tags) {
+            tags.forEach(tag => {
+              if (tag.status !== 'rejected') {
+                this.formModel.tags.push({
+                  label: tag.title,
+                  value: tag.id
+                })
+              }
+            })
+          }
         }
 
         const ids = this.getQueryVars().tids || []
 
         if (!ids.length) {
+          fillModelTags()
           resolve()
           return
         }
 
         const tags = Tag.query().whereIdIn(ids).get()
         if (tags.length === ids.length) {
-          fillModel(tags)
+          fillModelTags(tags)
           resolve()
           return
         }
@@ -149,19 +217,29 @@ export default {
             const tags = res.data.data
             Tag.insert({ data: tags })
 
-            fillModel(tags)
+            fillModelTags(tags)
             this.isFetchingTags = false
             resolve()
           })
       })
     },
 
-    hasFormModelVars () {
-      return !!this.formModel.keyword || !!this.formModel.tags.length
-    },
-
     changeURI () {
-      this.$router.push({ name: 'search', query: this.queryVarsFromFormModel })
+      if (!this.hasFormModelVars) {
+        this.$q.notify({
+          message: this.$t('empty_form'),
+          position: 'center',
+          color: 'negative'
+        })
+
+        return
+      }
+
+      if (!this.page.isNextRequestSameAsCurrent(this.queryVarsFromFormModel)) {
+        this.$router.push({ name: 'search', query: this.queryVarsFromFormModel })
+      }
+
+      this.page.setCurrentRequest(this.queryVarsFromFormModel)
     },
 
     getQueryVars () {

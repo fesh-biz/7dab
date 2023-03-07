@@ -1,4 +1,6 @@
 export default {
+  no_posts_for_request: 'Немає теревеньок по даному запиту',
+  fill_form: 'Заповніть форму',
   empty_form: 'Нічого не введено',
   word_or_phrase: 'Слово або фраза',
   to_reply: 'Відповісти',
