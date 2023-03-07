@@ -16,6 +16,12 @@
             :label="$t('word_or_phrase')"
           />
 
+          <!-- Tags -->
+          <q-linear-progress
+            v-if="isFetchingTags"
+            indeterminate
+            style="position: relative; top: 4px"
+          />
           <tag-field
             v-model="formModel.tags"
             :tag-ids="tagIds"
@@ -28,15 +34,15 @@
         </q-card-actions>
       </q-card>
     </div>
-
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-    </div>
   </div>
 </template>
 
 <script>
 import TagField from 'components/form/common/TagField'
+import Search from 'src/plugins/pages/feed/search'
 import _ from 'lodash'
+import Tag from 'src/models/content/tag'
+import TagApi from 'src/plugins/api/tag'
 
 const formModel = {
   tags: [],
@@ -53,28 +59,67 @@ export default {
   data () {
     return {
       formModel: _.cloneDeep(formModel),
-      tagIds: []
+      tagIds: [],
+      page: new Search(),
+      tagApi: new TagApi(),
+      isFetchingTags: false
     }
   },
 
   watch: {
     $route () {
-      this.tagIds = this.getQueryVars().tids
-      this.formModel.keyword = this.getQueryVars().kw
+      this.fillForm()
     }
   },
 
-  created () {
-    if (this.getQueryVars().tids) {
-      this.tagIds = this.getQueryVars().tids
-    }
-
-    if (this.getQueryVars().kw) {
-      this.formModel.keyword = this.getQueryVars().kw
-    }
+  async created () {
+    await this.fillForm()
   },
 
   methods: {
+    fillForm () {
+      return new Promise(resolve => {
+        this.formModel.keyword = this.getQueryVars().kw
+
+        const fillModel = (tags) => {
+          this.formModel.tags = []
+          tags.forEach(tag => {
+            if (tag.status !== 'rejected') {
+              this.formModel.tags.push({
+                label: tag.title,
+                value: tag.id
+              })
+            }
+          })
+        }
+
+        const ids = this.getQueryVars().tids || []
+
+        if (!ids.length) {
+          resolve()
+          return
+        }
+
+        const tags = Tag.query().whereIdIn(ids).get()
+        if (tags.length === ids.length) {
+          fillModel(tags)
+          resolve()
+          return
+        }
+
+        this.isFetchingTags = true
+        this.tagApi.fetchByIds(ids)
+          .then(res => {
+            const tags = res.data.data
+            Tag.insert({ data: tags })
+
+            fillModel(tags)
+            this.isFetchingTags = false
+            resolve()
+          })
+      })
+    },
+
     changeURI () {
       const getQueryVarsFromFormModel = () => {
         const vars = {}
@@ -96,7 +141,7 @@ export default {
 
     getQueryVars () {
       const queryTagIds = () => {
-        let res = []
+        let res = null
 
         const tagIds = this.$route.query.tids
         if (tagIds) {

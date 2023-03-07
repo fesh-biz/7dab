@@ -1,4 +1,4 @@
-import _ from 'lodash'
+// import _ from 'lodash'
 
 export default class Search {
   constructor () {
@@ -6,45 +6,9 @@ export default class Search {
       return Search.instance
     }
 
-    this.responsePostIds = []
+    this.requests = []
+    this.postIds = []
 
     Search.instance = this
-  }
-
-  addPostIdsByRequestData (requestData, posts) {
-    const res = this.getResponse(requestData)
-    if (!res) {
-      this.responsePostIds.push({
-        requestData: requestData,
-        ids: posts.map(post => post.id)
-      })
-
-      return
-    }
-
-    posts.forEach(post => {
-      console.log('pushing')
-      res.ids.push(post.id)
-    })
-  }
-
-  getResponse (requestData) {
-    for (const response of this.responsePostIds) {
-      if (_.isEqual(requestData, response.requestData)) {
-        return response
-      }
-    }
-
-    return null
-  }
-
-  getPostIdsByRequestData (requestData) {
-    const res = this.getResponse(requestData)
-
-    if (res) {
-      return res.ids
-    }
-
-    return null
   }
 }
