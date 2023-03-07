@@ -18,18 +18,18 @@
 
           <tag-field
             v-model="formModel.tags"
+            :tag-ids="tagIds"
           />
         </q-card-section>
 
         <!-- Controls -->
         <q-card-actions class="q-pa-md">
-          <q-btn color="positive" no-caps :label="$t('search')"/>
+          <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
         </q-card-actions>
       </q-card>
     </div>
 
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      {{ formModel.tags }}
     </div>
   </div>
 </template>
@@ -52,13 +52,72 @@ export default {
 
   data () {
     return {
-      formModel: _.cloneDeep(formModel)
+      formModel: _.cloneDeep(formModel),
+      tagIds: []
     }
   },
 
-  computed: {
-    posts () {
-      return []
+  watch: {
+    $route () {
+      this.tagIds = this.getQueryVars().tids
+      this.formModel.keyword = this.getQueryVars().kw
+    }
+  },
+
+  created () {
+    if (this.getQueryVars().tids) {
+      this.tagIds = this.getQueryVars().tids
+    }
+
+    if (this.getQueryVars().kw) {
+      this.formModel.keyword = this.getQueryVars().kw
+    }
+  },
+
+  methods: {
+    changeURI () {
+      const getQueryVarsFromFormModel = () => {
+        const vars = {}
+        if (this.formModel.keyword) vars.kw = this.formModel.keyword
+
+        const tags = this.formModel.tags
+        if (tags.length) {
+          vars.tids = []
+          tags.forEach(tag => {
+            vars.tids.push(tag.value)
+          })
+        }
+
+        return vars
+      }
+
+      this.$router.push({ name: 'search', query: getQueryVarsFromFormModel() })
+    },
+
+    getQueryVars () {
+      const queryTagIds = () => {
+        let res = []
+
+        const tagIds = this.$route.query.tids
+        if (tagIds) {
+          if (typeof tagIds === 'object') {
+            res = tagIds.map(val => parseInt(val))
+          } else {
+            res = [parseInt(tagIds)]
+          }
+        }
+
+        return res
+      }
+
+      const queryKeyword = () => {
+        return this.$route.query.kw || null
+      }
+
+      return {
+        kw: queryKeyword(),
+        tids: queryTagIds()
+      }
     }
   }
 }

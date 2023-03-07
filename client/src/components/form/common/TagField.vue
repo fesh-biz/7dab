@@ -1,19 +1,27 @@
 <template>
-  <q-select
-    :label="$t('tags')"
-    v-model="model"
-    :options="options"
-    use-input
-    use-chips
-    multiple
-    option-disable="inactive"
-    @filter="filter"
-    hide-dropdown-icon
-    @input="(val) => {$emit('input', val)}"
-    outlined
-    input-debounce="300"
-    new-value-mode="add-unique"
-  />
+  <div>
+    <q-linear-progress
+      v-if="isFetching"
+      indeterminate
+      style="position: relative; top: 4px"
+    />
+
+    <q-select
+      :label="$t('tags')"
+      v-model="model"
+      :options="options"
+      use-input
+      use-chips
+      multiple
+      option-disable="inactive"
+      @filter="filter"
+      hide-dropdown-icon
+      @input="(val) => {$emit('input', val)}"
+      outlined
+      input-debounce="300"
+      new-value-mode="add-unique"
+    />
+  </div>
 </template>
 
 <script>
@@ -47,6 +55,12 @@ export default {
     }
   },
 
+  watch: {
+    tagIds (val) {
+      this.fillModelByTagIds(val)
+    }
+  },
+
   created () {
     if (this.value?.length) {
       this.model = this.value
@@ -59,20 +73,34 @@ export default {
 
   methods: {
     fillModelByTagIds (ids) {
+      const fillModel = (tags) => {
+        this.model = []
+        tags.forEach(tag => {
+          if (tag.status !== 'rejected') {
+            this.model.push({
+              label: tag.title,
+              value: tag.id
+            })
+          }
+        })
+
+        this.$emit('input', this.model)
+      }
+
+      const tags = Tag.query().whereIdIn(ids).get()
+      if (tags.length === ids.length) {
+        fillModel(tags)
+        return
+      }
+
+      this.isFetching = true
       this.api.fetchByIds(ids)
         .then(res => {
           const tags = res.data.data
           Tag.insert({ data: tags })
 
-          this.model = []
-          tags.forEach(tag => {
-            if (tag.status !== 'rejected') {
-              this.model.push({
-                label: tag.title,
-                value: tag.id
-              })
-            }
-          })
+          fillModel(tags)
+          this.isFetching = false
         })
     },
 

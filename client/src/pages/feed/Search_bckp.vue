@@ -15,6 +15,27 @@
             v-model="formModel.keyword"
             :label="$t('word_or_phrase')"
           />
+
+          <!-- Tags -->
+          <q-linear-progress
+            v-if="tagsIsFetching"
+            indeterminate
+            style="position: relative; top: 4px"
+          />
+          <q-select
+            :label="$t('tags')"
+            v-model="formModel.tags"
+            :options="tagOptions"
+            use-input
+            use-chips
+            multiple
+            option-disable="inactive"
+            @filter="filterTags"
+            hide-dropdown-icon
+            outlined
+            input-debounce="300"
+            new-value-mode="add-unique"
+          />
         </q-card-section>
 
         <!-- Controls -->
@@ -207,6 +228,35 @@ export default {
           this.page.addPostIdsByRequestData(this.requestData, res.data.data)
           console.log('this.page', this.page)
           Post.insert({ data: res.data.data })
+        })
+    },
+
+    filterTags (val, update) {
+      if (val === '') {
+        update(() => {
+        })
+        return
+      }
+
+      const needle = val.toLowerCase()
+      this.tagOptions = []
+
+      this.tagApi.search(needle)
+        .then(res => {
+          const tags = res.data.data
+
+          const options = []
+          tags.forEach(tag => {
+            options.push({
+              label: tag.title,
+              value: tag.id,
+              inactive: tag.status === 'rejected'
+            })
+          })
+
+          update(() => {
+            this.tagOptions = options
+          })
         })
     }
   }
