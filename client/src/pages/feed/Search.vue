@@ -43,6 +43,7 @@ import Search from 'src/plugins/pages/feed/search'
 import _ from 'lodash'
 import Tag from 'src/models/content/tag'
 import TagApi from 'src/plugins/api/tag'
+import Api from 'src/plugins/api/search'
 
 const formModel = {
   tags: [],
@@ -62,21 +63,56 @@ export default {
       tagIds: [],
       page: new Search(),
       tagApi: new TagApi(),
-      isFetchingTags: false
+      isFetchingTags: false,
+      isFetchingSearchResult: false,
+      api: new Api()
+    }
+  },
+
+  computed: {
+    queryVarsFromFormModel () {
+      const vars = {}
+      if (this.formModel.keyword) vars.kw = this.formModel.keyword
+
+      const tags = this.formModel.tags
+      if (tags.length) {
+        vars.tids = []
+        tags.forEach(tag => {
+          vars.tids.push(tag.value)
+        })
+      }
+
+      return vars
     }
   },
 
   watch: {
     $route () {
       this.fillForm()
+        .then(() => {
+          this.search()
+        })
     }
   },
 
   async created () {
     await this.fillForm()
+
+    if (this.hasFormModelVars()) {
+      this.search()
+    }
   },
 
   methods: {
+    search () {
+      this.page.addRequest(this.queryVarsFromFormModel)
+      this.isFetchingSearchResult = true
+      this.api.search(this.queryVarsFromFormModel)
+        .then(() => {
+          this.isFetchingSearchResult = false
+        })
+    },
+
     fillForm () {
       return new Promise(resolve => {
         this.formModel.keyword = this.getQueryVars().kw
@@ -120,23 +156,12 @@ export default {
       })
     },
 
+    hasFormModelVars () {
+      return !!this.formModel.keyword || !!this.formModel.tags.length
+    },
+
     changeURI () {
-      const getQueryVarsFromFormModel = () => {
-        const vars = {}
-        if (this.formModel.keyword) vars.kw = this.formModel.keyword
-
-        const tags = this.formModel.tags
-        if (tags.length) {
-          vars.tids = []
-          tags.forEach(tag => {
-            vars.tids.push(tag.value)
-          })
-        }
-
-        return vars
-      }
-
-      this.$router.push({ name: 'search', query: getQueryVarsFromFormModel() })
+      this.$router.push({ name: 'search', query: this.queryVarsFromFormModel })
     },
 
     getQueryVars () {

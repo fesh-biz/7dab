@@ -35,6 +35,10 @@ class PostRepository
             }, '=', count($tagsIds));
         }
         
+        if ($keyword) {
+            $query = $query->where('title', 'like', "%$keyword%");
+        }
+        
         if (auth('api')->user()) {
             $query->with('myVote');
         }
