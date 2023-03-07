@@ -53,8 +53,6 @@
           @click="expand"
           class="expander"
         >
-          <p>is expanded: {{ isExpanded }}</p>
-          <p>is ready: {{ isReady }}</p>
           {{ $t('expand') }}
         </div>
       </q-card-section>
