@@ -13,9 +13,6 @@ export default class Tag {
 
   fetchByIds (ids) {
     let query = ''
-    if (typeof ids === 'string') {
-      ids = [ids]
-    }
 
     ids.forEach((id, i) => {
       query += `tids[]=${id}`

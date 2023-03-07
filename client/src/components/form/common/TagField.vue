@@ -51,9 +51,31 @@ export default {
     if (this.value?.length) {
       this.model = this.value
     }
+
+    if (this.tagIds) {
+      this.fillModelByTagIds(this.tagIds)
+    }
   },
 
   methods: {
+    fillModelByTagIds (ids) {
+      this.api.fetchByIds(ids)
+        .then(res => {
+          const tags = res.data.data
+          Tag.insert({ data: tags })
+
+          this.model = []
+          tags.forEach(tag => {
+            if (tag.status !== 'rejected') {
+              this.model.push({
+                label: tag.title,
+                value: tag.id
+              })
+            }
+          })
+        })
+    },
+
     getTagOptions (tags) {
       const options = []
       tags.forEach(tag => {
