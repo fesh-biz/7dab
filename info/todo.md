@@ -1,4 +1,16 @@
 # MVP
+- [] Cache system
+    - [] Use global cache
+        - [] `cache.pages`
+            const pages = {
+              '/search?tids=2&tids=3': {
+                postIds: [1,2,3],
+                tagIds: [],
+                ...
+              }
+    - [] All should work inside main `api` instance
+    - [] Availability to bypass cache
+
 - [] Sitemap
     - [] Finish
         - [] Tag page

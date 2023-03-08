@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $answers
  * @property-read int|null $answers_count
- * @property-read User $commentAuthor
+ * @property-read User $user
  * @property-read string $commentable_type_name
  * @property-read RatingVote|null $myVote
  * @property-read Rating|null $rating
@@ -68,7 +68,7 @@ class Comment extends Model
             ->where('commentable_type', self::class)
             ->with('answers')
             ->with('rating')
-            ->with('commentAuthor');
+            ->with('user');
     
         if (auth('api')->user()) {
             $query->with('myVote');
@@ -77,9 +77,9 @@ class Comment extends Model
         return $query;
     }
     
-    public function commentAuthor(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class);
     }
     
     public function getCommentableTypeNameAttribute(): string

@@ -21,7 +21,7 @@ export default class Post {
 
   fetchPost (id) {
     return new Promise((resolve, reject) => {
-      this.api.get(`content/posts/${id}`)
+      this.api.get(`content/posts/${id}`, null, 'posts')
         .then(res => {
           resolve(res)
         })
@@ -33,7 +33,7 @@ export default class Post {
 
   fetchPosts (page) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/content/posts?page=${page}`)
+      this.api.get(`/content/posts?page=${page}`, null, 'posts')
         .then(res => {
           resolve(res)
         })
@@ -45,7 +45,12 @@ export default class Post {
 
   store (data) {
     return new Promise((resolve, reject) => {
-      this.api.post('/content/posts', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+      this.api.post(
+        '/content/posts',
+        data,
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+        'posts'
+      )
         .then(res => resolve(res))
         .catch(err => {
           reject(err)

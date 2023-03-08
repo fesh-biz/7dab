@@ -151,20 +151,20 @@ export default {
 
       if (!this.hasFormModelVars) return
 
-      if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
-        const postIds = this.page.getPostIds(this.queryVarsFromFormModel)
-
-        if (postIds) {
-          this.posts = Post.query().withAll()
-            .whereIdIn(this.page.getPostIds(this.queryVarsFromFormModel))
-            .get()
-
-          return
-        }
-      }
+      // if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
+      //   const postIds = this.page.getPostIds(this.queryVarsFromFormModel)
+      //
+      //   if (postIds) {
+      //     this.posts = Post.query().withAll()
+      //       .whereIdIn(this.page.getPostIds(this.queryVarsFromFormModel))
+      //       .get()
+      //
+      //     return
+      //   }
+      // }
 
       this.isFetchingSearchResult = true
-      this.api.search(this.queryVarsFromFormModel)
+      this.api.search(this.queryVarsFromFormModel, 'posts')
         .then((res) => {
           const posts = res.data.data
           Post.insert({ data: posts })

@@ -1,7 +1,7 @@
 import AppModel from 'src/models/app-model'
 import Rating from 'src/models/rating/rating'
 import MyVote from 'src/models/rating/my-vote'
-import CommentAuthor from 'src/models/author/comment-author'
+import User from 'src/models/user/user'
 
 export default class Comment extends AppModel {
   static entity = 'comments'
@@ -20,7 +20,7 @@ export default class Comment extends AppModel {
       my_vote: this.morphOne(MyVote, 'ratingable_id', 'ratingable_type_name'),
 
       user_id: this.attr(null),
-      comment_author: this.belongsTo(CommentAuthor, 'user_id', 'id')
+      user: this.belongsTo(User, 'user_id', 'id')
     }
   }
 }

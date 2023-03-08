@@ -3,6 +3,7 @@ import { Notify } from 'quasar'
 import { i18n } from 'boot/i18n'
 import Token from 'src/plugins/cookies/token'
 import Me from 'src/plugins/cookies/me'
+import Cache from 'src/plugins/cache/cache'
 
 export default class Api {
   constructor () {
@@ -17,6 +18,7 @@ export default class Api {
 
     this.tokenCookies = new Token()
     this.meCookies = new Me()
+    this.cache = new Cache()
 
     if (this.tokenCookies.getAuthorizationToken()) {
       this.setBearer(this.tokenCookies.getAuthorizationToken())
@@ -33,36 +35,37 @@ export default class Api {
     delete this.axios.defaults.headers.common.Authorization
   }
 
-  get (url, params) {
+  get (url, params, ormTableName, bypassCacheStoring) {
     return new Promise((resolve, reject) => {
-      return this.request(url, 'get', params)
+      return this.request(url, 'get', params, ormTableName, bypassCacheStoring)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  post (url, data, options) {
+  post (url, data, options, ormTableName, bypassCacheStoring) {
     return new Promise((resolve, reject) => {
-      return this.request(url, 'post', data, options)
+      return this.request(url, 'post', data, ormTableName, bypassCacheStoring)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  put (url, data, options) {
+  put (url, data, options, ormTableName, bypassCacheStoring) {
     return new Promise((resolve, reject) => {
-      return this.request(url, 'put', data, options)
+      return this.request(url, 'put', data, ormTableName, bypassCacheStoring)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  request (url, method, params, options) {
+  request (url, method, params, ormTableName, bypassCacheStoring) {
     if (process.env.ENV_DEV === 'Development') {
       console.log('----rqst start-----')
       console.log('requesting url:', url)
       console.log('method:', method)
       console.log('params:', params)
+      console.log('ormTableName:', ormTableName)
       console.log('----rqst end-----')
     }
 
@@ -80,9 +83,28 @@ export default class Api {
     return new Promise((resolve, reject) => {
       this.axios(conf)
         .then(res => {
+          if (res.data && !bypassCacheStoring) {
+            if (!ormTableName) {
+              throw new Error(
+                'The ormTableName value is required!' +
+                'Check request with url ' + url + ' method ' + method
+              )
+            }
+
+            if (typeof ormTableName !== 'string') {
+              throw new Error(
+                'The ormTableName value is not a string. ' +
+                'Check request with url ' + url + ' method ' + method
+              )
+            }
+
+            this.cache.setPageCache(res, ormTableName)
+          }
+
           if (process.env.ENV_DEV === 'Development') {
             console.log('res', res)
           }
+
           resolve(res)
         })
         .catch(err => {
@@ -91,15 +113,21 @@ export default class Api {
             this.meCookies.delete()
           }
 
+          this.showError(err)
+
           reject(err)
         })
     })
   }
 
-  showError (response) {
-    const error = response.response.data.error
+  showError (error) {
+    if (typeof error.message === 'string') {
+      console.error(error.message)
+    } else {
+      error = error.response.data.error
 
-    if (['invalid_grant', 'invalid_request'].includes(error)) return
+      if (['invalid_grant', 'invalid_request'].includes(error)) return
+    }
 
     const message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
 

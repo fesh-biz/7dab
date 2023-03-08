@@ -12,9 +12,7 @@ import PostText from 'src/models/content/post-text'
 import Rating from 'src/models/rating/rating'
 import MyVote from 'src/models/rating/my-vote'
 import Comment from 'src/models/content/comment'
-import CommentAuthor from 'src/models/author/comment-author'
 
-database.register(CommentAuthor)
 database.register(Comment)
 database.register(MyVote)
 database.register(Rating)

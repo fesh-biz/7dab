@@ -16,13 +16,19 @@ export default class TokenApi {
 
   createToken (username, password) {
     return new Promise((resolve, reject) => {
-      this.api.post('token', {
-        grant_type: 'password',
-        client_id: process.env.CLIENT_ID,
-        client_secret: process.env.CLIENT_SECRET,
-        username: username,
-        password: password
-      })
+      this.api.post(
+        'token',
+        {
+          grant_type: 'password',
+          client_id: process.env.CLIENT_ID,
+          client_secret: process.env.CLIENT_SECRET,
+          username: username,
+          password: password
+        },
+        null,
+        null,
+        true
+      )
         .then(res => resolve(res))
         .catch(err => {
           reject(err)

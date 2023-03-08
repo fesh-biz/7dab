@@ -14,9 +14,9 @@
 
         <!-- Author -->
         <author
-          :name="comment.comment_author.login"
-          :is-post-author="comment.comment_author.id === postAuthor.id"
-          :avatar="comment.comment_author.avatar"
+          :name="comment.user.login"
+          :is-post-author="comment.user.id === postAuthor.id"
+          :avatar="comment.user.avatar"
         />
       </div>
 
@@ -117,7 +117,7 @@ export default {
         })
         .orderBy('id', 'desc')
         .with('rating')
-        .with('comment_author')
+        .with('user')
         .get()
     }
   },

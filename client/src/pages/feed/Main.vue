@@ -40,7 +40,8 @@ export default {
       },
       mainPage: new Main(),
       postApi: new PostApi(),
-      scroll: new Scroll()
+      scroll: new Scroll(),
+      isPrevRequestSuccess: true
     }
   },
 
@@ -83,7 +84,10 @@ export default {
     },
 
     fetchPosts (isFirstTime) {
+      if (!this.isPrevRequestSuccess) return
+
       this.fetching.posts = true
+      this.isPrevRequestSuccess = false
       this.postApi.fetchPosts(++this.mainPage.currentPage)
         .then(res => {
           if (isFirstTime) {
@@ -98,6 +102,7 @@ export default {
           this.mainPage.isLastFetched = res.data.meta.is_last
 
           this.fetching.posts = false
+          this.isPrevRequestSuccess = true
         })
         .catch(() => {
           this.fetching.posts = false

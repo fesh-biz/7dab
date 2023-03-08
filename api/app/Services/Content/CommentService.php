@@ -37,7 +37,7 @@ class CommentService
         
         $comment->rating()->create();
         
-        $comment->load('commentAuthor', 'rating');
+        $comment->load('user', 'rating');
         
         $this->postRepository->incrementComments($postId);
         DB::commit();
@@ -52,7 +52,7 @@ class CommentService
             ->whereCommentableType($this->getCommentableModel($commentableType))
             ->with('answers')
             ->with('rating')
-            ->with('commentAuthor');
+            ->with('user');
         
         if (auth('api')->user()) {
             $query->with('myVote');

@@ -18,7 +18,9 @@ export default class Comment {
         {
           commentable_id: commentableId,
           commentable_type: commentableType
-        })
+        },
+        'comments'
+      )
     } catch (e) {
       console.error(e)
     }
@@ -26,7 +28,7 @@ export default class Comment {
 
   create (data) {
     return new Promise((resolve, reject) => {
-      this.api.post('content/comments', data)
+      this.api.post('content/comments', data, null, 'comments')
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
@@ -36,7 +38,10 @@ export default class Comment {
     return new Promise((resolve, reject) => {
       this.api.post(`content/comments/${id}`, {
         body: body
-      })
+      },
+      null,
+      'comments'
+      )
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

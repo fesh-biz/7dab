@@ -13,11 +13,16 @@ export default class RatingApi {
 
   vote (type, id, isUpvote) {
     return new Promise((resolve, reject) => {
-      this.api.post('/ratings/vote', {
-        id: id,
-        type: type,
-        is_upvote: isUpvote
-      })
+      this.api.post(
+        '/ratings/vote',
+        {
+          id: id,
+          type: type,
+          is_upvote: isUpvote
+        },
+        null,
+        'my_votes'
+      )
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

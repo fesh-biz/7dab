@@ -13,7 +13,12 @@ export default class UserApi {
 
   fetchMe () {
     return new Promise((resolve, reject) => {
-      this.api.get('/me')
+      this.api.get(
+        '/me',
+        null,
+        null,
+        true
+      )
         .then(res => resolve(res))
         .catch(err => {
           console.error(err)
@@ -24,9 +29,15 @@ export default class UserApi {
 
   forgotPassword (email) {
     return new Promise((resolve, reject) => {
-      this.api.post('password-forgot', {
-        email: email
-      })
+      this.api.post(
+        'password-forgot',
+        {
+          email: email
+        },
+        null,
+        null,
+        true
+      )
         .then(res => {
           resolve(res)
         })
@@ -39,7 +50,13 @@ export default class UserApi {
 
   logout () {
     return new Promise((resolve, reject) => {
-      this.api.post('/logout')
+      this.api.post(
+        '/logout',
+        null,
+        null,
+        null,
+        true
+      )
         .then(res => {
           resolve(res)
         })
@@ -52,11 +69,17 @@ export default class UserApi {
 
   passwordReset (token, password, passwordConfirmation) {
     return new Promise((resolve, reject) => {
-      this.api.post('password-reset', {
-        token: token,
-        password: password,
-        password_confirmation: passwordConfirmation
-      })
+      this.api.post(
+        'password-reset',
+        {
+          token: token,
+          password: password,
+          password_confirmation: passwordConfirmation
+        },
+        null,
+        null,
+        true
+      )
         .then(res => {
           resolve(res)
         })
@@ -69,7 +92,13 @@ export default class UserApi {
 
   register (data) {
     return new Promise((resolve, reject) => {
-      this.api.post('register', data)
+      this.api.post(
+        'register',
+        data,
+        null,
+        null,
+        true
+      )
         .then(res => {
           resolve(res)
         })
@@ -82,7 +111,13 @@ export default class UserApi {
 
   verifyEmail (token) {
     return new Promise((resolve, reject) => {
-      this.api.post('verify-email', { token: token })
+      this.api.post(
+        'verify-email',
+        { token: token },
+        null,
+        null,
+        true
+      )
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

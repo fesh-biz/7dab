@@ -78,7 +78,7 @@ export default {
         })
         .orderBy('id', 'desc')
         .with('rating')
-        .with('comment_author')
+        .with('user')
         .get()
     },
 

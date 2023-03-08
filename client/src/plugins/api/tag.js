@@ -22,7 +22,7 @@ export default class Tag {
     })
 
     return new Promise((resolve, reject) => {
-      this.api.get(`/tags/search?${query}`)
+      this.api.get(`/tags/search?${query}`, 'tags')
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
@@ -30,7 +30,7 @@ export default class Tag {
 
   search (name, limit = 5) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/tags/search?title=${name}&limit=${limit}`)
+      this.api.get(`/tags/search?title=${name}&limit=${limit}`, null, 'tags')
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
