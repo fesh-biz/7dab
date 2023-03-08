@@ -97,7 +97,8 @@ export default {
       isFetchingTags: false,
       isFetchingSearchResult: false,
       api: new Api(),
-      cache: new Cache()
+      cache: new Cache(),
+      pageRefresher: 0
     }
   },
 
@@ -107,7 +108,8 @@ export default {
     },
 
     posts () {
-      return Post.query().withAll()
+      return Post.query()
+        .with(['user', 'tags'])
         .whereIdIn(this.postIds)
         .orderBy('id', 'desc')
         .get()
@@ -135,7 +137,6 @@ export default {
 
   watch: {
     $route () {
-      this.cache.refreshPages()
       this.fillForm()
         .then(() => {
           this.search()

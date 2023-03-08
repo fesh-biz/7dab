@@ -25,6 +25,18 @@ export default class Cache {
     return !!this.pages[this.getPageName()]
   }
 
+  getTotalIds () {
+    let total = 0
+
+    for (const pageName in this.pages) {
+      for (const entityName in this.pages[pageName]) {
+        total += this.pages[pageName][entityName].length
+      }
+    }
+
+    return total
+  }
+
   getPageName () {
     return window.location.href.split(window.location.host).pop() || 'home'
   }
@@ -59,11 +71,12 @@ export default class Cache {
       }
     }
 
-    this.refreshPages()
+    this.refreshCache()
     console.log('Cache', this.pages)
+    console.log('Total IDS', this.getTotalIds())
   }
 
-  refreshPages () {
+  refreshCache () {
     this.pages = _.cloneDeep(this.pages)
   }
 
