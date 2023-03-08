@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default class Cache {
   constructor () {
     if (Cache.instance) {
@@ -7,6 +9,16 @@ export default class Cache {
     this.pages = {}
 
     Cache.instance = this
+  }
+
+  getCurrentPageEntitiesIds (type) {
+    if (!this.getPage()) {
+      throw new Error('Cage for given page ' + this.getPageName() + ' not found.')
+    }
+
+    const modelName = this.getModelName(type)
+
+    return this.getPage()[modelName]
   }
 
   getPageName () {
@@ -43,7 +55,12 @@ export default class Cache {
       }
     }
 
+    this.refreshPages()
     console.log('Cache', this.pages)
+  }
+
+  refreshPages () {
+    this.pages = _.cloneDeep(this.pages)
   }
 
   getDataIds (data, type, ids = {}) {

@@ -41,6 +41,7 @@
           v-if="isFetchingSearchResult"
           indeterminate
         />
+        <p>{{ postIds }}</p>
         <!-- Fill Form Message -->
         <q-card-section v-if="!hasFormModelVars">
           {{ $t('fill_form') }}
@@ -73,6 +74,7 @@ import TagApi from 'src/plugins/api/tag'
 import Api from 'src/plugins/api/search'
 import Post from 'src/models/content/post'
 import PostComponent from 'src/components/content/Post'
+import Cache from 'src/plugins/cache/cache'
 
 const formModel = {
   tags: [],
@@ -96,11 +98,22 @@ export default {
       isFetchingTags: false,
       isFetchingSearchResult: false,
       api: new Api(),
-      posts: []
+      cache: new Cache()
     }
   },
 
   computed: {
+    postIds () {
+      return this.cache.getCurrentPageEntitiesIds('posts')
+    },
+
+    posts () {
+      return Post.query().withAll()
+        .whereIdIn(this.postIds)
+        .orderBy('id', 'desc')
+        .get()
+    },
+
     queryVarsFromFormModel () {
       const vars = {}
       if (this.formModel.keyword) vars.kw = this.formModel.keyword
@@ -123,8 +136,7 @@ export default {
 
   watch: {
     $route () {
-      this.posts = []
-
+      this.cache.refreshPages()
       this.fillForm()
         .then(() => {
           this.search()
@@ -146,22 +158,15 @@ export default {
 
   methods: {
     search () {
-      this.posts = []
       this.page.addRequest(this.queryVarsFromFormModel)
 
       if (!this.hasFormModelVars) return
 
-      // if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
-      //   const postIds = this.page.getPostIds(this.queryVarsFromFormModel)
-      //
-      //   if (postIds) {
-      //     this.posts = Post.query().withAll()
-      //       .whereIdIn(this.page.getPostIds(this.queryVarsFromFormModel))
-      //       .get()
-      //
-      //     return
-      //   }
-      // }
+      if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
+        if (this.postIds) {
+          return
+        }
+      }
 
       this.isFetchingSearchResult = true
       this.api.search(this.queryVarsFromFormModel, 'posts')
@@ -169,10 +174,6 @@ export default {
           const posts = res.data.data
           Post.insert({ data: posts })
 
-          let postIds = posts.map(post => post.id)
-          postIds = this.page.addPostIds(this.queryVarsFromFormModel, postIds)
-
-          this.posts = Post.query().withAll().whereIdIn(postIds).get()
           this.isFetchingSearchResult = false
         })
     },

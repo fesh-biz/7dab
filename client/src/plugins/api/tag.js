@@ -22,7 +22,7 @@ export default class Tag {
     })
 
     return new Promise((resolve, reject) => {
-      this.api.get(`/tags/search?${query}`, 'tags')
+      this.api.get(`/tags/search?${query}`, null, 'tags')
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
