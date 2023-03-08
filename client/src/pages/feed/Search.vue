@@ -1,65 +1,67 @@
 <template>
-  <div class="row justify-center q-pt-lg">
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      <!-- Search -->
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">{{ $t('search') }}</div>
-        </q-card-section>
+  <div>
+    <!-- Search Form, Status, Messages -->
+    <div class="row justify-center q-pt-lg">
+      <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+        <!-- Search -->
+        <q-card flat bordered>
+          <q-card-section>
+            <div class="text-h6">{{ $t('search') }}</div>
+          </q-card-section>
 
-        <!-- Search Form -->
-        <q-card-section>
-          <!-- Text -->
-          <q-input
-            class="q-mb-lg"
-            outlined
-            v-model="formModel.keyword"
-            :label="$t('word_or_phrase')"
-          />
+          <!-- Search Form -->
+          <q-card-section>
+            <!-- Text -->
+            <q-input
+              class="q-mb-lg"
+              outlined
+              v-model="formModel.keyword"
+              :label="$t('word_or_phrase')"
+            />
 
-          <!-- Tags -->
+            <!-- Tags -->
+            <q-linear-progress
+              v-if="isFetchingTags"
+              indeterminate
+              style="position: relative; top: 4px"
+            />
+            <tag-field
+              v-model="formModel.tags"
+              :tag-ids="tagIds"
+            />
+          </q-card-section>
+
+          <!-- Controls -->
+          <q-card-actions class="q-pa-md">
+            <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
+          </q-card-actions>
+
           <q-linear-progress
-            v-if="isFetchingTags"
+            v-if="isFetchingSearchResult"
             indeterminate
-            style="position: relative; top: 4px"
           />
-          <tag-field
-            v-model="formModel.tags"
-            :tag-ids="tagIds"
-          />
-        </q-card-section>
+          <!-- Fill Form Message -->
+          <q-card-section v-if="!hasFormModelVars">
+            {{ $t('fill_form') }}
+          </q-card-section>
 
-        <!-- Controls -->
-        <q-card-actions class="q-pa-md">
-          <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
-        </q-card-actions>
-      </q-card>
+          <!-- No Result -->
+          <q-card-section v-if="hasFormModelVars && !isFetchingSearchResult && !posts.length">
+            {{ $t('no_posts_for_request') }}
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
 
-      <!-- Search Result -->
-      <q-card class="q-mt-lg" style="min-height: 30px">
-        <q-linear-progress
-          v-if="isFetchingSearchResult"
-          indeterminate
+    <!-- Search Result -->
+    <div class="row justify-center q-pt-lg">
+      <div v-if="posts.length" class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+        <post
+          v-for="(post, index) in posts"
+          :key="'post' + index"
+          :post="post"
         />
-        <!-- Fill Form Message -->
-        <q-card-section v-if="!hasFormModelVars">
-          {{ $t('fill_form') }}
-        </q-card-section>
-
-        <!-- Posts -->
-        <q-card-section v-if="posts.length">
-          <post
-            v-for="(post, index) in posts"
-            :key="'post' + index"
-            :post="post"
-          />
-        </q-card-section>
-
-        <!-- No Result -->
-        <q-card-section v-if="hasFormModelVars && !isFetchingSearchResult && !posts.length">
-          {{ $t('no_posts_for_request') }}
-        </q-card-section>
-      </q-card>
+      </div>
     </div>
   </div>
 </template>
@@ -109,7 +111,7 @@ export default {
 
     posts () {
       return Post.query()
-        .with(['user', 'tags'])
+        .withAll()
         .whereIdIn(this.postIds)
         .orderBy('id', 'desc')
         .get()
