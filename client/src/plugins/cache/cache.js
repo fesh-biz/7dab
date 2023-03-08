@@ -21,6 +21,10 @@ export default class Cache {
     return this.getPage()[modelName]
   }
 
+  hasCurrentPage () {
+    return !!this.pages[this.getPageName()]
+  }
+
   getPageName () {
     return window.location.href.split(window.location.host).pop() || 'home'
   }

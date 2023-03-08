@@ -41,7 +41,6 @@
           v-if="isFetchingSearchResult"
           indeterminate
         />
-        <p>{{ postIds }}</p>
         <!-- Fill Form Message -->
         <q-card-section v-if="!hasFormModelVars">
           {{ $t('fill_form') }}
