@@ -9,7 +9,7 @@
         :post="post"
       />
 
-      <q-banner dusk="main-no-more-posts" rounded v-if="mainPage.isLastFetched" class="text-center">
+      <q-banner dusk="main-no-more-posts" rounded v-if="cache.getIsLastFetched()" class="text-center">
         {{ $t('there_is_no_new_posts') }}
       </q-banner>
 
@@ -28,7 +28,7 @@ import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
 import Scroll from 'src/plugins/tools/scroll'
-import Main from 'src/plugins/pages/feed/main'
+import Cache from 'src/plugins/cache/cache'
 
 export default {
   name: 'FeedMain',
@@ -38,7 +38,7 @@ export default {
       fetching: {
         posts: false
       },
-      mainPage: new Main(),
+      cache: new Cache(),
       postApi: new PostApi(),
       scroll: new Scroll(),
       isPrevRequestSuccess: true
@@ -47,13 +47,15 @@ export default {
 
   computed: {
     posts () {
-      return PostModel.query().withAll().orderBy('id', 'desc').all()
+      return PostModel.query().withAll()
+        .whereIdIn(this.cache.getPageIds('posts'))
+        .orderBy('id', 'desc')
+        .all()
     }
   },
 
   async created () {
-    if (this.posts.length < 2) {
-      await PostModel.deleteAll()
+    if (!this.cache.hasCurrentPage()) {
       this.fetchPosts(true)
     }
   },
@@ -78,7 +80,11 @@ export default {
     },
 
     maybeFetchNextPosts () {
-      if (!this.fetching.posts && this.scroll.isScrollBottom(500) && !this.mainPage.isLastFetched) {
+      if (
+        !this.fetching.posts &&
+        this.scroll.isScrollBottom(500) &&
+        !this.cache.getIsLastFetched()
+      ) {
         this.fetchPosts()
       }
     },
@@ -88,18 +94,12 @@ export default {
 
       this.fetching.posts = true
       this.isPrevRequestSuccess = false
-      this.postApi.fetchPosts(++this.mainPage.currentPage)
+      this.postApi.fetchPosts(++this.cache.getPage().currentPage)
         .then(res => {
-          if (isFirstTime) {
-            PostModel.create({
-              data: res.data.data
-            })
-          } else {
-            PostModel.insert({
-              data: res.data.data
-            })
-          }
-          this.mainPage.isLastFetched = res.data.meta.is_last
+          PostModel.insert({
+            data: res.data.data
+          })
+          this.cache.setIsLastFetched(res.data.meta.is_last)
 
           this.fetching.posts = false
           this.isPrevRequestSuccess = true

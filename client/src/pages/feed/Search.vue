@@ -106,7 +106,7 @@ export default {
 
   computed: {
     postIds () {
-      return this.cache.getCurrentPageEntitiesIds('posts')
+      return this.cache.getPageIds('posts')
     },
 
     posts () {

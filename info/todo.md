@@ -1,23 +1,15 @@
 # MVP
-- [] Cache system
-    - [] Use global cache
-        - [] `cache.pages`
-            const pages = {
-              '/search?tids=2&tids=3': {
-                postIds: [1,2,3],
-                tagIds: [],
-                ...
-              }
-    - [] All should work inside main `api` instance
-    - [] Availability to bypass cache
 
 - [] Sitemap
     - [] Finish
-        - [] Tag page
-            - [] Search page
-            - [] Input fields:
-                - [] Text
-                - [] Tags
+        - [] Search page
+            - [] Load few posts, go to main page
+                - [] Its posts don't load
+            - [] Fix is expanded
+            - [] infinite scroll the same as main page has
+        - [x] Input fields:
+            - [x] Text
+            - [x] Tags
     - [] Sitemap Service
         - [] Creates sitemap.xml as index
         - [] Each url has `lastmod`

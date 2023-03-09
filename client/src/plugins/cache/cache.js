@@ -11,7 +11,15 @@ export default class Cache {
     Cache.instance = this
   }
 
-  getCurrentPageEntitiesIds (type) {
+  getIsLastFetched () {
+    return this.getPage().isLastFetched
+  }
+
+  setIsLastFetched (value) {
+    this.getPage().isLastFetched = value
+  }
+
+  getPageIds (type) {
     if (!this.getPage()) {
       throw new Error('Cage for given page ' + this.getPageName() + ' not found.')
     }
@@ -30,7 +38,9 @@ export default class Cache {
 
     for (const pageName in this.pages) {
       for (const entityName in this.pages[pageName]) {
-        total += this.pages[pageName][entityName].length
+        if (Array.isArray(this.pages[pageName][entityName])) {
+          total += this.pages[pageName][entityName].length
+        }
       }
     }
 
@@ -43,7 +53,10 @@ export default class Cache {
 
   getPage () {
     if (!this.pages[this.getPageName()]) {
-      this.pages[this.getPageName()] = {}
+      this.pages[this.getPageName()] = {
+        isLastFetched: false,
+        currentPage: 0
+      }
     }
 
     return this.pages[this.getPageName()]
