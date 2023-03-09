@@ -1,0 +1,9 @@
+@startuml
+!include cache-posts.puml
+!include pages.puml
+!include posts.puml
+
+pages -{ cache_posts
+cache_posts --{ posts
+
+@enduml

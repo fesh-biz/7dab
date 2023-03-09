@@ -1,0 +1,8 @@
+@startuml
+object posts {
+    + id
+    
+    created_at
+    updated_at
+}
+@enduml

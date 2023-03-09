@@ -1,4 +1,12 @@
 import _ from 'lodash'
+import Post from 'src/models/content/post'
+import PostImage from 'src/models/content/post-image'
+import Tag from 'src/models/content/tag'
+import PostText from 'src/models/content/post-text'
+import User from 'src/models/user/user'
+import Rating from 'src/models/rating/rating'
+import MyVote from 'src/models/rating/my-vote'
+import Comment from 'src/models/content/comment'
 
 export default class Cache {
   constructor () {
@@ -140,7 +148,7 @@ export default class Cache {
   }
 
   getModelName (type) {
-    const models = {
+    const modelMap = {
       post: ['posts'],
       postImage: ['post_images'],
       tag: ['tags'],
@@ -151,11 +159,20 @@ export default class Cache {
       comment: ['comments', 'answers']
     }
 
-    for (const name in models) {
-      if (!models.hasOwnProperty(name)) continue
+    const models = {
+      post: Post,
+      postImage: PostImage,
+      tag: Tag,
+      postText: PostText,
+      user: User,
+      rating: Rating,
+      myVote: MyVote,
+      comment: Comment
+    }
 
-      if (models[name].includes(type)) {
-        return name
+    for (const name in modelMap) {
+      if (modelMap[name].includes(type) && models[name]) {
+        return models[name]
       }
     }
 

@@ -12,7 +12,11 @@ import PostText from 'src/models/content/post-text'
 import Rating from 'src/models/rating/rating'
 import MyVote from 'src/models/rating/my-vote'
 import Comment from 'src/models/content/comment'
+import Page from 'src/models/cache/page'
+import CachePost from 'src/models/cache/cache-post'
 
+database.register(CachePost)
+database.register(Page)
 database.register(Comment)
 database.register(MyVote)
 database.register(Rating)

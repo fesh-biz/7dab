@@ -1,0 +1,10 @@
+@startuml
+object cache_posts {
+    + id
+    - post_id
+    - page_id
+
+    is_expanded (boolean)
+    is_images_loaded (boolean)
+}
+@enduml
