@@ -3,8 +3,6 @@
 - [] Sitemap
     - [] Finish
         - [] Search page
-            - [] Load few posts, go to main page
-                - [] Its posts don't load
             - [] Fix is expanded
             - [] infinite scroll the same as main page has
         - [x] Input fields:
