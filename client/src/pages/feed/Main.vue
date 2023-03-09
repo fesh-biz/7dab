@@ -89,7 +89,7 @@ export default {
       }
     },
 
-    fetchPosts (isFirstTime) {
+    fetchPosts () {
       if (!this.isPrevRequestSuccess) return
 
       this.fetching.posts = true
