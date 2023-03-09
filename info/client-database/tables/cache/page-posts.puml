@@ -1,0 +1,6 @@
+@startuml
+object page_posts {
+    + id
+
+}
+@enduml

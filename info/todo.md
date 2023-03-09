@@ -1,5 +1,7 @@
 # MVP
 
+- [] Cache refactoring
+
 - [] Sitemap
     - [] Finish
         - [] Search page
