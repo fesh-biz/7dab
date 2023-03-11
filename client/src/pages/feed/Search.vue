@@ -68,7 +68,6 @@
 
 <script>
 import TagField from 'components/form/common/TagField'
-import Search from 'src/plugins/pages/feed/search'
 import _ from 'lodash'
 import Tag from 'src/models/content/tag'
 import TagApi from 'src/plugins/api/tag'
@@ -76,6 +75,7 @@ import Api from 'src/plugins/api/search'
 import Post from 'src/models/content/post'
 import PostComponent from 'src/components/content/Post'
 import Cache from 'src/plugins/cache/cache'
+import CachePost from 'src/models/cache/cache-post'
 
 const formModel = {
   tags: [],
@@ -94,47 +94,27 @@ export default {
     return {
       formModel: _.cloneDeep(formModel),
       tagIds: [],
-      page: new Search(),
       tagApi: new TagApi(),
       isFetchingTags: false,
       isFetchingSearchResult: false,
       api: new Api(),
       cache: new Cache(),
-      pageRefresher: 0
+      posts: []
     }
   },
 
   computed: {
-    postIds () {
-      return this.cache.getPageIds('posts')
-    },
+    // postIds () {
+    //   return [] // this.cache.getPageIds('posts')
+    // },
 
-    posts () {
-      return Post.query()
-        .withAll()
-        .whereIdIn(this.postIds)
-        .orderBy('id', 'desc')
-        .get()
-    },
-
-    queryVarsFromFormModel () {
-      const vars = {}
-      if (this.formModel.keyword) vars.kw = this.formModel.keyword
-
-      const tags = this.formModel.tags
-      if (tags.length) {
-        vars.tids = []
-        tags.forEach(tag => {
-          vars.tids.push(tag.value)
-        })
-      }
-
-      return vars
-    },
-
-    hasFormModelVars () {
-      return !!this.formModel.keyword || !!this.formModel.tags.length
-    }
+    // posts () {
+    //   return Post.query()
+    //     .withAll()
+    //     .whereIdIn(this.postIds)
+    //     .orderBy('id', 'desc')
+    //     .get()
+    // }
   },
 
   watch: {
@@ -153,36 +133,91 @@ export default {
   async created () {
     await this.fillForm()
 
-    if (this.hasFormModelVars) {
+    if (this.hasFormModelVars()) {
       this.search()
     }
   },
 
   methods: {
+    hasFormModelVars () {
+      return !!this.formModel.keyword || !!this.formModel.tags.length
+    },
+
+    queryVarsFromFormModel () {
+      const vars = {}
+      if (this.formModel.keyword) vars.kw = this.formModel.keyword
+
+      const tags = this.formModel.tags
+      if (tags.length) {
+        vars.tids = []
+        tags.forEach(tag => {
+          vars.tids.push(tag.value)
+        })
+      }
+
+      return vars
+    },
+
     search () {
-      this.page.addRequest(this.queryVarsFromFormModel)
+      if (!this.hasFormModelVars()) return
 
-      if (!this.hasFormModelVars) return
-
-      if (this.page.getRequestIndex(this.queryVarsFromFormModel) !== null) {
-        if (this.postIds) {
-          return
-        }
+      if (this.cache.hasCacheForCurrentPage()) {
+        this.setPosts()
       }
 
       this.isFetchingSearchResult = true
-      this.api.search(this.queryVarsFromFormModel, 'posts')
+      this.api.search(this.queryVarsFromFormModel(), 'posts')
         .then((res) => {
           const posts = res.data.data
           Post.insert({ data: posts })
+          this.setPosts()
 
           this.isFetchingSearchResult = false
         })
     },
 
+    setPosts () {
+      const pageId = this.cache.getPage().id
+      let postIds = CachePost.query().where('page_id', pageId).get()
+      postIds = postIds.map(p => p.id)
+
+      this.posts = Post.query()
+        .withAll()
+        .whereIdIn(postIds)
+        .orderBy('id', 'desc')
+        .get()
+    },
+
     fillForm () {
       return new Promise(resolve => {
-        this.formModel.keyword = this.getQueryVars().kw
+        const getQueryVars = () => {
+          const queryTagIds = () => {
+            let res = null
+
+            const tagIds = this.$route.query.tids
+            if (tagIds) {
+              if (typeof tagIds === 'object') {
+                res = tagIds.map(val => parseInt(val))
+              } else {
+                res = [parseInt(tagIds)]
+              }
+            }
+
+            return res
+          }
+
+          const queryKeyword = () => {
+            return this.$route.query.kw || null
+          }
+
+          return {
+            kw: queryKeyword(),
+            tids: queryTagIds()
+          }
+        }
+        const queryVars = getQueryVars()
+
+        this.formModel.keyword = queryVars.kw
 
         const fillModelTags = (tags) => {
           this.formModel.tags = []
@@ -199,7 +234,7 @@ export default {
           }
         }
 
-        const ids = this.getQueryVars().tids || []
+        const ids = queryVars.tids || []
 
         if (!ids.length) {
           fillModelTags()
@@ -243,32 +278,6 @@ export default {
       }
 
       this.page.setCurrentRequest(this.queryVarsFromFormModel)
-    },
-
-    getQueryVars () {
-      const queryTagIds = () => {
-        let res = null
-
-        const tagIds = this.$route.query.tids
-        if (tagIds) {
-          if (typeof tagIds === 'object') {
-            res = tagIds.map(val => parseInt(val))
-          } else {
-            res = [parseInt(tagIds)]
-          }
-        }
-
-        return res
-      }
-
-      const queryKeyword = () => {
-        return this.$route.query.kw || null
-      }
-
-      return {
-        kw: queryKeyword(),
-        tids: queryTagIds()
-      }
     }
   }
 }

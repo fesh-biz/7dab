@@ -14,7 +14,19 @@ import MyVote from 'src/models/rating/my-vote'
 import Comment from 'src/models/content/comment'
 import Page from 'src/models/cache/page'
 import CachePost from 'src/models/cache/cache-post'
+import CacheComment from 'src/models/cache/cache-comment'
+import CachePostImage from 'src/models/cache/cache-post-image'
+import CachePostText from 'src/models/cache/cache-post-text'
+import CacheRating from 'src/models/cache/cache-rating'
+import CacheTag from 'src/models/cache/cache-tag'
+import CacheUser from 'src/models/cache/cache-user'
 
+database.register(CacheUser)
+database.register(CacheTag)
+database.register(CacheRating)
+database.register(CachePostText)
+database.register(CachePostImage)
+database.register(CacheComment)
 database.register(CachePost)
 database.register(Page)
 database.register(Comment)

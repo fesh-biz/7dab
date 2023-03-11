@@ -1,12 +1,12 @@
-import _ from 'lodash'
-import Post from 'src/models/content/post'
-import PostImage from 'src/models/content/post-image'
-import Tag from 'src/models/content/tag'
-import PostText from 'src/models/content/post-text'
-import User from 'src/models/user/user'
-import Rating from 'src/models/rating/rating'
-import MyVote from 'src/models/rating/my-vote'
-import Comment from 'src/models/content/comment'
+import Page from 'src/models/cache/page'
+import CachePost from 'src/models/cache/cache-post'
+import CachePostImage from 'src/models/cache/cache-post-image'
+import CacheTag from 'src/models/cache/cache-tag'
+import CachePostText from 'src/models/cache/cache-post-text'
+import CacheUser from 'src/models/cache/cache-user'
+import CacheRating from 'src/models/cache/cache-rating'
+import CacheMyVote from 'src/plugins/api/my-vote'
+import CacheComment from 'src/models/cache/cache-comment'
 
 export default class Cache {
   constructor () {
@@ -14,63 +14,28 @@ export default class Cache {
       return Cache.instance
     }
 
-    this.pages = {}
-
     Cache.instance = this
   }
 
-  getIsLastFetched () {
-    return this.getPage().isLastFetched
-  }
-
-  setIsLastFetched (value) {
-    this.getPage().isLastFetched = value
-  }
-
-  getPageIds (type) {
-    if (!this.getPage()) {
-      throw new Error('Cage for given page ' + this.getPageName() + ' not found.')
-    }
-
-    const modelName = this.getModelName(type)
-
-    return this.getPage()[modelName]
-  }
-
-  hasCurrentPage () {
-    return !!this.pages[this.getPageName()]
-  }
-
-  getTotalIds () {
-    let total = 0
-
-    for (const pageName in this.pages) {
-      for (const entityName in this.pages[pageName]) {
-        if (Array.isArray(this.pages[pageName][entityName])) {
-          total += this.pages[pageName][entityName].length
-        }
-      }
-    }
-
-    return total
-  }
-
-  getPageName () {
+  getPagePath () {
     return window.location.href.split(window.location.host).pop() || 'home'
   }
 
   getPage () {
-    if (!this.pages[this.getPageName()]) {
-      this.pages[this.getPageName()] = {
-        isLastFetched: false,
-        currentPage: 0
-      }
+    if (!Page.query().where('path', this.getPagePath()).first()) {
+      Page.insert({
+        data: { path: this.getPagePath() }
+      })
     }
 
-    return this.pages[this.getPageName()]
+    return Page.query().where('path', this.getPagePath()).first()
   }
 
-  setPageCache (data, type) {
+  hasCacheForCurrentPage () {
+    return !!Page.query().where('path', this.getPagePath()).first()
+  }
+
+  async setPageCache (data, type) {
     if (data.data) {
       return this.setPageCache(data.data, type)
     }
@@ -79,26 +44,21 @@ export default class Cache {
     const currentIds = this.getDataIds(data, type)
 
     for (const modelName in currentIds) {
-      if (!page?.[modelName]) {
-        page[modelName] = []
-      }
-
       const ids = currentIds[modelName]
+      const model = this.getModel(modelName)
 
+      const entries = []
       for (const id of ids) {
-        if (!page[modelName].includes(id)) {
-          page[modelName].push(id)
-        }
+        entries.push({
+          id: id,
+          page_id: page.id
+        })
       }
+
+      await model.insert({
+        data: entries
+      })
     }
-
-    this.refreshCache()
-    console.log('Cache', this.pages)
-    console.log('Total IDS', this.getTotalIds())
-  }
-
-  refreshCache () {
-    this.pages = _.cloneDeep(this.pages)
   }
 
   getDataIds (data, type, ids = {}) {
@@ -147,8 +107,27 @@ export default class Cache {
     return ids
   }
 
+  getModel (modelName) {
+    const models = {
+      post: CachePost,
+      postImage: CachePostImage,
+      tag: CacheTag,
+      postText: CachePostText,
+      user: CacheUser,
+      rating: CacheRating,
+      myVote: CacheMyVote,
+      comment: CacheComment
+    }
+
+    if (models[modelName]) {
+      return models[modelName]
+    }
+
+    throw new Error(`Model for given model name ${modelName} not found`)
+  }
+
   getModelName (type) {
-    const modelMap = {
+    const modelNameMap = {
       post: ['posts'],
       postImage: ['post_images'],
       tag: ['tags'],
@@ -159,20 +138,9 @@ export default class Cache {
       comment: ['comments', 'answers']
     }
 
-    const models = {
-      post: Post,
-      postImage: PostImage,
-      tag: Tag,
-      postText: PostText,
-      user: User,
-      rating: Rating,
-      myVote: MyVote,
-      comment: Comment
-    }
-
-    for (const name in modelMap) {
-      if (modelMap[name].includes(type) && models[name]) {
-        return models[name]
+    for (const name in modelNameMap) {
+      if (modelNameMap[name].includes(type)) {
+        return name
       }
     }
 

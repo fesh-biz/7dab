@@ -82,7 +82,7 @@ export default class Api {
 
     return new Promise((resolve, reject) => {
       this.axios(conf)
-        .then(res => {
+        .then(async res => {
           if (res.data && !bypassCacheStoring) {
             if (!ormTableName) {
               throw new Error(
@@ -98,7 +98,7 @@ export default class Api {
               )
             }
 
-            this.cache.setPageCache(res, ormTableName)
+            await this.cache.setPageCache(res, ormTableName)
           }
 
           if (process.env.ENV_DEV === 'Development') {
