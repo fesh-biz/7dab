@@ -168,7 +168,7 @@ export default {
     },
 
     getPosts () {
-      const postIds = this.cache.getCacheIds('posts')
+      const postIds = this.cache.getCurrentPageCacheIds('posts')
 
       return Post.query()
         .withAll()
@@ -226,7 +226,7 @@ export default {
           return
         }
 
-        const ids = this.cache.getCacheIds('tags', queryVars.tids)
+        const ids = this.cache.getCurrentPageCacheIds('tags', queryVars.tids)
         if (ids.length) {
           const tags = Tag.query().whereIdIn(ids).get()
           fillModelTags(tags)

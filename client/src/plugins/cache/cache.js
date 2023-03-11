@@ -18,20 +18,20 @@ export default class Cache {
   }
 
   getPagePath () {
-    return window.location.href.split(window.location.host).pop() || 'home'
+    return window.location.href
   }
 
-  getOrCreatePage () {
+  async getOrCreatePage () {
     if (!Page.query().where('path', this.getPagePath()).first()) {
-      Page.insert({
+      await Page.insert({
         data: { path: this.getPagePath() }
       })
     }
 
-    return Page.query().where('path', this.getPagePath()).first()
+    return this.getCurrentPage()
   }
 
-  getCacheIds (tableName, ids) {
+  getCurrentPageCacheIds (tableName, ids) {
     const page = this.getCurrentPage()
     if (!page || !this.hasCacheForCurrentPage(tableName)) {
       return []
@@ -97,6 +97,24 @@ export default class Cache {
     return page
   }
 
+  async updatePagePagination (meta, tableName) {
+    const page = await this.getOrCreatePage()
+
+    if (!page.pagination[tableName]) {
+      throw new Error('Can not set pagination for given table name ' + tableName)
+    }
+
+    await Page.update({
+      where: p => p.path === this.getPagePath(),
+      data: {
+        pagination: {
+          is_last: meta.is_last,
+          page: meta.current_page + 1
+        }
+      }
+    })
+  }
+
   getModelByTableName (tableName) {
     if (!tableName) {
       throw new Error('Property tableName is required')
@@ -118,11 +136,15 @@ export default class Cache {
   }
 
   async setPageCache (data, type) {
+    if (data?.data?.meta) {
+      await this.updatePagePagination(data.data.meta, type)
+    }
+
     if (data.data) {
       return this.setPageCache(data.data, type)
     }
 
-    const page = this.getOrCreatePage()
+    const page = await this.getOrCreatePage()
     const currentIds = this.getDataIds(data, type)
 
     for (const modelName in currentIds) {

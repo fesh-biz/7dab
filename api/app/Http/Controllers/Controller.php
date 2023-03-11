@@ -29,7 +29,8 @@ class Controller extends BaseController
         return response()->json([
             'data' => $paginator->items(),
             'meta' => [
-                'is_last' => !$paginator->hasMorePages()
+                'is_last' => !$paginator->hasMorePages(),
+                'current_page' => $paginator->currentPage()
             ],
         ]);
     }

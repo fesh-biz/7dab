@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center q-px-sm">
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="fetching.posts" indeterminate/>
+      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetchingPosts" indeterminate/>
 
       <post
         v-for="(post, index) in posts"
@@ -9,14 +9,14 @@
         :post="post"
       />
 
-      <q-banner dusk="main-no-more-posts" rounded v-if="cache.getIsLastFetched()" class="text-center">
+      <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
         {{ $t('there_is_no_new_posts') }}
       </q-banner>
 
       <q-linear-progress
         class="q-mb-xl"
         dusk="main-new-posts-loading"
-        v-if="fetching.posts && posts.length"
+        v-if="isFetchingPosts && posts.length"
         indeterminate
       />
     </div>
@@ -32,31 +32,24 @@ import Cache from 'src/plugins/cache/cache'
 
 export default {
   name: 'FeedMain',
+
   components: { Post },
+
   data () {
     return {
-      fetching: {
-        posts: false
-      },
+      isFetchingPosts: true,
       cache: new Cache(),
       postApi: new PostApi(),
       scroll: new Scroll(),
-      isPrevRequestSuccess: true
-    }
-  },
-
-  computed: {
-    posts () {
-      return PostModel.query().withAll()
-        .whereIdIn(this.cache.getPageIds('posts'))
-        .orderBy('id', 'desc')
-        .all()
+      isPrevRequestSuccess: true,
+      posts: [],
+      isLast: false
     }
   },
 
   async created () {
-    if (!this.cache.hasCurrentPage()) {
-      this.fetchPosts(true)
+    if (!this.cache.hasCacheForCurrentPage('posts')) {
+      await this.fetchPosts()
     }
   },
 
@@ -81,31 +74,39 @@ export default {
 
     maybeFetchNextPosts () {
       if (
-        !this.fetching.posts &&
+        !this.isFetchingPosts &&
         this.scroll.isScrollBottom(500) &&
-        !this.cache.getIsLastFetched()
+        !this.isLast
       ) {
         this.fetchPosts()
       }
     },
 
-    fetchPosts () {
+    async fetchPosts () {
       if (!this.isPrevRequestSuccess) return
 
-      this.fetching.posts = true
+      this.isFetchingPosts = true
       this.isPrevRequestSuccess = false
-      this.postApi.fetchPosts(++this.cache.getPage().currentPage)
-        .then(res => {
-          PostModel.insert({
+
+      const page = await this.cache.getOrCreatePage()
+
+      this.postApi.fetchPosts(page.pagination.posts.page)
+        .then(async res => {
+          await PostModel.insert({
             data: res.data.data
           })
-          this.cache.setIsLastFetched(res.data.meta.is_last)
 
-          this.fetching.posts = false
+          const postIds = this.cache.getCurrentPageCacheIds('posts')
+          this.posts = PostModel.query().withAll()
+            .whereIdIn(postIds)
+            .orderBy('id', 'desc')
+            .all()
+
+          this.isFetchingPosts = false
           this.isPrevRequestSuccess = true
         })
         .catch(() => {
-          this.fetching.posts = false
+          this.isFetchingPosts = false
         })
     }
   },
