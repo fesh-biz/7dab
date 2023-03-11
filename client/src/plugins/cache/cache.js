@@ -31,8 +31,51 @@ export default class Cache {
     return Page.query().where('path', this.getPagePath()).first()
   }
 
-  hasCacheForCurrentPage () {
-    return !!Page.query().where('path', this.getPagePath()).first()
+  getCacheIds (tableName, ids) {
+    const page = this.getCurrentPage()
+    if (!page || !this.hasCacheForCurrentPage(tableName)) {
+      return []
+    }
+
+    const model = this.getModelByTableName(tableName)
+
+    let res = model.query().where('page_id', page.id)
+
+    if (ids) {
+      res = res.whereIdIn(ids).get()
+    }
+
+    return res.map(r => r.id)
+  }
+
+  getCurrentPage () {
+    const page = Page.query().where('path', this.getPagePath()).first()
+
+    if (!page) {
+      return null
+    }
+
+    return page
+  }
+
+  getModelByTableName (tableName) {
+    if (!tableName) {
+      throw new Error('Property tableName is required')
+    }
+
+    const modelName = this.getModelName(tableName)
+    return this.getModel(modelName)
+  }
+
+  hasCacheForCurrentPage (tableName) {
+    const model = this.getModelByTableName(tableName)
+
+    const page = this.getCurrentPage()
+    if (!page) {
+      return false
+    }
+
+    return !!model.query().where('page_id', page.id).count()
   }
 
   async setPageCache (data, type) {
@@ -126,7 +169,7 @@ export default class Cache {
     throw new Error(`Model for given model name ${modelName} not found`)
   }
 
-  getModelName (type) {
+  getModelName (tableName) {
     const modelNameMap = {
       post: ['posts'],
       postImage: ['post_images'],
@@ -139,11 +182,11 @@ export default class Cache {
     }
 
     for (const name in modelNameMap) {
-      if (modelNameMap[name].includes(type)) {
+      if (modelNameMap[name].includes(tableName)) {
         return name
       }
     }
 
-    throw new Error(`Model name for given type ${type} not found`)
+    throw new Error(`Model name for given table name ${tableName} not found`)
   }
 }

@@ -103,20 +103,6 @@ export default {
     }
   },
 
-  computed: {
-    // postIds () {
-    //   return [] // this.cache.getPageIds('posts')
-    // },
-
-    // posts () {
-    //   return Post.query()
-    //     .withAll()
-    //     .whereIdIn(this.postIds)
-    //     .orderBy('id', 'desc')
-    //     .get()
-    // }
-  },
-
   watch: {
     $route () {
       this.fillForm()
@@ -159,10 +145,12 @@ export default {
     },
 
     search () {
+      this.posts = []
       if (!this.hasFormModelVars()) return
 
-      if (this.cache.hasCacheForCurrentPage()) {
-        this.setPosts()
+      if (this.cache.hasCacheForCurrentPage('posts')) {
+        this.posts = this.getPosts()
+        return
       }
 
       this.isFetchingSearchResult = true
@@ -170,18 +158,18 @@ export default {
         .then((res) => {
           const posts = res.data.data
           Post.insert({ data: posts })
-          this.setPosts()
+          this.posts = this.getPosts()
 
           this.isFetchingSearchResult = false
         })
     },
 
-    setPosts () {
+    getPosts () {
       const pageId = this.cache.getPage().id
       let postIds = CachePost.query().where('page_id', pageId).get()
       postIds = postIds.map(p => p.id)
 
-      this.posts = Post.query()
+      return Post.query()
         .withAll()
         .whereIdIn(postIds)
         .orderBy('id', 'desc')
@@ -190,6 +178,8 @@ export default {
 
     fillForm () {
       return new Promise(resolve => {
+        this.formModel = _.cloneDeep(formModel)
+
         const getQueryVars = () => {
           const queryTagIds = () => {
             let res = null
@@ -220,37 +210,31 @@ export default {
         this.formModel.keyword = queryVars.kw
 
         const fillModelTags = (tags) => {
-          this.formModel.tags = []
-
-          if (tags) {
-            tags.forEach(tag => {
-              if (tag.status !== 'rejected') {
-                this.formModel.tags.push({
-                  label: tag.title,
-                  value: tag.id
-                })
-              }
-            })
-          }
+          tags.forEach(tag => {
+            if (tag.status !== 'rejected') {
+              this.formModel.tags.push({
+                label: tag.title,
+                value: tag.id
+              })
+            }
+          })
         }
 
-        const ids = queryVars.tids || []
-
-        if (!ids.length) {
-          fillModelTags()
+        if (!queryVars.tids) {
           resolve()
           return
         }
 
-        const tags = Tag.query().whereIdIn(ids).get()
-        if (tags.length === ids.length) {
+        const ids = this.cache.getCacheIds('tags', queryVars.tids)
+        if (ids.length) {
+          const tags = Tag.query().whereIdIn(ids).get()
           fillModelTags(tags)
           resolve()
           return
         }
 
         this.isFetchingTags = true
-        this.tagApi.fetchByIds(ids)
+        this.tagApi.fetchByIds(queryVars.tids)
           .then(res => {
             const tags = res.data.data
             Tag.insert({ data: tags })
