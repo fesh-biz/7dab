@@ -75,13 +75,16 @@ export default {
       }
     },
 
-    maybeFetchNextPosts () {
+    async maybeFetchNextPosts () {
+      const pagination = await this.cache.getPagination('posts')
+      this.isLast = pagination.is_last
+
       if (
         !this.isFetchingPosts &&
         this.scroll.isScrollBottom(500) &&
         !this.isLast
       ) {
-        this.fetchPosts()
+        await this.fetchPosts()
       }
     },
 
@@ -100,15 +103,17 @@ export default {
       this.isFetchingPosts = true
       this.isPrevRequestSuccess = false
 
-      const page = await this.cache.getOrCreatePage()
+      const pagination = await this.cache.getPagination('posts')
 
-      this.postApi.fetchPosts(page.pagination.posts.page)
+      this.postApi.fetchPosts(pagination.page)
         .then(async res => {
           await PostModel.insert({
             data: res.data.data
           })
 
           this.posts = this.getPosts()
+          const pagination = await this.cache.getPagination('posts')
+          this.isLast = pagination.is_last
 
           this.isFetchingPosts = false
           this.isPrevRequestSuccess = true

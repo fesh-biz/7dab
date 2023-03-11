@@ -31,6 +31,16 @@ export default class Cache {
     return this.getCurrentPage()
   }
 
+  async getPagination (tableName) {
+    const page = await this.getOrCreatePage()
+
+    if (!page.pagination[tableName]) {
+      throw new Error('Pagination for given table name ' + tableName + ' not found')
+    }
+
+    return page.pagination[tableName]
+  }
+
   getCurrentPageCacheIds (tableName, ids) {
     const page = this.getCurrentPage()
     if (!page || !this.hasCacheForCurrentPage(tableName)) {
@@ -108,8 +118,10 @@ export default class Cache {
       where: p => p.path === this.getPagePath(),
       data: {
         pagination: {
-          is_last: meta.is_last,
-          page: meta.current_page + 1
+          [tableName]: {
+            is_last: meta.is_last,
+            page: meta.current_page + 1
+          }
         }
       }
     })
