@@ -9,7 +9,8 @@ export default class CacheComment extends AppModel {
     return {
       id: this.attr(null),
 
-      comment: this.belongsTo(Comment, 'id', 'id'),
+      entity_id: this.attr(null),
+      entity: this.belongsTo(Comment, 'entity_id', 'id'),
 
       page_id: this.attr(null),
       page: this.belongsTo(Page, 'page_id', 'id')

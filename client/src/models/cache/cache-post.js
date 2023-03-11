@@ -9,7 +9,8 @@ export default class CachePost extends AppModel {
     return {
       id: this.attr(null),
 
-      post: this.belongsTo(Post, 'id', 'id'),
+      entity_id: this.attr(null),
+      entity: this.belongsTo(Post, 'entity_id', 'id'),
 
       page_id: this.attr(null),
       page: this.belongsTo(Page, 'page_id', 'id'),

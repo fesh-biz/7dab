@@ -9,7 +9,8 @@ export default class CacheUser extends AppModel {
     return {
       id: this.attr(null),
 
-      user: this.belongsTo(User, 'id', 'id'),
+      entity_id: this.attr(null),
+      entity: this.belongsTo(User, 'entity_id', 'id'),
 
       page_id: this.attr(null),
       page: this.belongsTo(Page, 'page_id', 'id')

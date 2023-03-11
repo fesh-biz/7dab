@@ -238,9 +238,9 @@ export default {
 
         this.isFetchingTags = true
         this.tagApi.fetchByIds(queryVars.tids)
-          .then(res => {
+          .then(async res => {
             const tags = res.data.data
-            Tag.insert({ data: tags })
+            await Tag.insert({ data: tags })
 
             fillModelTags(tags)
             this.isFetchingTags = false

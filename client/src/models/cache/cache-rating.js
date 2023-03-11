@@ -9,7 +9,8 @@ export default class CacheRating extends AppModel {
     return {
       id: this.attr(null),
 
-      rating: this.belongsTo(Rating, 'id', 'id'),
+      entity_id: this.attr(null),
+      entity: this.belongsTo(Rating, 'entity_id', 'id'),
 
       page_id: this.attr(null),
       page: this.belongsTo(Page, 'page_id', 'id')

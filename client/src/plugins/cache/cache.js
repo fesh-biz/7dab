@@ -42,7 +42,9 @@ export default class Cache {
     let res = model.query().where('page_id', page.id)
 
     if (ids) {
-      res = res.whereIdIn(ids).get()
+      res = res.where(entity => ids.includes(entity.id)).get()
+    } else {
+      res = res.get()
     }
 
     return res.map(r => r.id)
@@ -92,10 +94,16 @@ export default class Cache {
 
       const entries = []
       for (const id of ids) {
-        entries.push({
-          id: id,
-          page_id: page.id
-        })
+        const isExists = model.query()
+          .where(e => e.entity_id === id && e.page_id === page.id)
+          .first()
+
+        if (!isExists) {
+          entries.push({
+            entity_id: id,
+            page_id: page.id
+          })
+        }
       }
 
       await model.insert({

@@ -9,7 +9,8 @@ export default class CachePostImage extends AppModel {
     return {
       id: this.attr(null),
 
-      postImage: this.belongsTo(PostImage, 'id', 'id'),
+      entity_id: this.attr(null),
+      entity: this.belongsTo(PostImage, 'entity_id', 'id'),
 
       page_id: this.attr(null),
       page: this.belongsTo(Page, 'page_id', 'id')
