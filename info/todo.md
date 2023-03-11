@@ -1,9 +1,5 @@
 # MVP
 
-- [] Cache refactoring
-    - [] Remove page/feed/search
-    - [] Change post expanding logic
-    - [] Remove all possible computed from Post Component
 - [] Sitemap
     - [] Finish
         - [] Search page

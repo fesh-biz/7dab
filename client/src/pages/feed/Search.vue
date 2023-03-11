@@ -99,7 +99,8 @@ export default {
       isFetchingSearchResult: false,
       api: new Api(),
       cache: new Cache(),
-      posts: []
+      posts: [],
+      prevRequestParams: null
     }
   },
 
@@ -154,7 +155,9 @@ export default {
       }
 
       this.isFetchingSearchResult = true
-      this.api.search(this.queryVarsFromFormModel(), 'posts')
+      const queryVars = this.queryVarsFromFormModel()
+      this.prevRequestParams = queryVars
+      this.api.search(queryVars, 'posts')
         .then((res) => {
           const posts = res.data.data
           Post.insert({ data: posts })
@@ -257,11 +260,13 @@ export default {
         return
       }
 
-      if (!this.page.isNextRequestSameAsCurrent(this.queryVarsFromFormModel)) {
-        this.$router.push({ name: 'search', query: this.queryVarsFromFormModel })
+      const queryVars = this.queryVarsFromFormModel()
+
+      if (_.isEqual(this.prevRequestParams, queryVars)) {
+        return
       }
 
-      this.page.setCurrentRequest(this.queryVarsFromFormModel)
+      this.$router.push({ name: 'search', query: queryVars })
     }
   }
 }
