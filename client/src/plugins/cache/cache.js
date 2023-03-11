@@ -70,11 +70,29 @@ export default class Cache {
       .first()
   }
 
-  updateEntityCache (tableName, id, data) {
+  async getOrCreateEntityCache (tableName, entityId) {
+    let entity = this.getEntityCache(tableName, entityId)
+
+    if (!entity) {
+      const page = await this.getOrCreatePage()
+      const model = this.getModelByTableName(tableName)
+
+      entity = await model.insert({
+        data: {
+          entity_id: entityId,
+          page_id: page.id
+        }
+      })
+    }
+
+    return entity
+  }
+
+  async updateEntityCache (tableName, id, data) {
     const model = this.getModelByTableName(tableName)
     const page = this.getCurrentPage()
 
-    return model.update({
+    await model.update({
       where: e => e.entity_id === id && e.page_id === page.id,
       data: data
     })

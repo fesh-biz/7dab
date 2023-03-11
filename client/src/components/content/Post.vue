@@ -47,6 +47,11 @@
         />
       </q-card-section>
 
+      <q-card-section>
+        isExpanded: {{ isExpanded }}
+        isReady: {{ isReady }}
+      </q-card-section>
+
       <!-- Expander -->
       <q-card-section v-if="!isExpanded && isReady" class="q-pt-none">
         <div
@@ -100,15 +105,18 @@ export default {
       isPostImagesLoaded: false,
       isExpanded: false,
       isHasImages: false,
-      isScrollToComments: false
+      isScrollToComments: false,
+      postId: null
     }
   },
 
-  created () {
+  async created () {
     this.isHasImages = !!this.post.post_images.length
     this.isPostPage = this.$route.name === 'postPage'
-    this.entityCache = this.cache.getEntityCache('posts', this.post.id)
+    this.entityCache = await this.cache.getOrCreateEntityCache('posts', this.post.id)
     this.isPostImagesLoaded = this.entityCache.is_images_loaded
+
+    console.log('set in created')
     this.isExpanded = this.isPostPage ||
       (this.isPostImagesLoaded && this.entityCache.is_expanded)
 
@@ -119,9 +127,9 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     if (!this.isHasImages && !this.isExpanded) {
-      this.maybeExpandBody()
+      await this.maybeExpandBody()
     }
 
     if (!this.isPostPage && this.isHasImages && !this.isPostImagesLoaded) {
@@ -151,7 +159,7 @@ export default {
       })
     },
 
-    maybeExpandBody () {
+    async maybeExpandBody () {
       const cacheData = {
         is_images_loaded: true
       }
@@ -159,10 +167,11 @@ export default {
 
       if (this.isShortBody()) {
         cacheData.is_expanded = true
+        console.log('set in mounted')
         this.isExpanded = true
       }
 
-      this.cache.updateEntityCache('posts', this.post.id, cacheData)
+      await this.cache.updateEntityCache('posts', this.post.id, cacheData)
       this.isReady = true
     },
 
