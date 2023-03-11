@@ -61,6 +61,17 @@
           :key="'post' + index"
           :post="post"
         />
+
+        <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
+          {{ $t('there_is_no_new_posts') }}
+        </q-banner>
+
+        <q-linear-progress
+          class="q-mb-xl"
+          dusk="main-new-posts-loading"
+          v-if="isFetchingSearchResult && posts.length"
+          indeterminate
+        />
       </div>
     </div>
   </div>
@@ -75,6 +86,7 @@ import Api from 'src/plugins/api/search'
 import Post from 'src/models/content/post'
 import PostComponent from 'src/components/content/Post'
 import Cache from 'src/plugins/cache/cache'
+import Scroll from 'src/plugins/tools/scroll'
 
 const formModel = {
   tags: [],
@@ -96,10 +108,13 @@ export default {
       tagApi: new TagApi(),
       isFetchingTags: false,
       isFetchingSearchResult: false,
+      isPrevRequestSuccess: true,
       api: new Api(),
       cache: new Cache(),
       posts: [],
-      prevRequestParams: null
+      prevRequestParams: null,
+      scroll: new Scroll(),
+      isLast: false
     }
   },
 
@@ -126,7 +141,25 @@ export default {
     }
   },
 
+  mounted () {
+    window.addEventListener('scroll', this.maybeSearch)
+  },
+
   methods: {
+    async maybeSearch () {
+      const pagination = await this.cache.getPagination('posts')
+
+      this.isLast = pagination.is_last
+
+      if (
+        !this.isFetchingSearchResult &&
+        this.scroll.isScrollBottom(500) &&
+        !this.isLast
+      ) {
+        await this.search(pagination.page)
+      }
+    },
+
     hasFormModelVars () {
       return !!this.formModel.keyword || !!this.formModel.tags.length
     },
@@ -146,17 +179,26 @@ export default {
       return vars
     },
 
-    search () {
+    search (page) {
       if (!this.hasFormModelVars()) return
 
-      if (this.cache.hasCacheForCurrentPage('posts')) {
+      if (!page && this.cache.hasCacheForCurrentPage('posts')) {
         this.posts = this.getPosts()
         return
       }
 
+      if (!this.isPrevRequestSuccess) {
+        return
+      }
+
       this.isFetchingSearchResult = true
+      this.isPrevRequestSuccess = false
       const queryVars = this.queryVarsFromFormModel()
       this.prevRequestParams = queryVars
+
+      if (page) {
+        queryVars.page = page
+      }
       this.api.search(queryVars, 'posts')
         .then((res) => {
           const posts = res.data.data
@@ -164,6 +206,7 @@ export default {
           this.posts = this.getPosts()
 
           this.isFetchingSearchResult = false
+          this.isPrevRequestSuccess = true
         })
     },
 
@@ -266,6 +309,10 @@ export default {
 
       this.$router.push({ name: 'search', query: queryVars })
     }
+  },
+
+  beforeDestroy () {
+    window.removeEventListener('scroll', this.maybeSearch)
   }
 }
 </script>

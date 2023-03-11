@@ -21,9 +21,11 @@ class SearchController extends Controller
         $tagsIds = $r->tids;
         $postTitle = $r->kw;
         
-        return response()->json($this->postService->getPaginatedPostsWithIncrementingOfViews(
-            $tagsIds,
-            $postTitle
-        ));
+        return $this->sendPaginationResponse(
+            $this->postService->getPaginatedPostsWithIncrementingOfViews(
+                $tagsIds,
+                $postTitle
+            )
+        );
     }
 }
