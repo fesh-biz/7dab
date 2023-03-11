@@ -92,10 +92,12 @@ export default class Cache {
     const model = this.getModelByTableName(tableName)
     const page = this.getCurrentPage()
 
-    await model.update({
+    const res = await model.update({
       where: e => e.entity_id === id && e.page_id === page.id,
       data: data
     })
+
+    return res[0]
   }
 
   async insertEntityCache (tableName, id, data = {}) {

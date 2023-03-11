@@ -13,6 +13,8 @@
         <!-- Author -->
         <author :name="post.user.login" :avatar="post.user.avatar"/>
 
+        {{ post.id }}
+
         <!-- Title -->
         <q-item
           v-if="isPostPage"
@@ -38,7 +40,7 @@
       </q-card-section>
 
       <!-- Body -->
-      <q-card-section ref="postBody" :class="{folded: !isExpanded }">
+      <q-card-section ref="postBody" :class="{folded: !postCache.is_expanded && !isPostPage }">
         <component
           v-for="postSection in post.content"
           :key="'postSection-' + postSection.order"
@@ -47,13 +49,8 @@
         />
       </q-card-section>
 
-      <q-card-section>
-        isExpanded: {{ isExpanded }}
-        isReady: {{ isReady }}
-      </q-card-section>
-
       <!-- Expander -->
-      <q-card-section v-if="!isExpanded && isReady" class="q-pt-none">
+      <q-card-section v-if="!postCache.is_expanded && !isPostPage" class="q-pt-none">
         <div
           @click="expand"
           class="expander"
@@ -98,14 +95,13 @@ export default {
 
   data () {
     return {
-      isReady: false,
       isPostPage: false,
       cache: new Cache(),
-      entityCache: null,
-      isPostImagesLoaded: false,
-      isExpanded: false,
+      postCache: {
+        is_expanded: false,
+        is_images_loaded: false
+      },
       isHasImages: false,
-      isScrollToComments: false,
       postId: null
     }
   },
@@ -113,30 +109,19 @@ export default {
   async created () {
     this.isHasImages = !!this.post.post_images.length
     this.isPostPage = this.$route.name === 'postPage'
-    this.entityCache = await this.cache.getOrCreateEntityCache('posts', this.post.id)
-    this.isPostImagesLoaded = this.entityCache.is_images_loaded
-
-    console.log('set in created')
-    this.isExpanded = this.isPostPage ||
-      (this.isPostImagesLoaded && this.entityCache.is_expanded)
-
-    this.isScrollToComments = this.isPostPage && this.$route.params.toComments
-
-    if (!this.isHasImages || this.isPostImagesLoaded) {
-      this.isReady = true
-    }
+    this.postCache = await this.cache.getOrCreateEntityCache('posts', this.post.id)
   },
 
   async mounted () {
-    if (!this.isHasImages && !this.isExpanded) {
-      await this.maybeExpandBody()
+    if (!this.isHasImages && !this.postCache.is_expanded) {
+      await this.maybeExpandBody('mounted')
     }
 
-    if (!this.isPostPage && this.isHasImages && !this.isPostImagesLoaded) {
+    if (!this.postCache.is_expanded && this.isHasImages && !this.postCache.is_images_loaded) {
       this.imagesLoadedHandler()
     }
 
-    if (this.isScrollToComments) {
+    if (this.isPostPage && this.$route.params.toComments) {
       setTimeout(() => {
         this.$refs.commentsAnchor.scrollIntoView()
         window.scrollBy(0, 50)
@@ -152,27 +137,23 @@ export default {
       return postBodyHeight < allowedBodyHeightWithoutFolding
     },
 
-    expand () {
+    async expand () {
       this.isExpanded = true
-      this.cache.updateEntityCache('posts', this.post.id, {
+      this.postCache = await this.cache.updateEntityCache('posts', this.post.id, {
         is_expanded: true
       })
     },
 
-    async maybeExpandBody () {
+    async maybeExpandBody (imagesLoaded = false) {
       const cacheData = {
-        is_images_loaded: true
+        is_images_loaded: imagesLoaded
       }
-      this.isPostImagesLoaded = true
 
       if (this.isShortBody()) {
         cacheData.is_expanded = true
-        console.log('set in mounted')
-        this.isExpanded = true
       }
 
-      await this.cache.updateEntityCache('posts', this.post.id, cacheData)
-      this.isReady = true
+      this.postCache = await this.cache.updateEntityCache('posts', this.post.id, cacheData)
     },
 
     imagesLoadedHandler () {
@@ -182,7 +163,7 @@ export default {
         img.onload = img.onerror = resolve
       }))).then(() => {
         setTimeout(() => {
-          this.maybeExpandBody()
+          this.maybeExpandBody(true)
         }, 10)
       })
     }
