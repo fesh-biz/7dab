@@ -50,6 +50,9 @@ export default {
   async created () {
     if (!this.cache.hasCacheForCurrentPage('posts')) {
       await this.fetchPosts()
+    } else {
+      this.posts = this.getPosts()
+      this.isFetchingPosts = false
     }
   },
 
@@ -82,6 +85,15 @@ export default {
       }
     },
 
+    getPosts () {
+      const postIds = this.cache.getCurrentPageCacheIds('posts')
+
+      return PostModel.query().withAll()
+        .whereIdIn(postIds)
+        .orderBy('id', 'desc')
+        .all()
+    },
+
     async fetchPosts () {
       if (!this.isPrevRequestSuccess) return
 
@@ -96,11 +108,7 @@ export default {
             data: res.data.data
           })
 
-          const postIds = this.cache.getCurrentPageCacheIds('posts')
-          this.posts = PostModel.query().withAll()
-            .whereIdIn(postIds)
-            .orderBy('id', 'desc')
-            .all()
+          this.posts = this.getPosts()
 
           this.isFetchingPosts = false
           this.isPrevRequestSuccess = true
