@@ -79,6 +79,7 @@ import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
 import Comments from 'components/comment/Comments'
 import Author from 'components/common/Author'
+import Cache from 'src/plugins/cache/cache'
 
 export default {
   name: 'Post',
@@ -93,45 +94,37 @@ export default {
   data () {
     return {
       isReady: false,
-      isPostPage: false
-    }
-  },
-
-  computed: {
-    isExpanded () {
-      if (this.isPostPage) return true
-      if (!this.postImagesLoaded) return false
-
-      return this.post.is_expanded
-    },
-
-    postImagesLoaded () {
-      return this.post.is_images_loaded
-    },
-
-    hasImages () {
-      return !!this.post.post_images.length
-    },
-
-    isScrollToComments () {
-      return this.isPostPage && this.$route.params.toComments
+      isPostPage: false,
+      cache: new Cache(),
+      entityCache: null,
+      isPostImagesLoaded: false,
+      isExpanded: false,
+      isHasImages: false,
+      isScrollToComments: false
     }
   },
 
   created () {
+    this.isHasImages = !!this.post.post_images.length
     this.isPostPage = this.$route.name === 'postPage'
+    this.entityCache = this.cache.getEntityCache('posts', this.post.id)
+    this.isPostImagesLoaded = this.entityCache.is_images_loaded
+    this.isExpanded = this.isPostPage ||
+      (this.isPostImagesLoaded && this.entityCache.is_expanded)
 
-    if (!this.hasImages || this.postImagesLoaded) {
+    this.isScrollToComments = this.isPostPage && this.$route.params.toComments
+
+    if (!this.isHasImages || this.isPostImagesLoaded) {
       this.isReady = true
     }
   },
 
   mounted () {
-    if (!this.hasImages && !this.isExpanded) {
+    if (!this.isHasImages && !this.isExpanded) {
       this.maybeExpandBody()
     }
 
-    if (!this.isPostPage && this.hasImages && !this.postImagesLoaded) {
+    if (!this.isPostPage && this.isHasImages && !this.isPostImagesLoaded) {
       this.imagesLoadedHandler()
     }
 
@@ -151,30 +144,25 @@ export default {
       return postBodyHeight < allowedBodyHeightWithoutFolding
     },
 
-    maybeExpandBody () {
-      if (this.isShortBody()) {
-        this.expand()
-      }
-      this.updateImagesLoadingStatus()
-    },
-
     expand () {
-      Post.update({
-        where: this.post.id,
-        data: {
-          is_expanded: true
-        }
+      this.isExpanded = true
+      this.cache.setEntityCache('posts', this.post.id, {
+        is_expanded: true
       })
     },
 
-    async updateImagesLoadingStatus () {
-      await Post.update({
-        where: this.post.id,
-        data: {
-          is_images_loaded: true
-        }
-      })
+    maybeExpandBody () {
+      const cacheData = {
+        is_images_loaded: true
+      }
+      this.isPostImagesLoaded = true
 
+      if (this.isShortBody()) {
+        cacheData.is_expanded = true
+        this.isExpanded = true
+      }
+
+      this.cache.setEntityCache('posts', this.post.id, cacheData)
       this.isReady = true
     },
 

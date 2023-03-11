@@ -50,6 +50,25 @@ export default class Cache {
     return res.map(r => r.entity_id)
   }
 
+  getEntityCache (tableName, id) {
+    const model = this.getModelByTableName(tableName)
+    const page = this.getCurrentPage()
+
+    return model.query().where('entity_id', id)
+      .where('page_id', page.id)
+      .first()
+  }
+
+  setEntityCache (tableName, id, data) {
+    const model = this.getModelByTableName(tableName)
+    const page = this.getCurrentPage()
+
+    return model.update({
+      where: e => e.entity_id === id && e.page_id === page.id,
+      data: data
+    })
+  }
+
   getCurrentPage () {
     const page = Page.query().where('path', this.getPagePath()).first()
 

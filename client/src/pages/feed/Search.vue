@@ -105,6 +105,8 @@ export default {
 
   watch: {
     $route () {
+      this.posts = []
+
       this.fillForm()
         .then(() => {
           this.search()
@@ -145,7 +147,6 @@ export default {
     },
 
     search () {
-      this.posts = []
       if (!this.hasFormModelVars()) return
 
       if (this.cache.hasCacheForCurrentPage('posts')) {
