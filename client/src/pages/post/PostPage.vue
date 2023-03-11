@@ -1,10 +1,10 @@
 <template>
   <div class="row justify-center q-px-sm">
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="!post" indeterminate/>
+      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetching" indeterminate/>
 
       <post
-          v-if="post"
+          v-if="!isFetching"
           :post="post"
       />
     </div>
@@ -14,6 +14,7 @@
 <script>
 import Post from 'components/content/Post'
 import PostApi from 'src/plugins/api/post'
+import Cache from 'src/plugins/cache/cache'
 
 import PostModel from 'src/models/content/post'
 
@@ -26,47 +27,45 @@ export default {
 
   data () {
     return {
-      fetching: {
-        post: true
-      },
-      postApi: new PostApi()
+      isFetching: true,
+      postApi: new PostApi(),
+      post: null,
+      postId: null,
+      cache: new Cache(),
+      isReady: false
     }
   },
 
-  computed: {
-    post () {
-      return PostModel.query().withAll().find(this.postId)
-    },
+  async created () {
+    this.postId = this.$route.params.id
+    this.post = PostModel.query().withAll().find(this.postId)
 
-    postId () {
-      return this.$route.params.id
-    }
-  },
-
-  created () {
     if (!this.post) {
       this.fetchPost()
     } else {
       window.document.title = this.post.title + ` - ${this.$t('terevenky')}`
-      this.postApi.incrementViews(this.postId)
 
-      PostModel.update({
-        where: this.post.id,
-        data: {
-          views: ++this.post.views
-        }
-      })
+      if (!this.cache.getEntityCache('posts', this.postId)) {
+        await this.cache.insertEntityCache('posts', this.postId)
+      }
+
+      this.isFetching = false
+
+      await this.postApi.incrementViews(this.postId)
     }
   },
 
   methods: {
     fetchPost () {
       this.postApi.fetchPost(this.postId)
-        .then(res => {
+        .then(async res => {
           const post = res.data.data
-          PostModel.insert({
+          await PostModel.insert({
             data: post
           })
+          this.post = PostModel.query().withAll().find(post.id)
+
+          this.isFetching = false
 
           window.document.title = post.title + ` - ${this.$t('terevenky')}`
         })

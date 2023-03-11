@@ -21,7 +21,7 @@ export default class Cache {
     return window.location.href.split(window.location.host).pop() || 'home'
   }
 
-  getPage () {
+  getOrCreatePage () {
     if (!Page.query().where('path', this.getPagePath()).first()) {
       Page.insert({
         data: { path: this.getPagePath() }
@@ -53,13 +53,14 @@ export default class Cache {
   getEntityCache (tableName, id) {
     const model = this.getModelByTableName(tableName)
     const page = this.getCurrentPage()
+    if (!page) return null
 
     return model.query().where('entity_id', id)
       .where('page_id', page.id)
       .first()
   }
 
-  setEntityCache (tableName, id, data) {
+  updateEntityCache (tableName, id, data) {
     const model = this.getModelByTableName(tableName)
     const page = this.getCurrentPage()
 
@@ -67,6 +68,23 @@ export default class Cache {
       where: e => e.entity_id === id && e.page_id === page.id,
       data: data
     })
+  }
+
+  async insertEntityCache (tableName, id, data = {}) {
+    const model = this.getModelByTableName(tableName)
+    const page = this.getOrCreatePage()
+    data = Object.assign(data, {
+      page_id: page.id,
+      entity_id: id
+    })
+
+    await model.insert({
+      data: data
+    })
+  }
+
+  getAll () {
+    return Page.query().withAll().get()
   }
 
   getCurrentPage () {
@@ -104,7 +122,7 @@ export default class Cache {
       return this.setPageCache(data.data, type)
     }
 
-    const page = this.getPage()
+    const page = this.getOrCreatePage()
     const currentIds = this.getDataIds(data, type)
 
     for (const modelName in currentIds) {

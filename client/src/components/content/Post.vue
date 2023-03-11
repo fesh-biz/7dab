@@ -146,7 +146,7 @@ export default {
 
     expand () {
       this.isExpanded = true
-      this.cache.setEntityCache('posts', this.post.id, {
+      this.cache.updateEntityCache('posts', this.post.id, {
         is_expanded: true
       })
     },
@@ -162,7 +162,7 @@ export default {
         this.isExpanded = true
       }
 
-      this.cache.setEntityCache('posts', this.post.id, cacheData)
+      this.cache.updateEntityCache('posts', this.post.id, cacheData)
       this.isReady = true
     },
 
