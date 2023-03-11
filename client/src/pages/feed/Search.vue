@@ -75,7 +75,6 @@ import Api from 'src/plugins/api/search'
 import Post from 'src/models/content/post'
 import PostComponent from 'src/components/content/Post'
 import Cache from 'src/plugins/cache/cache'
-import CachePost from 'src/models/cache/cache-post'
 
 const formModel = {
   tags: [],
@@ -168,9 +167,7 @@ export default {
     },
 
     getPosts () {
-      const pageId = this.cache.getPage().id
-      let postIds = CachePost.query().where('page_id', pageId).get()
-      postIds = postIds.map(p => p.id)
+      const postIds = this.cache.getCacheIds('posts')
 
       return Post.query()
         .withAll()

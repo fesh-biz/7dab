@@ -42,12 +42,12 @@ export default class Cache {
     let res = model.query().where('page_id', page.id)
 
     if (ids) {
-      res = res.where(entity => ids.includes(entity.id)).get()
+      res = res.where(entity => ids.includes(entity.entity_id)).get()
     } else {
       res = res.get()
     }
 
-    return res.map(r => r.id)
+    return res.map(r => r.entity_id)
   }
 
   getCurrentPage () {
@@ -90,11 +90,11 @@ export default class Cache {
 
     for (const modelName in currentIds) {
       const ids = currentIds[modelName]
-      const model = this.getModel(modelName)
+      const Model = this.getModel(modelName)
 
       const entries = []
       for (const id of ids) {
-        const isExists = model.query()
+        const isExists = Model.query()
           .where(e => e.entity_id === id && e.page_id === page.id)
           .first()
 
@@ -106,7 +106,7 @@ export default class Cache {
         }
       }
 
-      await model.insert({
+      await Model.insert({
         data: entries
       })
     }
