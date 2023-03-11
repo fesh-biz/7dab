@@ -92,15 +92,12 @@ export default {
 
   data () {
     return {
-      isReady: false
+      isReady: false,
+      isPostPage: false
     }
   },
 
   computed: {
-    isPostPage () {
-      return this.$route.name === 'postPage'
-    },
-
     isExpanded () {
       if (this.isPostPage) return true
       if (!this.postImagesLoaded) return false
@@ -122,6 +119,8 @@ export default {
   },
 
   created () {
+    this.isPostPage = this.$route.name === 'postPage'
+
     if (!this.hasImages || this.postImagesLoaded) {
       this.isReady = true
     }
