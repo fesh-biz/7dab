@@ -3,7 +3,8 @@
 - [] Sitemap
     - [] Finish
         - [] Search page
-            - [] infinite scroll the same as main page has
+            - [] Fix redundant fetching tags
+                - [] Add tag to form and click search
     - [] Sitemap Service
         - [] Creates sitemap.xml as index
         - [] Each url has `lastmod`
