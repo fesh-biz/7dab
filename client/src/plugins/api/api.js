@@ -113,6 +113,7 @@ export default class Api {
             this.meCookies.delete()
           }
 
+          console.log(err)
           this.showError(err)
 
           reject(err)
@@ -121,16 +122,12 @@ export default class Api {
   }
 
   showError (error) {
-    try {
-      if (typeof error.message === 'string') {
-        console.error(error.message)
-      } else {
-        error = error.response.data.error
+    if (typeof error.message === 'string') {
+      console.error(error.message)
+    } else {
+      error = error.response.data.error
 
-        if (['invalid_grant', 'invalid_request'].includes(error)) return
-      }
-    } catch (e) {
-      console.log(e)
+      if (['invalid_grant', 'invalid_request'].includes(error)) return
     }
 
     const message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
