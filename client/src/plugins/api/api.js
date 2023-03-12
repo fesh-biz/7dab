@@ -121,12 +121,16 @@ export default class Api {
   }
 
   showError (error) {
-    if (typeof error.message === 'string') {
-      console.error(error.message)
-    } else {
-      error = error.response.data.error
+    try {
+      if (typeof error.message === 'string') {
+        console.error(error.message)
+      } else {
+        error = error.response.data.error
 
-      if (['invalid_grant', 'invalid_request'].includes(error)) return
+        if (['invalid_grant', 'invalid_request'].includes(error)) return
+      }
+    } catch (e) {
+      console.log(e)
     }
 
     const message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
