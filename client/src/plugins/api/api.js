@@ -60,14 +60,14 @@ export default class Api {
   }
 
   request (url, method, params, ormTableName, bypassCacheStoring) {
-    if (process.env.ENV_DEV === 'Development') {
-      console.log('----rqst start-----')
-      console.log('requesting url:', url)
-      console.log('method:', method)
-      console.log('params:', params)
-      console.log('ormTableName:', ormTableName)
-      console.log('----rqst end-----')
-    }
+    // if (process.env.ENV_DEV === 'Development') {
+    console.log('----rqst start-----')
+    console.log('requesting url:', url)
+    console.log('method:', method)
+    console.log('params:', params)
+    console.log('ormTableName:', ormTableName)
+    console.log('----rqst end-----')
+    // }
 
     const conf = {
       url: url,
