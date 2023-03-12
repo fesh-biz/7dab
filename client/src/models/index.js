@@ -20,7 +20,9 @@ import CachePostText from 'src/models/cache/cache-post-text'
 import CacheRating from 'src/models/cache/cache-rating'
 import CacheTag from 'src/models/cache/cache-tag'
 import CacheUser from 'src/models/cache/cache-user'
+import CacheMyVote from 'src/plugins/api/my-vote'
 
+database.register(CacheMyVote)
 database.register(CacheUser)
 database.register(CacheTag)
 database.register(CacheRating)
