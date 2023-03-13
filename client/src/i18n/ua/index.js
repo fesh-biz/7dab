@@ -1,4 +1,6 @@
 export default {
+  maximum: 'Максимум',
+  total_number_of_images: 'Всього додано зображень',
   no_posts_for_request: 'Немає теревеньок по даному запиту',
   fill_form: 'Заповніть форму',
   empty_form: 'Нічого не введено',

@@ -57,10 +57,23 @@
         <!-- Main Error Message -->
         <q-card-section v-if="postEditor.validator.mainErrorMessage" class="flex justify-center">
           <div
-            class="q-pa-md"
-            style="color: white; background-color: red; border-radius: 5px"
+            class="main-error-message"
           >
             {{ postEditor.validator.mainErrorMessage }}
+          </div>
+        </q-card-section>
+
+        <!-- Number of Images -->
+        <q-card-section
+          v-if="postEditor.totalImages"
+          class="flex justify-center"
+        >
+          <div
+            :class="{'main-error-message': postEditor.totalImages > postEditor.totalImagesMax }"
+          >
+            {{ $t('total_number_of_images') }}:
+            {{ postEditor.totalImages }}
+            ({{ $t('maximum') }}: {{ postEditor.totalImagesMax }})
           </div>
         </q-card-section>
 
@@ -187,8 +200,12 @@ export default {
   },
 
   created () {
-    this.postEditor.resetFormModel()
     this.postEditor.addSection('text')
+  },
+
+  beforeDestroy () {
+    this.postEditor.resetFormModel()
+    this.postEditor.validator.resetErrors()
   },
 
   methods: {

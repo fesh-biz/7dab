@@ -18,6 +18,8 @@ export default class Post {
 
     this.formModel = _.cloneDeep(formModel)
     this.api = new PostApi()
+    this.totalImages = 0
+    this.totalImagesMax = 10
 
     this.validator = new Validator(formModel)
 
@@ -32,6 +34,10 @@ export default class Post {
       type: sectionType,
       content: content || null
     })
+
+    if (sectionType === 'image') {
+      this.totalImages++
+    }
   }
 
   addSections (sectionType, offsetOrder, items) {
@@ -44,6 +50,13 @@ export default class Post {
 
   deleteSection (sectionIndex) {
     const section = this.formModel.sections[sectionIndex]
+    if (section?.content?.type === 'image') {
+      this.totalImages--
+
+      if (this.totalImages < 0) {
+        this.totalImages = 0
+      }
+    }
     this.formModel.sections.splice(sectionIndex, 1)
     this.validator.resetFieldError('sections', section.order)
   }

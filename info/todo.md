@@ -1,6 +1,8 @@
 # MVP
 - To FIX
   - [x] Create post with more than allowed number of images
+        - [] Check max files also if post was created and already has files
+            - [] Check that total post images less than 10
 
 - [] Sitemap
     - [] Finish

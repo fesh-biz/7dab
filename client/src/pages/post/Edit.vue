@@ -64,6 +64,20 @@
           </div>
         </q-card-section>
 
+        <!-- Number of Images -->
+        <q-card-section
+          v-if="postEditor.totalImages"
+          class="flex justify-center"
+        >
+          <div
+            :class="{'main-error-message': postEditor.totalImages > postEditor.totalImagesMax }"
+          >
+            {{ $t('total_number_of_images') }}:
+            {{ postEditor.totalImages }}
+            ({{ $t('maximum') }}: {{ postEditor.totalImagesMax }})
+          </div>
+        </q-card-section>
+
         <!-- Post controls -->
         <q-card-section class="flex justify-between">
           <q-inner-loading
@@ -200,6 +214,7 @@ export default {
 
   beforeDestroy () {
     this.postEditor.resetFormModel()
+    this.postEditor.validator.resetErrors()
   },
 
   methods: {
