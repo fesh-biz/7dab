@@ -50,7 +50,7 @@ export default class Post {
 
   deleteSection (sectionIndex) {
     const section = this.formModel.sections[sectionIndex]
-    if (section?.content?.type === 'image') {
+    if (section?.type === 'image') {
       this.totalImages--
 
       if (this.totalImages < 0) {

@@ -73,6 +73,17 @@ class PostService
     public function update(PostRequest $data, int $postId): Post
     {
         $post = $this->repo->find($postId);
+
+        $totalImages = 0;
+        if (count($data->allFiles())) {
+            $totalImages = count($data->allFiles()['sections']);
+            $totalImages += $post->postImages()->count();
+        }
+    
+        $maxAllowedFiles = intval(ini_get('max_file_uploads')) - 1;
+        if ($totalImages > $maxAllowedFiles) {
+            abort(422, trans('errors.max_allowed_files_exceeded') . " ($maxAllowedFiles)");
+        }
         
         DB::beginTransaction();
         $post->title = $data['title'];
