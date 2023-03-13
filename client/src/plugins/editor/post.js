@@ -62,6 +62,7 @@ export default class Post {
   }
 
   fillFormModel (postId) {
+    this.totalImages = 0
     this.formModel = _.cloneDeep(formModel)
 
     const post = PostModel.query().withAll().find(postId)
@@ -114,6 +115,7 @@ export default class Post {
 
   resetFormModel () {
     this.formModel = _.cloneDeep(formModel)
+    this.totalImages = 0
   }
 
   getSectionsWithCorrectOrders (sections) {

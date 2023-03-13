@@ -157,6 +157,8 @@ import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostEditor from 'src/plugins/editor/post'
 import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
+import PostImage from 'src/models/content/post-image'
+import PostText from 'src/models/content/post-text'
 
 export default {
   name: 'AddPost',
@@ -245,22 +247,42 @@ export default {
       return null
     },
 
-    saveOrUpdate () {
+    async removeCache (postId) {
+      const dbPost = PostModel.query().withAll().find(postId)
+
+      if (dbPost.post_images) {
+        const ids = dbPost.post_images.map(i => i.id)
+
+        for (const id of ids) {
+          await PostImage.delete(id)
+        }
+      }
+
+      if (dbPost.post_texts) {
+        const ids = dbPost.post_texts.map(i => i.id)
+
+        for (const id of ids) {
+          await PostText.delete(id)
+        }
+      }
+    },
+
+    async saveOrUpdate () {
       this.isBusy = true
+
+      await this.removeCache(this.postId)
       this.postEditor.saveOrUpdate(this.postId)
-        .then((res) => {
+        .then(async (res) => {
           this.isBusy = false
           const post = res.data.data
           const postId = post.id
 
-          PostModel.delete({
+          await PostModel.insertOrUpdate({
             where: postId,
-            with: ['post_texts', 'post_images']
-          })
-
-          PostModel.insert({
             data: post
           })
+
+          this.postEditor.fillFormModel(postId)
 
           this.$q.notify({
             message: this.$t('success'),
@@ -268,7 +290,7 @@ export default {
             color: 'positive'
           })
         })
-        .catch(() => {
+        .catch((e) => {
           this.isBusy = false
         })
     },
