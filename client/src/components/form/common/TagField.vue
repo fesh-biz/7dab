@@ -12,6 +12,9 @@
       outlined
       input-debounce="500"
       new-value-mode="add-unique"
+      @keydown.native="onKeyDown"
+      ref="tagField"
+      @input-value="(val) => inputValue = val"
     />
 </template>
 
@@ -37,7 +40,10 @@ export default {
     return {
       isFetching: false,
       options: [],
-      api: new TagApi()
+      api: new TagApi(),
+      inputValue: null,
+      isFiltering: false,
+      commaTimeout: null
     }
   },
 
@@ -66,6 +72,17 @@ export default {
       return options
     },
 
+    onKeyDown (event) {
+      if (this.$route.name === 'search') return
+
+      if (event.key === ',' || (event.key === ',' && event.shiftKey)) {
+        event.preventDefault()
+
+        this.$refs.tagField.add(this.inputValue)
+        this.$refs.tagField.updateInputValue('')
+      }
+    },
+
     filter (val, update) {
       this.options = []
 
@@ -88,11 +105,13 @@ export default {
         return
       }
 
+      this.isFiltering = true
       this.api.search(needle, this.filterLimit)
         .then(res => {
           const tags = res.data.data
           Tag.insert({ data: res.data.data })
 
+          this.isFiltering = false
           update(() => {
             this.options = this.getTagOptions(tags)
           })

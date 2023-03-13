@@ -14,6 +14,9 @@
         outlined
         input-debounce="300"
         new-value-mode="add-unique"
+        @keydown.native="onKeyDown"
+        ref="tagField"
+        @input-value="(val) => inputValue = val"
     />
 
     <span v-if="errorMessage" style="color: red">{{ errorMessage }}</span>
@@ -43,7 +46,10 @@ export default {
       options: [],
       tagApi: new TagApi(),
       postEditor: new PostEditor(),
-      fetching: false
+      fetching: false,
+      inputValue: null,
+      isFiltering: false,
+      commaTimeout: null
     }
   },
 
@@ -59,6 +65,15 @@ export default {
   },
 
   methods: {
+    onKeyDown (event) {
+      if (event.key === ',' || (event.key === ',' && event.shiftKey)) {
+        event.preventDefault()
+
+        this.$refs.tagField.add(this.inputValue)
+        this.$refs.tagField.updateInputValue('')
+      }
+    },
+
     filterFn (val, update) {
       if (val === '') {
         update(() => {
@@ -69,6 +84,7 @@ export default {
       const needle = val.toLowerCase()
       this.options = []
 
+      this.isFiltering = true
       this.tagApi.search(needle)
         .then(res => {
           const tags = res.data.data
@@ -82,6 +98,7 @@ export default {
             })
           })
 
+          this.isFiltering = false
           update(() => {
             this.options = options
           })
