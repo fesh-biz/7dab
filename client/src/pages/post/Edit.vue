@@ -54,6 +54,16 @@
           />
         </q-card-section>
 
+        <!-- Main Error Message -->
+        <q-card-section v-if="postEditor.validator.mainErrorMessage" class="flex justify-center">
+          <div
+            class="q-pa-md"
+            style="color: white; background-color: red; border-radius: 5px"
+          >
+            {{ postEditor.validator.mainErrorMessage }}
+          </div>
+        </q-card-section>
+
         <!-- Post controls -->
         <q-card-section class="flex justify-between">
           <q-inner-loading
@@ -213,11 +223,7 @@ export default {
 
     getSectionError (order) {
       const sectionsErrors = this.postEditor.validator.errors.sections
-      if (sectionsErrors) {
-        if (typeof sectionsErrors === 'string') {
-          return this.$t('all_fields_must_be_filled')
-        }
-
+      if (sectionsErrors && typeof sectionsErrors !== 'string') {
         return sectionsErrors[order]
       }
 
@@ -252,9 +258,8 @@ export default {
         })
     },
 
-    updatePostTags (tags) {
-      // this.postEditor.formModel.tags = tags
-      this.postEditor.validator.errors.tags = null
+    updatePostTags () {
+      this.postEditor.validator.resetFieldError('tags')
     },
 
     // @todo: To Apply this method to update post

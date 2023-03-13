@@ -103,7 +103,21 @@ export default class Post {
     this.formModel = _.cloneDeep(formModel)
   }
 
+  getSectionsWithCorrectOrders (sections) {
+    sections = _.sortBy(this.formModel.sections, 'order')
+
+    let order = 1
+    sections = sections.map(s => {
+      s.order = order
+      order++
+      return s
+    })
+
+    return sections
+  }
+
   getFormData () {
+    this.formModel.sections = this.getSectionsWithCorrectOrders(this.formModel.sections)
     const model = this.formModel
     const formData = new FormData()
     formData.append('title', model.title)

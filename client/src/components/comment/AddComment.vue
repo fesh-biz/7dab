@@ -100,10 +100,6 @@ export default {
   },
 
   methods: {
-    input () {
-      console.log('yep')
-    },
-
     checkAuth () {
       if (!this.me) {
         this.showUnauthMessage()

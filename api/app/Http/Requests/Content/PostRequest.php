@@ -24,6 +24,11 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $maxAllowedFiles = intval(ini_get('max_file_uploads')) - 1;
+        if (count($this->allFiles()) && count($this->allFiles()['sections']) > $maxAllowedFiles) {
+            abort(422, trans('errors.max_allowed_files_exceeded') . " ($maxAllowedFiles)");
+        }
+        
         return [
             'title' => 'required|string|max:255',
             'sections' => ['required', function ($attribute, $value, $fail) {
@@ -66,6 +71,12 @@ class PostRequest extends FormRequest
         /** @var UploadedFile $file */
         $file = $content['file'] ?? null;
         if ($file) {
+            $maxAllowedSize = explode('M', ini_get('upload_max_filesize'))[0];
+            $fileSize = $file->getSize();
+            if ($fileSize > $maxAllowedSize * 1024 * 1024) {
+                return trans('errors.max_allowed_size_exceeded') . "($maxAllowedSize Мб)";
+            }
+            
             $mime = mime_content_type($file->getRealPath());
             $mimes = '/(jpg)|(png)|(jpeg)/';
             $res = preg_match($mimes, $mime);

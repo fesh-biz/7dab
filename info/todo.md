@@ -1,4 +1,6 @@
 # MVP
+- To FIX
+  - [x] Create post with more than allowed number of images
 
 - [] Sitemap
     - [] Finish
@@ -23,9 +25,12 @@
 - [] When a post has been edited, review doesn't show changes
 - [] Translate text 'We have emailed your password reset link!'
 - [] Refactor Post TagField to common/TagField
-------------------------------- Next Steps ----------------------------------
 
-- [] Fix all problems with auth
+
+------------------------------- Fixes ----------------------------------
+- [] If first tag result didn't give result, don't send request on next typing
+    - [] If next type has more symbols
+    - [] If next type wasn't reduce symbols
 - [] To fix
     - [] Post validation
         - [] When there is only one error, it displays it for all sections

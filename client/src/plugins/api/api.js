@@ -130,7 +130,11 @@ export default class Api {
       if (['invalid_grant', 'invalid_request'].includes(error)) return
     }
 
-    const message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
+    let message = i18n.getLocaleMessage(i18n.locale).something_went_wrong.toString()
+
+    if (error.response.status === 422) {
+      message = i18n.getLocaleMessage(i18n.locale).check_your_data.toString()
+    }
 
     Notify.create({
       message: message,

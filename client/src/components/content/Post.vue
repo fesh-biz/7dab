@@ -13,8 +13,6 @@
         <!-- Author -->
         <author :name="post.user.login" :avatar="post.user.avatar"/>
 
-        {{ post.id }}
-
         <!-- Title -->
         <q-item
           v-if="isPostPage"

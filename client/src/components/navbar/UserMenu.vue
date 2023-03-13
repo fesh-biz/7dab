@@ -48,7 +48,6 @@ export default {
 
   methods: {
     async logout () {
-      console.log('logout')
       await this.userApi.logout()
         .then(() => {
           this.deleteUserData()
@@ -59,7 +58,6 @@ export default {
     },
 
     deleteUserData () {
-      console.log('deleting user data')
       this.api.deleteBearer()
       this.tokenCookies.delete()
       this.meCookies.delete()

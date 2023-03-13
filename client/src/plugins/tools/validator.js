@@ -7,6 +7,8 @@ export default class Validator {
       error_message: null
     }
 
+    this.mainErrorMessage = null
+
     if (this.formModel) {
       this.resetErrors()
     }
@@ -17,6 +19,10 @@ export default class Validator {
   }
 
   setErrors (res) {
+    if (res?.response?.data?.message !== 'The given data was invalid.') {
+      this.mainErrorMessage = res?.response?.data?.message
+    }
+
     const validation = res.response.data.errors
     if (!validation) {
       const errors = {
@@ -53,6 +59,7 @@ export default class Validator {
       }
     }
     this.errors.error_message = null
+    this.mainErrorMessage = null
   }
 
   resetErrors () {
@@ -61,5 +68,8 @@ export default class Validator {
         this.errors[name] = null
       }
     }
+
+    this.errors.error_message = null
+    this.mainErrorMessage = null
   }
 }
