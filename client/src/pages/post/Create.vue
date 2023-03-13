@@ -200,7 +200,10 @@ export default {
   },
 
   created () {
-    this.postEditor.addSection('text')
+    this.postEditor.resetFormModel()
+    setTimeout(() => {
+      this.postEditor.addSection('text')
+    }, 10)
   },
 
   beforeDestroy () {
