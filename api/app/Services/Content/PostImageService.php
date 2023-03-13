@@ -86,6 +86,9 @@ class PostImageService
         $image = Image::make($filePath);
         $image->orientate();
         $imageQuality = $this->getImageQuality($image);
+        if ($imageQuality < 0 || $imageQuality > 100) {
+            $imageQuality = 100;
+        }
 
         $extension = $this->imageTypesToExtension[$image->mime] ?? null;
         if (!$extension) {
