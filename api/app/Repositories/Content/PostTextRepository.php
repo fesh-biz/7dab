@@ -31,7 +31,9 @@ class PostTextRepository
 
     public function update(int $id, array $data): PostText
     {
-        $data['body'] = str_replace("\n", '<br>', $data['body']);
+        if ($data['body'] ?? false) {
+            $data['body'] = str_replace("\n", '<br>', $data['body']);
+        }
 
         $model = $this->model->findOrFail($id);
         $model->update($data);
