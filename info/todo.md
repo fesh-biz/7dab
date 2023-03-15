@@ -1,8 +1,27 @@
 # MVP
 - To FIX
   - [x] Create post with more than allowed number of images
-        - [] Check max files also if post was created and already has files
-            - [] Check that total post images less than 10
+        - [x] Check max files also if post was created and already has files
+            - [x] Check that total post images less than 10
+
+- [] YouTube Integration
+    - [] Fetch first video data
+    - [] Refactor PostImageService
+        - [] All image process like resizing, saving etc move to service
+            - [] ImageService
+    - [] User can add YouTube video to post section
+        - [] When user added youtube link
+            - [] If link is on playlist, notify user
+              that he must provide direct link to video
+            - [] Fetch video data by its id
+            - [] Fetch video pic
+            - [] Store it into model /Content/PostYouTube
+                - [] `youtube_id, thumnail (standart), post_id`
+    - [] User can delete YouTube video from post
+        - [] When user updated post, check and delete YouTube if necessary
+
+- [] Post CRUD finish
+    - [] Create Gate for creating post
 
 - [] Sitemap
     - [] Finish

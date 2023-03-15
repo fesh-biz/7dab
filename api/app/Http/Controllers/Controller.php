@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\Content\PostYouTubeService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -71,6 +72,8 @@ class Controller extends BaseController
 
     public function test()
     {
-    
+        $service = new PostYouTubeService();
+        
+        $res = $service->getVideoData('cnJ2GKQN-28');
     }
 }
