@@ -36,7 +36,12 @@
               </div>
 
               <!-- Content -->
+              <you-tube-field
+                v-if="section.type === 'youtube'"
+                v-model="section.content"
+              />
               <component
+                v-if="section.type !== 'youtube'"
                 :ref="'editor[' + section.order + ']'"
                 :is="section.type + '-field'"
                 :content="section.content"
@@ -105,9 +110,19 @@
               icon="image"
               @click="postEditor.addSection('image')"
             />
+
+            <!-- YouTube -->
+            <icon-with-tooltip
+              :tooltip="$t('add_youtube')"
+              color="positive"
+              :disabled="isBusy"
+              size="xl"
+              icon="smart_display"
+              @click="postEditor.addSection('youtube')"
+            />
           </div>
 
-          <!-- Cancel, Save -->
+          <!-- Cancel, Save, Preview -->
           <div class="inline-block">
             <!-- Preview -->
             <icon-with-tooltip
@@ -156,6 +171,7 @@ import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostEditor from 'src/plugins/editor/post'
 import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
+import YouTubeField from 'components/form/common/YouTubeField'
 
 export default {
   name: 'AddPost',
@@ -165,7 +181,8 @@ export default {
     ImageField,
     TextField,
     IconWithTooltip,
-    TagField
+    TagField,
+    YouTubeField
   },
 
   data () {
@@ -202,7 +219,8 @@ export default {
   created () {
     this.postEditor.resetFormModel()
     setTimeout(() => {
-      this.postEditor.addSection('text')
+      // this.postEditor.addSection('text')
+      this.postEditor.addSection('youtube')
     }, 10)
   },
 

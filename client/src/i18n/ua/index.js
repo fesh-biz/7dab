@@ -1,4 +1,7 @@
 export default {
+  video_for_given_youtube_link_was_not_found: 'Відео за даним посиланням не знайдено',
+  insert_youtube_link: 'Вставте YouTube посилання',
+  add_youtube: 'Додати YouTube',
   maximum: 'Максимум',
   total_number_of_images: 'Всього додано зображень',
   no_posts_for_request: 'Немає теревеньок по даному запиту',

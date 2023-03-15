@@ -36,13 +36,18 @@
               </div>
 
               <!-- Content -->
+              <you-tube-field
+                v-if="section.type === 'youtube'"
+                v-model="section.content"
+              />
               <component
-                  :ref="'editor[' + section.order + ']'"
-                  :is="section.type + '-field'"
-                  :content="section.content"
-                  :order="section.order"
-                  :error-message="getSectionError(section.order)"
-                  @input="postEditor.validator.resetFieldError('sections', section.order)"
+                v-if="section.type !== 'youtube'"
+                :ref="'editor[' + section.order + ']'"
+                :is="section.type + '-field'"
+                :content="section.content"
+                :order="section.order"
+                :error-message="getSectionError(section.order)"
+                @input="postEditor.validator.resetFieldError('sections', section.order)"
               />
             </div>
           </div>
@@ -106,9 +111,19 @@
               icon="image"
               @click="postEditor.addSection('image')"
             />
+
+            <!-- YouTube -->
+            <icon-with-tooltip
+              :tooltip="$t('add_youtube')"
+              color="positive"
+              :disabled="isBusy"
+              size="xl"
+              icon="smart_display"
+              @click="postEditor.addSection('youtube')"
+            />, Preview
           </div>
 
-          <!-- Cancel, Save -->
+          <!-- Cancel, Save, Preview -->
           <div class="inline-block">
             <!-- Preview -->
             <icon-with-tooltip
@@ -159,6 +174,7 @@ import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
 import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
+import YouTubeField from 'components/form/common/YouTubeField'
 
 export default {
   name: 'AddPost',
@@ -168,7 +184,8 @@ export default {
     ImageField,
     TextField,
     IconWithTooltip,
-    TagField
+    TagField,
+    YouTubeField
   },
 
   data () {

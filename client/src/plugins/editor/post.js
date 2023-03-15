@@ -28,11 +28,17 @@ export default class Post {
 
   addSection (sectionType, content, id) {
     const nextOrder = !this.formModel.sections.length ? 1 : this.formModel.sections[this.formModel.sections.length - 1].order + 1
+
+    content = content || null
+    if (sectionType === 'youtube' && !content) {
+      content = ''
+    }
+
     this.formModel.sections.push({
       id: id,
       order: nextOrder,
       type: sectionType,
-      content: content || null
+      content: content
     })
 
     if (sectionType === 'image') {
