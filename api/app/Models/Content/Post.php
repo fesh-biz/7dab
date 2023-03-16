@@ -92,6 +92,11 @@ class Post extends Model
         return $this->hasMany(PostText::class);
     }
     
+    public function postYouTubes(): HasMany
+    {
+        return $this->hasMany(PostYouTube::class);
+    }
+    
     public function postImages(): HasMany
     {
         return $this->hasMany(PostImage::class);
@@ -109,7 +114,8 @@ class Post extends Model
             'user:id,login',
             'postImages',
             'rating',
-            'postTexts'
+            'postTexts',
+            'postYouTubes'
         ]);
     
         if (auth('api')->user()) {

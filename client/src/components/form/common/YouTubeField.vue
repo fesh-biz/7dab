@@ -60,9 +60,9 @@ export default {
   },
 
   created () {
-    if (this.value.video_id) {
-      this.videoId = this.value.video_id
-      this.model = 'https://www.youtube.com/watch?v=' + this.value.video_id
+    if (this.value.youtube_id) {
+      this.videoId = this.value.youtube_id
+      this.model = 'https://www.youtube.com/watch?v=' + this.value.youtube_id
     }
   },
 
@@ -83,7 +83,7 @@ export default {
 
       if (!this.isError) {
         this.$emit('input', {
-          video_id: this.videoId,
+          youtube_id: this.videoId,
           title: title
         })
       }

@@ -23,6 +23,16 @@ class PostYouTubeService
         return $this->repo->getModel();
     }
     
+    public function create (int $postId, int $order, array $content) {
+        $this->getModel()
+            ->create([
+                'post_id' => $postId,
+                'order' => $order,
+                'youtube_id' => $content['youtube_id'],
+                'title' => $content['title']
+            ]);
+    }
+    
     public function getVideoData(string $videoId): array
     {
         $res = $this->api->getVideoData($videoId)->getItems();

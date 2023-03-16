@@ -21,7 +21,11 @@ import CacheRating from 'src/models/cache/cache-rating'
 import CacheTag from 'src/models/cache/cache-tag'
 import CacheUser from 'src/models/cache/cache-user'
 import CacheMyVote from 'src/plugins/api/my-vote'
+import CachePostYouTube from 'src/models/cache/cache-post-you-tube'
+import PostYouTube from 'src/models/content/post-you-tube'
 
+database.register(PostYouTube)
+database.register(CachePostYouTube)
 database.register(CacheMyVote)
 database.register(CacheUser)
 database.register(CacheTag)

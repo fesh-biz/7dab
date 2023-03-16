@@ -20,6 +20,7 @@ class CreatePostYouTubesTable extends Migration
             $table->unsignedTinyInteger('order');
             
             $table->string('youtube_id');
+            $table->string('title');
             
             $table->timestamps();
         });

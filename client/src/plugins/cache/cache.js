@@ -7,6 +7,7 @@ import CacheUser from 'src/models/cache/cache-user'
 import CacheRating from 'src/models/cache/cache-rating'
 import CacheMyVote from 'src/plugins/api/my-vote'
 import CacheComment from 'src/models/cache/cache-comment'
+import CachePostYouTube from 'src/models/cache/cache-post-you-tube'
 
 export default class Cache {
   constructor () {
@@ -258,7 +259,8 @@ export default class Cache {
       user: CacheUser,
       rating: CacheRating,
       myVote: CacheMyVote,
-      comment: CacheComment
+      comment: CacheComment,
+      postYouTube: CachePostYouTube
     }
 
     if (models[modelName]) {
@@ -277,7 +279,8 @@ export default class Cache {
       user: ['user'],
       rating: ['rating'],
       myVote: ['my_vote', 'my_votes'],
-      comment: ['comments', 'answers']
+      comment: ['comments', 'answers'],
+      postYouTube: ['post_you_tubes']
     }
 
     for (const name in modelNameMap) {

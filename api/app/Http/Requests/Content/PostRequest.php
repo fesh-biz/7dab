@@ -43,14 +43,23 @@ class PostRequest extends FormRequest
         $errors = [];
 
         foreach ($sections as $section) {
-            if ($section['type'] === 'text' && !$this->checkTextSection($section['content'])) {
+            $type = $section['type'];
+            $content = $section['content'];
+            
+            if ($type === 'text' && !$this->checkTextSection($content)) {
                 $errors['sections'][$section['order']] = trans('errors.can_not_be_empty');
             }
 
-            if ($section['type'] === 'image') {
-                $checkRes = $this->checkImageSection($section['content']);
+            if ($type === 'image') {
+                $checkRes = $this->checkImageSection($content);
                 if ($checkRes) {
                     $errors['sections'][$section['order']] = $checkRes;
+                }
+            }
+            
+            if ($type === 'youtube') {
+                if (!$content['title'] || !$content['youtube_id']){
+                    $errors['sections'][$section['order']] = trans('errors.');
                 }
             }
         }

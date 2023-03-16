@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PostYouTube extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'post_id',
+        'order',
+        'youtube_id',
+        'title',
+    ];
 }

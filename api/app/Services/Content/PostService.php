@@ -17,18 +17,21 @@ class PostService
     protected PostTextService $postTextService;
     protected PostImageService $postImageService;
     protected TagService $tagService;
+    protected PostYouTubeService $postYouTubeService;
     
     public function __construct(
         PostRepository $repo,
         PostTextService $postTextService,
         PostImageService $postImageService,
-        TagService $tagService
+        TagService $tagService,
+        PostYouTubeService $postYouTubeService
     )
     {
         $this->repo = $repo;
         $this->postTextService = $postTextService;
         $this->postImageService = $postImageService;
         $this->tagService = $tagService;
+        $this->postYouTubeService = $postYouTubeService;
     }
     
     public function getPaginatedPostsWithIncrementingOfViews(
@@ -144,6 +147,9 @@ class PostService
                 break;
             case 'image':
                 $this->postImageService->create($postId, $order, $content);
+                break;
+            case 'youtube':
+                $this->postYouTubeService->create($postId, $order, $content);
                 break;
             default:
                 break;

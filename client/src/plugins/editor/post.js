@@ -32,7 +32,7 @@ export default class Post {
     content = content || null
     if (sectionType === 'youtube' && !content) {
       content = {
-        video_id: null,
+        youtube_id: null,
         title: null
       }
     }
@@ -77,20 +77,32 @@ export default class Post {
     const post = PostModel.query().withAll().find(postId)
     this.formModel.title = post.title
 
-    post.content.forEach(section => {
-      if (section.type === 'text') {
-        this.addSection('text', section.body, section.id)
+    const sectionFiller = (section) => {
+      const fillers = {
+        text: (section) => {
+          this.addSection('text', section.body, section.id)
+        },
+        image: (section) => {
+          this.addSection(
+            'image',
+            {
+              url: section.original_file_path,
+              title: section.title
+            },
+            section.id)
+        }
       }
 
-      if (section.type === 'image') {
-        this.addSection(
-          'image',
-          {
-            url: section.original_file_path,
-            title: section.title
-          },
-          section.id)
+      const type = section.type
+      if (!fillers[type]) {
+        throw new Error('Section with given type ' + type + ' doesn\'t exists')
       }
+
+      fillers[type](section)
+    }
+
+    post.content.forEach(section => {
+      sectionFiller(section)
     })
 
     const tags = []
@@ -107,7 +119,7 @@ export default class Post {
   updateSection (sectionOrder, content) {
     const section = _.find(this.formModel.sections, { order: sectionOrder })
 
-    if (section.type === 'text') {
+    if (section.type !== 'image') {
       section.content = content
       return
     }
@@ -167,6 +179,11 @@ export default class Post {
 
       if (section.type === 'text') {
         formData.append(`sections[${i}][content]`, section.content || '')
+      }
+
+      if (section.type === 'youtube') {
+        formData.append(`sections[${i}][content][title]`, section.content.title)
+        formData.append(`sections[${i}][content][youtube_id]`, section.content.youtube_id)
       }
     }
 
