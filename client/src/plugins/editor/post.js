@@ -31,7 +31,10 @@ export default class Post {
 
     content = content || null
     if (sectionType === 'youtube' && !content) {
-      content = ''
+      content = {
+        video_id: null,
+        title: null
+      }
     }
 
     this.formModel.sections.push({

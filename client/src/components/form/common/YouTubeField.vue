@@ -37,7 +37,7 @@ export default {
 
   props: {
     value: {
-      type: [String],
+      type: Object,
       required: true
     }
   },
@@ -60,9 +60,9 @@ export default {
   },
 
   created () {
-    if (this.value) {
-      this.videoId = this.value
-      this.model = 'https://www.youtube.com/watch?v=' + this.value
+    if (this.value.video_id) {
+      this.videoId = this.value.video_id
+      this.model = 'https://www.youtube.com/watch?v=' + this.value.video_id
     }
   },
 
@@ -77,11 +77,15 @@ export default {
     },
 
     onReady (e) {
-      this.isError = !e.target.videoTitle
+      const title = e.target.videoTitle
+      this.isError = !title
       this.isFetching = false
 
       if (!this.isError) {
-        this.$emit('input', this.videoId)
+        this.$emit('input', {
+          video_id: this.videoId,
+          title: title
+        })
       }
 
       if (this.isError) {
