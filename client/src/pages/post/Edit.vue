@@ -120,7 +120,7 @@
               size="xl"
               icon="smart_display"
               @click="postEditor.addSection('youtube')"
-            />, Preview
+            />
           </div>
 
           <!-- Cancel, Save, Preview -->

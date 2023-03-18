@@ -8,6 +8,7 @@ import PostText from 'src/models/content/post-text'
 import PostImage from 'src/models/content/post-image'
 import Rating from 'src/models/rating/rating'
 import MyVote from 'src/models/rating/my-vote'
+import PostYouTube from 'src/models/content/post-you-tube'
 
 export default class Post extends AppModel {
   static entity = 'posts'
@@ -33,12 +34,13 @@ export default class Post extends AppModel {
 
       tags: this.belongsToMany(Tag, PostTag, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostText, 'post_id'),
-      post_images: this.hasMany(PostImage, 'post_id')
+      post_images: this.hasMany(PostImage, 'post_id'),
+      post_you_tubes: this.hasMany(PostYouTube, 'post_id')
     }
   }
 
   get content () {
-    const content = this.post_texts.concat(this.post_images)
+    const content = this.post_texts.concat(this.post_images).concat(this.post_you_tubes)
 
     return _.orderBy(content, 'order')
   }

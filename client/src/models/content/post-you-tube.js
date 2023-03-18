@@ -6,7 +6,7 @@ export default class PostYouTube extends AppModel {
   static fields () {
     return {
       id: this.attr(null),
-      type: this.string('text'),
+      type: this.string('youtube'),
       post_id: this.attr(null),
       order: this.number(0),
       title: this.string(''),

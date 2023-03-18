@@ -90,6 +90,15 @@ export default class Post {
               title: section.title
             },
             section.id)
+        },
+        youtube: (section) => {
+          this.addSection(
+            'youtube',
+            {
+              title: section.title,
+              youtube_id: section.youtube_id
+            },
+            section.id)
         }
       }
 

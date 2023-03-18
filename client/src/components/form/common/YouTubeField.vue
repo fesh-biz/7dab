@@ -22,10 +22,6 @@
       :player-height="$q.platform.is.mobile ? 200 : 400"
       @ready="onReady"
     />
-
-    <!-- https://www.youtube.com/watch?v=N3yDf8lkGEY -->
-    <!--  https://www.youtube.com/watch?v=n3YBq0QWmbU -->
-    <!--  https://www.youtube.com/watch?v=n3YBq0QWmb // error -->
   </div>
 </template>
 
@@ -68,11 +64,20 @@ export default {
 
   methods: {
     onInput (val) {
-      this.videoId = this.url.getUrlQueryVars(val).v || null
+      const videoId = this.url.getUrlQueryVars(val).v || null
+      const model = 'https://www.youtube.com/watch?v=' + videoId
 
-      if (this.videoId) {
-        this.isFetching = true
-        this.isError = false
+      if (this.model !== model) {
+        this.model = model
+      }
+
+      if (videoId) {
+        this.reloading++
+        setTimeout(() => {
+          this.videoId = videoId
+          this.isFetching = true
+          this.isError = false
+        }, 10)
       }
     },
 
@@ -80,6 +85,7 @@ export default {
       const title = e.target.videoTitle
       this.isError = !title
       this.isFetching = false
+      console.log('onReady')
 
       if (!this.isError) {
         this.$emit('input', {
