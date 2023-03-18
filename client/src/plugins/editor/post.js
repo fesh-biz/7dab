@@ -208,7 +208,13 @@ export default class Post {
   }
 
   clearAllEmptyFields () {
-    this.formModel.sections = this.formModel.sections.filter(section => section.content)
+    this.formModel.sections = this.formModel.sections.filter(section => {
+      if (section.type === 'youtube') {
+        return !!section.content.youtube_id
+      }
+
+      return !!section.content
+    })
   }
 
   saveOrUpdate (postId) {
@@ -219,7 +225,7 @@ export default class Post {
         Notify.create({
           position: 'center',
           color: 'negative',
-          message: 'Теревенька має мати хоча б одне текстове поле або поле з зображенням'
+          message: 'Теревенька має мати хоча б одне заповнене поле'
         })
 
         return reject()

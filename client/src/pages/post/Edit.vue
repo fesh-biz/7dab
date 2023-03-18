@@ -175,6 +175,7 @@ import PostApi from 'src/plugins/api/post'
 import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
 import YouTubeField from 'components/form/common/YouTubeField'
+import PostYouTube from 'src/models/content/post-you-tube'
 
 export default {
   name: 'AddPost',
@@ -280,6 +281,14 @@ export default {
 
         for (const id of ids) {
           await PostText.delete(id)
+        }
+      }
+
+      if (dbPost.post_you_tubes) {
+        const ids = dbPost.post_you_tubes.map(i => i.id)
+
+        for (const id of ids) {
+          await PostYouTube.delete(id)
         }
       }
     },

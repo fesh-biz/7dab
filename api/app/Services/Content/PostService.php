@@ -6,6 +6,7 @@ use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
 use App\Models\Content\PostImage;
 use App\Models\Content\PostText;
+use App\Models\Content\PostYouTube;
 use App\Repositories\Content\PostRepository;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -110,8 +111,11 @@ class PostService
         $postTexts = $this->postTextService->getModel()
             ->wherePostId($postId)
             ->get();
+        $postYouTubes = $this->postYouTubeService->getModel()
+            ->wherePostId($postId)
+            ->get();
         
-        $sections = $postImages->concat($postTexts);
+        $sections = $postImages->concat($postTexts)->concat($postYouTubes);
         
         foreach ($sections as $i => $section) {
             $model = explode('\\', get_class($section));
@@ -119,8 +123,13 @@ class PostService
             
             $types = [
                 'PostImage' => 'image',
-                'PostText' => 'text'
+                'PostText' => 'text',
+                'PostYouTube' => 'youtube'
             ];
+            
+            if (!$types[$model]) {
+                throw new \ErrorException('Type for given model ' . $model . ' not found');
+            }
             
             $section->setAttribute('type', $types[$model]);
         }
@@ -168,6 +177,10 @@ class PostService
             
             if ($section['type'] === 'image') {
                 $this->postImageService->delete($section['id']);
+            }
+            
+            if ($section['type'] === 'youtube') {
+                $this->postYouTubeService->getModel()->whereId($section['id'])->delete();
             }
         }
     }
@@ -227,6 +240,27 @@ class PostService
                 
                 if (count($data)) {
                     $this->postImageService->update($section->id, $data);
+                }
+            }
+            
+            // Youtube
+            if ($inputSection['type'] === 'youtube') {
+                /** @var PostYouTube $section */
+                $section = $postSections->where('type', 'youtube')
+                    ->where('id', $id)
+                    ->first();
+                
+                $data = [];
+                if ($section->order !== (int)$inputSection['order']) {
+                    $data['order'] = $inputSection['order'];
+                }
+                
+                if ($section->youtube_id !== $inputSection['content']['youtube_id']) {
+                    $data['youtube_id'] = $inputSection['content']['youtube_id'];
+                }
+                
+                if (count($data)) {
+                    $this->postYouTubeService->repo->update($section->id, $data);
                 }
             }
         }

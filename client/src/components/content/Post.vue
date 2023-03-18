@@ -80,10 +80,11 @@ import PostImage from 'components/content/PostImage'
 import Comments from 'components/comment/Comments'
 import Author from 'components/common/Author'
 import Cache from 'src/plugins/cache/cache'
+import PostYoutube from 'components/content/PostYoutube'
 
 export default {
   name: 'Post',
-  components: { Comments, PostImage, PostText, PostInfo, Author },
+  components: { Comments, PostImage, PostText, PostInfo, Author, PostYoutube },
   props: {
     post: {
       type: Post,
