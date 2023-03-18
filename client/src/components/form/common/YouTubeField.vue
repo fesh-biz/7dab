@@ -9,7 +9,7 @@
       :label="$t('insert_youtube_link')"
     />
 
-    <you-tube ref="youtube" :video-id="videoId" />
+    <you-tube v-if="videoId" ref="youtube" :video-id="videoId" />
   </div>
 </template>
 
@@ -66,7 +66,9 @@ export default {
         this.$emit('input', {
           youtube_id: this.videoId
         })
-        this.$refs.youtube.updateSrc(this.videoId)
+        setTimeout(() => {
+          this.$refs.youtube.updateSrc(this.videoId)
+        }, 10)
       }
     }
   }
