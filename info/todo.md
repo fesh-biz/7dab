@@ -4,24 +4,16 @@
         - [x] Check max files also if post was created and already has files
             - [x] Check that total post images less than 10
 
-- [] YouTube Integration
-    - [] Fetch first video data
-    - [] Refactor PostImageService
-        - [] All image process like resizing, saving etc move to service
-            - [] ImageService
-    - [] User can add YouTube video to post section
-        - [] When user added youtube link
-            - [] If link is on playlist, notify user
-              that he must provide direct link to video
-            - [] Fetch video data by its id
-            - [] Fetch video pic
-            - [] Store it into model /Content/PostYouTube
-                - [] `youtube_id, thumnail (standart), post_id`
-    - [] User can delete YouTube video from post
-        - [] When user updated post, check and delete YouTube if necessary
-
 - [] Post CRUD finish
+    - [] YouTube
+        - [] On model changed send video id to server and check video for:
+            - [] Exists
+            - [] Public
+        - [] On success display video
+    - [] Post validation
+        - [] Post can't have more than 20 sections
     - [] Create Gate for creating post
+        - [] User can't create more than 3 posts per day
 
 - [] Sitemap
     - [] Finish

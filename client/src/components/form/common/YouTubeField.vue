@@ -11,17 +11,17 @@
       :error-message="$t('video_for_given_youtube_link_was_not_found')"
     />
 
-    <q-linear-progress class="q-mt-lg" v-if="isFetching" indeterminate/>
+    <!--<q-linear-progress class="q-mt-lg" v-if="isFetching" indeterminate/>-->
 
-    <youtube
-      :style="{display: !isFetching && !isError ? 'block' : 'none'}"
-      v-if="videoId"
-      :key="reloading"
-      :video-id="videoId"
-      player-width="100%"
-      :player-height="$q.platform.is.mobile ? 200 : 400"
-      @ready="onReady"
-    />
+    <iframe
+      frameborder="0"
+      allowfullscreen="1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      title="Lindsey Stirling - O Holy Night (Official Music Video)"
+      width="100%"
+      height="400"
+      src="https://www.youtube.com/embed/n3YBq0QWmbU" />
+      <!--src="https://www.youtube.com/embed/n3YBq0QWmbU?autoplay=0&amp;time=0&amp;enablejsapi=1&amp;origin=http%3A%2F%2Flocalhost%3A8080&amp;widgetid=2" />-->
   </div>
 </template>
 
