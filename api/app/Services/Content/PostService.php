@@ -149,7 +149,10 @@ class PostService
                 $this->postImageService->create($postId, $order, $content);
                 break;
             case 'youtube':
-                $this->postYouTubeService->create($postId, $order, $content);
+                $this->postYouTubeService->repo->create($postId, [
+                    'order' => $order,
+                    'youtube_id' => $content['youtube_id']
+                ]);
                 break;
             default:
                 break;

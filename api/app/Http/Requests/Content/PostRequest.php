@@ -58,7 +58,7 @@ class PostRequest extends FormRequest
             }
             
             if ($type === 'youtube') {
-                if (!$content['title'] || !$content['youtube_id']){
+                if (!$content['youtube_id']){
                     $errors['sections'][$section['order']] = trans('errors.');
                 }
             }

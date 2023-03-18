@@ -9,7 +9,7 @@ use Google\Service\YouTube\Video;
 
 class PostYouTubeService
 {
-    protected PostYouTubeRepository $repo;
+    public PostYouTubeRepository $repo;
     protected YouTube $api;
     
     public function __construct()
@@ -21,15 +21,6 @@ class PostYouTubeService
     public function getModel(): PostYouTube
     {
         return $this->repo->getModel();
-    }
-    
-    public function create (int $postId, int $order, array $content) {
-        $this->getModel()
-            ->create([
-                'post_id' => $postId,
-                'order' => $order,
-                'youtube_id' => $content['youtube_id']
-            ]);
     }
     
     public function getVideoData(string $videoId): array

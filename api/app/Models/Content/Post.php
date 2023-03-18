@@ -50,6 +50,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property-read Rating|null $rating
  * @method static Builder|Post whereComments($value)
  * @method static Builder|Post whereViews($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\PostYouTube[] $postYouTubes
+ * @property-read int|null $post_you_tubes_count
  */
 class Post extends Model
 {
