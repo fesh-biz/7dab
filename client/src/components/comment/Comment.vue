@@ -128,8 +128,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass">
-.comment
-//background-color: #00b0ff
-</style>

@@ -18,6 +18,9 @@
         - [] User can update only own post if it has status `draft`
         - [] User can delete own post if it has status `draft`
         - [] User can't create more than 3 posts per day
+    - [] Create account page
+        - [] Display added posts
+        - [] Display added comments
 
 - [] Sitemap
     - [] Finish
