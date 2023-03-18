@@ -54,14 +54,10 @@ export default {
 
   methods: {
     onInput (val) {
-      const videoId = this.url.getUrlQueryVars(val).v || null
-      const model = 'https://www.youtube.com/watch?v=' + videoId
-
-      if (this.model !== model) {
-        this.model = model
-      }
+      const videoId = this.url.getUrlQueryVars(val).v || val.split('.be/').pop()
 
       if (videoId) {
+        this.model = 'https://www.youtube.com/watch?v=' + videoId
         this.videoId = videoId
         this.$emit('input', {
           youtube_id: this.videoId
