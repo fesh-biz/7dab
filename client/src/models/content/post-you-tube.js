@@ -9,7 +9,6 @@ export default class PostYouTube extends AppModel {
       type: this.string('youtube'),
       post_id: this.attr(null),
       order: this.number(0),
-      title: this.string(''),
       youtube_id: this.string('')
     }
   }

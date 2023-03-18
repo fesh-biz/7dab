@@ -95,7 +95,6 @@ export default class Post {
           this.addSection(
             'youtube',
             {
-              title: section.title,
               youtube_id: section.youtube_id
             },
             section.id)
@@ -191,7 +190,6 @@ export default class Post {
       }
 
       if (section.type === 'youtube') {
-        formData.append(`sections[${i}][content][title]`, section.content.title)
         formData.append(`sections[${i}][content][youtube_id]`, section.content.youtube_id)
       }
     }

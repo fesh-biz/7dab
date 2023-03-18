@@ -12,7 +12,6 @@ class PostYouTube extends Model
     protected $fillable = [
         'post_id',
         'order',
-        'youtube_id',
-        'title',
+        'youtube_id'
     ];
 }

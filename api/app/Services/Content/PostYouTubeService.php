@@ -28,8 +28,7 @@ class PostYouTubeService
             ->create([
                 'post_id' => $postId,
                 'order' => $order,
-                'youtube_id' => $content['youtube_id'],
-                'title' => $content['title']
+                'youtube_id' => $content['youtube_id']
             ]);
     }
     
