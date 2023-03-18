@@ -34,6 +34,13 @@ class DatabaseSeeder extends Seeder
             'role_id' => 2
         ]);
         
+        User::factory()->create([
+            'email' => 'guest@gmail.com',
+            'login' => 'гость',
+            'password' => bcrypt('password'),
+            'role_id' => 3
+        ]);
+        
         User::factory(5)->create();
         
         $this->call(PassportSeeder::class);
