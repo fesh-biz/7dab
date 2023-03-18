@@ -176,6 +176,7 @@ import PostImage from 'src/models/content/post-image'
 import PostText from 'src/models/content/post-text'
 import YouTubeField from 'components/form/common/YouTubeField'
 import PostYouTube from 'src/models/content/post-you-tube'
+import PostTag from 'src/models/content/post-tag'
 
 export default {
   name: 'AddPost',
@@ -245,7 +246,7 @@ export default {
     fetchPost () {
       return new Promise((resolve, reject) => {
         this.isBusy = true
-        this.postApi.fetchPost(this.postId)
+        this.postApi.fetchPost(this.postId, true)
           .then(res => {
             this.isBusy = false
             resolve(res)
@@ -291,6 +292,8 @@ export default {
           await PostYouTube.delete(id)
         }
       }
+
+      await PostTag.delete(pt => pt.post_id === parseInt(postId))
     },
 
     async saveOrUpdate () {

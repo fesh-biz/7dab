@@ -19,9 +19,11 @@ export default class Post {
     })
   }
 
-  fetchPost (id) {
+  fetchPost (id, isPreview) {
+    const query = isPreview ? `content/posts/${id}?preview=1` : `content/posts/${id}`
+
     return new Promise((resolve, reject) => {
-      this.api.get(`content/posts/${id}`, null, 'posts')
+      this.api.get(query, null, 'posts')
         .then(res => {
           resolve(res)
         })

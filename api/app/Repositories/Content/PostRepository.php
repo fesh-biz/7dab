@@ -64,10 +64,20 @@ class PostRepository
         return $this->model->findOrFail($postId);
     }
     
-    public function findWithBasicRelationships(int $postId): ?Post
+    public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
     {
-        return $this->model->withTagsAuthorContent()
-            ->findOrFail($postId);
+        $res = $this->model;
+        
+        if (!$isPreview) {
+            $res = $res->withTagsAuthorContent()->findOrFail($postId);
+        } else {
+            $res = $res->withPreviewRelations()->findOrFail($postId);
+            
+            $res->setRelation('tags', $res->previewTags);
+            $res->makeHidden('previewTags');
+        }
+        
+        return $res;
     }
     
     public function create(string $title): Post

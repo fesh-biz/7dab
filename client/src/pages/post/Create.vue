@@ -219,8 +219,7 @@ export default {
   created () {
     this.postEditor.resetFormModel()
     setTimeout(() => {
-      // this.postEditor.addSection('text')
-      this.postEditor.addSection('youtube')
+      this.postEditor.addSection('text')
     }, 10)
   },
 

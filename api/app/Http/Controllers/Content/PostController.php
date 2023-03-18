@@ -7,6 +7,7 @@ use App\Http\Requests\Content\PostRequest;
 use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -31,10 +32,16 @@ class PostController extends Controller
         $this->repo->incrementViews($id);
     }
 
-    public function post(int $postId): JsonResponse
+    public function post(int $postId, Request $r): JsonResponse
     {
-        $post = $this->service
-            ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
+        $isPreview = intval($r->preview) === 1;
+
+        if ($isPreview) {
+            $post = $this->repo->findWithBasicRelationships($postId, true);
+        } else {
+            $post = $this->service
+                ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
+        }
 
         if (!$post) {
             return response()->json([
@@ -62,7 +69,7 @@ class PostController extends Controller
     {
         $this->service->update($r, $id);
 
-        $post = $this->repo->findWithBasicRelationships($id);
+        $post = $this->repo->findWithBasicRelationships($id, true);
 
         return $this->response($post);
     }

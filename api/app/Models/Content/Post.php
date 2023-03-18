@@ -89,6 +89,12 @@ class Post extends Model
             ->where('status', 'approved');
     }
     
+    public function previewTags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)
+            ->where('status', '!=', 'rejected');
+    }
+    
     public function postTexts(): HasMany
     {
         return $this->hasMany(PostText::class);
@@ -107,6 +113,17 @@ class Post extends Model
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+    
+    public function scopeWithPreviewRelations(Builder $q): Builder
+    {
+        return $q->with([
+            'previewTags:id,title',
+            'user:id,login',
+            'postImages',
+            'postTexts',
+            'postYouTubes'
+        ]);
     }
     
     public function scopeWithTagsAuthorContent(Builder $q): Builder

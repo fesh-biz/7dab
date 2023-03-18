@@ -8,10 +8,21 @@
       flat
       class="q-my-md"
     >
-      <!-- Title, Author -->
+      <!-- Title, Author, Controls -->
       <q-card-section class="q-pb-none">
-        <!-- Author -->
-        <author :name="post.user.login" :avatar="post.user.avatar"/>
+        <!-- Author, Controls-->
+        <div class="flex justify-between">
+          <!-- Author -->
+          <div>
+            <author :name="post.user.login" :avatar="post.user.avatar"/>
+          </div>
+
+          <!-- Controls -->
+          <div>
+            {{ post.status }}
+            <q-btn flat dense no-caps label="test"/>
+          </div>
+        </div>
 
         <!-- Title -->
         <q-item

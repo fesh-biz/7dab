@@ -5,14 +5,18 @@
             - [x] Check that total post images less than 10
 
 - [] Post CRUD finish
-    - [] YouTube
-        - [] On model changed send video id to server and check video for:
-            - [] Exists
-            - [] Public
-        - [] On success display video
-    - [] Post validation
-        - [] Post can't have more than 20 sections
-    - [] Create Gate for creating post
+    - [] On Post creating or editing
+        - [] Change apply icon to preview
+        - [] Remove apply button
+    - [] On created redirect to preview
+        - [] On Post page
+            - [] If user is the author of the post and post status `draft`
+                - [] Show approve button it will set post status to `pending`
+            - [] approve button On click
+                - [] Show confirmation that post will be pending and can't be edited
+    - [] Create Policy for post CRUD
+        - [] User can update only own post if it has status `draft`
+        - [] User can delete own post if it has status `draft`
         - [] User can't create more than 3 posts per day
 
 - [] Sitemap
