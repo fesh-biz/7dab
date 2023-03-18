@@ -24,6 +24,11 @@ class PostRequest extends FormRequest
      */
     public function rules(): array
     {
+        $sections = $this->input()['sections'];
+        if (count($sections) > 20) {
+            abort(422, trans('errors.max_allowed_post_sections_exceeded') . " (20)");
+        }
+        
         $maxAllowedFiles = intval(ini_get('max_file_uploads')) - 1;
         if (count($this->allFiles()) && count($this->allFiles()['sections']) > $maxAllowedFiles) {
             abort(422, trans('errors.max_allowed_files_exceeded') . " ($maxAllowedFiles)");

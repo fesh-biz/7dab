@@ -7,6 +7,7 @@ return [
     'max_255_symbols' => 'Не може перевищувати 255 символів',
     'max_allowed_size_exceeded' => 'Перевищено максимальний розмір файлу',
     'max_allowed_files_exceeded' => 'Перевищено максимальну кількість файлів',
+    'max_allowed_post_sections_exceeded' => 'Перевищено кількість секцій',
     'wrong_file_type' => 'Невірний тип файлу',
     'video_for_given_youtube_link_was_not_found' => 'Відео за даним посиланням не знайдено',
     'wrong_data' => 'Невірні данні'
