@@ -19,8 +19,7 @@
 
           <!-- Controls -->
           <div>
-            {{ post.status }}
-            <q-btn flat dense no-caps label="test"/>
+            <!--<q-btn flat dense no-caps label="test"/>-->
           </div>
         </div>
 
