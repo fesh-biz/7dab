@@ -9,7 +9,6 @@
         use-chips
         multiple
         option-disable="inactive"
-        @filter="filterFn"
         hide-dropdown-icon
         outlined
         input-debounce="300"
@@ -66,7 +65,14 @@ export default {
 
   methods: {
     onKeyDown (event) {
-      if (event.key === ',' || (event.key === ',' && event.shiftKey)) {
+      console.log('event.key', event.key)
+      const isCommaPressed =
+        event.key === 188 ||
+        (event.key === 188 && event.shiftKey) ||
+        event.key === ',' ||
+        (event.key === ',' && event.shiftKey)
+
+      if (isCommaPressed) {
         event.preventDefault()
 
         this.$refs.tagField.add(this.inputValue)
