@@ -9,13 +9,16 @@
       :label="$t('insert_youtube_link')"
     />
 
-    <you-tube v-if="videoId" ref="youtube" :video-id="videoId" />
+    <q-linear-progress v-if="isFetching" class="q-my-lg" indeterminate/>
+
+    <you-tube v-if="videoId && !isFetching" ref="youtube" :video-id="videoId" />
   </div>
 </template>
 
 <script>
 import Url from 'src/plugins/tools/url'
 import YouTube from 'components/common/YouTube'
+import axios from 'axios'
 
 export default {
   name: 'YouTubeField',
@@ -35,7 +38,8 @@ export default {
     return {
       url: new Url(),
       videoId: null,
-      model: null
+      model: null,
+      isFetching: false
     }
   },
 
@@ -53,10 +57,14 @@ export default {
   },
 
   methods: {
-    onInput (val) {
-      const videoId = this.url.getUrlQueryVars(val).v || val.split('.be/').pop()
+    async onInput () {
+      try {
+        this.videoId = null
+        this.isFetching = true
+        const response = await axios.get(`https://www.youtube.com/oembed?url=${this.model}&format=json`)
+        const videoId = response.data.html.match(/embed\/(.*)\?/)[1]
+        this.isFetching = false
 
-      if (videoId) {
         this.model = 'https://www.youtube.com/watch?v=' + videoId
         this.videoId = videoId
         this.$emit('input', {
@@ -65,6 +73,13 @@ export default {
         setTimeout(() => {
           this.$refs.youtube.updateSrc(this.videoId)
         }, 10)
+      } catch (e) {
+        this.isFetching = false
+
+        this.$q.notify({
+          color: 'negative',
+          message: 'Invalid YouTube video URL'
+        })
       }
     }
   }
