@@ -68,6 +68,8 @@ class PostController extends Controller
 
     public function update(PostRequest $r, int $id): JsonResponse
     {
+        $this->authorize('update', $this->repo->find($id));
+        
         $this->service->update($r, $id);
 
         $post = $this->repo->findWithBasicRelationships($id, true);
@@ -89,6 +91,13 @@ class PostController extends Controller
     
     public function destroy(int $id): JsonResponse
     {
-        $this->service->destroy($id);
+        $post = $this->repo->find($id);
+        $this->authorize('delete', $post);
+    
+        $this->service->destroy($post);
+    
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

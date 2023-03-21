@@ -14,4 +14,15 @@ class PostPolicy
     {
         return $user->id === $post->user_id && $post->isDraft();
     }
+    
+    public function delete(User $user, Post $post): bool
+    {
+        return $user->id === $post->user_id && $post->isDraft();
+    }
+    
+    public function update (User $user, Post $post): bool
+    {
+        return $user->isAdmin() || $user->isModerator() ||
+            ($post->user_id == $user->id && $post->isDraft());
+    }
 }

@@ -142,9 +142,11 @@ class PostService
         $post->update(['status' => 'pending']);
     }
     
-    public function destroy(int $id)
+    public function destroy(Post $post)
     {
-    
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $post->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
     
     private function syncWithTags(array $tagsFromInput, Post $post)

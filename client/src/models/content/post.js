@@ -29,6 +29,8 @@ export default class Post extends AppModel {
       views: this.number(0),
       comments: this.number(0),
 
+      deleted: this.boolean(false),
+
       rating: this.morphOne(Rating, 'ratingable_id', 'ratingable_type_name'),
       my_vote: this.morphOne(MyVote, 'ratingable_id', 'ratingable_type_name'),
 
