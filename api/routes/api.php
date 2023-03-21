@@ -50,6 +50,12 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
             'auth:api',
             'image-sanitize'
         ]);
+        Route::post('/{id}/publish', [PostController::class, 'publish'])->middleware([
+            'auth:api'
+        ]);
+        Route::post('/{id}/delete', [PostController::class, 'destroy'])->middleware([
+            'auth:api'
+        ]);
     });
 
     Route::group(['prefix' => 'comments', 'as' => '.comments'], function() {

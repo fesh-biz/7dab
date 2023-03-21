@@ -91,4 +91,14 @@ class User extends Authenticatable
     {
         return $this->roles[auth()->user()->role_id];
     }
+    
+    public function isAdmin(): bool
+    {
+        return $this->role_id === 1;
+    }
+    
+    public function isModerator(): bool
+    {
+        return $this->role_id === 2;
+    }
 }

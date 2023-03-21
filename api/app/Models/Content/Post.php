@@ -57,6 +57,7 @@ class Post extends Model
 {
     use HasFactory;
     
+    public static string $DRAFT = 'draft';
     public static string $PENDING = 'pending';
     public static string $REVIEWING = 'reviewing';
     public static string $APPROVED = 'approved';
@@ -66,6 +67,11 @@ class Post extends Model
     protected $fillable = [
         'title', 'user_id', 'status'
     ];
+    
+    public function isDraft(): bool
+    {
+        return $this->status === self::$DRAFT;
+    }
     
     public function rating(): MorphOne
     {

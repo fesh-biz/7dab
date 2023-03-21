@@ -1,4 +1,6 @@
 export default {
+  access_denied: 'В доступі відмовлено',
+  unauthorized: 'Не авторизовано',
   draft: 'Чернетка',
   pending: 'Очікує перевірки',
   reviewing: 'Перевіряється',

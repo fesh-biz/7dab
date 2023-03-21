@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\PostRequest;
+use App\Models\Content\Post;
 use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostService;
 use Illuminate\Http\JsonResponse;
@@ -74,8 +75,20 @@ class PostController extends Controller
         return $this->response($post);
     }
 
-    public function destroy($id): JsonResponse
+    public function publish(int $id): JsonResponse
     {
-
+        $post = $this->repo->find($id);
+        $this->authorize('publish', $post);
+        
+        $this->service->publish($post);
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+    
+    public function destroy(int $id): JsonResponse
+    {
+        $this->service->destroy($id);
     }
 }

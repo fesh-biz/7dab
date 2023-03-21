@@ -136,6 +136,11 @@ export default class Api {
       message = i18n.getLocaleMessage(i18n.locale).check_your_data.toString()
     }
 
+    console.log('error.response.status', error.response.status)
+    if (error.response.status === 403) {
+      message = i18n.getLocaleMessage(i18n.locale).access_denied.toString()
+    }
+
     Notify.create({
       message: message,
       position: 'center',
