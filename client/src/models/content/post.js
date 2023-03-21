@@ -44,4 +44,28 @@ export default class Post extends AppModel {
 
     return _.orderBy(content, 'order')
   }
+
+  get isDraft () {
+    return this.status === 'draft'
+  }
+
+  get isPending () {
+    return this.status === 'pending'
+  }
+
+  get isReviewing () {
+    return this.status === 'reviewing'
+  }
+
+  get isApproved () {
+    return this.status === 'approved'
+  }
+
+  get isDeclined () {
+    return this.status === 'declined'
+  }
+
+  get isEditing () {
+    return this.status === 'editing'
+  }
 }

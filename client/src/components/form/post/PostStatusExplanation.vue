@@ -4,7 +4,7 @@
       Теревенька має статус: <strong>{{ $t(post.status) }}</strong>
     </p>
 
-    <div v-if="post.status === 'draft'">
+    <div v-if="post.isDraft">
       <p>
         Ви можете продовжити редагування.
       </p>
@@ -49,9 +49,17 @@
       />
     </div>
 
-    <div v-if="post.status !== 'draft'">
-      <p v-if="post.status === 'approved'">
-        Вітаємо, ваша теревенька опублікована.
+    <div v-if="!post.isDraft">
+      <p v-if="post.isApproved">
+        Вітаємо, ваша теревенька опублікована!
+      </p>
+
+      <p v-if="post.isDeclined">
+        На жаль, ми відхилили запит на публікацію цієї теревеньки.
+      </p>
+
+      <p v-if="post.isEditing">
+        Ми редагуємо вашу теревеньку. Зміст не буде змінено, лише виправлені помилки.
       </p>
 
       <p><strong>Редагування не діє. Зміни не будуть збережені.</strong></p>
