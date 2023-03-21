@@ -2,6 +2,13 @@
   <div class="row justify-center q-px-sm">
     <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5 q-mt-md">
       <q-card :flat="$q.platform.is.mobile" class="q-my-md">
+        <!-- Post status info -->
+        <q-card-section>
+          <post-status-explanation :post-id="postId"/>
+        </q-card-section>
+
+        <q-separator spaced="md"/>
+
         <!-- Post Form -->
         <q-card-section>
 
@@ -177,6 +184,7 @@ import PostText from 'src/models/content/post-text'
 import YouTubeField from 'components/form/common/YouTubeField'
 import PostYouTube from 'src/models/content/post-you-tube'
 import PostTag from 'src/models/content/post-tag'
+import PostStatusExplanation from 'components/form/post/PostStatusExplanation'
 
 export default {
   name: 'AddPost',
@@ -187,7 +195,8 @@ export default {
     TextField,
     IconWithTooltip,
     TagField,
-    YouTubeField
+    YouTubeField,
+    PostStatusExplanation
   },
 
   data () {

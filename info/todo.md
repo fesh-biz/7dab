@@ -5,22 +5,10 @@
             - [x] Check that total post images less than 10
 
 - [] Post CRUD finish
-    - [] On Post creating or editing
-        - [] Change apply icon to preview
-        - [] Remove apply button
-    - [] On created redirect to preview
-        - [] On Post page
-            - [] If user is the author of the post and post status `draft`
-                - [] Show approve button it will set post status to `pending`
-            - [] approve button On click
-                - [] Show confirmation that post will be pending and can't be edited
     - [] Create Policy for post CRUD
         - [] User can update only own post if it has status `draft`
         - [] User can delete own post if it has status `draft`
         - [] User can't create more than 3 posts per day
-    - [] Create account page
-        - [] Display added posts
-        - [] Display added comments
 
 - [] Sitemap
     - [] Finish
@@ -62,10 +50,6 @@
     - [] Post can have max 20 tags
     - [] User can create up to 40 tags with status `penging`
     - [] Allow Registration
-
-- [] Как пользователь, я хочу оставлять комментарии
-    - [] К контенту
-    - [] К другим комментариям
 
 - [] If I'm the author of the post or not
     - [] It would be cool to see two tabs to see comments in their usual way

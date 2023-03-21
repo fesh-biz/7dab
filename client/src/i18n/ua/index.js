@@ -1,4 +1,10 @@
 export default {
+  draft: 'Чернетка',
+  pending: 'Очікує перевірки',
+  reviewing: 'Перевіряється',
+  approved: 'Схвалено',
+  declined: 'Відхилено',
+  editing: 'Редагування',
   video_for_given_youtube_link_was_not_found: 'Відео за даним посиланням не знайдено',
   insert_youtube_link: 'Вставте YouTube посилання',
   add_youtube: 'Додати YouTube',
