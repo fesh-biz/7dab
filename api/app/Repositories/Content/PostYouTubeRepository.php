@@ -8,9 +8,9 @@ class PostYouTubeRepository
 {
     protected PostYouTube $model;
     
-    public function __construct()
+    public function __construct(PostYouTube $model)
     {
-        $this->model = new PostYouTube();
+        $this->model = $model;
     }
     
     public function getModel(): PostYouTube

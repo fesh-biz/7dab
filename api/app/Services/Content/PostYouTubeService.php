@@ -12,10 +12,10 @@ class PostYouTubeService
     public PostYouTubeRepository $repo;
     protected YouTube $api;
     
-    public function __construct()
+    public function __construct(PostYouTubeRepository $repo, YouTube $api)
     {
-        $this->repo = new PostYouTubeRepository();
-        $this->api = new YouTube();
+        $this->repo = $repo;
+        $this->api = $api;
     }
     
     public function getModel(): PostYouTube

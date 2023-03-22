@@ -69,11 +69,12 @@ class Controller extends BaseController
             ]
         ]);
     }
-
+    
     public function test()
     {
-        $service = new PostYouTubeService();
+        $service = app()->make(PostYouTubeService::class);
         
-        $res = $service->getVideoData('cnJ2GKQN-28');
+        dd($service);
+        // $res = $service->getVideoData('cnJ2GKQN-28');
     }
 }
