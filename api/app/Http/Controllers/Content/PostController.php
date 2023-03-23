@@ -60,12 +60,25 @@ class PostController extends Controller
     public function store(PostRequest $r): JsonResponse
     {
         $userId = auth()->id();
+    
+        $errorMessage = null;
+        
+        $maxPostsPerDay = 5;
         $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
-        $maxPosts = 5;
-        if ($totalPostToday >= $maxPosts) {
-            $message = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPosts})";
-            abort(422, $message);
+        if ($totalPostToday >= $maxPostsPerDay) {
+            $errorMessage = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPostsPerDay})";
         }
+        
+        $maxDraftsPerUser = 10;
+        $totalDrafts = $this->repo->getTotalUserDrafts($userId);
+        if ($totalDrafts >= $maxDraftsPerUser) {
+            $errorMessage = trans('errors.max_allowed_drafts_exceeded') . " (${maxDraftsPerUser})";
+        }
+        
+        if ($errorMessage) {
+            abort(422, $errorMessage);
+        }
+        
         
         $post = $this->service->create($r);
 

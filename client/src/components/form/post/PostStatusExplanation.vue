@@ -1,5 +1,6 @@
 <template>
   <div v-if="post">
+    <!-- When deleted -->
     <div v-if="post.deleted">
       <p>Теревеньку видалено. Що робимо?</p>
 
@@ -12,6 +13,7 @@
       </div>
     </div>
 
+    <!-- Post Actions -->
     <template v-if="!post.deleted">
       <p>
         Теревенька має статус: <strong>{{ $t(post.status) }}</strong>
@@ -23,7 +25,7 @@
           Ви можете продовжити редагування.
         </p>
         <p>
-          Щоб відправити теревеньку на перевірку, нажміть на <strong>Підтвердити публікацію</strong>. <br />
+          Щоб відправити теревеньку на перевірку, натисніть на <strong>Опублікувати</strong>. <br />
           <strong>Увага:</strong> <br />
           1. Ця дія не зберігає останні зроблені зміни. Щоб зробити це, натисніть зелену галочку знизу. <br />
           2. Після цієї дії ви не зможете редагувати або видалити цю теревеньку.
@@ -36,7 +38,7 @@
           no-caps
           color="positive"
           @click="showConfirmPublication = true"
-          label="Підтвердити публікацію"
+          label="Опублікувати"
         />
         <confirm
           v-model="showConfirmPublication"
@@ -55,7 +57,7 @@
           :disable="isDeleting"
           color="negative"
           @click="showConfirmDelete = true"
-          label="Видалити Теревеньку"
+          label="Видалити"
         />
         <confirm
           v-model="showConfirmDelete"

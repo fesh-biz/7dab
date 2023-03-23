@@ -101,4 +101,12 @@ class PostRepository
             ->whereUserId($userId)
             ->whereDate('created_at', Carbon::today())->count();
     }
+    
+    public function getTotalUserDrafts(int $userId): int
+    {
+        return $this->model
+            ->whereUserId($userId)
+            ->whereStatus('draft')
+            ->count();
+    }
 }
