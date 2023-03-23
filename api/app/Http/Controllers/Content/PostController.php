@@ -59,6 +59,14 @@ class PostController extends Controller
 
     public function store(PostRequest $r): JsonResponse
     {
+        $userId = auth()->id();
+        $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
+        $maxPosts = 5;
+        if ($totalPostToday >= $maxPosts) {
+            $message = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPosts})";
+            abort(422, $message);
+        }
+        
         $post = $this->service->create($r);
 
         $post = $this->repo->findWithBasicRelationships($post->id);

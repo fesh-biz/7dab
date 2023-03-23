@@ -3,6 +3,7 @@
 namespace App\Repositories\Content;
 
 use App\Models\Content\Post;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -92,5 +93,12 @@ class PostRepository
         }
         
         return $this->model->create($data);
+    }
+    
+    public function getTotalUserPostsForToday(int $userId): int
+    {
+        return $this->model
+            ->whereUserId($userId)
+            ->whereDate('created_at', Carbon::today())->count();
     }
 }
