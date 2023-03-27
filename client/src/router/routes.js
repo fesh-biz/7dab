@@ -2,6 +2,7 @@ import AuthRoutes from './routes/auth'
 import FeedRoutes from './routes/feed'
 import PostRoutes from './routes/post'
 import AdminRoutes from './routes/admin'
+import ProfileRoutes from './routes/profile'
 import ExternalLinks from './routes/external-links'
 
 const routes = [
@@ -34,6 +35,12 @@ const routes = [
     path: '/',
     component: () => import('layouts/Admin'),
     children: AdminRoutes
+  },
+  // Admin routes
+  {
+    path: '/profile',
+    component: () => import('layouts/Profile'),
+    children: ProfileRoutes
   },
 
   // Test Only
