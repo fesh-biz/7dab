@@ -1,14 +1,70 @@
 # MVP
-- To FIX
+
+# Fixes
   - [x] Create post with more than allowed number of images
         - [x] Check max files also if post was created and already has files
             - [x] Check that total post images less than 10
 
-- [] Post CRUD finish
-    - [] Create Policy for post CRUD
+# POST CRUD
+- [x] Post CRUD finish
+    - [x] Create Policy for post CRUD
         - [x] User can update only own post if it has status `draft`
         - [x] User can delete own post if it has status `draft`
-        - [] User can't create more than 3 posts per day
+        - [x] User can't create more than 3 posts per day
+
+# Admin
+- [] Email notifications
+    - [] On comment created
+    - [] On Post created
+    - [] On Post status changed to `pending`
+    - [] On new user registered
+- [] Posts page
+    - [] Post table rows:
+        - [] `id`
+        - [] `title` up to 4 words + ..., as link to post
+        - [] `status`
+        - [] 
+        - [] 
+
+# Profile pages
+- [] Own Profile Page `/profile`
+    - [] Show login
+    - [] Show total rating
+    - [] Show total posts (only with approved status) / comments
+    - [] Display avatar / icon
+        - [] Ability to set avatar
+- [] Posts `/profile/posts`
+    - [] Use Tabs with arrows on mobile
+    - [] Tab contains: post status, amount of posts
+    - [] Tab panel has table with posts, rows list:
+        - [] `id`
+        - [] `title`
+            - [] As link to post, max 3 words + ...
+        - [] `rating` if post status is `approved`
+        - [] `comments` if post status is `approved`
+            - [] Has link to post comments
+- [] Comments `/profile/comments`
+    - [] Table with rows:
+        - [] `body`
+            - [] 5 words + ...
+        - [] `post_title`
+            - [] As link to post, max 3 words + ...
+        - [] `rating`
+        - [] `total_answers`
+- [] Answers `/profile/answers`
+    - [] Answer is:
+        - [] Comment to my post
+        - [] Answer to my comment
+    - [] Table with rows:
+        - [] `user_login` as link on user profile
+        - [] `body` up to 5 words + ...
+        - [] `link` to answer
+
+# User's page
+- [] `users/:id`
+    - [] Same as profile page except sensitive data and abilities to change something
+
+# Sitemap
 
 - [] Sitemap
     - [] Finish
@@ -30,7 +86,6 @@
             - [] Create tag page
 
 - [] User login length 5 - 15
-- [] When a post has been edited, review doesn't show changes
 - [] Translate text 'We have emailed your password reset link!'
 - [] Refactor Post TagField to common/TagField
 
