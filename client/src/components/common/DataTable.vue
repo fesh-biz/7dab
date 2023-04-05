@@ -85,7 +85,7 @@ export default {
     fetchItems (params) {
       this.loading = true
 
-      this.api.get(this.url, params)
+      this.api.get(this.url, params, null, true)
         .then(res => {
           this.loading = false
           this.rowsPerPage = '' + res.data.per_page
