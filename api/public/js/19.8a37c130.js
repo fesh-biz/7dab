@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[19],{"308d":function(n,t,e){"use strict";e.r(t);var c=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[n._v("\n  Account\n")])},u=[],a={name:"Account",data(){return{}}},r=a,l=e("2877"),o=Object(l["a"])(r,c,u,!1,null,null,null);t["default"]=o.exports}}]);
