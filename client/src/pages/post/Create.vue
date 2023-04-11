@@ -265,7 +265,7 @@ export default {
           const postId = post.id
 
           if (!this.isEditing) {
-            PostModel.create({
+            PostModel.insert({
               data: res.data.data
             })
             this.$router.push({ name: 'editPost', params: { id: postId } })
