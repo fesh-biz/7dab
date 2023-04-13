@@ -6,6 +6,7 @@
 
         <q-btn-dropdown
           color="white"
+          id="menuButton"
           class="bg-primary glossy"
           dusk="ml-menu"
           no-caps
@@ -85,11 +86,37 @@ export default {
     me () {
       return Me.query().first()
     }
+  },
+
+  mounted () {
+    this.highlightMenuButton()
+  },
+
+  methods: {
+    highlightMenuButton () {
+      const button = document.querySelector('#menuButton')
+
+      setTimeout(() => {
+        button.style.transform = 'scale(2)'
+        setTimeout(() => {
+          button.style.transform = 'scale(1)'
+          setTimeout(() => {
+            button.style.transform = 'scale(2)'
+            setTimeout(() => {
+              button.style.transform = 'scale(1)'
+            }, 300)
+          }, 300)
+        }, 300)
+      }, 300)
+    }
   }
 }
 </script>
 
 <style lang="sass">
+#menuButton
+  transition: all 0.3s ease-in-out
+
 .ml-header.fixed-top
   left: unset
   background-color: unset
