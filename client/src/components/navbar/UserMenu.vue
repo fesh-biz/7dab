@@ -6,10 +6,11 @@
       <q-btn
         dusk="um-logout-link"
         color="positive"
+        no-caps
         :label="me.login"
         :to="{name: 'profile'}"
         push
-        size="sm"
+        size="md"
         v-close-popup
       />
     </div>

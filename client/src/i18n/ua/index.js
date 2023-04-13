@@ -1,4 +1,8 @@
 export default {
+  total_comments: 'Всього коментарів',
+  total_posts: 'Всього теревеньок',
+  voted_positive: 'Проголосував за',
+  voted_negative: 'Проголосував проти',
   profile: 'Профіль',
   access_denied: 'В доступі відмовлено',
   unauthorized: 'Не авторизовано',

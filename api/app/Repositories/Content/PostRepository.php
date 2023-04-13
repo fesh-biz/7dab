@@ -109,4 +109,12 @@ class PostRepository
             ->whereStatus('draft')
             ->count();
     }
+    
+    public function getTotalUserApprovedPosts(int $userId): int
+    {
+        return $this->model
+            ->whereUserId($userId)
+            ->whereStatus('approved')
+            ->count();
+    }
 }

@@ -11,6 +11,17 @@ export default class UserApi {
     UserApi.instance = this
   }
 
+  fetchStats (id) {
+    return new Promise((resolve, reject) => {
+      this.api.get(`/users/stats/${id}`, null, null, true)
+        .then(res => resolve(res))
+        .catch(err => {
+          console.log(err)
+          reject(err)
+        })
+    })
+  }
+
   fetchMe () {
     return new Promise((resolve, reject) => {
       this.api.get(

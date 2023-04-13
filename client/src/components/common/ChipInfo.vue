@@ -18,7 +18,7 @@
           transition-show="scale"
           transition-hide="scale"
         >
-          {{ tooltip }}
+          <span style="font-size: 0.8rem">{{ tooltip }}</span>
         </q-tooltip>
       </q-icon>
     </q-avatar>

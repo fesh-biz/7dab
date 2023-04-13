@@ -30,4 +30,9 @@ class CommentRepository
             'body' => $body
         ]);
     }
+    
+    public function getTotalUserComments(int $id): int
+    {
+        return $this->model->whereUserId($id)->count();
+    }
 }

@@ -17,4 +17,17 @@ class RatingVoteRepository
     {
         return $this->model;
     }
+    
+    public function getUserVotes(int $id): array
+    {
+        $positive = $this->model->whereUserId($id)
+            ->whereIsPositive(true)
+            ->count();
+
+        $negative = $this->model->whereUserId($id)
+            ->whereIsPositive(false)
+            ->count();
+        
+        return compact('positive', 'negative');
+    }
 }
