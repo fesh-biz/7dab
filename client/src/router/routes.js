@@ -27,7 +27,7 @@ const routes = [
   // External links routes
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/MainLayout'),
     children: ExternalLinks
   },
   // Admin routes
@@ -39,7 +39,7 @@ const routes = [
   // Admin routes
   {
     path: '/profile',
-    component: () => import('layouts/Profile'),
+    component: () => import('layouts/MainLayout'),
     children: ProfileRoutes
   },
 

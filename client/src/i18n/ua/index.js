@@ -1,4 +1,5 @@
 export default {
+  profile: 'Профіль',
   access_denied: 'В доступі відмовлено',
   unauthorized: 'Не авторизовано',
   draft: 'Чернетка',

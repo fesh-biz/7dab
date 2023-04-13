@@ -2,7 +2,17 @@
   <div class="column items-center">
     <user-avatar :src="me.avatar"/>
 
-    <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">{{ me.login }}</div>
+    <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">
+      <q-btn
+        dusk="um-logout-link"
+        color="positive"
+        :label="me.login"
+        :to="{name: 'profile'}"
+        push
+        size="sm"
+        v-close-popup
+      />
+    </div>
 
     <q-btn
         dusk="um-logout-link"
