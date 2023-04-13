@@ -16,7 +16,11 @@
       size="0.6rem"
       :color="isMyVotePositive ? 'green-8' : 'grey-6'"
       icon="thumb_up"
-    />
+    >
+      <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+        <span style="font-size: 0.8rem">{{ $t('to_vote_positive') }}</span>
+      </q-tooltip>
+    </q-btn>
 
     <!-- Rating -->
     <q-chip :color="rating.color" :text-color="rating.result === 0 ? 'black' : 'white'">
@@ -33,7 +37,11 @@
       :color="isMyVotePositive === false ? 'red-8' : 'grey-6'"
       size="0.6rem"
       icon="thumb_down"
-    />
+    >
+      <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+        <span style="font-size: 0.8rem">{{ $t('to_vote_negative') }}</span>
+      </q-tooltip>
+    </q-btn>
   </div>
 </template>
 
