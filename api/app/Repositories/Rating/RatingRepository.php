@@ -25,11 +25,9 @@ class RatingRepository
             ->whereRatingableId($id)
             ->first();
         
-        if (!$res) return null;
-        
         return [
-            'positive' => $res->positive_votes,
-            'negative' => $res->negative_votes
+            'positive' => $res ? $res->positive_votes : 0,
+            'negative' => $res ? $res->negative_votes : 0
         ];
     }
 }
