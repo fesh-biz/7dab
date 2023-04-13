@@ -17,6 +17,7 @@ use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Content\SearchController;
 use App\Http\Controllers\Content\TagController;
 use App\Http\Controllers\Rating\RatingController;
+use App\Http\Controllers\User\UserController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('password-forgot', [AuthController::class, 'passwordForgot']);
@@ -24,7 +25,7 @@ Route::post('password-reset', [AuthController::class, 'passwordReset']);
 Route::post('verify-email', [AuthController::class, 'verifyEmail']);
 
 Route::middleware('auth:api')->namespace('Auth')->group(function () {
-    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/me', [UserController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 

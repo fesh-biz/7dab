@@ -7,8 +7,7 @@ use App\Http\Requests\UserRequest;
 use App\Mail\Auth\EmailVerification;
 use App\Mail\Auth\PasswordResetLinkRequested;
 use App\Models\User;
-use App\Repositories\UserRepository;
-use App\Services\HashID;
+use App\Repositories\User\UserRepository;
 use App\Services\Jobs\MailService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
@@ -18,9 +17,9 @@ class AuthController extends Controller
 {
     protected UserRepository $userRepo;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepo)
     {
-        $this->userRepo = new UserRepository();
+        $this->userRepo = $userRepo;
     }
     
     public function verifyEmail(Request $r):? JsonResponse
@@ -37,11 +36,7 @@ class AuthController extends Controller
         
         return response()->json('success');
     }
-
-    public function me(): Authenticatable
-    {
-        return auth()->user();
-    }
+    
 
     public function logout(): JsonResponse
     {
