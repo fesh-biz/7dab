@@ -3,6 +3,7 @@
 namespace App\Repositories\Rating;
 
 use App\Models\Rating\Rating;
+use App\Models\User;
 
 class RatingRepository
 {
@@ -16,5 +17,19 @@ class RatingRepository
     public function getModel(): Rating
     {
         return $this->model;
+    }
+    
+    public function getUserRating(int $id):? array
+    {
+        $res = $this->model->whereRatingableType(User::class)
+            ->whereRatingableId($id)
+            ->first();
+        
+        if (!$res) return null;
+        
+        return [
+            'positive' => $res->positive_votes,
+            'negative' => $res->negative_votes
+        ];
     }
 }

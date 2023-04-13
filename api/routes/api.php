@@ -29,6 +29,10 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
+Route::group(['prefix' => 'users'], function() {
+    Route::get('stats/{id}', [UserController::class, 'stats']);
+});
+
 Route::group(['prefix' => 'ratings'], function() {
     Route::post('vote', [RatingController::class, 'vote'])
         ->middleware('auth:api');
