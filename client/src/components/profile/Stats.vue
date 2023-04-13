@@ -14,7 +14,7 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ stats.profile.login }}</q-item-label>
+          <q-item-label style="font-size: 1.2rem; font-weight: bold; color: #585961">{{ stats.profile.login }}</q-item-label>
           <q-item-label caption>З нами: {{ moment(stats.profile.with_us_since).fromNow(true) }}</q-item-label>
         </q-item-section>
       </q-item>
