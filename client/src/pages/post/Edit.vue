@@ -1,175 +1,171 @@
 <template>
-  <div class="row justify-center q-px-sm">
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5 q-mt-md">
-      <q-card :flat="$q.platform.is.mobile" class="q-my-md">
-        <!-- Post status info -->
-        <q-card-section>
-          <post-status-explanation :post-id="postId"/>
-        </q-card-section>
+  <q-card :flat="$q.platform.is.mobile" class="q-my-md">
+    <!-- Post status info -->
+    <q-card-section>
+      <post-status-explanation :post-id="postId"/>
+    </q-card-section>
 
-        <!-- Post form, controls-->
-        <template v-if="post && !post.deleted">
-          <q-separator spaced="md"/>
+    <!-- Post form, controls-->
+    <template v-if="post && !post.deleted">
+      <q-separator spaced="md"/>
 
-          <!-- Post Form -->
-          <q-card-section>
+      <!-- Post Form -->
+      <q-card-section>
 
-            <!-- Title -->
-            <q-input
-              outlined
-              dense
-              v-model="postEditor.formModel.title"
-              :label="$t('title')"
+        <!-- Title -->
+        <q-input
+          outlined
+          dense
+          v-model="postEditor.formModel.title"
+          :label="$t('title')"
 
-              :error="!!postEditor.validator.errors.title"
-              :error-message="postEditor.validator.errors.title"
+          :error="!!postEditor.validator.errors.title"
+          :error-message="postEditor.validator.errors.title"
 
-              @input="postEditor.validator.resetFieldError('title')"
-            />
+          @input="postEditor.validator.resetFieldError('title')"
+        />
 
-            <!-- Movement, Deleting Section, Content -->
-            <div class="ap-body">
-              <div
-                v-for="(section, index) in postEditor.formModel.sections"
-                :key="'body-element' + section.order"
-                class="q-mb-md"
-              >
-                <!-- Delete -->
-                <div>
-                  <!-- Delete -->
-                  <icon-with-tooltip
-                    @click="postEditor.deleteSection(index)"
-                    :tooltip="$t('delete_section')"
-                    icon="delete"
-                  />
-                </div>
-
-                <!-- Content -->
-                <you-tube-field
-                  v-if="section.type === 'youtube'"
-                  v-model="section.content"
-                />
-                <component
-                  v-if="section.type !== 'youtube'"
-                  :ref="'editor[' + section.order + ']'"
-                  :is="section.type + '-field'"
-                  :content="section.content"
-                  :order="section.order"
-                  :error-message="getSectionError(section.order)"
-                  @input="postEditor.validator.resetFieldError('sections', section.order)"
-                />
-              </div>
-            </div>
-
-            <!-- Tags -->
-            <tag-field
-              @input="updatePostTags"
-              :error-message="tagError"
-            />
-          </q-card-section>
-
-          <!-- Main Error Message -->
-          <q-card-section v-if="postEditor.validator.mainErrorMessage" class="flex justify-center">
-            <div
-              class="q-pa-md"
-              style="color: white; background-color: red; border-radius: 5px"
-            >
-              {{ postEditor.validator.mainErrorMessage }}
-            </div>
-          </q-card-section>
-
-          <!-- Number of Images -->
-          <q-card-section
-            v-if="postEditor.totalImages"
-            class="flex justify-center"
+        <!-- Movement, Deleting Section, Content -->
+        <div class="ap-body">
+          <div
+            v-for="(section, index) in postEditor.formModel.sections"
+            :key="'body-element' + section.order"
+            class="q-mb-md"
           >
-            <div
-              :class="{'main-error-message': postEditor.totalImages > postEditor.totalImagesMax }"
-            >
-              {{ $t('total_number_of_images') }}:
-              {{ postEditor.totalImages }}
-              ({{ $t('maximum') }}: {{ postEditor.totalImagesMax }})
+            <!-- Delete -->
+            <div>
+              <!-- Delete -->
+              <icon-with-tooltip
+                @click="postEditor.deleteSection(index)"
+                :tooltip="$t('delete_section')"
+                icon="delete"
+              />
             </div>
-          </q-card-section>
 
-          <!-- Post controls -->
-          <q-card-section class="flex justify-between">
-            <q-inner-loading
-              :showing="isBusy"
-              color="positive"
+            <!-- Content -->
+            <you-tube-field
+              v-if="section.type === 'youtube'"
+              v-model="section.content"
             />
+            <component
+              v-if="section.type !== 'youtube'"
+              :ref="'editor[' + section.order + ']'"
+              :is="section.type + '-field'"
+              :content="section.content"
+              :order="section.order"
+              :error-message="getSectionError(section.order)"
+              @input="postEditor.validator.resetFieldError('sections', section.order)"
+            />
+          </div>
+        </div>
 
-            <!-- Add Section -->
-            <div class="inline-block">
-              <!-- Text -->
-              <icon-with-tooltip
-                :tooltip="$t('add_text')"
-                color="positive"
-                :disabled="isBusy"
-                size="xl"
-                icon="notes"
-                @click="postEditor.addSection('text')"
-              />
+        <!-- Tags -->
+        <tag-field
+          @input="updatePostTags"
+          :error-message="tagError"
+        />
+      </q-card-section>
 
-              <!-- Image -->
-              <icon-with-tooltip
-                :tooltip="$t('add_image')"
-                color="positive"
-                :disabled="isBusy"
-                size="xl"
-                icon="image"
-                @click="postEditor.addSection('image')"
-              />
+      <!-- Main Error Message -->
+      <q-card-section v-if="postEditor.validator.mainErrorMessage" class="flex justify-center">
+        <div
+          class="q-pa-md"
+          style="color: white; background-color: red; border-radius: 5px"
+        >
+          {{ postEditor.validator.mainErrorMessage }}
+        </div>
+      </q-card-section>
 
-              <!-- YouTube -->
-              <icon-with-tooltip
-                :tooltip="$t('add_youtube')"
-                color="positive"
-                :disabled="isBusy"
-                size="xl"
-                icon="smart_display"
-                @click="postEditor.addSection('youtube')"
-              />
-            </div>
+      <!-- Number of Images -->
+      <q-card-section
+        v-if="postEditor.totalImages"
+        class="flex justify-center"
+      >
+        <div
+          :class="{'main-error-message': postEditor.totalImages > postEditor.totalImagesMax }"
+        >
+          {{ $t('total_number_of_images') }}:
+          {{ postEditor.totalImages }}
+          ({{ $t('maximum') }}: {{ postEditor.totalImagesMax }})
+        </div>
+      </q-card-section>
 
-            <!-- Cancel, Save, Preview -->
-            <div class="inline-block">
-              <!-- Preview -->
-              <icon-with-tooltip
-                :tooltip="$t('preview')"
-                color="positive"
-                :disabled="isBusy"
-                v-if="canBeViewed"
-                size="xl"
-                icon="pageview"
-                @click="$router.push({name: 'postPage', params: {id: postId}})"
-              />
+      <!-- Post controls -->
+      <q-card-section class="flex justify-between">
+        <q-inner-loading
+          :showing="isBusy"
+          color="positive"
+        />
 
-              <!-- Cancel -->
-              <icon-with-tooltip
-                @click="goBack"
-                :tooltip="$t('cancel')"
-                color="negative"
-                :disabled="isBusy"
-                size="xl"
-                icon="cancel"
-              />
+        <!-- Add Section -->
+        <div class="inline-block">
+          <!-- Text -->
+          <icon-with-tooltip
+            :tooltip="$t('add_text')"
+            color="positive"
+            :disabled="isBusy"
+            size="xl"
+            icon="notes"
+            @click="postEditor.addSection('text')"
+          />
 
-              <!-- Save -->
-              <icon-with-tooltip
-                :tooltip="$t('save')"
-                color="positive"
-                :disabled="isBusy"
-                size="xl"
-                icon="check_circle"
-                @click="saveOrUpdate()"
-              />
-            </div>
-          </q-card-section>
-        </template>
-      </q-card>
-    </div>
-  </div>
+          <!-- Image -->
+          <icon-with-tooltip
+            :tooltip="$t('add_image')"
+            color="positive"
+            :disabled="isBusy"
+            size="xl"
+            icon="image"
+            @click="postEditor.addSection('image')"
+          />
+
+          <!-- YouTube -->
+          <icon-with-tooltip
+            :tooltip="$t('add_youtube')"
+            color="positive"
+            :disabled="isBusy"
+            size="xl"
+            icon="smart_display"
+            @click="postEditor.addSection('youtube')"
+          />
+        </div>
+
+        <!-- Cancel, Save, Preview -->
+        <div class="inline-block">
+          <!-- Preview -->
+          <icon-with-tooltip
+            :tooltip="$t('preview')"
+            color="positive"
+            :disabled="isBusy"
+            v-if="canBeViewed"
+            size="xl"
+            icon="pageview"
+            @click="$router.push({name: 'postPage', params: {id: postId}})"
+          />
+
+          <!-- Cancel -->
+          <icon-with-tooltip
+            @click="goBack"
+            :tooltip="$t('cancel')"
+            color="negative"
+            :disabled="isBusy"
+            size="xl"
+            icon="cancel"
+          />
+
+          <!-- Save -->
+          <icon-with-tooltip
+            :tooltip="$t('save')"
+            color="positive"
+            :disabled="isBusy"
+            size="xl"
+            icon="check_circle"
+            @click="saveOrUpdate()"
+          />
+        </div>
+      </q-card-section>
+    </template>
+  </q-card>
 </template>
 
 <script>

@@ -1,79 +1,72 @@
 <template>
   <div>
-    <!-- Search Form, Status, Messages -->
-    <div class="row justify-center q-pt-lg">
-      <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-        <!-- Search -->
-        <q-card flat bordered>
-          <q-card-section>
-            <div class="text-h6">{{ $t('search') }}</div>
-          </q-card-section>
+    <!-- Search -->
+    <q-card flat bordered>
+      <q-card-section>
+        <div class="text-h6">{{ $t('search') }}</div>
+      </q-card-section>
 
-          <!-- Search Form -->
-          <q-card-section>
-            <!-- Text -->
-            <q-input
-              class="q-mb-lg"
-              outlined
-              v-model="formModel.keyword"
-              :label="$t('word_or_phrase')"
-            />
+      <!-- Search Form -->
+      <q-card-section>
+        <!-- Text -->
+        <q-input
+          class="q-mb-lg"
+          outlined
+          v-model="formModel.keyword"
+          :label="$t('word_or_phrase')"
+        />
 
-            <!-- Tags -->
-            <q-linear-progress
-              v-if="isFetchingTags"
-              indeterminate
-              style="position: relative; top: 4px"
-            />
-            <tag-field
-              v-model="formModel.tags"
-              :tag-ids="tagIds"
-            />
-          </q-card-section>
+        <!-- Tags -->
+        <q-linear-progress
+          v-if="isFetchingTags"
+          indeterminate
+          style="position: relative; top: 4px"
+        />
+        <tag-field
+          v-model="formModel.tags"
+          :tag-ids="tagIds"
+        />
+      </q-card-section>
 
-          <!-- Controls -->
-          <q-card-actions class="q-pa-md">
-            <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
-          </q-card-actions>
+      <!-- Controls -->
+      <q-card-actions class="q-pa-md">
+        <q-btn color="positive" @click="changeURI" no-caps :label="$t('search')"/>
+      </q-card-actions>
 
-          <q-linear-progress
-            v-if="isFetchingSearchResult"
-            indeterminate
-          />
-          <!-- Fill Form Message -->
-          <q-card-section v-if="!hasFormModelVars">
-            {{ $t('fill_form') }}
-          </q-card-section>
+      <q-linear-progress
+        v-if="isFetchingSearchResult"
+        indeterminate
+      />
+      <!-- Fill Form Message -->
+      <q-card-section v-if="!hasFormModelVars">
+        {{ $t('fill_form') }}
+      </q-card-section>
 
-          <!-- No Result -->
-          <q-card-section v-if="hasFormModelVars && !isFetchingSearchResult && !posts.length">
-            {{ $t('no_posts_for_request') }}
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
+      <!-- No Result -->
+      <q-card-section v-if="hasFormModelVars && !isFetchingSearchResult && !posts.length">
+        {{ $t('no_posts_for_request') }}
+      </q-card-section>
+    </q-card>
 
     <!-- Search Result -->
-    <div class="row justify-center q-pt-lg">
-      <div v-if="posts.length" class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-        <post
-          v-for="(post, index) in posts"
-          :key="'post' + index"
-          :post="post"
-        />
+    <template v-if="posts.length">
+      <post
+        v-for="(post, index) in posts"
+        :key="'post' + index"
+        :post="post"
+      />
 
-        <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
-          {{ $t('there_is_no_new_posts') }}
-        </q-banner>
+      <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
+        {{ $t('there_is_no_new_posts') }}
+      </q-banner>
 
-        <q-linear-progress
-          class="q-mb-xl"
-          dusk="main-new-posts-loading"
-          v-if="isFetchingSearchResult && posts.length"
-          indeterminate
-        />
-      </div>
-    </div>
+      <q-linear-progress
+        class="q-mb-xl"
+        dusk="main-new-posts-loading"
+        v-if="isFetchingSearchResult && posts.length"
+        indeterminate
+      />
+    </template>
   </div>
 </template>
 

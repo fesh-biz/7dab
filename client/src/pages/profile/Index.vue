@@ -1,8 +1,6 @@
 <template>
-  <div class="row justify-center q-mt-lg">
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+  <div class="q-mt-lg">
       <stats :user-id="me.id"/>
-    </div>
   </div>
 </template>
 

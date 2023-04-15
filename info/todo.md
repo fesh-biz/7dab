@@ -16,6 +16,9 @@
 - [] Wide screen (more than HD)
 - [x] Change menu button to burger
 
+# Refactoring
+- [] Move Comments from Post.vue to PostPage.vue
+
 # Admin
 - [] Email notifications
     - [] On comment created

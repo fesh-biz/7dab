@@ -1,25 +1,23 @@
 <template>
-  <div class="row justify-center q-px-sm">
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetchingPosts" indeterminate/>
+  <div>
+    <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetchingPosts" indeterminate/>
 
-      <post
-        v-for="(post, index) in posts"
-        :key="'post' + index"
-        :post="post"
-      />
+    <post
+      v-for="(post, index) in posts"
+      :key="'post' + index"
+      :post="post"
+    />
 
-      <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
-        {{ $t('there_is_no_new_posts') }}
-      </q-banner>
+    <q-banner dusk="main-no-more-posts" rounded v-if="isLast" class="text-center">
+      {{ $t('there_is_no_new_posts') }}
+    </q-banner>
 
-      <q-linear-progress
-        class="q-mb-xl"
-        dusk="main-new-posts-loading"
-        v-if="isFetchingPosts && posts.length"
-        indeterminate
-      />
-    </div>
+    <q-linear-progress
+      class="q-mb-xl"
+      dusk="main-new-posts-loading"
+      v-if="isFetchingPosts && posts.length"
+      indeterminate
+    />
   </div>
 </template>
 

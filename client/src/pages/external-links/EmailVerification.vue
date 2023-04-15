@@ -1,31 +1,29 @@
 <template>
-  <div class="row justify-center q-pt-xl">
-    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
-      <q-card
-        class="my-card"
-      >
-        <q-card-section>
-          <div class="text-h6">{{ $t('email_verification') }}</div>
-        </q-card-section>
+  <div class="flex column justify-center q-pa-md" style="height: 100vh">
+    <q-card
+      class="my-card"
+    >
+      <q-card-section>
+        <div class="text-h6">{{ $t('email_verification') }}</div>
+      </q-card-section>
 
-        <q-card-section v-if="isSubmitting" class="q-pt-none flex justify-center">
-          <q-linear-progress indeterminate />
-        </q-card-section>
+      <q-card-section v-if="isSubmitting" class="q-pt-none flex justify-center">
+        <q-linear-progress indeterminate/>
+      </q-card-section>
 
-        <q-card-section v-if="isVerified">
-          {{ $t('your_email_verified') }} <br>
-          {{ $t('thanks') }}
-        </q-card-section>
+      <q-card-section v-if="isVerified">
+        {{ $t('your_email_verified') }} <br>
+        {{ $t('thanks') }}
+      </q-card-section>
 
-        <q-card-section v-if="!isSubmitting">
-          <q-item class="bg-light-blue-1" :to="{name: 'home'}">
-            <q-item-section class="text-center">
-              {{ $t('home_page') }}
-            </q-item-section>
-          </q-item>
-        </q-card-section>
-      </q-card>
-    </div>
+      <q-card-section v-if="!isSubmitting">
+        <q-item class="bg-light-blue-1" :to="{name: 'home'}">
+          <q-item-section class="text-center">
+            {{ $t('home_page') }}
+          </q-item-section>
+        </q-item>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 

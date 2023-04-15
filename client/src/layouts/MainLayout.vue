@@ -62,7 +62,11 @@
 
     <q-page-container style="padding-top: unset">
       <q-page>
-        <router-view/>
+        <div class="row justify-center q-px-sm">
+          <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+            <router-view/>
+          </div>
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
