@@ -23,7 +23,7 @@ class PostRepository
     
     public function getPaginatedPosts(
         array $tagsIds = null,
-        string $keyword = null
+        string $title = null
     ): LengthAwarePaginator
     {
         $query = $this->model
@@ -36,8 +36,8 @@ class PostRepository
             }, '=', count($tagsIds));
         }
         
-        if ($keyword) {
-            $query = $query->where('title', 'like', "%$keyword%");
+        if ($title) {
+            $query = $query->where('title', 'like', "%$title%");
         }
         
         if (auth('api')->user()) {
