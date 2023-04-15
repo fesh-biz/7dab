@@ -1,4 +1,7 @@
 export default {
+  published: 'Опубліковано',
+  drafts: 'Чернетки',
+  answers: 'Відповіді',
   posts: 'Теревеньки',
   total_comments: 'Коментарів',
   total_posts: 'Теревеньок',

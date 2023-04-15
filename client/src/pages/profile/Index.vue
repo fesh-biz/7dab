@@ -1,44 +1,60 @@
 <template>
-  <div class="q-mt-lg">
+  <div class="q-mt-lg profile">
     <!-- Profile Stats -->
     <stats :user-id="me.id"/>
 
-    <!-- Profile Tabs -->
     <q-tabs
       v-model="tab"
       inline-label
       outside-arrows
       mobile-arrows
       no-caps
-      class="q-mt-lg text-grey-8"
+      class="q-mt-xl text-grey-8"
     >
-      <q-tab name="posts" icon="mms" :label="$t('posts')" />
-      <q-tab name="comments" icon="mode_comment" :label="$t('comments')" />
+      <q-tab name="posts" icon="mms" :label="$t('posts')">
+        <q-badge color="green" class="q-ml-sm">2</q-badge>
+      </q-tab>
+      <q-tab name="comments" icon="mode_comment" :label="$t('comments')">
+        <q-badge color="green" class="q-ml-sm">2</q-badge>
+      </q-tab>
+      <q-tab name="answers" icon="forum" :label="$t('answers')">
+        <q-badge color="green" class="q-ml-sm">2</q-badge>
+      </q-tab>
     </q-tabs>
 
-    <q-tab-panels v-model="tab" animated>
-      <q-tab-panel name="posts">
-        <div class="text-h6">Posts</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </q-tab-panel>
+    <q-card flat bordered>
+      <q-card-section>
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="posts">
+            <posts-tabs />
+          </q-tab-panel>
 
-      <q-tab-panel name="comments">
-        <div class="text-h6">Comments</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </q-tab-panel>
-    </q-tab-panels>
+          <q-tab-panel name="comments">
+            <div class="text-h6">Comments</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+
+          <q-tab-panel name="answers">
+            <div class="text-h6">Answers</div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          </q-tab-panel>
+        </q-tab-panels>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
-import Stats from 'components/profile/Stats'
+import Stats from 'components/user/Stats'
+import PostsTabs from 'components/profile/PostsTabs'
 import Me from 'src/models/user/me'
 
 export default {
   name: 'Account',
 
   components: {
-    Stats
+    Stats,
+    PostsTabs
   },
 
   data () {
@@ -49,3 +65,9 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.profile
+  .q-tab-panel
+    padding: 0
+</style>
