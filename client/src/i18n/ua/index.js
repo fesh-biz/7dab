@@ -1,6 +1,7 @@
 export default {
-  total_comments: 'Всього коментарів',
-  total_posts: 'Всього теревеньок',
+  posts: 'Теревеньки',
+  total_comments: 'Коментарів',
+  total_posts: 'Теревеньок',
   voted_positive: 'Вподобав',
   to_vote_positive: 'Вподобати, хай радіє',
   voted_negative: 'Дав по макітрі',
@@ -60,7 +61,7 @@ export default {
   there_is_no_new_posts: 'Немає більше теревеньок',
   rating: 'Рейтинг',
   views: 'Переглядів',
-  comments: 'Коментарів',
+  comments: 'Коментарі',
   check_your_data: 'Перевірте введені дані',
   wrong_credentials: 'Користувача з такими даними не існує',
   you_ll_be_redirected_in_3_seconds: 'Ви будете перенаправлені через 3 секунди',

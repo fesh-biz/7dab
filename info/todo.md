@@ -35,37 +35,38 @@
 
 # Profile pages
 - [] Own Profile Page `/profile`
-    - [] Show login
-    - [] Show total rating
-    - [] Show total posts (only with approved status) / comments
-    - [] Display avatar / icon
+    - [x] Show login
+    - [x] Show total rating
+    - [x] Show total posts (only with approved status) / comments
+    - [x] Display avatar / icon
         - [] Ability to set avatar
-- [] Posts `/profile/posts`
-    - [] Use Tabs with arrows on mobile
-    - [] Tab contains: post status, amount of posts
-    - [] Tab panel has table with posts, rows list:
-        - [] `id`
-        - [] `title`
-            - [] As link to post, max 3 words + ...
-        - [] `rating` if post status is `approved`
-        - [] `comments` if post status is `approved`
-            - [] Has link to post comments
-- [] Comments `/profile/comments`
-    - [] Table with rows:
-        - [] `body`
-            - [] 5 words + ...
-        - [] `post_title`
-            - [] As link to post, max 3 words + ...
-        - [] `rating`
-        - [] `total_answers`
-- [] Answers `/profile/answers`
-    - [] Answer is:
-        - [] Comment to my post
-        - [] Answer to my comment
-    - [] Table with rows:
-        - [] `user_login` as link on user profile
-        - [] `body` up to 5 words + ...
-        - [] `link` to answer
+- [] Tabs: `Posts, Comments, Answers,`
+    - [] Posts `/profile/posts`
+        - [] Use Tabs with arrows on mobile
+            - [] Tab for each post status with amount of posts
+          - [] Tab panel has table with posts, rows list:
+            - [] `title`
+                - [] Before a title text the button link on the post
+                - [] Max 3 words + ...
+            - [] `rating` if post status is `approved`
+            - [] `comments` if post status is `approved`
+                - [] Has link to post comments
+    - [] Comments `/profile/comments`
+        - [] Table with rows:
+            - [] `body`
+                - [] 5 words + ...
+            - [] `post_title`
+                - [] As link to post, max 3 words + ...
+            - [] `rating`
+            - [] `total_answers`
+    - [] Answers `/profile/answers`
+        - [] Answer is:
+            - [] Comment to my post
+            - [] Answer to my comment
+        - [] Table with rows:
+            - [] `user_login` as link on user profile
+            - [] `body` up to 5 words + ...
+            - [] `link` to answer
 
 # User's page
 - [] `users/:id`

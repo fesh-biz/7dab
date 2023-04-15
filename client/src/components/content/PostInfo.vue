@@ -22,7 +22,7 @@
         <chip-info
           :label="post.comments"
           icon="question_answer"
-          :tooltip="$t('comments')"
+          :tooltip="$t('total_comments')"
         >
           <q-item v-if="!isPostPage" style="padding: 5px; margin-left: 5px" dense :to="{name: 'postPage', params: {id: post.id, toComments: true}}">
             <q-item-section>
