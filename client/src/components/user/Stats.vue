@@ -103,6 +103,7 @@ export default {
       const res = await this.api.fetchStats(this.userId)
       this.stats = res.data
       this.isFetching = false
+      this.$emit('fetched')
     }
   }
 }

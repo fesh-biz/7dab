@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostYouTubeService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -72,9 +73,10 @@ class Controller extends BaseController
     
     public function test()
     {
-        $service = app()->make(PostYouTubeService::class);
+        $repo = app()->make(PostRepository::class);
         
-        dd($service);
-        // $res = $service->getVideoData('cnJ2GKQN-28');
+        $res = $repo->getTotalUserPostsByStatuses(1, ['approved', 'pending', 'draft']);
+        
+        dd($res);
     }
 }

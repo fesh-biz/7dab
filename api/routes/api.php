@@ -17,6 +17,7 @@ use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Content\SearchController;
 use App\Http\Controllers\Content\TagController;
 use App\Http\Controllers\Rating\RatingController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
 
 Route::post('register', [AuthController::class, 'register']);
@@ -29,11 +30,15 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::group(['prefix' => 'users'], function() {
+Route::group(['prefix' => 'users'], function () {
     Route::get('stats/{id}', [UserController::class, 'stats']);
 });
 
-Route::group(['prefix' => 'ratings'], function() {
+Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
+    Route::get('content-stats', [ProfileController::class, 'contentStats']);
+});
+
+Route::group(['prefix' => 'ratings'], function () {
     Route::post('vote', [RatingController::class, 'vote'])
         ->middleware('auth:api');
 });
@@ -62,14 +67,14 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
             'auth:api'
         ]);
     });
-
-    Route::group(['prefix' => 'comments', 'as' => '.comments'], function() {
+    
+    Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
         Route::get('/', [CommentController::class, 'comments']);
         Route::post('/', [CommentController::class, 'store'])
             ->name('.create');
         Route::post('/{id}', [CommentController::class, 'update'])
             ->name('.update');
     });
-
+    
     Route::get('/search', [SearchController::class, 'index']);
 });

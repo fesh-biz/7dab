@@ -3,6 +3,7 @@
 namespace App\Repositories\Content;
 
 use App\Models\Content\Comment;
+use App\Models\Content\Post;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class CommentRepository
@@ -31,8 +32,29 @@ class CommentRepository
         ]);
     }
     
-    public function getTotalUserComments(int $id): int
+    public function getUserCommentsIds(int $userId): array
     {
-        return $this->model->whereUserId($id)->count();
+        return $this->model->whereUserId($userId)->pluck('id')->toArray();
+    }
+    
+    public function getTotalUserComments(int $userId): int
+    {
+        return $this->model->whereUserId($userId)->count();
+    }
+    
+    public function getTotalAnswersOnUserContent(int $userId): int
+    {
+        $postsIds = app()->make(PostRepository::class)->getUserPostsIds($userId);
+        $postsAnswers = $this->model->whereCommentableType(Post::class)
+            ->whereIn('commentable_id', $postsIds)
+            ->count();
+    
+        $commentsIds = $this->getUserCommentsIds($userId);
+        $commentsAnswers = $this->model->whereCommentableType(Comment::class)
+            ->whereIn('commentable_id', $commentsIds)
+            ->count();
+    
+    
+        return $postsAnswers + $commentsAnswers;
     }
 }

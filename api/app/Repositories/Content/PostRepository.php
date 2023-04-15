@@ -48,6 +48,11 @@ class PostRepository
             ->paginate(10);
     }
     
+    public function getUserPostsIds(int $userId): array
+    {
+        return $this->model->whereUserId($userId)->pluck('id')->toArray();
+    }
+    
     public function incrementViewsMultiple(array $ids)
     {
         $this->model->whereIn('id', $ids)
@@ -104,17 +109,42 @@ class PostRepository
     
     public function getTotalUserDrafts(int $userId): int
     {
-        return $this->model
-            ->whereUserId($userId)
-            ->whereStatus('draft')
-            ->count();
+        return $this->getTotalUserPosts($userId, 'draft');
     }
     
     public function getTotalUserApprovedPosts(int $userId): int
     {
-        return $this->model
-            ->whereUserId($userId)
-            ->whereStatus('approved')
-            ->count();
+        return $this->getTotalUserPosts($userId, 'approved');
+    }
+    
+    public function getTotalUserPosts(int $userId, string $status = null): int
+    {
+        $q = $this->model
+            ->whereUserId($userId);
+        
+        if ($status) {
+            $q->whereStatus($status);
+        }
+        
+        return $q->count();
+    }
+    
+    public function getTotalUserPostsByStatuses(int $userId, array $statuses): array
+    {
+        $postsCountsByStatus = \DB::table('posts')
+            ->where('user_id', $userId)
+            ->select('status', \DB::raw('count(*) as count'))
+            ->groupBy('status')
+            ->get()->toArray();
+        
+        $res = ['total' => 0];
+        foreach ($postsCountsByStatus as $count) {
+            if (in_array($count->status, $statuses)) {
+                $res[$count->status] = $count->count;
+                $res['total'] += $count->count;
+            }
+        }
+        
+        return $res;
     }
 }

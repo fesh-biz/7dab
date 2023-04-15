@@ -46,4 +46,17 @@ class UserService
         
         return $res;
     }
+    
+    public function getContentStats(int $userId): array
+    {
+        $res['posts'] = app()->make(PostRepository::class)
+            ->getTotalUserPostsByStatuses($userId, ['approved', 'pending', 'draft']);
+        
+        $commentRepo = app()->make(CommentRepository::class);
+        $res['total_comments'] = $commentRepo->getTotalUserComments($userId);
+        
+        $res['total_answers'] = $commentRepo->getTotalAnswersOnUserContent($userId);
+        
+        return $res;
+    }
 }
