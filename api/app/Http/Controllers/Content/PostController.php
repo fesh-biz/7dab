@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function index(): JsonResponse
     {
-        $posts = $this->service->getPaginatedPostsWithIncrementingOfViews();
+        $posts = $this->service->getPaginatedPosts(true);
 
         return $this->sendPaginationResponse($posts);
     }

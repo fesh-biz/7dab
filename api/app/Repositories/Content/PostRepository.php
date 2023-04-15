@@ -21,13 +21,14 @@ class PostRepository
         return $this->model->whereId($id)->increment('comments');
     }
     
-    public function getPaginatedPosts(
-        array $tagsIds = null,
-        string $title = null
-    ): LengthAwarePaginator
+    public function getPaginatedPosts(array $search = null): LengthAwarePaginator
     {
+        $status = $search['status'] ?? 'approved';
+        $tagsIds = $search['tagIds'] ?? null;
+        $title = $search['title'] ?? null;
+        
         $query = $this->model
-            ->whereStatus('approved')
+            ->whereStatus($status)
             ->orderBy('id', 'desc');
         
         if ($tagsIds) {

@@ -18,14 +18,9 @@ class SearchController extends Controller
     
     public function index (Request $r): JsonResponse
     {
-        $tagsIds = $r->tids;
-        $postTitle = $r->kw;
-        
         return $this->sendPaginationResponse(
-            $this->postService->getPaginatedPostsWithIncrementingOfViews(
-                $tagsIds,
-                $postTitle
-            )
+            $this->postService
+                ->getPaginatedPosts(true, ['tagsIds' => $r->tids, 'title' => $r->kw])
         );
     }
 }

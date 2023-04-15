@@ -35,14 +35,13 @@ class PostService
         $this->postYouTubeService = $postYouTubeService;
     }
     
-    public function getPaginatedPostsWithIncrementingOfViews(
-        array $tagsIds = null,
-        string $keyword = null
-    ): LengthAwarePaginator
+    public function getPaginatedPosts(bool $incrementViewsCounters, array $searchCondition = []): LengthAwarePaginator
     {
-        $posts = $this->repo->getPaginatedPosts($tagsIds, $keyword);
+        $posts = $this->repo->getPaginatedPosts($searchCondition);
         
-        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        if ($incrementViewsCounters) {
+            $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        }
         
         return $posts;
     }
