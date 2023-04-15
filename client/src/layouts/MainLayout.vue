@@ -9,6 +9,7 @@
           id="menuButton"
           class="bg-primary glossy"
           dusk="ml-menu"
+          dropdown-icon="menu"
           no-caps
           flat
           dense
@@ -97,11 +98,11 @@ export default {
       const button = document.querySelector('#menuButton')
 
       setTimeout(() => {
-        button.style.transform = 'scale(2)'
+        button.style.transform = 'scale(6)'
         setTimeout(() => {
           button.style.transform = 'scale(1)'
           setTimeout(() => {
-            button.style.transform = 'scale(2)'
+            button.style.transform = 'scale(6)'
             setTimeout(() => {
               button.style.transform = 'scale(1)'
             }, 300)

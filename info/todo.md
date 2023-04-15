@@ -2,8 +2,8 @@
 
 # Fixes
   - [x] Create post with more than allowed number of images
-        - [x] Check max files also if post was created and already has files
-            - [x] Check that total post images less than 10
+    - [x] Check max files also if post was created and already has file
+    - [x] Check that total post images less than 10
 
 # POST CRUD
 - [x] Post CRUD finish
@@ -11,6 +11,10 @@
         - [x] User can update only own post if it has status `draft`
         - [x] User can delete own post if it has status `draft`
         - [x] User can't create more than 3 posts per day
+
+# UI Fixes
+- [] Wide screen (more than HD)
+- [x] Change menu button to burger
 
 # Admin
 - [] Email notifications
