@@ -2,6 +2,7 @@
   <div>
     <!-- Stock Items -->
     <q-table
+      flat
       :title="title"
       :data="data"
       :columns="columns"
@@ -48,7 +49,7 @@ export default {
     },
     title: {
       type: String,
-      required: true
+      default: ''
     },
     useBody: {
       type: Boolean,
@@ -73,6 +74,12 @@ export default {
     }
   },
 
+  watch: {
+    url (val) {
+      this.fetchItems()
+    }
+  },
+
   created () {
     this.fetchItems()
   },
@@ -84,6 +91,7 @@ export default {
 
     fetchItems (params) {
       this.loading = true
+      this.data = []
 
       this.api.get(this.url, params, null, true)
         .then(res => {

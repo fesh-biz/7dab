@@ -26,10 +26,15 @@ class PostRepository
         $status = $search['status'] ?? 'approved';
         $tagsIds = $search['tagIds'] ?? null;
         $title = $search['title'] ?? null;
+        $userId = $search['userId'] ?? null;
         
         $query = $this->model
             ->whereStatus($status)
             ->orderBy('id', 'desc');
+        
+        if ($userId) {
+            $query = $query->whereUserId($userId);
+        }
         
         if ($tagsIds) {
             $query = $query->whereHas('tags', function ($q) use ($tagsIds) {

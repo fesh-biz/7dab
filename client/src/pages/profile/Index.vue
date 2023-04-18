@@ -5,7 +5,9 @@
 
     <q-linear-progress v-if="isFetchingStats && statsFetched" indeterminate style="position: relative; top: 4px"/>
 
+    <!-- Tabs, Tab Panels -->
     <template v-if="!isFetchingStats">
+      <!-- Tabs -->
       <q-tabs
         v-model="tab"
         inline-label
@@ -31,7 +33,8 @@
         </q-tab>
       </q-tabs>
 
-      <q-card flat bordered>
+      <!-- Tab Panels -->
+      <q-card flat bordered class="q-mb-lg">
         <q-card-section>
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="posts">

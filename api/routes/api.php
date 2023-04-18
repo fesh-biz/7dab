@@ -36,6 +36,7 @@ Route::group(['prefix' => 'users'], function () {
 
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
     Route::get('content-stats', [ProfileController::class, 'contentStats']);
+    Route::get('posts', [PostController::class, 'myPosts']);
 });
 
 Route::group(['prefix' => 'ratings'], function () {
@@ -51,7 +52,7 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', [PostController::class, 'index']);
         Route::get('/{id}', [PostController::class, 'post']);
-        Route::post('/increment-views/{id}', [PostController::class, 'incrementViews']);
+        Route::post('/increment-views/{id}', [PostController::class, 'incrementPostViewsCounter']);
         Route::post('/', [PostController::class, 'store'])->middleware([
             'auth:api',
             'image-sanitize'

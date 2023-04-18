@@ -20,6 +20,22 @@ class PostController extends Controller
         $this->repo = $repo;
         $this->service = $service;
     }
+    
+    public function myPosts(Request $r): JsonResponse
+    {
+        $search = [
+            'userId' => auth()->id(),
+            'withoutMyVotes' => true,
+            'title' => $r->keyword
+        ];
+        if (in_array($r->status, ['approved', 'draft', 'pending'])) {
+            $search['status'] = $r->status;
+        }
+        
+        $posts = $this->repo->getPaginatedPosts($search);
+
+        return response()->json($posts);
+    }
 
     public function index(): JsonResponse
     {
@@ -28,7 +44,7 @@ class PostController extends Controller
         return $this->sendPaginationResponse($posts);
     }
 
-    public function incrementViews(int $id)
+    public function incrementPostViewsCounter(int $id)
     {
         $this->repo->incrementViews($id);
     }

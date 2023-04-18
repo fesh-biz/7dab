@@ -1,4 +1,5 @@
 export default {
+  actions: 'Дії',
   published: 'Опубліковано',
   drafts: 'Чернетки',
   answers: 'Відповіді',
