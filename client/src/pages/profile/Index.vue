@@ -1,12 +1,12 @@
 <template>
-  <div class="q-mt-lg profile">
+  <div class="q-mt-lg">
     <!-- Profile Stats -->
     <stats :user-id="me.id" @fetched="fetchContentStats"/>
 
     <q-linear-progress v-if="isFetchingStats && statsFetched" indeterminate style="position: relative; top: 4px"/>
 
     <!-- Tabs, Tab Panels -->
-    <template v-if="!isFetchingStats">
+    <div class="profile" v-if="!isFetchingStats">
       <!-- Tabs -->
       <q-tabs
         v-model="tab"
@@ -37,13 +37,41 @@
       <q-card flat bordered class="q-mb-lg">
         <q-card-section>
           <q-tab-panels v-model="tab" animated>
+            <!-- Posts -->
             <q-tab-panel name="posts">
               <posts-tabs :total-posts="contentStats.posts" />
             </q-tab-panel>
 
+            <!-- Comments -->
             <q-tab-panel name="comments">
-              <div class="text-h6">Comments</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              <data-table
+                url="profile/comments"
+                :columns="commentTableColumns"
+                row-key="comment"
+                use-body
+              >
+                <template #table="props">
+                  <q-tr>
+                    <!-- Actions -->
+                    <q-td>
+                      <!-- Preview -->
+                      <q-item
+                        :to="{name: 'postPage', params: {id: props.props.row.id}, query: {c: 1}}"
+                        target="_blank"
+                      >
+                        <q-item-section>
+                          <icon-with-tooltip
+                            :tooltip="$t('preview')"
+                            color="positive"
+                            size="sm"
+                            icon="pageview"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </q-td>
+                  </q-tr>
+                </template>
+              </data-table>
             </q-tab-panel>
 
             <q-tab-panel name="answers">
@@ -53,7 +81,7 @@
           </q-tab-panels>
         </q-card-section>
       </q-card>
-    </template>
+    </div>
   </div>
 </template>
 
@@ -62,23 +90,36 @@ import Stats from 'components/user/Stats'
 import PostsTabs from 'components/profile/PostsTabs'
 import Me from 'src/models/user/me'
 import ProfileApi from 'src/plugins/api/profile'
+import DataTable from 'components/common/DataTable'
+import IconWithTooltip from 'components/common/IconWithTooltip'
 
 export default {
   name: 'Account',
 
-  components: {
-    Stats,
-    PostsTabs
-  },
+  components: { Stats, PostsTabs, DataTable, IconWithTooltip },
 
   data () {
     return {
       me: Me.query().first(),
-      tab: 'posts',
+      tab: 'comments',
       isFetchingStats: true,
       api: new ProfileApi(),
       contentStats: null,
-      statsFetched: false
+      statsFetched: false,
+      commentTableColumns: [
+        {
+          required: true,
+          label: this.$t('actions'),
+          align: 'left',
+          sortable: false
+        },
+        {
+          required: true,
+          label: this.$t('content'),
+          align: 'left',
+          sortable: false
+        }
+      ]
     }
   },
 
@@ -95,6 +136,10 @@ export default {
 
 <style lang="sass">
 .profile
+  .q-item
+    padding: 0
+    min-height: unset
+    float: left
   .q-tab-panel
     padding: 0
 </style>

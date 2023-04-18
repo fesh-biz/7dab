@@ -36,7 +36,9 @@ Route::group(['prefix' => 'users'], function () {
 
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
     Route::get('content-stats', [ProfileController::class, 'contentStats']);
-    Route::get('posts', [PostController::class, 'myPosts']);
+    Route::get('posts', [PostController::class, 'profilePosts']);
+    Route::get('comments', [CommentController::class, 'profileComments']);
+    Route::get('answers', [CommentController::class, 'profileAnswers']);
 });
 
 Route::group(['prefix' => 'ratings'], function () {

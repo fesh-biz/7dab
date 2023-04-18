@@ -1,4 +1,5 @@
 export default {
+  content: 'Контент',
   to_edit: 'Редагувати',
   actions: 'Дії',
   published: 'Опубліковано',

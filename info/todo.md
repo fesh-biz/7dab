@@ -1,33 +1,15 @@
 # MVP
 
-# UI Fixes
-- [] Wide screen (more than HD)
-
-# Fixes
-- [] If user isn't admin or moder, don't fetch posts with statuses other than:
-  approved, draft, pending
-
-# Refactoring
-- [] Move Comments from Post.vue to PostPage.vue
-
-# Admin
-- [] Email notifications
-    - [] On comment created
-    - [] On Post created
-    - [] On Post status changed to `pending`
-    - [] On new user registered
-- [] Posts page
-    - [] Post table rows:
-        - [] `id`
-        - [] `title` up to 4 words + ..., as link to post
-        - [] `status`
-        - [] 
-        - [] 
-
 # Profile pages
 - [] Own Profile Page `/profile`
     - [] Ability to set avatar
 - [] Tabs: `Posts, Comments, Answers,`
+    - Comment refactoring
+        - [] Migration `add_root_id_root_type_to_comments_table`
+            - [] `root_id` uint
+            - [] `root_type` string
+        - [] On creating comment fill `root_id, root_type`
+        - [] Change comment seeder
     - [] Make scroll to comment
         - [] If route has comment id
         - [] Wait on comments loaded
@@ -48,6 +30,32 @@
             - [] `user_login` as link on user profile
             - [] `body` up to 5 words + ...
             - [] `link` to answer
+
+# UI Fixes
+- [] Wide screen (more than HD)
+
+# Fixes
+- [] If user isn't admin or moder, don't fetch posts with statuses other than:
+  approved, draft, pending
+- [] Comments CRUD
+    - [] Create|Update can only non-banned user
+
+# Refactoring
+- [] Move Comments from Post.vue to PostPage.vue
+
+# Admin
+- [] Email notifications
+    - [] On comment created
+    - [] On Post created
+    - [] On Post status changed to `pending`
+    - [] On new user registered
+- [] Posts page
+    - [] Post table rows:
+        - [] `id`
+        - [] `title` up to 4 words + ..., as link to post
+        - [] `status`
+        - [] 
+        - []
 
 # User's page
 - [] `users/:id`

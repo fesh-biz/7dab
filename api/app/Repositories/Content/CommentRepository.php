@@ -4,6 +4,7 @@ namespace App\Repositories\Content;
 
 use App\Models\Content\Comment;
 use App\Models\Content\Post;
+use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class CommentRepository
@@ -13,6 +14,13 @@ class CommentRepository
     public function __construct(Comment $model)
     {
         $this->model = $model;
+    }
+    
+    public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
+    {
+        $comments = $this->model->whereUserId($userId)->paginate(10);
+        
+        return $comments;
     }
     
     public function getModel(): Comment
