@@ -21,7 +21,7 @@ class PostController extends Controller
         $this->service = $service;
     }
     
-    public function myPosts(Request $r): JsonResponse
+    public function profilePosts (Request $r): JsonResponse
     {
         $search = [
             'userId' => auth()->id(),
@@ -100,7 +100,7 @@ class PostController extends Controller
 
         $post = $this->repo->findWithBasicRelationships($post->id);
 
-        return $this->response($post);
+        return response()->json($post);
     }
 
     public function update(PostRequest $r, int $id): JsonResponse
@@ -111,7 +111,7 @@ class PostController extends Controller
 
         $post = $this->repo->findWithBasicRelationships($id, true);
 
-        return $this->response($post);
+        return response()->json($post);
     }
 
     public function publish(int $id): JsonResponse

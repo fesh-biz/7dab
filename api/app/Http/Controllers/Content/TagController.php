@@ -22,7 +22,7 @@ class TagController extends Controller
     {
         $data = $this->service->search($r->title, $r->tids, $r->limit);
         
-        return $this->response($data);
+        return response()->json($data);
     }
     
     public function paginatedSearch(Request $r): JsonResponse

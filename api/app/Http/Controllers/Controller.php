@@ -37,15 +37,6 @@ class Controller extends BaseController
         ]);
     }
 
-    protected function response($data, int $code = 200, string $status = 'success'): JsonResponse
-    {
-        return response()->json([
-            'data' => $data,
-            'code' => $code,
-            'status' => $status
-        ]);
-    }
-
     protected function authUser(User $user, string $password): JsonResponse
     {
         $client = Client::find(2);

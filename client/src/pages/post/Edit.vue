@@ -311,7 +311,7 @@ export default {
       this.postEditor.saveOrUpdate(this.postId)
         .then(async (res) => {
           this.isBusy = false
-          const post = res.data.data
+          const post = res.data
           const postId = post.id
 
           await PostModel.insertOrUpdate({

@@ -257,12 +257,12 @@ export default {
       this.postEditor.saveOrUpdate(this.postId)
         .then((res) => {
           this.isBusy = false
-          const post = res.data.data
+          const post = res.data
           const postId = post.id
 
           if (!this.isEditing) {
             PostModel.insert({
-              data: res.data.data
+              data: post
             })
             this.$router.push({ name: 'editPost', params: { id: postId } })
           }
