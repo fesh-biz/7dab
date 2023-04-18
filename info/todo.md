@@ -28,6 +28,10 @@
 - [] Own Profile Page `/profile`
     - [] Ability to set avatar
 - [] Tabs: `Posts, Comments, Answers,`
+    - [] Make scroll to comment
+        - [] If route has comment id
+        - [] Wait on comments loaded
+        - [] Scroll to comment, highlight it twice
     - [] Comments `/profile/comments`
         - [] Table with rows:
             - [] `body`

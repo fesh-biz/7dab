@@ -50,7 +50,9 @@ class PostService
     {
         $post = $this->repo->findWithBasicRelationships($id);
         
-        $this->repo->incrementViews($post->id);
+        if ($post->status === 'approved') {
+            $this->repo->incrementViews($post->id);
+        }
         
         return $post;
     }

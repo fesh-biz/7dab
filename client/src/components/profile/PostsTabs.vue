@@ -34,7 +34,7 @@
           <q-td>
             <!-- Preview -->
             <q-item
-              :to="{name: 'postPage', params: {id: props.props.row.id}}"
+              :to="{name: 'postPage', params: {id: props.props.row.id}, query: {p: 1}}"
               target="_blank"
             >
               <q-item-section>

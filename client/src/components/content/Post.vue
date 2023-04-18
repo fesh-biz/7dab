@@ -76,9 +76,6 @@
 
       <q-separator v-if="$q.platform.is.mobile"/>
     </q-card>
-
-    <div ref="commentsAnchor"></div>
-    <comments v-if="isPostPage" :post-id="post.id"/>
   </div>
 </template>
 
@@ -87,14 +84,13 @@ import PostInfo from 'components/content/PostInfo'
 import Post from 'src/models/content/post'
 import PostText from 'components/content/PostText'
 import PostImage from 'components/content/PostImage'
-import Comments from 'components/comment/Comments'
 import Author from 'components/common/Author'
 import Cache from 'src/plugins/cache/cache'
 import PostYoutube from 'components/content/PostYoutube'
 
 export default {
   name: 'Post',
-  components: { Comments, PostImage, PostText, PostInfo, Author, PostYoutube },
+  components: { PostImage, PostText, PostInfo, Author, PostYoutube },
   props: {
     post: {
       type: Post,
@@ -128,13 +124,6 @@ export default {
 
     if (!this.postCache.is_expanded && this.isHasImages && !this.postCache.is_images_loaded) {
       this.imagesLoadedHandler()
-    }
-
-    if (this.isPostPage && this.$route.params.toComments) {
-      setTimeout(() => {
-        this.$refs.commentsAnchor.scrollIntoView()
-        window.scrollBy(0, 50)
-      }, 10)
     }
   },
 
