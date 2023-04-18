@@ -1,4 +1,5 @@
 export default {
+  to_edit: 'Редагувати',
   actions: 'Дії',
   published: 'Опубліковано',
   drafts: 'Чернетки',

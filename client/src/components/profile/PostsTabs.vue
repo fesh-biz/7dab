@@ -46,6 +46,23 @@
                 />
               </q-item-section>
             </q-item>
+
+            <!-- Edit -->
+            <q-item
+              v-if="props.props.row.status === 'draft'"
+              :to="{ name: 'editPost', params: { id: props.props.row.id } }"
+              target="_blank"
+              class="q-ml-sm"
+            >
+              <q-item-section>
+                <icon-with-tooltip
+                  :tooltip="$t('to_edit')"
+                  color="positive"
+                  size="sm"
+                  icon="edit_note"
+                />
+              </q-item-section>
+            </q-item>
           </q-td>
 
           <!-- Title -->

@@ -26,22 +26,8 @@
 
 # Profile pages
 - [] Own Profile Page `/profile`
-    - [x] Show login
-    - [x] Show total rating
-    - [x] Show total posts (only with approved status) / comments
-    - [x] Display avatar / icon
-        - [] Ability to set avatar
+    - [] Ability to set avatar
 - [] Tabs: `Posts, Comments, Answers,`
-    - [] Posts `/profile/posts`
-        - [] Use Tabs with arrows on mobile
-            - [] Tab for each post status with amount of posts
-          - [] Tab panel has table with posts, rows list:
-            - [] `title`
-                - [] Before a title text the button link on the post
-                - [] Max 3 words + ...
-            - [] `rating` if post status is `approved`
-            - [] `comments` if post status is `approved`
-                - [] Has link to post comments
     - [] Comments `/profile/comments`
         - [] Table with rows:
             - [] `body`
