@@ -70,14 +70,19 @@
             {{ getTitle(props.props.row.title) }}
           </q-td>
 
+          <!-- Rating, Total Comments -->
           <template v-if="tab === 'approved'">
             <!-- Rating -->
             <q-td class="text-right">
-              <strong>{{ props.props.row.rating.positive_votes - props.props.row.rating.negative_votes }}</strong>
-              (
+              <template v-if="props.props.row.rating">
+                <strong>{{ props.props.row.rating.positive_votes - props.props.row.rating.negative_votes }}</strong>
+                (
                 {{ props.props.row.rating.positive_votes }} -
                 {{ props.props.row.rating.negative_votes }}
-              )
+                )
+              </template>
+
+              <span v-if="!props.props.row.rating">0</span>
             </q-td>
 
             <!-- Comments -->
