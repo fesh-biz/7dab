@@ -21,7 +21,8 @@ class CommentFactory extends Factory
             'user_id' => mt_rand(1, 7),
             'commentable_id' => 1,
             'commentable_type' => Post::class,
-            'body' => $this->faker->text
+            'body' => $this->faker->text,
+            'post_id' => 1
         ];
     }
 }

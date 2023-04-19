@@ -51,7 +51,8 @@ class Comment extends Model
         'user_id',
         'commentable_id',
         'commentable_type',
-        'body'
+        'body',
+        'post_id'
     ];
     
     protected $hidden = [

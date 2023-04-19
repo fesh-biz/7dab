@@ -32,7 +32,8 @@ class CommentService
             'user_id' => auth('api')->id(),
             'commentable_id' => $commentableId,
             'commentable_type' => $this->getCommentableModel($commentableType),
-            'body' => $body
+            'body' => $body,
+            'post_id' => $postId
         ]);
         
         $comment->rating()->create();

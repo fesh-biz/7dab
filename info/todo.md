@@ -4,6 +4,8 @@
 - [] Own Profile Page `/profile`
     - [] Ability to set avatar
 - [] Tabs: `Posts, Comments, Answers,`
+    - [] Posts Tabs
+        - [] Disable post tab if there are no Entities
     - Comment refactoring
         - [] Migration `add_root_id_root_type_to_comments_table`
             - [] `root_id` uint
