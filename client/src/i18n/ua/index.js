@@ -1,4 +1,7 @@
 export default {
+  comment: 'Коментар',
+  post: 'Теревенька',
+  reply_on: 'Відповідь до',
   content: 'Контент',
   to_edit: 'Редагувати',
   actions: 'Дії',

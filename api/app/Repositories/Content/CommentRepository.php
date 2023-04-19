@@ -19,7 +19,8 @@ class CommentRepository
     public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
     {
         return $this->model->whereUserId($userId)
-            ->with(['post', 'commentable'])
+            ->with(['post', 'commentable', 'rating'])
+            ->withCount('cleanAnswers')
             ->orderBy('id', 'desc')
             ->paginate(10);
     }

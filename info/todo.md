@@ -7,14 +7,6 @@
     - [] Posts Tabs
         - [] Disable post tab if there are no Entities
         - [] Remove preview mode from published posts links
-    - [] Comments `/profile/comments`
-        - [] Table with rows:
-            - [] `body`
-                - [] 5 words + ...
-            - [] `post_title`
-                - [] As link to post, max 3 words + ...
-            - [] `rating`
-            - [] `total_answers`
     - [] Answers `/profile/answers`
         - [] Answer is:
             - [] Comment to my post
@@ -26,11 +18,13 @@
 
 # UI Fixes
 - [] Wide screen (more than HD)
+- [] When non-logged user tries to type comment
+    - [] Display buttons for login/register
 
 # Fixes
 - [] If user isn't admin or moder, don't fetch posts with statuses other than:
   approved, draft, pending
-- [] Comments CRUD
+- [] Comments, Post CRUD
     - [] Create|Update can only non-banned user
 
 # Refactoring

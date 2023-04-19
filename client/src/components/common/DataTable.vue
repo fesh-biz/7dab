@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'no-top': noTop}">
     <!-- Stock Items -->
     <q-table
       flat
@@ -35,6 +35,11 @@ export default {
   name: 'Datable',
 
   props: {
+    noTop: {
+      type: Boolean,
+      default: false
+    },
+
     columns: {
       type: Array,
       required: true
@@ -114,3 +119,9 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.no-top
+  .q-table__top
+    display: none
+</style>

@@ -43,7 +43,7 @@ export default {
 
   computed: {
     bgColor () {
-      return this.isPostAuthor ? 'green-5' : 'light-blue-1'
+      return this.isPostAuthor ? 'green-7' : 'light-blue-1'
     }
   }
 }

@@ -74,6 +74,12 @@ class Comment extends Model
         return $this->morphTo();
     }
     
+    public function cleanAnswers(): HasMany
+    {
+        return $this->hasMany(self::class, 'commentable_id', 'id')
+            ->where('commentable_type', self::class);
+    }
+    
     public function answers(): HasMany
     {
         $query = $this->hasMany(self::class, 'commentable_id', 'id')

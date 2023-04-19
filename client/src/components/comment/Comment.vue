@@ -1,10 +1,9 @@
 <template>
   <div
     class="comment"
-    :id="'comment-' + comment.id"
   >
     <!-- Body -->
-    <div style="padding-left: 5px; color: #5e5e5e">
+    <div style="padding-left: 5px; color: #5e5e5e" :id="'comment-' + comment.id">
       <!-- Rating, Author, Date -->
       <div class="flex items-center q-pl-sm">
         <rating
