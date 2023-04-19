@@ -100,6 +100,9 @@ export default {
     if (commentId) {
       this.$nextTick(() => {
         const element = document.getElementById('comment-' + commentId)
+
+        if (!element) return
+
         element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
 
         this.scroll.whenScrollFinished()

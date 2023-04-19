@@ -54,7 +54,9 @@ export default {
 
       this.isFetching = false
       this.maybeScrollBottom()
+    }
 
+    if (!this.isPreview) {
       await this.postApi.incrementViews(this.postId)
     }
   },
