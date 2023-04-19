@@ -6,16 +6,7 @@
 - [] Tabs: `Posts, Comments, Answers,`
     - [] Posts Tabs
         - [] Disable post tab if there are no Entities
-    - Comment refactoring
-        - [] Migration `add_root_id_root_type_to_comments_table`
-            - [] `root_id` uint
-            - [] `root_type` string
-        - [] On creating comment fill `root_id, root_type`
-        - [] Change comment seeder
-    - [] Make scroll to comment
-        - [] If route has comment id
-        - [] Wait on comments loaded
-        - [] Scroll to comment, highlight it twice
+        - [] Remove preview mode from published posts links
     - [] Comments `/profile/comments`
         - [] Table with rows:
             - [] `body`

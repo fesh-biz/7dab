@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\Content\Comment
@@ -62,6 +63,16 @@ class Comment extends Model
     protected $appends = [
         'commentable_type_name'
     ];
+    
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class);
+    }
+    
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
+    }
     
     public function answers(): HasMany
     {

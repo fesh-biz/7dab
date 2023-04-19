@@ -7,7 +7,7 @@
       :post="post"
     />
 
-    <div ref="commentsAnchor"></div>
+    <div ref="commentsStart"></div>
     <comments v-if="post && !isPreview" :post-id="post.id"/>
   </div>
 </template>
@@ -53,21 +53,30 @@ export default {
       }
 
       this.isFetching = false
+      this.maybeScrollBottom()
 
       await this.postApi.incrementViews(this.postId)
     }
   },
 
   mounted () {
-    if (this.$route.params.toComments) {
-      setTimeout(() => {
-        this.$refs.commentsAnchor.scrollIntoView()
-        window.scrollBy(0, 50)
-      }, 10)
-    }
+
   },
 
   methods: {
+    maybeScrollBottom () {
+      const commentId = this.$route.query.c
+      if (this.$route.params.toComments || commentId) {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            const commentsStart = this.$refs.commentsStart
+            commentsStart.scrollIntoView()
+            window.scrollBy(0, 50)
+          }, 10)
+        })
+      }
+    },
+
     fetchPost () {
       this.postApi.fetchPost(this.postId, this.isPreview)
         .then(async res => {
@@ -78,6 +87,7 @@ export default {
           this.post = PostModel.query().withAll().find(post.id)
 
           this.isFetching = false
+          this.maybeScrollBottom()
 
           window.document.title = post.title + ` - ${this.$t('terevenky')}`
         })

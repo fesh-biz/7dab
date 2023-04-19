@@ -45,6 +45,7 @@ import CommentApi from 'src/plugins/api/comment'
 import CommentModel from 'src/models/content/comment'
 import PostModel from 'src/models/content/post'
 import AddComment from 'components/comment/AddComment'
+import Scroll from 'src/plugins/tools/scroll'
 
 export default {
   name: 'PostComments',
@@ -65,7 +66,8 @@ export default {
     return {
       temp: '',
       api: new CommentApi(),
-      isFetching: true
+      isFetching: true,
+      scroll: new Scroll()
     }
   },
 
@@ -93,6 +95,34 @@ export default {
       data: res.data
     })
     this.isFetching = false
+
+    const commentId = this.$route.query.c
+    if (commentId) {
+      this.$nextTick(() => {
+        const element = document.getElementById('comment-' + commentId)
+        element.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
+
+        this.scroll.whenScrollFinished()
+          .then(() => {
+            this.flashComment(commentId)
+          })
+      })
+    }
+  },
+
+  methods: {
+    flashComment (id) {
+      const element = document.getElementById('comment-' + id)
+
+      const rect = element.getBoundingClientRect()
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0
+      if (isVisible) {
+        element.classList.add('flash')
+        setTimeout(() => {
+          element.classList.remove('flash')
+        }, 2000) // remove the class after 2 seconds
+      }
+    }
   },
 
   beforeDestroy () {
