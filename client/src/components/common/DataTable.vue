@@ -8,6 +8,7 @@
       :columns="columns"
       :loading="loading"
       :rows-per-page-label="rowsPerPage"
+      :rows-per-page-options="[0]"
       :pagination.sync="pagination"
       :row-key="rowKey"
       :filter="filter"
