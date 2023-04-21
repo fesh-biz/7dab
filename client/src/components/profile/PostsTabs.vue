@@ -9,14 +9,14 @@
       dense
       class="text-grey-8"
     >
-      <q-tab name="approved" icon="mms" :label="$t('published')">
-        <q-badge color="green" class="q-ml-sm">{{ totalPosts.approved }}</q-badge>
+      <q-tab :disable="!totalPosts.approved" name="approved" icon="mms" :label="$t('published')">
+        <q-badge color="green" class="q-ml-sm">{{ totalPosts.approved || 0 }}</q-badge>
       </q-tab>
-      <q-tab name="pending" icon="mark_chat_unread" :label="$t('pending')">
-        <q-badge color="green" class="q-ml-sm">{{ totalPosts.pending }}</q-badge>
+      <q-tab :disable="!totalPosts.pending" name="pending" icon="mark_chat_unread" :label="$t('pending')">
+        <q-badge color="green" class="q-ml-sm">{{ totalPosts.pending || 0 }}</q-badge>
       </q-tab>
-      <q-tab name="draft" icon="chat_bubble_outline" :label="$t('drafts')">
-        <q-badge color="green" class="q-ml-sm">{{ totalPosts.draft }}</q-badge>
+      <q-tab :disable="!totalPosts.draft" name="draft" icon="chat_bubble_outline" :label="$t('drafts')">
+        <q-badge color="green" class="q-ml-sm">{{ totalPosts.draft || 0 }}</q-badge>
       </q-tab>
     </q-tabs>
 

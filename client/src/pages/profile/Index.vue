@@ -73,7 +73,7 @@ export default {
   data () {
     return {
       me: Me.query().first(),
-      tab: 'answers',
+      tab: 'posts',
       isFetchingStats: true,
       api: new ProfileApi(),
       contentStats: null,
