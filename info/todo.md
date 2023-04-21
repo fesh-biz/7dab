@@ -1,5 +1,8 @@
 # MVP
 
+# To fix FIRST
+- [] Check searching cache
+
 # Profile pages
 - [] Own Profile Page `/profile`
     - [] Ability to set avatar

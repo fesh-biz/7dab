@@ -45,6 +45,13 @@
                       {{ $t('add_post') }}
                     </q-item-section>
                   </q-item>
+
+                  <!-- Anthem -->
+                  <q-item exact clickable :to="{ name: 'anthem' }">
+                    <q-item-section>
+                      {{ $t('anthem') }}
+                    </q-item-section>
+                  </q-item>
                 </q-list>
               </div>
 

@@ -11,5 +11,13 @@ export default [
       title: 'search'
     },
     component: () => import('pages/feed/Search')
+  },
+  {
+    path: '/anthem',
+    name: 'anthem',
+    meta: {
+      title: 'anthem'
+    },
+    component: () => import('pages/feed/Anthem')
   }
 ]
