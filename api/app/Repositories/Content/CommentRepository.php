@@ -16,6 +16,11 @@ class CommentRepository
         $this->model = $model;
     }
     
+    public function getModel(): Comment
+    {
+        return $this->model;
+    }
+    
     public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
     {
         return $this->model->whereUserId($userId)
@@ -25,9 +30,14 @@ class CommentRepository
             ->paginate(10);
     }
     
-    public function getModel(): Comment
+    public function getPaginatedAnswersOnUserWithPostAndParents(int $userId): LengthAwarePaginator
     {
-        return $this->model;
+        return $this->model->whereHas('commentable', function($q) use ($userId) {
+            $q->where('user_id', '=', $userId);
+        })
+            ->with(['post', 'commentable', 'rating', 'user'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
     }
     
     public function create(array $data): Comment

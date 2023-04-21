@@ -1,4 +1,6 @@
 export default {
+  author: 'Автор',
+  answer: 'Відповідь',
   comment: 'Коментар',
   post: 'Теревенька',
   reply_on: 'Відповідь до',

@@ -48,8 +48,7 @@
             </q-tab-panel>
 
             <q-tab-panel name="answers">
-              <div class="text-h6">Answers</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              <answer-tab />
             </q-tab-panel>
           </q-tab-panels>
         </q-card-section>
@@ -64,16 +63,17 @@ import PostsTabs from 'components/profile/PostsTabs'
 import Me from 'src/models/user/me'
 import ProfileApi from 'src/plugins/api/profile'
 import CommentsTab from 'components/profile/CommentsTab'
+import AnswerTab from 'components/profile/AnswersTab'
 
 export default {
   name: 'Account',
 
-  components: { CommentsTab, Stats, PostsTabs },
+  components: { AnswerTab, CommentsTab, Stats, PostsTabs },
 
   data () {
     return {
       me: Me.query().first(),
-      tab: 'comments',
+      tab: 'answers',
       isFetchingStats: true,
       api: new ProfileApi(),
       contentStats: null,

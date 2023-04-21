@@ -7,14 +7,6 @@
     - [] Posts Tabs
         - [] Disable post tab if there are no Entities
         - [] Remove preview mode from published posts links
-    - [] Answers `/profile/answers`
-        - [] Answer is:
-            - [] Comment to my post
-            - [] Answer to my comment
-        - [] Table with rows:
-            - [] `user_login` as link on user profile
-            - [] `body` up to 5 words + ...
-            - [] `link` to answer
 
 # UI Fixes
 - [] Wide screen (more than HD)
@@ -26,9 +18,7 @@
   approved, draft, pending
 - [] Comments, Post CRUD
     - [] Create|Update can only non-banned user
-
-# Refactoring
-- [] Move Comments from Post.vue to PostPage.vue
+- [] User can cancel his vote
 
 # Admin
 - [] Email notifications
