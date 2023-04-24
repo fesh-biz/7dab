@@ -1,7 +1,13 @@
 <template>
   <div class="q-mt-lg">
+    <avatar-editor v-model="isAvatarEditorOpened" />
+
     <!-- Profile Stats -->
-    <stats :user-id="me.id" @fetched="fetchContentStats"/>
+    <stats
+      :user-id="me.id"
+      @fetched="fetchContentStats"
+      @avatarClicked="isAvatarEditorOpened = true"
+    />
 
     <q-linear-progress v-if="isFetchingStats && statsFetched" indeterminate style="position: relative; top: 4px"/>
 
@@ -64,11 +70,12 @@ import Me from 'src/models/user/me'
 import ProfileApi from 'src/plugins/api/profile'
 import CommentsTab from 'components/profile/CommentsTab'
 import AnswerTab from 'components/profile/AnswersTab'
+import AvatarEditor from 'components/profile/AvatarEditor'
 
 export default {
   name: 'Account',
 
-  components: { AnswerTab, CommentsTab, Stats, PostsTabs },
+  components: { AvatarEditor, AnswerTab, CommentsTab, Stats, PostsTabs },
 
   data () {
     return {
@@ -77,7 +84,8 @@ export default {
       isFetchingStats: true,
       api: new ProfileApi(),
       contentStats: null,
-      statsFetched: false
+      statsFetched: false,
+      isAvatarEditorOpened: false
     }
   },
 

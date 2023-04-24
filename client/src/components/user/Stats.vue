@@ -8,7 +8,7 @@
       <!-- Login, With Us From-->
       <q-item>
         <q-item-section avatar>
-          <q-avatar>
+          <q-avatar @click="$emit('avatarClicked')">
             <user-avatar size="40px" />
           </q-avatar>
         </q-item-section>
