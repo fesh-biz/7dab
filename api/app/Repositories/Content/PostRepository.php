@@ -24,7 +24,7 @@ class PostRepository
     public function getPaginatedPosts(array $search = null): LengthAwarePaginator
     {
         $status = $search['status'] ?? 'approved';
-        $tagsIds = $search['tagIds'] ?? null;
+        $tagsIds = $search['tagsIds'] ?? null;
         $title = $search['title'] ?? null;
         $userId = $search['userId'] ?? null;
         
