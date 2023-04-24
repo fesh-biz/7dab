@@ -108,8 +108,8 @@ export default {
       this.isFiltering = true
       this.api.search(needle, this.filterLimit)
         .then(res => {
-          const tags = res.data.data
-          Tag.insert({ data: res.data.data })
+          const tags = res.data
+          Tag.insert({ data: tags })
 
           this.isFiltering = false
           update(() => {
