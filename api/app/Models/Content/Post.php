@@ -52,6 +52,9 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @method static Builder|Post whereViews($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\PostYouTube[] $postYouTubes
  * @property-read int|null $post_you_tubes_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Content\Tag[] $previewTags
+ * @property-read int|null $preview_tags_count
+ * @method static Builder|Post withPreviewRelations()
  */
 class Post extends Model
 {

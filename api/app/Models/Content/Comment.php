@@ -43,6 +43,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $commentable_type_name
  * @property-read RatingVote|null $myVote
  * @property-read Rating|null $rating
+ * @property int $post_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|Comment[] $cleanAnswers
+ * @property-read int|null $clean_answers_count
+ * @property-read Model|\Eloquent $commentable
+ * @property-read \App\Models\Content\Post $post
+ * @method static \Illuminate\Database\Eloquent\Builder|Comment wherePostId($value)
  */
 class Comment extends Model
 {
