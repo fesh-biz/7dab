@@ -34,7 +34,7 @@
           <q-td>
             <!-- Preview -->
             <q-item
-              :to="{name: 'postPage', params: {id: props.props.row.id}, query: {p: 1}}"
+              :to="getPostLink(props.props.row)"
               target="_blank"
             >
               <q-item-section>
@@ -172,6 +172,16 @@ export default {
       }
 
       return res
+    },
+
+    getPostLink (post) {
+      const link = { name: 'postPage', params: { id: post.id } }
+
+      if (this.tab !== 'approved') {
+        link.query = { p: 1 }
+      }
+
+      return link
     }
   }
 }

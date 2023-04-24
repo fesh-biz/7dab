@@ -6,10 +6,6 @@
 # Profile pages
 - [] Own Profile Page `/profile`
     - [] Ability to set avatar
-- [] Tabs: `Posts, Comments, Answers,`
-    - [] Posts Tabs
-        - [] Disable post tab if there are no Entities
-        - [] Remove preview mode from published posts links
 
 # UI Fixes
 - [] Wide screen (more than HD)
