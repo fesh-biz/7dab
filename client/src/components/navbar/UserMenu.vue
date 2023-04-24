@@ -1,6 +1,6 @@
 <template>
   <div class="column items-center">
-    <user-avatar :src="me.avatar"/>
+    <user-avatar :src="me.avatar ? `/storage/user-avatars/o/${me.avatar}` : null"/>
 
     <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">
       <q-btn

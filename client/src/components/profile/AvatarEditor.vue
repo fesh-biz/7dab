@@ -59,7 +59,8 @@ export default {
   data () {
     return {
       scale: 1,
-      isUploading: false
+      isUploading: false,
+      api: new Profile()
     }
   },
 
@@ -85,13 +86,14 @@ export default {
       this.convertPngToJpeg(file)
         .then(res => {
           this.api.uploadAvatar(res)
-            .then(() => {
+            .then((res) => {
+              const user = res.data
               const me = Me.query().first()
 
               Me.update({
                 where: me.id,
                 data: {
-                  has_avatar: true
+                  avatar: user.avatar
                 }
               })
 

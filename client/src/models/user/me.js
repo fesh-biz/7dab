@@ -8,7 +8,8 @@ export default class Me extends AppModel {
       id: this.uid(null),
       login: this.string(''),
       email: this.string(''),
-      role_id: this.number(0)
+      role_id: this.number(0),
+      avatar: this.attr(null)
     }
   }
 }

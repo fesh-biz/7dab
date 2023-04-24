@@ -3,7 +3,6 @@
 namespace App\Services\User;
 
 use App\Models\User;
-use App\Models\User\UserData;
 use App\Repositories\Content\CommentRepository;
 use App\Repositories\Content\PostRepository;
 use App\Repositories\Rating\RatingRepository;
@@ -27,7 +26,7 @@ class UserService
         return $this->repo->getModel();
     }
     
-    public function uploadAvatar(UploadedFile $avatar): bool
+    public function uploadAvatar(UploadedFile $avatar): User
     {
         $storageBasePath = storage_path('app/public/user-avatars');
         foreach (['o', 'r'] as $f) {
@@ -37,17 +36,29 @@ class UserService
             }
         }
         
+        /** @var User $user */
         $user = auth()->user();
-        $originalPath = "$storageBasePath/o/$user->login.jpg";
+        
+        if ($user->avatar) {
+            foreach (['o', 'r'] as $f) {
+                $dir = "$storageBasePath/$f";
+                $file = $dir . '/' . $user->avatar;
+                unlink($file);
+            }
+        }
+        
+        $fileName = \Str::uuid()->toString(). '.jpg';
+        $originalPath = "$storageBasePath/o/$fileName";
         file_put_contents($originalPath, file_get_contents($avatar));
 
         $resized = Image::make($avatar)->resize(25, 25);
-        $resizedPath = "$storageBasePath/r/$user->login.jpg";
+        $resizedPath = "$storageBasePath/r/$fileName";
         $resized->save($resizedPath);
         
-        $user->has_avatar = true;
+        $user->avatar = $fileName;
         $user->save();
-        return true;
+
+        return $user;
     }
     
     public function getStats(int $userId): array

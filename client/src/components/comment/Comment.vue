@@ -15,7 +15,7 @@
         <author
           :name="comment.user.login"
           :is-post-author="comment.user.id === postAuthor.id"
-          :avatar="comment.user.avatar"
+          :avatar="comment.user.avatar ? `/storage/user-avatars/r/${comment.user.avatar}` : null"
         />
       </div>
 

@@ -128,7 +128,7 @@ class Post extends Model
     {
         return $q->with([
             'previewTags:id,title',
-            'user:id,login',
+            'user:id,login,avatar',
             'postImages',
             'postTexts',
             'postYouTubes'
@@ -139,7 +139,7 @@ class Post extends Model
     {
         $query = $q->with([
             'tags:id,title',
-            'user:id,login',
+            'user:id,login,avatar',
             'postImages',
             'rating',
             'postTexts',

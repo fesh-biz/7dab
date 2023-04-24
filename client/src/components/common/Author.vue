@@ -4,7 +4,7 @@
     size="0.8rem"
   >
     <q-avatar>
-      <img v-if="avatar" src="https://cdn.quasar.dev/img/avatar5.jpg">
+      <img v-if="avatar" :src="avatar">
       <q-icon
         v-if="!avatar"
         :color="isPostAuthor ? 'white' : 'grey-8'"

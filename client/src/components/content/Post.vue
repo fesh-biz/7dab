@@ -14,7 +14,10 @@
         <div class="flex justify-between">
           <!-- Author -->
           <div>
-            <author :name="post.user.login" :avatar="post.user.avatar"/>
+            <author
+              :name="post.user.login"
+              :avatar="post.user.avatar ? `/storage/user-avatars/r/${post.user.avatar}` : null"
+            />
           </div>
 
           <!-- Controls -->

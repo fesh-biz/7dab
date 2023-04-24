@@ -1,9 +1,5 @@
 # MVP
 
-# Profile pages
-- [] Own Profile Page `/profile`
-    - [] Ability to set avatar
-
 # UI Fixes
 - [] Wide screen (more than HD)
 - [] When non-logged user tries to type comment

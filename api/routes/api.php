@@ -1,5 +1,5 @@
 <?php
-sleep(1);
+// sleep(1);
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +39,8 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
     Route::get('posts', [PostController::class, 'profilePosts']);
     Route::get('comments', [CommentController::class, 'profileComments']);
     Route::get('answers', [CommentController::class, 'profileAnswers']);
+    Route::post('avatar', [ProfileController::class, 'uploadAvatar'])
+        ->middleware('image-sanitize');
 });
 
 Route::group(['prefix' => 'ratings'], function () {

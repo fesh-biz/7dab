@@ -29,8 +29,8 @@ class ProfileController extends Controller
             'avatar' => 'required|file|mimes:jpeg|max:200',
         ]);
     
-        $userData = $this->service->uploadAvatar($r->avatar);
+        $user = $this->service->uploadAvatar($r->avatar);
         
-        return response()->json('success');
+        return response()->json($user);
     }
 }

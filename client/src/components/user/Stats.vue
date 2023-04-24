@@ -9,7 +9,7 @@
       <q-item>
         <q-item-section avatar>
           <q-avatar class="cursor-pointer" @click="$emit('avatarClicked')">
-            <user-avatar size="40px" :src="me.has_avatar ? `/storage/user-avatars/o/${me.login}.jpg` : null" />
+            <user-avatar size="40px" :src="me.avatar ? `/storage/user-avatars/o/${me.avatar}` : null" />
           </q-avatar>
         </q-item-section>
 
