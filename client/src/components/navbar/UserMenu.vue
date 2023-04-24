@@ -4,13 +4,12 @@
 
     <div dusk="um-user-name" class="text-subtitle1 q-mt-md q-mb-xs">
       <q-btn
-        dusk="um-logout-link"
         color="positive"
         no-caps
         :label="me.login"
         :to="{name: 'profile'}"
         push
-        size="md"
+        size="sm"
         v-close-popup
       />
     </div>
