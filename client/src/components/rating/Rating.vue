@@ -1,7 +1,7 @@
 <template>
   <div
     :dusk="`${ratingableType}-${ratingable.id}-rating`"
-    class="q-mr-md"
+    class="q-mr-sm"
   >
     <q-linear-progress
       v-if="isSubmitting"

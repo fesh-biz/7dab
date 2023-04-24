@@ -9,7 +9,7 @@
       />
 
       <!-- Total Views -->
-      <div :dusk="'post-' + post.id + '-info-views'" class="q-mr-md">
+      <div :dusk="'post-' + post.id + '-info-views'">
         <chip-info
           :label="post.views"
           icon="visibility"
@@ -18,7 +18,7 @@
       </div>
 
       <!-- Total Comments -->
-      <div :dusk="'post-' + post.id + '-info-comments'" class="q-mr-md">
+      <div :dusk="'post-' + post.id + '-info-comments'">
         <chip-info
           :label="post.comments"
           icon="question_answer"
