@@ -8,8 +8,8 @@
       <!-- Login, With Us From-->
       <q-item>
         <q-item-section avatar>
-          <q-avatar @click="$emit('avatarClicked')">
-            <user-avatar size="40px" />
+          <q-avatar class="cursor-pointer" @click="$emit('avatarClicked')">
+            <user-avatar size="40px" :src="me.has_avatar ? `/storage/user-avatars/o/${me.login}.jpg` : null" />
           </q-avatar>
         </q-item-section>
 
@@ -68,6 +68,7 @@ import UserAvatar from 'components/common/UserAvatar'
 import UserApi from 'src/plugins/api/user'
 import moment from 'moment'
 import ChipInfo from 'components/common/ChipInfo'
+import Me from 'src/models/user/me'
 moment.locale('uk')
 
 export default {
@@ -91,6 +92,12 @@ export default {
       isFetching: true,
       api: new UserApi(),
       moment: moment
+    }
+  },
+
+  computed: {
+    me () {
+      return Me.query().first()
     }
   },
 

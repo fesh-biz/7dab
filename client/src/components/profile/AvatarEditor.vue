@@ -41,6 +41,8 @@
 
 <script>
 import { VueAvatar } from 'vue-avatar-editor-improved'
+import Profile from 'src/plugins/api/profile'
+import Me from 'src/models/user/me'
 
 export default {
   name: 'AvatarEditor',
@@ -74,12 +76,50 @@ export default {
 
   methods: {
     async upload () {
+      this.isUploading = true
       const img = this.$refs.editor.getImageScaled()
 
       const blob = await (await fetch(img.toDataURL())).blob()
       const file = new File([blob], 'avatar.png', { type: blob.type })
-      console.log('img', file)
-      // this.$refs.image.src = img.toDataURL()
+
+      this.convertPngToJpeg(file)
+        .then(res => {
+          this.api.uploadAvatar(res)
+            .then(() => {
+              const me = Me.query().first()
+
+              Me.update({
+                where: me.id,
+                data: {
+                  has_avatar: true
+                }
+              })
+
+              this.isUploading = false
+              this.isOpen = false
+            })
+        })
+    },
+
+    convertPngToJpeg (pngFile) {
+      return new Promise((resolve, reject) => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+
+        const img = new Image()
+        img.onload = function () {
+          canvas.width = img.width
+          canvas.height = img.height
+          ctx.drawImage(img, 0, 0)
+
+          canvas.toBlob(blob => {
+            const jpegFile = new File([blob], pngFile.name.replace('.png', '.jpg'), { type: 'image/jpeg' })
+            resolve(jpegFile)
+          }, 'image/jpeg', 0.9)
+        }
+        img.onerror = reject
+        img.src = URL.createObjectURL(pngFile)
+      })
     }
   }
 }

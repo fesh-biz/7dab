@@ -22,4 +22,15 @@ class ProfileController extends Controller
         
         return response()->json($contentStats);
     }
+    
+    public function uploadAvatar(Request $r): JsonResponse
+    {
+        $r->validate([
+            'avatar' => 'required|file|mimes:jpeg|max:200',
+        ]);
+    
+        $userData = $this->service->uploadAvatar($r->avatar);
+        
+        return response()->json('success');
+    }
 }
