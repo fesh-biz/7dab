@@ -1,16 +1,14 @@
 # MVP
 
-# UI Fixes
-- [] Wide screen (more than HD)
-- [] When non-logged user tries to type comment
-    - [] Display buttons for login/register
+# User Page
+- [] Page `/users/:id`
+    - [] Title to page
+    - [] Show stats
+        - [] Disable Avatar editing
+    - [] Show Posts as feed
 
-# Fixes
-- [] If user isn't admin or moder, don't fetch posts with statuses other than:
-  approved, draft, pending
-- [] Comments, Post CRUD
-    - [] Create|Update can only non-banned user
-- [] User can cancel his vote
+# Refactoring
+- [] User login length 6 - 25
 
 # Admin
 - [] Email notifications
@@ -25,13 +23,13 @@
         - [] `status`
         - [] 
         - []
+- [] Rules page
+- [] Form to allow make proposals of improvement
+    - [] Page with simple form
+    - [] Page with accepted proposals for implementation
 
-# User's page
-- [] `users/:id`
-    - [] Same as profile page except sensitive data and abilities to change something
-
+------------------------------- After MVP ----------------------------------
 # Sitemap
-
 - [] Sitemap
     - [] Finish
         - [] Search page
@@ -51,12 +49,21 @@
         - [] Sitemap for tags
             - [] Create tag page
 
-- [] User login length 5 - 15
 - [] Translate text 'We have emailed your password reset link!'
 - [] Refactor Post TagField to common/TagField
 
+# UI Fixes
+- [] Wide screen (more than HD)
+- [] When non-logged user tries to type comment
+    - [] Display buttons for login/register
 
-------------------------------- Fixes ----------------------------------
+# Fixes
+- [] If user isn't admin or moder, don't fetch posts with statuses other than:
+  approved, draft, pending
+- [] Comments, Post CRUD
+    - [] Create|Update can only non-banned user
+- [] User can cancel his vote
+
 - [] If first tag result didn't give result, don't send request on next typing
     - [] If next type has more symbols
     - [] If next type wasn't reduce symbols
@@ -65,12 +72,6 @@
         - [] When there is only one error, it displays it for all sections
     - [] Add image as empty field, fix 500 error
         - [] Before submit remove all empty image fields
-
-- [] Registration
-    - [] User can have up to 10 drafts, display total and available on creating/editing post
-    - [] Post can have max 20 tags
-    - [] User can create up to 40 tags with status `penging`
-    - [] Allow Registration
 
 - [] If I'm the author of the post or not
     - [] It would be cool to see two tabs to see comments in their usual way

@@ -4,6 +4,7 @@ import PostRoutes from './routes/post'
 import AdminRoutes from './routes/admin'
 import ProfileRoutes from './routes/profile'
 import ExternalLinks from './routes/external-links'
+import UserRoutes from './routes/user'
 
 const routes = [
   // Auth routes
@@ -36,11 +37,17 @@ const routes = [
     component: () => import('layouts/Admin'),
     children: AdminRoutes
   },
-  // Admin routes
+  // Profile routes
   {
     path: '/profile',
     component: () => import('layouts/MainLayout'),
     children: ProfileRoutes
+  },
+  // User routes
+  {
+    path: '/users',
+    component: () => import('layouts/MainLayout'),
+    children: UserRoutes
   },
 
   // Test Only
