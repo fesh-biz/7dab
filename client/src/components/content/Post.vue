@@ -17,6 +17,7 @@
             <author
               :name="post.user.login"
               :avatar="post.user.avatar ? `/storage/user-avatars/r/${post.user.avatar}` : null"
+              :user="post.user"
             />
           </div>
 
