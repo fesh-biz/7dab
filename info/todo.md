@@ -2,10 +2,10 @@
 
 # User Page
 - [] Page `/users/:id`
-    - [] Title to page
-    - [] Show stats
-        - [] Disable Avatar editing
     - [] Show Posts as feed
+    
+# Fix
+- [] TagField on post creating
 
 # Refactoring
 - [] User login length 6 - 25

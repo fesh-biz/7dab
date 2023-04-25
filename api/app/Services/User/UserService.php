@@ -79,7 +79,8 @@ class UserService
         
         $res['profile'] = [
             'login' => $user->login,
-            'with_us_since' => $user->created_at
+            'with_us_since' => $user->created_at,
+            'avatar' => $user->avatar
         ];
         
         return $res;

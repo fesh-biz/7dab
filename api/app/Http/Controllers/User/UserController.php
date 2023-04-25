@@ -17,6 +17,11 @@ class UserController extends Controller
         $this->service = $service;
     }
     
+    public function find(int $id): JsonResponse
+    {
+        return response()->json($this->service->getModel()->find($id));
+    }
+    
     public function me(): Authenticatable
     {
         return auth()->user();

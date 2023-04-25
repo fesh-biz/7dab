@@ -133,4 +133,12 @@ export default class UserApi {
         .catch(err => reject(err))
     })
   }
+
+  fetchUser (id) {
+    return new Promise((resolve, reject) => {
+      this.api.get(`/users/${id}`, null, 'users')
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
 }

@@ -276,7 +276,7 @@ export default class Cache {
       postImage: ['post_images'],
       tag: ['tags'],
       postText: ['post_texts'],
-      user: ['user'],
+      user: ['user', 'users'],
       rating: ['rating'],
       myVote: ['my_vote', 'my_votes'],
       comment: ['comments', 'answers'],

@@ -8,8 +8,8 @@
       <!-- Login, With Us From-->
       <q-item>
         <q-item-section avatar>
-          <q-avatar class="cursor-pointer" @click="$emit('avatarClicked')">
-            <user-avatar size="40px" :src="me.avatar ? `/storage/user-avatars/o/${me.avatar}` : null" />
+          <q-avatar :class="{'cursor-pointer': isProfilePage}" @click="onAvatarClick">
+            <user-avatar size="40px" :src="avatar" />
           </q-avatar>
         </q-item-section>
 
@@ -98,6 +98,26 @@ export default {
   computed: {
     me () {
       return Me.query().first()
+    },
+
+    isProfilePage () {
+      return this.$route.name === 'profile'
+    },
+
+    avatar () {
+      let res = null
+      const baseUrl = '/storage/user-avatars/o'
+      let a = this.me.avatar
+      if (this.isProfilePage && a) {
+        res = `${baseUrl}/${a}`
+      }
+
+      a = this.stats.profile.avatar
+      if (a) {
+        res = `${baseUrl}/${a}`
+      }
+
+      return res
     }
   },
 
@@ -111,6 +131,12 @@ export default {
       this.stats = res.data
       this.isFetching = false
       this.$emit('fetched')
+    },
+
+    onAvatarClick () {
+      if (this.isProfilePage) {
+        this.$emit('avatarClicked')
+      }
     }
   }
 }

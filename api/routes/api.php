@@ -31,6 +31,7 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
 });
 
 Route::group(['prefix' => 'users'], function () {
+    Route::get('/{id}', [UserController::class, 'find']);
     Route::get('stats/{id}', [UserController::class, 'stats']);
 });
 

@@ -1,4 +1,5 @@
 export default {
+  user: 'Користувач',
   anthem: 'Гімн',
   author: 'Автор',
   answer: 'Відповідь',
