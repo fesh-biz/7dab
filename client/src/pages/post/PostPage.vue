@@ -44,7 +44,7 @@ export default {
     this.post = PostModel.query().withAll().find(this.postId)
 
     if (!this.post) {
-      this.fetchPost()
+      await this.fetchPost()
     } else {
       window.document.title = this.post.title + ` - ${this.$t('terevenky')}`
 
@@ -54,10 +54,10 @@ export default {
 
       this.isFetching = false
       this.maybeScrollBottom()
-    }
 
-    if (!this.isPreview) {
-      await this.postApi.incrementViews(this.postId)
+      if (!this.isPreview && this.post.status === 'approved') {
+        await this.postApi.incrementViews(this.postId)
+      }
     }
   },
 
@@ -79,7 +79,7 @@ export default {
       }
     },
 
-    fetchPost () {
+    async fetchPost () {
       this.postApi.fetchPost(this.postId, this.isPreview)
         .then(async res => {
           const post = res.data.data
