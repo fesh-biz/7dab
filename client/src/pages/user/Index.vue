@@ -1,6 +1,8 @@
 <template>
   <div class="q-mt-md">
     <stats :user-id="userId"/>
+
+    <post-feed :params="{uid: userId}"/>
   </div>
 </template>
 
@@ -8,11 +10,12 @@
 import Stats from 'components/user/Stats'
 import UserApi from 'src/plugins/api/user'
 import User from 'src/models/user/user'
+import PostFeed from 'components/common/PostsFeed'
 
 export default {
   name: 'Index',
 
-  components: { Stats },
+  components: { PostFeed, Stats },
 
   data () {
     return {

@@ -37,9 +37,12 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
-    public function index(): JsonResponse
+    public function index(Request $r): JsonResponse
     {
-        $posts = $this->service->getPaginatedPosts(true);
+        $searchParams = [
+            'userId' => $r->uid
+        ];
+        $posts = $this->service->getPaginatedPosts(true, $searchParams);
 
         return $this->sendPaginationResponse($posts);
     }
