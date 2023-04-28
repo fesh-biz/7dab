@@ -1,9 +1,5 @@
 # MVP
     
-# Refactoring
-- [] Search must use PostFeed.vue
-- [] User login length 6 - 25
-
 # Admin
 - [] Email notifications
     - [] On comment created
