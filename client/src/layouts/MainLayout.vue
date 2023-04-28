@@ -22,13 +22,13 @@
               Приєднуйся!
             </div>
 
-            <!-- User Menu -->
+            <!-- Menu -->
             <div class="row no-wrap q-pa-md">
               <div class="column">
                 <!-- General Menu  -->
                 <q-list dense>
                   <!-- Home Page -->
-                  <q-item exact clickable :to="{ name: 'home' }">
+                  <q-item tag="a" href="/" native>
                     <q-item-section>{{ $t('home_page') }}</q-item-section>
                   </q-item>
 
@@ -50,6 +50,7 @@
 
               <q-separator vertical inset class="q-mx-lg"/>
 
+              <!-- User Menu -->
               <div class="column">
                 <guest-menu v-if="!me"/>
                 <user-menu v-if="me"/>
