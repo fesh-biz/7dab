@@ -33,9 +33,9 @@ export default class Post {
     })
   }
 
-  fetchPosts (page) {
+  fetchPosts (params) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/content/posts?page=${page}`, null, 'posts')
+      this.api.get('/content/posts', params, 'posts')
         .then(res => {
           resolve(res)
         })
