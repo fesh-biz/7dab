@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[15],{"0d8b":function(e,n,t){"use strict";t.r(n);var a=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("post-feed")},o=[],s=t("4746"),r={name:"FeedMain",components:{PostFeed:s["a"]},data(){return{}}},u=r,c=t("2877"),l=Object(c["a"])(u,a,o,!1,null,null,null);n["default"]=l.exports}}]);
