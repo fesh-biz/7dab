@@ -1,13 +1,7 @@
 # MVP
-
-# User Page
-- [] Page `/users/:id`
-    - [] Show Posts as feed
     
-# Fix
-- [] TagField on post creating
-
 # Refactoring
+- [] Search must use PostFeed.vue
 - [] User login length 6 - 25
 
 # Admin

@@ -87,7 +87,7 @@ export default {
       this.isFiltering = true
       this.tagApi.search(needle)
         .then(res => {
-          const tags = res.data.data
+          const tags = res.data
 
           const options = []
           tags.forEach(tag => {
