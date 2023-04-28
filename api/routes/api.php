@@ -30,10 +30,14 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
+// Users
+
 Route::group(['prefix' => 'users'], function () {
-    Route::get('/{id}', [UserController::class, 'find']);
-    Route::get('stats/{id}', [UserController::class, 'stats']);
+    Route::get('{id}', [UserController::class, 'find']);
+    Route::get('{id}/stats', [UserController::class, 'stats']);
 });
+
+// Profile
 
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
     Route::get('content-stats', [ProfileController::class, 'contentStats']);
@@ -44,16 +48,25 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
         ->middleware('image-sanitize');
 });
 
+// Rating
+
 Route::group(['prefix' => 'ratings'], function () {
     Route::post('vote', [RatingController::class, 'vote'])
         ->middleware('auth:api');
 });
 
+// Tags
+
 Route::group(['prefix' => 'tags'], function () {
     Route::get('/search', [TagController::class, 'search']);
 });
 
+// Content
+
 Route::group(['prefix' => 'content', 'as' => '.content'], function () {
+    
+    // Posts
+    
     Route::group(['prefix' => 'posts'], function () {
         Route::get('/', [PostController::class, 'index']);
         Route::get('/{id}', [PostController::class, 'post']);
@@ -74,6 +87,8 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
         ]);
     });
     
+    // Comments
+    
     Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
         Route::get('/', [CommentController::class, 'comments']);
         Route::post('/', [CommentController::class, 'store'])
@@ -82,5 +97,7 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
             ->name('.update');
     });
     
+    // Search
+
     Route::get('/search', [SearchController::class, 'index']);
 });

@@ -13,7 +13,7 @@ export default class UserApi {
 
   fetchStats (id) {
     return new Promise((resolve, reject) => {
-      this.api.get(`/users/stats/${id}`, null, null, true)
+      this.api.get(`/users/${id}/stats`, null, null, true)
         .then(res => resolve(res))
         .catch(err => {
           console.log(err)
