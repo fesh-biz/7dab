@@ -55,7 +55,6 @@ class TagService
     public function createTags(array $titles): array
     {
         $ids = [];
-        
         foreach ($titles as $title) {
             if ($this->repo->isExists($title)) {
                 continue;

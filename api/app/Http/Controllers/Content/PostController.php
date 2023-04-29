@@ -30,8 +30,17 @@ class PostController extends Controller
     
     public function postView(int $postId): JsonResponse
     {
-        
         $post = $this->service->findPostView($postId);
+        
+        return response()->json([
+            'data' => $post,
+            'status' => 'success'
+        ]);
+    }
+    
+    public function postPreview(int $postId): JsonResponse
+    {
+        $post = $this->repo->findPostPreview($postId);
         
         return response()->json([
             'data' => $post,
@@ -42,6 +51,36 @@ class PostController extends Controller
     public function incrementPostViewsCounter(int $id)
     {
         $this->repo->incrementPostViewsCounter($id);
+    }
+    
+    public function store(PostRequest $r): JsonResponse
+    {
+        $userId = auth()->id();
+        
+        $errorMessage = null;
+        
+        $maxPostsPerDay = 5;
+        $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
+        if ($totalPostToday >= $maxPostsPerDay) {
+            $errorMessage = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPostsPerDay})";
+        }
+        
+        $maxDraftsPerUser = 10;
+        $totalDrafts = $this->repo->getTotalUserDrafts($userId);
+        if ($totalDrafts >= $maxDraftsPerUser) {
+            $errorMessage = trans('errors.max_allowed_drafts_exceeded') . " (${maxDraftsPerUser})";
+        }
+        
+        if ($errorMessage) {
+            abort(422, $errorMessage);
+        }
+        
+        
+        $post = $this->service->create($r);
+        
+        $post = $this->repo->findPostPreview($post->id);
+        
+        return response()->json($post);
     }
     
     
@@ -87,35 +126,35 @@ class PostController extends Controller
     //     ]);
     // }
     
-    public function store(PostRequest $r): JsonResponse
-    {
-        $userId = auth()->id();
-        
-        $errorMessage = null;
-        
-        $maxPostsPerDay = 5;
-        $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
-        if ($totalPostToday >= $maxPostsPerDay) {
-            $errorMessage = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPostsPerDay})";
-        }
-        
-        $maxDraftsPerUser = 10;
-        $totalDrafts = $this->repo->getTotalUserDrafts($userId);
-        if ($totalDrafts >= $maxDraftsPerUser) {
-            $errorMessage = trans('errors.max_allowed_drafts_exceeded') . " (${maxDraftsPerUser})";
-        }
-        
-        if ($errorMessage) {
-            abort(422, $errorMessage);
-        }
-        
-        
-        $post = $this->service->create($r);
-        
-        $post = $this->repo->findWithBasicRelationships($post->id);
-        
-        return response()->json($post);
-    }
+    // public function store(PostRequest $r): JsonResponse
+    // {
+    //     $userId = auth()->id();
+    //
+    //     $errorMessage = null;
+    //
+    //     $maxPostsPerDay = 5;
+    //     $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
+    //     if ($totalPostToday >= $maxPostsPerDay) {
+    //         $errorMessage = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPostsPerDay})";
+    //     }
+    //
+    //     $maxDraftsPerUser = 10;
+    //     $totalDrafts = $this->repo->getTotalUserDrafts($userId);
+    //     if ($totalDrafts >= $maxDraftsPerUser) {
+    //         $errorMessage = trans('errors.max_allowed_drafts_exceeded') . " (${maxDraftsPerUser})";
+    //     }
+    //
+    //     if ($errorMessage) {
+    //         abort(422, $errorMessage);
+    //     }
+    //
+    //
+    //     $post = $this->service->create($r);
+    //
+    //     $post = $this->repo->findWithBasicRelationships($post->id);
+    //
+    //     return response()->json($post);
+    // }
     
     public function update(PostRequest $r, int $id): JsonResponse
     {
@@ -123,7 +162,7 @@ class PostController extends Controller
         
         $this->service->update($r, $id);
         
-        $post = $this->repo->findWithBasicRelationships($id, true);
+        $post = $this->repo->findPostPreview($id);
         
         return response()->json($post);
     }

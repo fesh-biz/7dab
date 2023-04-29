@@ -31,10 +31,22 @@ export default class Post {
     })
   }
 
+  fetchPostPreview (id) {
+    return new Promise((resolve, reject) => {
+      this.api.get(`posts/${id}/preview`, null, 'posts')
+        .then(res => {
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  }
+
   store (data) {
     return new Promise((resolve, reject) => {
       this.api.post(
-        '/content/posts',
+        'posts',
         data,
         { headers: { 'Content-Type': 'multipart/form-data' } },
         'posts'
@@ -49,7 +61,7 @@ export default class Post {
   update (data, id) {
     return new Promise((resolve, reject) => {
       this.api.post(
-        `/content/posts/${id}`,
+        `/posts/${id}`,
         data,
         { headers: { 'Content-Type': 'multipartddd/form-data' } },
         'posts'

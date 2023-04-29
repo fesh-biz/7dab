@@ -254,7 +254,7 @@ export default {
     fetchPost () {
       return new Promise((resolve, reject) => {
         this.isBusy = true
-        this.postApi.fetchPost(this.postId, true)
+        this.postApi.fetchPostPreview(this.postId)
           .then(res => {
             this.isBusy = false
             resolve(res)

@@ -40,6 +40,7 @@ class PostRepository
     public function findPostView(int $id): Post
     {
         $q = $this->model
+            ->whereStatus('approved')
             ->with([
                 'tags:id,title',
                 'user:id,login,avatar',
@@ -60,6 +61,27 @@ class PostRepository
     {
         $this->model->where('id', $id)
             ->increment('views');
+    }
+    
+    public function findPostPreview(int $id): Post
+    {
+        $post = $this->model
+            ->with([
+                'previewTags:id,title',
+                'user:id,login,avatar',
+                'postImages',
+                'postTexts',
+                'postYouTubes'
+            ])->findOrFail($id);
+        
+        if (auth()->id() !== $post->user_id) {
+            abort(401, 'Unauthorized');
+        }
+        
+        $post->setRelation('tags', $post->previewTags);
+        $post->makeHidden('previewTags');
+        
+        return $post;
     }
     
     // Non Refactored

@@ -66,7 +66,17 @@ Route::group(['prefix' => 'tags'], function () {
 Route::group(['prefix' => 'posts'], function () {
     Route::get('/top', [PostController::class, 'top']);
     Route::get('/{id}', [PostController::class, 'postView']);
+    Route::get('/{id}/preview', [PostController::class, 'postPreview'])
+        ->middleware('auth:api');
     Route::post('/increment-views/{id}', [PostController::class, 'incrementPostViewsCounter']);
+    Route::post('/', [PostController::class, 'store'])->middleware([
+        'auth:api',
+        'image-sanitize'
+    ]);
+    Route::post('/{id}', [PostController::class, 'update'])->middleware([
+        'auth:api',
+        'image-sanitize'
+    ]);
 });
 
 
@@ -78,14 +88,6 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
     // Posts
     
     Route::group(['prefix' => 'posts'], function () {
-        Route::post('/', [PostController::class, 'store'])->middleware([
-            'auth:api',
-            'image-sanitize'
-        ]);
-        Route::post('/{id}', [PostController::class, 'update'])->middleware([
-            'auth:api',
-            'image-sanitize'
-        ]);
         Route::post('/{id}/publish', [PostController::class, 'publish'])->middleware([
             'auth:api'
         ]);

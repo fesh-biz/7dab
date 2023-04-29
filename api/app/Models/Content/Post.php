@@ -123,33 +123,4 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
-    
-    public function scopeWithPreviewRelations(Builder $q): Builder
-    {
-        return $q->with([
-            'previewTags:id,title',
-            'user:id,login,avatar',
-            'postImages',
-            'postTexts',
-            'postYouTubes'
-        ]);
-    }
-    
-    // public function scopeWithTagsAuthorContent(Builder $q): Builder
-    // {
-    //     $query = $q->with([
-    //         'tags:id,title',
-    //         'user:id,login,avatar',
-    //         'postImages',
-    //         'rating',
-    //         'postTexts',
-    //         'postYouTubes'
-    //     ]);
-    //
-    //     if (auth('api')->user()) {
-    //         $query->with('myVote');
-    //     }
-    //
-    //     return $query;
-    // }
 }
