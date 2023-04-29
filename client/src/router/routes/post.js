@@ -21,7 +21,7 @@ export default [
   },
   {
     path: '/posts/:id',
-    name: 'postPage',
-    component: () => import('pages/post/PostPage')
+    name: 'postView',
+    component: () => import('pages/post/PostView')
   }
 ]

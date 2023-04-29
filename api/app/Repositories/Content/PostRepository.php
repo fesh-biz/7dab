@@ -27,7 +27,7 @@ class PostRepository
                 'postTexts',
                 'postYouTubes'
             ]);
-    
+        
         if (auth('api')->user()) {
             $q->with('myVote');
         }
@@ -35,6 +35,31 @@ class PostRepository
         return $q->whereStatus('approved')
             ->orderBy('id', 'desc')
             ->paginate(10);
+    }
+    
+    public function findPostView(int $id): Post
+    {
+        $q = $this->model
+            ->with([
+            'tags:id,title',
+            'user:id,login,avatar',
+            'postImages',
+            'rating',
+            'postTexts',
+            'postYouTubes'
+        ]);
+        
+        if (auth('api')->user()) {
+            $q->with('myVote');
+        }
+        
+        return $q->findOrFail($id);
+    }
+    
+    public function incrementPostViewsCounter(int $id)
+    {
+        $this->model->where('id', $id)
+            ->increment('views');
     }
     
     // Non Refactored
@@ -88,32 +113,32 @@ class PostRepository
             ->increment('views');
     }
     
-    public function incrementViews(int $id)
-    {
-        $this->model->where('id', $id)
-            ->increment('views');
-    }
+    // public function incrementViews(int $id)
+    // {
+    //     $this->model->where('id', $id)
+    //         ->increment('views');
+    // }
     
     public function find(int $postId): ?Post
     {
         return $this->model->findOrFail($postId);
     }
     
-    public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
-    {
-        $res = $this->model;
-        
-        if (!$isPreview) {
-            $res = $res->withTagsAuthorContent()->findOrFail($postId);
-        } else {
-            $res = $res->withPreviewRelations()->findOrFail($postId);
-            
-            $res->setRelation('tags', $res->previewTags);
-            $res->makeHidden('previewTags');
-        }
-        
-        return $res;
-    }
+    // public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
+    // {
+    //     $res = $this->model;
+    //
+    //     if (!$isPreview) {
+    //         $res = $res->withTagsAuthorContent()->findOrFail($postId);
+    //     } else {
+    //         $res = $res->withPreviewRelations()->findOrFail($postId);
+    //
+    //         $res->setRelation('tags', $res->previewTags);
+    //         $res->makeHidden('previewTags');
+    //     }
+    //
+    //     return $res;
+    // }
     
     public function create(string $title): Post
     {

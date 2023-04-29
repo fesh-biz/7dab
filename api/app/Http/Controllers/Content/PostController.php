@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     protected PostRepository $repo;
     protected PostService $service;
-
+    
     public function __construct(PostRepository $repo, PostService $service)
     {
         $this->repo = $repo;
@@ -23,16 +23,31 @@ class PostController extends Controller
     
     public function top(): JsonResponse
     {
-        $posts = $this->repo->getTopPosts();
-    
-        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        $posts = $this->service->getTopPosts();
         
         return $this->sendPaginationResponse($posts);
     }
     
+    public function postView(int $postId): JsonResponse
+    {
+        
+        $post = $this->service->findPostView($postId);
+        
+        return response()->json([
+            'data' => $post,
+            'status' => 'success'
+        ]);
+    }
+    
+    public function incrementPostViewsCounter(int $id)
+    {
+        $this->repo->incrementPostViewsCounter($id);
+    }
+    
+    
     // Non Refactored
     
-    public function profilePosts (Request $r): JsonResponse
+    public function profilePosts(Request $r): JsonResponse
     {
         $search = [
             'userId' => auth()->id(),
@@ -44,43 +59,38 @@ class PostController extends Controller
         }
         
         $posts = $this->repo->getPaginatedPosts($search);
-
+        
         return response()->json($posts);
     }
     
-    public function incrementPostViewsCounter(int $id)
-    {
-        $this->repo->incrementViews($id);
-    }
-
-    public function post(int $postId, Request $r): JsonResponse
-    {
-        $isPreview = intval($r->preview) === 1;
-
-        if ($isPreview) {
-            $post = $this->repo->findWithBasicRelationships($postId, true);
-        } else {
-            $post = $this->service
-                ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
-        }
-
-        if (!$post) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Not found'
-            ], 404);
-        }
-
-        return response()->json([
-            'data' => $post,
-            'status' => 'success'
-        ]);
-    }
-
+    // public function post(int $postId, Request $r): JsonResponse
+    // {
+    //     $isPreview = intval($r->preview) === 1;
+    //
+    //     if ($isPreview) {
+    //         $post = $this->repo->findWithBasicRelationships($postId, true);
+    //     } else {
+    //         $post = $this->service
+    //             ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
+    //     }
+    //
+    //     if (!$post) {
+    //         return response()->json([
+    //             'status' => 'fail',
+    //             'message' => 'Not found'
+    //         ], 404);
+    //     }
+    //
+    //     return response()->json([
+    //         'data' => $post,
+    //         'status' => 'success'
+    //     ]);
+    // }
+    
     public function store(PostRequest $r): JsonResponse
     {
         $userId = auth()->id();
-    
+        
         $errorMessage = null;
         
         $maxPostsPerDay = 5;
@@ -101,23 +111,23 @@ class PostController extends Controller
         
         
         $post = $this->service->create($r);
-
+        
         $post = $this->repo->findWithBasicRelationships($post->id);
-
+        
         return response()->json($post);
     }
-
+    
     public function update(PostRequest $r, int $id): JsonResponse
     {
         $this->authorize('update', $this->repo->find($id));
         
         $this->service->update($r, $id);
-
+        
         $post = $this->repo->findWithBasicRelationships($id, true);
-
+        
         return response()->json($post);
     }
-
+    
     public function publish(int $id): JsonResponse
     {
         $post = $this->repo->find($id);
@@ -134,9 +144,9 @@ class PostController extends Controller
     {
         $post = $this->repo->find($id);
         $this->authorize('delete', $post);
-    
+        
         $this->service->destroy($post);
-    
+        
         return response()->json([
             'status' => 'success'
         ]);

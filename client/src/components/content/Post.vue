@@ -29,7 +29,7 @@
 
         <!-- Title -->
         <q-item
-          v-if="isPostPage"
+          v-if="isPostView"
           :dusk="'post-' + post.id + '-title'"
           class="q-px-none"
         >
@@ -39,9 +39,9 @@
         </q-item>
 
         <q-item
-          v-if="!isPostPage"
+          v-if="!isPostView"
           dense
-          :to="{ name: 'postPage', params: {id: post.id }}"
+          :to="{ name: 'postView', params: {id: post.id }}"
           :dusk="'post-' + post.id + '-title'"
           class="q-px-none"
         >
@@ -52,7 +52,7 @@
       </q-card-section>
 
       <!-- Body -->
-      <q-card-section ref="postBody" :class="{folded: !postCache.is_expanded && !isPostPage }">
+      <q-card-section ref="postBody" :class="{folded: !postCache.is_expanded && !isPostView }">
         <component
           v-for="postSection in post.content"
           :key="'postSection-' + postSection.order"
@@ -62,7 +62,7 @@
       </q-card-section>
 
       <!-- Expander -->
-      <q-card-section v-if="!postCache.is_expanded && !isPostPage" class="q-pt-none">
+      <q-card-section v-if="!postCache.is_expanded && !isPostView" class="q-pt-none">
         <div
           @click="expand"
           class="expander"
@@ -75,6 +75,7 @@
       <q-card-section :dusk="'post-' + post.id + '-info'">
         <post-info
           :post="post"
+          :is-post-view="isPostView"
         />
       </q-card-section>
 
@@ -99,12 +100,15 @@ export default {
     post: {
       type: Post,
       required: true
+    },
+    isPostView: {
+      type: Boolean,
+      required: false
     }
   },
 
   data () {
     return {
-      isPostPage: false,
       cache: new Cache(),
       postCache: {
         is_expanded: false,
@@ -117,7 +121,6 @@ export default {
 
   async created () {
     this.isHasImages = !!this.post.post_images.length
-    this.isPostPage = this.$route.name === 'postPage'
     this.postCache = await this.cache.getOrCreateEntityCache('posts', this.post.id)
   },
 

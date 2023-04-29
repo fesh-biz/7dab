@@ -24,7 +24,7 @@
           icon="question_answer"
           :tooltip="$t('total_comments')"
         >
-          <q-item v-if="!isPostPage" style="padding: 5px; margin-left: 5px" dense :to="{name: 'postPage', params: {id: post.id, toComments: true}}">
+          <q-item v-if="!isPostView" style="padding: 5px; margin-left: 5px" dense :to="{name: 'postView', params: {id: post.id, toComments: true}}">
             <q-item-section>
               <q-icon color="grey-7" name="launch" size="sm"/>
             </q-item-section>
@@ -62,17 +62,15 @@ export default {
     post: {
       type: Object,
       required: true
+    },
+    isPostView: {
+      type: Boolean,
+      required: true
     }
   },
 
   data () {
     return {
-    }
-  },
-
-  computed: {
-    isPostPage () {
-      return this.$route.name === 'postPage'
     }
   }
 }

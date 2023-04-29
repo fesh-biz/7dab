@@ -11,19 +11,17 @@ export default class Post {
     Post.instance = this
   }
 
-  incrementViews (id) {
+  incrementPostViewsCounter (id) {
     return new Promise((resolve, reject) => {
-      this.api.post(`content/posts/increment-views/${id}`)
+      this.api.post(`posts/increment-views/${id}`)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
   }
 
-  fetchPost (id, isPreview) {
-    const query = isPreview ? `content/posts/${id}?preview=1` : `content/posts/${id}`
-
+  fetchPostView (id) {
     return new Promise((resolve, reject) => {
-      this.api.get(query, null, 'posts')
+      this.api.get(`posts/${id}`, null, 'posts')
         .then(res => {
           resolve(res)
         })

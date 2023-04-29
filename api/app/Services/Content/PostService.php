@@ -35,6 +35,23 @@ class PostService
         $this->postYouTubeService = $postYouTubeService;
     }
     
+    public function getTopPosts(): LengthAwarePaginator
+    {
+        $posts = $this->repo->getTopPosts();
+        
+        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        
+        return $posts;
+    }
+    
+    public function findPostView(int $id): Post
+    {
+        $post = $this->repo->findPostView($id);
+        
+        $this->repo->incrementPostViewsCounter($post->id);
+        
+        return $post;
+    }
     
     // Non Refactored
     
@@ -49,16 +66,16 @@ class PostService
     //     return $posts;
     // }
     
-    public function findPostWithBasicRelationshipsWithIncrementingViews(int $id): Post
-    {
-        $post = $this->repo->findWithBasicRelationships($id);
-        
-        if ($post->status === 'approved') {
-            $this->repo->incrementViews($post->id);
-        }
-        
-        return $post;
-    }
+    // public function findPostWithBasicRelationshipsWithIncrementingViews(int $id): Post
+    // {
+    //     $post = $this->repo->findWithBasicRelationships($id);
+    //
+    //     if ($post->status === 'approved') {
+    //         $this->repo->incrementViews($post->id);
+    //     }
+    //
+    //     return $post;
+    // }
     
     public function create(PostRequest $data): Post
     {
