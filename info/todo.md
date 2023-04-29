@@ -1,4 +1,18 @@
+# Refactoring
+- Notice: Don't use scopes with for the Post model
+  until a refactoring will not be done
+- [] Post pages
+    - [x] Main page
+    - [] Post Page
+        - [] PostController::post(id)
+    - [] Preview Page
+        - [] Authorize .posts.user_id === auth.id
+        - [] PostController::preview(id)
+            - [] Show all tags except 'declined'
+
 # MVP
+- [] Don't display non-approved posts if user is not admin or moderator
+    - [] `posts/30`
     
 # Admin
 - [] Email notifications

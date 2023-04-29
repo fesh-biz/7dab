@@ -1,5 +1,5 @@
 <template>
-  <post-feed />
+  <post-feed url="posts/top" />
 </template>
 
 <script>

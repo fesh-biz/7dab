@@ -16,43 +16,66 @@ class PostRepository
         $this->model = $model;
     }
     
+    public function getTopPosts(): LengthAwarePaginator
+    {
+        $q = $this->model
+            ->with([
+                'tags:id,title',
+                'user:id,login,avatar',
+                'postImages',
+                'rating',
+                'postTexts',
+                'postYouTubes'
+            ]);
+    
+        if (auth('api')->user()) {
+            $q->with('myVote');
+        }
+        
+        return $q->whereStatus('approved')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+    }
+    
+    // Non Refactored
+    
     public function incrementComments(int $id): int
     {
         return $this->model->whereId($id)->increment('comments');
     }
     
-    public function getPaginatedPosts(array $search = null): LengthAwarePaginator
-    {
-        $status = $search['status'] ?? 'approved';
-        $tagsIds = $search['tagsIds'] ?? null;
-        $title = $search['title'] ?? null;
-        $userId = $search['userId'] ?? null;
-        
-        $query = $this->model
-            ->whereStatus($status)
-            ->orderBy('id', 'desc');
-        
-        if ($userId) {
-            $query = $query->whereUserId($userId);
-        }
-        
-        if ($tagsIds) {
-            $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
-                $q->whereIn('id', $tagsIds);
-            }, '=', count($tagsIds));
-        }
-        
-        if ($title) {
-            $query = $query->where('title', 'like', "%$title%");
-        }
-        
-        if (auth('api')->user()) {
-            $query->with('myVote');
-        }
-        
-        return $query->withTagsAuthorContent()
-            ->paginate(10);
-    }
+    // public function getPaginatedPosts(array $search = null): LengthAwarePaginator
+    // {
+    //     $status = $search['status'] ?? 'approved';
+    //     $tagsIds = $search['tagsIds'] ?? null;
+    //     $title = $search['title'] ?? null;
+    //     $userId = $search['userId'] ?? null;
+    //
+    //     $query = $this->model
+    //         ->whereStatus($status)
+    //         ->orderBy('id', 'desc');
+    //
+    //     if ($userId) {
+    //         $query = $query->whereUserId($userId);
+    //     }
+    //
+    //     if ($tagsIds) {
+    //         $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
+    //             $q->whereIn('id', $tagsIds);
+    //         }, '=', count($tagsIds));
+    //     }
+    //
+    //     if ($title) {
+    //         $query = $query->where('title', 'like', "%$title%");
+    //     }
+    //
+    //     if (auth('api')->user()) {
+    //         $query->with('myVote');
+    //     }
+    //
+    //     return $query->withTagsAuthorContent()
+    //         ->paginate(10);
+    // }
     
     public function getUserPostsIds(int $userId): array
     {

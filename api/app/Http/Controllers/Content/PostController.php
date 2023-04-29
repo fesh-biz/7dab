@@ -21,6 +21,17 @@ class PostController extends Controller
         $this->service = $service;
     }
     
+    public function top(): JsonResponse
+    {
+        $posts = $this->repo->getTopPosts();
+    
+        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        
+        return $this->sendPaginationResponse($posts);
+    }
+    
+    // Non Refactored
+    
     public function profilePosts (Request $r): JsonResponse
     {
         $search = [
@@ -36,17 +47,7 @@ class PostController extends Controller
 
         return response()->json($posts);
     }
-
-    public function index(Request $r): JsonResponse
-    {
-        $searchParams = [
-            'userId' => $r->uid
-        ];
-        $posts = $this->service->getPaginatedPosts(true, $searchParams);
-
-        return $this->sendPaginationResponse($posts);
-    }
-
+    
     public function incrementPostViewsCounter(int $id)
     {
         $this->repo->incrementViews($id);

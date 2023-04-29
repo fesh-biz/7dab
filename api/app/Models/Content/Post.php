@@ -135,21 +135,21 @@ class Post extends Model
         ]);
     }
     
-    public function scopeWithTagsAuthorContent(Builder $q): Builder
-    {
-        $query = $q->with([
-            'tags:id,title',
-            'user:id,login,avatar',
-            'postImages',
-            'rating',
-            'postTexts',
-            'postYouTubes'
-        ]);
-    
-        if (auth('api')->user()) {
-            $query->with('myVote');
-        }
-        
-        return $query;
-    }
+    // public function scopeWithTagsAuthorContent(Builder $q): Builder
+    // {
+    //     $query = $q->with([
+    //         'tags:id,title',
+    //         'user:id,login,avatar',
+    //         'postImages',
+    //         'rating',
+    //         'postTexts',
+    //         'postYouTubes'
+    //     ]);
+    //
+    //     if (auth('api')->user()) {
+    //         $query->with('myVote');
+    //     }
+    //
+    //     return $query;
+    // }
 }

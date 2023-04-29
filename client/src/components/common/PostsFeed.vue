@@ -24,7 +24,7 @@
 <script>
 import PostModel from 'src/models/content/post'
 import Post from 'components/content/Post'
-import PostApi from 'src/plugins/api/post'
+import Api from 'src/plugins/api/api'
 import Scroll from 'src/plugins/tools/scroll'
 import Cache from 'src/plugins/cache/cache'
 
@@ -35,6 +35,10 @@ export default {
     params: {
       type: Object,
       default: () => {}
+    },
+    url: {
+      type: String,
+      required: true
     }
   },
 
@@ -44,7 +48,7 @@ export default {
     return {
       isFetchingPosts: true,
       cache: new Cache(),
-      postApi: new PostApi(),
+      api: new Api(),
       scroll: new Scroll(),
       isPrevRequestSuccess: true,
       posts: [],
@@ -111,7 +115,7 @@ export default {
       const pagination = await this.cache.getPagination('posts')
 
       const params = Object.assign({ page: pagination.page }, this.params)
-      this.postApi.fetchPosts(params)
+      this.api.get(this.url, params, 'posts')
         .then(async res => {
           await PostModel.insert({
             data: res.data.data

@@ -61,6 +61,14 @@ Route::group(['prefix' => 'tags'], function () {
     Route::get('/search', [TagController::class, 'search']);
 });
 
+// Posts
+
+Route::group(['prefix' => 'posts'], function () {
+    Route::get('/top', [PostController::class, 'top']);
+});
+
+
+// Non Refactored
 // Content
 
 Route::group(['prefix' => 'content', 'as' => '.content'], function () {
@@ -68,7 +76,6 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
     // Posts
     
     Route::group(['prefix' => 'posts'], function () {
-        Route::get('/', [PostController::class, 'index']);
         Route::get('/{id}', [PostController::class, 'post']);
         Route::post('/increment-views/{id}', [PostController::class, 'incrementPostViewsCounter']);
         Route::post('/', [PostController::class, 'store'])->middleware([
