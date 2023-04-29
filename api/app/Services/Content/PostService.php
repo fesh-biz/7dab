@@ -158,11 +158,6 @@ class PostService
         return $sections;
     }
     
-    public function publish(Post $post)
-    {
-        $post->update(['status' => 'pending']);
-    }
-    
     public function destroy(Post $post)
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');

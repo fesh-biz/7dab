@@ -76,7 +76,7 @@ export default class Post {
   publish (id) {
     return new Promise((resolve, reject) => {
       this.api.post(
-        `/content/posts/${id}/publish`, null, null, null, true)
+        `posts/${id}/publish`, null, null, null, true)
         .then(res => resolve(res))
         .catch(err => {
           reject(err)
@@ -87,7 +87,7 @@ export default class Post {
   delete (id) {
     return new Promise((resolve, reject) => {
       this.api.post(
-        `/content/posts/${id}/delete`, null, null, null, true)
+        `posts/${id}/delete`, null, null, null, true)
         .then(res => resolve(res))
         .catch(err => {
           reject(err)

@@ -77,6 +77,12 @@ Route::group(['prefix' => 'posts'], function () {
         'auth:api',
         'image-sanitize'
     ]);
+    Route::post('/{id}/publish', [PostController::class, 'publish'])->middleware([
+        'auth:api'
+    ]);
+    Route::post('/{id}/delete', [PostController::class, 'destroy'])->middleware([
+        'auth:api'
+    ]);
 });
 
 
@@ -84,18 +90,6 @@ Route::group(['prefix' => 'posts'], function () {
 // Content
 
 Route::group(['prefix' => 'content', 'as' => '.content'], function () {
-    
-    // Posts
-    
-    Route::group(['prefix' => 'posts'], function () {
-        Route::post('/{id}/publish', [PostController::class, 'publish'])->middleware([
-            'auth:api'
-        ]);
-        Route::post('/{id}/delete', [PostController::class, 'destroy'])->middleware([
-            'auth:api'
-        ]);
-    });
-    
     // Comments
     
     Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {

@@ -171,8 +171,8 @@ class PostController extends Controller
     {
         $post = $this->repo->find($id);
         $this->authorize('publish', $post);
-        
-        $this->service->publish($post);
+    
+        $post->update(['status' => 'pending']);
         
         return response()->json([
             'status' => 'success'
