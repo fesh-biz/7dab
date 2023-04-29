@@ -41,16 +41,16 @@ class PostRepository
     {
         $q = $this->model
             ->with([
-            'tags:id,title',
-            'user:id,login,avatar',
-            'postImages',
-            'rating',
-            'postTexts',
-            'postYouTubes'
-        ]);
+                'tags:id,title',
+                'user:id,login,avatar',
+                'postImages',
+                'rating',
+                'postTexts',
+                'postYouTubes'
+            ]);
         
         if (auth('api')->user()) {
-            $q->with('myVote');
+            $q = $q->with('myVote');
         }
         
         return $q->findOrFail($id);
