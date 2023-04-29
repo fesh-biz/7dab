@@ -140,7 +140,7 @@
             v-if="canBeViewed"
             size="xl"
             icon="pageview"
-            @click="$router.push({name: 'postPage', params: {id: postId}, query: {p: 1}})"
+            @click="$router.push({name: 'postPreview', params: {id: postId} })"
           />
 
           <!-- Cancel -->
