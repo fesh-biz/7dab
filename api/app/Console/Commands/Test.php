@@ -4,39 +4,31 @@ namespace App\Console\Commands;
 
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
+use Predis\Client;
 
 class Test extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'test:sitemap';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'test {methodName}';
     protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
+    
     public function __construct()
     {
         parent::__construct();
     }
 
-
     public function handle(): void
     {
-        $testName = explode(':', $this->getName(), 2)[1];
+        $this->runTestByItsName($this->argument('methodName'));
+    }
+    
+    private function redis()
+    {
+        $client = new Client();
         
-        $this->runTestByItsName($testName);
+        $value = json_encode([1, 2, 2]);
+        $client->set('postIds', $value);
+        
+        dd(json_decode($client->get('postIds')));
     }
     
     private function sitemap()

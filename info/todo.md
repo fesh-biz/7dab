@@ -1,11 +1,9 @@
 # MVP
-- [] Don't display non-approved posts if user is not admin or moderator
-    - [] `posts/30`
-    
+
 # Admin
 - [] Email notifications
-    - [] On comment created
     - [] On Post created
+    - [] On comment created
     - [] On Post status changed to `pending`
     - [] On new user registered
 - [] Posts page
