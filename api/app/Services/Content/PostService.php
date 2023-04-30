@@ -63,30 +63,6 @@ class PostService
         return $posts;
     }
     
-    // Non Refactored
-    
-    // public function getPaginatedPosts(bool $incrementViewsCounters, array $searchCondition = []): LengthAwarePaginator
-    // {
-    //     $posts = $this->repo->getPaginatedPosts($searchCondition);
-    //
-    //     if ($incrementViewsCounters) {
-    //         $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
-    //     }
-    //
-    //     return $posts;
-    // }
-    
-    // public function findPostWithBasicRelationshipsWithIncrementingViews(int $id): Post
-    // {
-    //     $post = $this->repo->findWithBasicRelationships($id);
-    //
-    //     if ($post->status === 'approved') {
-    //         $this->repo->incrementViews($post->id);
-    //     }
-    //
-    //     return $post;
-    // }
-    
     public function create(PostRequest $data): Post
     {
         DB::beginTransaction();
