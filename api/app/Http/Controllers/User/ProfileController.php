@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Content\CommentRepository;
 use App\Repositories\Content\PostRepository;
 use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
@@ -49,5 +50,21 @@ class ProfileController extends Controller
         $posts = $postRepo->getProfilePaginatedPosts($status, $keyword);
 
         return response()->json($posts);
+    }
+    
+    public function comments(): JsonResponse
+    {
+        $repo = app()->make(CommentRepository::class);
+        $comments = $repo->getProfilePaginatedComments();
+        
+        return response()->json($comments);
+    }
+    
+    public function answers(): JsonResponse
+    {
+        $repo = app()->make(CommentRepository::class);
+        $answers = $repo->getProfilePaginatedAnswers();
+    
+        return response()->json($answers);
     }
 }

@@ -41,10 +41,10 @@ class CommentRepository
         return $this->model->create($data);
     }
     
-    // Non Refactored
-    
-    public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
+    public function getProfilePaginatedComments(): LengthAwarePaginator
     {
+        $userId = auth()->id();
+        
         return $this->model->whereUserId($userId)
             ->with(['post', 'commentable', 'rating'])
             ->withCount('cleanAnswers')
@@ -52,21 +52,16 @@ class CommentRepository
             ->paginate(10);
     }
     
-    public function getPaginatedAnswersOnUserWithPostAndParents(int $userId): LengthAwarePaginator
+    public function getProfilePaginatedAnswers(): LengthAwarePaginator
     {
+        $userId = auth()->id();
+        
         return $this->model->whereHas('commentable', function ($q) use ($userId) {
             $q->where('user_id', '=', $userId);
         })
             ->with(['post', 'commentable', 'rating', 'user'])
             ->orderBy('id', 'desc')
             ->paginate(10);
-    }
-    
-    public function update(Comment $comment, string $body): Boolean
-    {
-        return $comment->update([
-            'body' => $body
-        ]);
     }
     
     public function getUserCommentsIds(int $userId): array
@@ -93,5 +88,14 @@ class CommentRepository
         
         
         return $postsAnswers + $commentsAnswers;
+    }
+    
+    // Non Refactored
+    
+    public function update(Comment $comment, string $body): Boolean
+    {
+        return $comment->update([
+            'body' => $body
+        ]);
     }
 }

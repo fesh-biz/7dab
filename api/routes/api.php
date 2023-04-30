@@ -42,8 +42,8 @@ Route::group(['prefix' => 'users'], function () {
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
     Route::get('content-stats', [ProfileController::class, 'contentStats']);
     Route::get('posts', [ProfileController::class, 'posts']);
-    Route::get('comments', [CommentController::class, 'profileComments']);
-    Route::get('answers', [CommentController::class, 'profileAnswers']);
+    Route::get('comments', [ProfileController::class, 'comments']);
+    Route::get('answers', [ProfileController::class, 'answers']);
     Route::post('avatar', [ProfileController::class, 'uploadAvatar'])
         ->middleware('image-sanitize');
 });

@@ -43,18 +43,6 @@ class CommentController extends Controller
     
     // Non refactored
     
-    public function profileComments(): JsonResponse
-    {
-        return response()
-            ->json($this->repo->getPaginatedUserCommentsWithPostsAndParents(auth()->id()));
-    }
-
-    public function profileAnswers(): JsonResponse
-    {
-        return response()
-            ->json($this->repo->getPaginatedAnswersOnUserWithPostAndParents(auth()->id()));
-    }
-    
     public function update(CommentRequest $r, int $id): JsonResponse
     {
         /** @var Comment $comment */

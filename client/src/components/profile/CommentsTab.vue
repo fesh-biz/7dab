@@ -12,7 +12,7 @@
         <q-td>
           <!-- Preview -->
           <q-item
-            :to="{name: 'postPage', params: {id: props.props.row.post_id}, query: {c: props.props.row.id}}"
+            :to="{name: 'postView', params: {id: props.props.row.post_id}, query: {c: props.props.row.id}}"
             target="_blank"
           >
             <q-item-section>
