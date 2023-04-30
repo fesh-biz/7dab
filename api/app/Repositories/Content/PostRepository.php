@@ -63,6 +63,12 @@ class PostRepository
             ->increment('views');
     }
     
+    public function incrementPostsViewsCounters(array $ids)
+    {
+        $this->model->whereIn('id', $ids)
+            ->increment('views');
+    }
+    
     public function findPostPreview(int $id): Post
     {
         $post = $this->model
@@ -82,6 +88,40 @@ class PostRepository
         $post->makeHidden('previewTags');
         
         return $post;
+    }
+    
+    public function getPaginatedPostsBySearch(array $search = null): LengthAwarePaginator
+    {
+        $tagsIds = $search['tags_ids'] ?? null;
+        $keyword = $search['keyword'] ?? null;
+    
+        $query = $this->model
+            ->whereStatus('approved')
+            ->with([
+                'tags:id,title',
+                'user:id,login,avatar',
+                'postImages',
+                'rating',
+                'postTexts',
+                'postYouTubes'
+            ])
+            ->orderBy('id', 'desc');
+    
+        if ($tagsIds) {
+            $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
+                $q->whereIn('id', $tagsIds);
+            }, '=', count($tagsIds));
+        }
+    
+        if ($keyword) {
+            $query = $query->where('title', 'like', "%$keyword%");
+        }
+    
+        if (auth('api')->user()) {
+            $query->with('myVote');
+        }
+    
+        return $query->paginate(10);
     }
     
     // Non Refactored
@@ -129,11 +169,11 @@ class PostRepository
         return $this->model->whereUserId($userId)->pluck('id')->toArray();
     }
     
-    public function incrementViewsMultiple(array $ids)
-    {
-        $this->model->whereIn('id', $ids)
-            ->increment('views');
-    }
+    // public function incrementViewsMultiple(array $ids)
+    // {
+    //     $this->model->whereIn('id', $ids)
+    //         ->increment('views');
+    // }
     
     // public function incrementViews(int $id)
     // {

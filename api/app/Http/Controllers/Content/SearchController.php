@@ -9,18 +9,17 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
-    protected PostService $postService;
-    
-    public function __construct(PostService $postService)
+    public function posts (Request $r): JsonResponse
     {
-        $this->postService = $postService;
-    }
-    
-    public function index (Request $r): JsonResponse
-    {
-        return $this->sendPaginationResponse(
-            $this->postService
-                ->getPaginatedPosts(true, ['tagsIds' => $r->tids, 'title' => $r->kw])
-        );
+        $search = [
+            'tags_ids' => $r->tids,
+            'keyword' => $r->kw
+        ];
+        
+        $postService = app()->make(PostService::class);
+        
+        $posts = $postService->getPaginatedPostsBySearch($search);
+        
+        return $this->sendPaginationResponse($posts);
     }
 }

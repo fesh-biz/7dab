@@ -53,6 +53,16 @@ class PostService
         return $post;
     }
     
+    public function getPaginatedPostsBySearch($search): LengthAwarePaginator
+    {
+        $posts = $this->repo->getPaginatedPostsBySearch($search);
+        
+        $postsIds = $posts->pluck('id')->toArray();
+        $this->repo->incrementPostsViewsCounters($postsIds);
+        
+        return $posts;
+    }
+    
     // Non Refactored
     
     // public function getPaginatedPosts(bool $incrementViewsCounters, array $searchCondition = []): LengthAwarePaginator

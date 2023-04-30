@@ -85,6 +85,11 @@ Route::group(['prefix' => 'posts'], function () {
     ]);
 });
 
+// Search
+
+Route::group(['prefix' => 'search'], function() {
+    Route::get('/posts', [SearchController::class, 'posts']);
+});
 
 // Non Refactored
 // Content
@@ -99,8 +104,4 @@ Route::group(['prefix' => 'content', 'as' => '.content'], function () {
         Route::post('/{id}', [CommentController::class, 'update'])
             ->name('.update');
     });
-    
-    // Search
-
-    Route::get('/search', [SearchController::class, 'index']);
 });
