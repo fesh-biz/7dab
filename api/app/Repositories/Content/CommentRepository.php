@@ -36,6 +36,11 @@ class CommentRepository
         return $query->get();
     }
     
+    public function create(array $data): Comment
+    {
+        return $this->model->create($data);
+    }
+    
     // Non Refactored
     
     public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
@@ -55,11 +60,6 @@ class CommentRepository
             ->with(['post', 'commentable', 'rating', 'user'])
             ->orderBy('id', 'desc')
             ->paginate(10);
-    }
-    
-    public function create(array $data): Comment
-    {
-        return $this->model->create($data);
     }
     
     public function update(Comment $comment, string $body): Boolean
