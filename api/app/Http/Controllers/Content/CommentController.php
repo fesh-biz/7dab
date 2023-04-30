@@ -29,6 +29,18 @@ class CommentController extends Controller
         return response()->json($comments);
     }
     
+    public function store(CommentRequest $r): JsonResponse
+    {
+        return response()->json(
+            $this->service->createWithIncrementingPostCommentsCounter(
+                $r->commentable_id,
+                $r->post_id,
+                $r->commentable_type,
+                $r->body
+            )
+        );
+    }
+    
     // Non refactored
     
     public function profileComments(): JsonResponse
@@ -41,18 +53,6 @@ class CommentController extends Controller
     {
         return response()
             ->json($this->repo->getPaginatedAnswersOnUserWithPostAndParents(auth()->id()));
-    }
-    
-    public function store(CommentRequest $r): JsonResponse
-    {
-        return response()->json(
-            $this->service->createWithIncrementingPostCommentsCounter(
-                $r->commentable_id,
-                $r->post_id,
-                $r->commentable_type,
-                $r->body
-            )
-        );
     }
     
     public function update(CommentRequest $r, int $id): JsonResponse

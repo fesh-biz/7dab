@@ -24,10 +24,13 @@ class CommentService
     {
         return $this->repo->getModel();
     }
-
-    // Non Refactored
     
-    public function createWithIncrementingPostCommentsCounter(int $commentableId, int $postId, string $commentableType, string $body): Comment
+    public function createWithIncrementingPostCommentsCounter(
+        int $commentableId,
+        int $postId,
+        string $commentableType,
+        string $body
+    ): Comment
     {
         DB::beginTransaction();
         $comment = $this->repo->create([

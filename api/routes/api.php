@@ -95,10 +95,11 @@ Route::group(['prefix' => 'search'], function() {
 
 Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
     Route::get('/post-comments', [CommentController::class, 'postComments']);
-    
-    // Non Refactored
     Route::post('/', [CommentController::class, 'store'])
-        ->name('.create');
+        ->name('.create')->middleware('auth:api');
+
+    // Non Refactored
+
     Route::post('/{id}', [CommentController::class, 'update'])
         ->name('.update');
 });

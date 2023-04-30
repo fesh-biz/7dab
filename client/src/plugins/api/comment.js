@@ -25,7 +25,7 @@ export default class Comment {
 
   create (data) {
     return new Promise((resolve, reject) => {
-      this.api.post('content/comments', data, null, 'comments')
+      this.api.post('comments', data, null, 'comments')
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
