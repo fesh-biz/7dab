@@ -5,6 +5,7 @@ namespace App\Repositories\Content;
 use App\Models\Content\Comment;
 use App\Models\Content\Post;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class CommentRepository
@@ -21,6 +22,22 @@ class CommentRepository
         return $this->model;
     }
     
+    public function getPostComments(int $postId): Collection
+    {
+        $query = $this->getModel()
+            ->whereCommentableId($postId)
+            ->whereCommentableType(Post::class)
+            ->with(['answers', 'rating', 'user']);
+        
+        if (auth('api')->user()) {
+            $query->with('myVote');
+        }
+        
+        return $query->get();
+    }
+    
+    // Non Refactored
+    
     public function getPaginatedUserCommentsWithPostsAndParents(int $userId): LengthAwarePaginator
     {
         return $this->model->whereUserId($userId)
@@ -32,7 +49,7 @@ class CommentRepository
     
     public function getPaginatedAnswersOnUserWithPostAndParents(int $userId): LengthAwarePaginator
     {
-        return $this->model->whereHas('commentable', function($q) use ($userId) {
+        return $this->model->whereHas('commentable', function ($q) use ($userId) {
             $q->where('user_id', '=', $userId);
         })
             ->with(['post', 'commentable', 'rating', 'user'])
@@ -68,13 +85,13 @@ class CommentRepository
         $postsAnswers = $this->model->whereCommentableType(Post::class)
             ->whereIn('commentable_id', $postsIds)
             ->count();
-    
+        
         $commentsIds = $this->getUserCommentsIds($userId);
         $commentsAnswers = $this->model->whereCommentableType(Comment::class)
             ->whereIn('commentable_id', $commentsIds)
             ->count();
-    
-    
+        
+        
         return $postsAnswers + $commentsAnswers;
     }
 }

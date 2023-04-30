@@ -90,7 +90,7 @@ export default {
   },
 
   async created () {
-    const res = await this.api.fetch(this.postId, 'post')
+    const res = await this.api.fetchPostComments(this.postId)
     await CommentModel.insert({
       data: res.data
     })

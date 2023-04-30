@@ -39,7 +39,7 @@ class PostService
     {
         $posts = $this->repo->getTopPosts();
         
-        $this->repo->incrementViewsMultiple($posts->pluck('id')->toArray());
+        $this->repo->incrementPostsViewsCounters($posts->pluck('id')->toArray());
         
         return $posts;
     }

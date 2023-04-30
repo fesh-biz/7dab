@@ -21,6 +21,16 @@ class CommentController extends Controller
         $this->repo = $repo;
     }
     
+    public function postComments(Request $r): JsonResponse
+    {
+        $postId = $r->post_id;
+        $comments = $this->repo->getPostComments($postId);
+        
+        return response()->json($comments);
+    }
+    
+    // Non refactored
+    
     public function profileComments(): JsonResponse
     {
         return response()
@@ -31,11 +41,6 @@ class CommentController extends Controller
     {
         return response()
             ->json($this->repo->getPaginatedAnswersOnUserWithPostAndParents(auth()->id()));
-    }
-    
-    public function comments(Request $r): JsonResponse
-    {
-        return response()->json($this->service->getComments($r->commentable_type, $r->commentable_id));
     }
     
     public function store(CommentRequest $r): JsonResponse

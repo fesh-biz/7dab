@@ -24,6 +24,8 @@ class CommentService
     {
         return $this->repo->getModel();
     }
+
+    // Non Refactored
     
     public function createWithIncrementingPostCommentsCounter(int $commentableId, int $postId, string $commentableType, string $body): Comment
     {
@@ -44,22 +46,6 @@ class CommentService
         DB::commit();
         
         return $comment;
-    }
-    
-    public function getComments(string $commentableType, int $commentableId): Collection
-    {
-        $query = $this->getModel()
-            ->whereCommentableId($commentableId)
-            ->whereCommentableType($this->getCommentableModel($commentableType))
-            ->with('answers')
-            ->with('rating')
-            ->with('user');
-        
-        if (auth('api')->user()) {
-            $query->with('myVote');
-        }
-        
-        return $query->get();
     }
     
     private function getCommentableModel(string $type): ?string

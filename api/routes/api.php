@@ -91,17 +91,14 @@ Route::group(['prefix' => 'search'], function() {
     Route::get('/posts', [SearchController::class, 'posts']);
 });
 
-// Non Refactored
-// Content
+// Comments
 
-Route::group(['prefix' => 'content', 'as' => '.content'], function () {
-    // Comments
+Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
+    Route::get('/post-comments', [CommentController::class, 'postComments']);
     
-    Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
-        Route::get('/', [CommentController::class, 'comments']);
-        Route::post('/', [CommentController::class, 'store'])
-            ->name('.create');
-        Route::post('/{id}', [CommentController::class, 'update'])
-            ->name('.update');
-    });
+    // Non Refactored
+    Route::post('/', [CommentController::class, 'store'])
+        ->name('.create');
+    Route::post('/{id}', [CommentController::class, 'update'])
+        ->name('.update');
 });

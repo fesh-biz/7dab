@@ -11,14 +11,11 @@ export default class Comment {
     Comment.instance = this
   }
 
-  async fetch (commentableId, commentableType) {
+  async fetchPostComments (postId) {
     try {
       return await this.api.get(
-        'content/comments',
-        {
-          commentable_id: commentableId,
-          commentable_type: commentableType
-        },
+        'comments/post-comments',
+        { post_id: postId },
         'comments'
       )
     } catch (e) {
