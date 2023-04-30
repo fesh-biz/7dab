@@ -124,83 +124,21 @@ class PostRepository
         return $query->paginate(10);
     }
     
-    // Non Refactored
-    
-    public function incrementComments(int $id): int
+    public function getProfilePaginatedPosts(string $status, string $keyword = null): LengthAwarePaginator
     {
-        return $this->model->whereId($id)->increment('comments');
+        $userId = auth()->id();
+        
+        $q = $this->model->whereUserId($userId)
+            ->whereStatus($status)
+            ->with('rating')
+            ->orderBy('id', 'desc');
+        
+        if ($keyword) {
+            $q = $q->where('title', 'like', "%$keyword%");
+        }
+        
+        return $q->paginate(10);
     }
-    
-    // public function getPaginatedPosts(array $search = null): LengthAwarePaginator
-    // {
-    //     $status = $search['status'] ?? 'approved';
-    //     $tagsIds = $search['tagsIds'] ?? null;
-    //     $title = $search['title'] ?? null;
-    //     $userId = $search['userId'] ?? null;
-    //
-    //     $query = $this->model
-    //         ->whereStatus($status)
-    //         ->orderBy('id', 'desc');
-    //
-    //     if ($userId) {
-    //         $query = $query->whereUserId($userId);
-    //     }
-    //
-    //     if ($tagsIds) {
-    //         $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
-    //             $q->whereIn('id', $tagsIds);
-    //         }, '=', count($tagsIds));
-    //     }
-    //
-    //     if ($title) {
-    //         $query = $query->where('title', 'like', "%$title%");
-    //     }
-    //
-    //     if (auth('api')->user()) {
-    //         $query->with('myVote');
-    //     }
-    //
-    //     return $query->withTagsAuthorContent()
-    //         ->paginate(10);
-    // }
-    
-    public function getUserPostsIds(int $userId): array
-    {
-        return $this->model->whereUserId($userId)->pluck('id')->toArray();
-    }
-    
-    // public function incrementViewsMultiple(array $ids)
-    // {
-    //     $this->model->whereIn('id', $ids)
-    //         ->increment('views');
-    // }
-    
-    // public function incrementViews(int $id)
-    // {
-    //     $this->model->where('id', $id)
-    //         ->increment('views');
-    // }
-    
-    public function find(int $postId): ?Post
-    {
-        return $this->model->findOrFail($postId);
-    }
-    
-    // public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
-    // {
-    //     $res = $this->model;
-    //
-    //     if (!$isPreview) {
-    //         $res = $res->withTagsAuthorContent()->findOrFail($postId);
-    //     } else {
-    //         $res = $res->withPreviewRelations()->findOrFail($postId);
-    //
-    //         $res->setRelation('tags', $res->previewTags);
-    //         $res->makeHidden('previewTags');
-    //     }
-    //
-    //     return $res;
-    // }
     
     public function create(string $title): Post
     {
@@ -263,4 +201,70 @@ class PostRepository
         
         return $res;
     }
+    
+    // Non Refactored
+    
+    public function incrementComments(int $id): int
+    {
+        return $this->model->whereId($id)->increment('comments');
+    }
+    
+    // public function getPaginatedPosts(array $search = null): LengthAwarePaginator
+    // {
+    //     $status = $search['status'] ?? 'approved';
+    //     $tagsIds = $search['tagsIds'] ?? null;
+    //     $title = $search['title'] ?? null;
+    //     $userId = $search['userId'] ?? null;
+    //
+    //     $query = $this->model
+    //         ->whereStatus($status)
+    //         ->orderBy('id', 'desc');
+    //
+    //     if ($userId) {
+    //         $query = $query->whereUserId($userId);
+    //     }
+    //
+    //     if ($tagsIds) {
+    //         $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
+    //             $q->whereIn('id', $tagsIds);
+    //         }, '=', count($tagsIds));
+    //     }
+    //
+    //     if ($title) {
+    //         $query = $query->where('title', 'like', "%$title%");
+    //     }
+    //
+    //     if (auth('api')->user()) {
+    //         $query->with('myVote');
+    //     }
+    //
+    //     return $query->withTagsAuthorContent()
+    //         ->paginate(10);
+    // }
+    
+    public function getUserPostsIds(int $userId): array
+    {
+        return $this->model->whereUserId($userId)->pluck('id')->toArray();
+    }
+    
+    public function find(int $postId): ?Post
+    {
+        return $this->model->findOrFail($postId);
+    }
+    
+    // public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
+    // {
+    //     $res = $this->model;
+    //
+    //     if (!$isPreview) {
+    //         $res = $res->withTagsAuthorContent()->findOrFail($postId);
+    //     } else {
+    //         $res = $res->withPreviewRelations()->findOrFail($postId);
+    //
+    //         $res->setRelation('tags', $res->previewTags);
+    //         $res->makeHidden('previewTags');
+    //     }
+    //
+    //     return $res;
+    // }
 }

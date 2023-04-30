@@ -83,24 +83,42 @@ class PostController extends Controller
         return response()->json($post);
     }
     
+    public function update(PostRequest $r, int $id): JsonResponse
+    {
+        $this->authorize('update', $this->repo->find($id));
+        
+        $this->service->update($r, $id);
+        
+        $post = $this->repo->findPostPreview($id);
+        
+        return response()->json($post);
+    }
+    
+    public function publish(int $id): JsonResponse
+    {
+        $post = $this->repo->find($id);
+        $this->authorize('publish', $post);
+        
+        $post->update(['status' => 'pending']);
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+    
+    public function destroy(int $id): JsonResponse
+    {
+        $post = $this->repo->find($id);
+        $this->authorize('delete', $post);
+        
+        $this->service->destroy($post);
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
     
     // Non Refactored
-    
-    public function profilePosts(Request $r): JsonResponse
-    {
-        $search = [
-            'userId' => auth()->id(),
-            'withoutMyVotes' => true,
-            'title' => $r->keyword
-        ];
-        if (in_array($r->status, ['approved', 'draft', 'pending'])) {
-            $search['status'] = $r->status;
-        }
-        
-        $posts = $this->repo->getPaginatedPosts($search);
-        
-        return response()->json($posts);
-    }
     
     // public function post(int $postId, Request $r): JsonResponse
     // {
@@ -155,39 +173,4 @@ class PostController extends Controller
     //
     //     return response()->json($post);
     // }
-    
-    public function update(PostRequest $r, int $id): JsonResponse
-    {
-        $this->authorize('update', $this->repo->find($id));
-        
-        $this->service->update($r, $id);
-        
-        $post = $this->repo->findPostPreview($id);
-        
-        return response()->json($post);
-    }
-    
-    public function publish(int $id): JsonResponse
-    {
-        $post = $this->repo->find($id);
-        $this->authorize('publish', $post);
-    
-        $post->update(['status' => 'pending']);
-        
-        return response()->json([
-            'status' => 'success'
-        ]);
-    }
-    
-    public function destroy(int $id): JsonResponse
-    {
-        $post = $this->repo->find($id);
-        $this->authorize('delete', $post);
-        
-        $this->service->destroy($post);
-        
-        return response()->json([
-            'status' => 'success'
-        ]);
-    }
 }

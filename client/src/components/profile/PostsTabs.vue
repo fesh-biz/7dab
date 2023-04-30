@@ -175,13 +175,9 @@ export default {
     },
 
     getPostLink (post) {
-      const link = { name: 'postPage', params: { id: post.id } }
+      const routeName = this.tab === 'approved' ? 'postView' : 'postPreview'
 
-      if (this.tab !== 'approved') {
-        link.query = { p: 1 }
-      }
-
-      return link
+      return { name: routeName, params: { id: post.id } }
     }
   }
 }

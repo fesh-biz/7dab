@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Content\PostRepository;
 use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,5 +33,21 @@ class ProfileController extends Controller
         $user = $this->service->uploadAvatar($r->avatar);
         
         return response()->json($user);
+    }
+    
+    public function posts(Request $r): JsonResponse
+    {
+        $keyword = $r->keyword;
+
+        $status = null;
+        if (in_array($r->status, ['approved', 'draft', 'pending'])) {
+            $status = $r->status;
+        }
+
+        $postRepo = app()->make(PostRepository::class);
+
+        $posts = $postRepo->getProfilePaginatedPosts($status, $keyword);
+
+        return response()->json($posts);
     }
 }
