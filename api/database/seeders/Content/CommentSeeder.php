@@ -54,7 +54,7 @@ class CommentSeeder extends Seeder
                 $comment->rating()->create();
                 
                 $postRepo = app()->make(PostRepository::class);
-                $postRepo->incrementComments($postId);
+                $postRepo->incrementCommentsCounter($postId);
                 $comments[] = $comment;
             }
         }

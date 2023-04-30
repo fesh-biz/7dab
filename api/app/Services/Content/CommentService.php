@@ -45,7 +45,7 @@ class CommentService
         
         $comment->load('user', 'rating');
         
-        $this->postRepository->incrementComments($postId);
+        $this->postRepository->incrementCommentsCounter($postId);
         DB::commit();
         
         return $comment;

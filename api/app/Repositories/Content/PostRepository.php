@@ -202,45 +202,10 @@ class PostRepository
         return $res;
     }
     
-    // Non Refactored
-    
-    public function incrementComments(int $id): int
+    public function incrementCommentsCounter(int $id): int
     {
         return $this->model->whereId($id)->increment('comments');
     }
-    
-    // public function getPaginatedPosts(array $search = null): LengthAwarePaginator
-    // {
-    //     $status = $search['status'] ?? 'approved';
-    //     $tagsIds = $search['tagsIds'] ?? null;
-    //     $title = $search['title'] ?? null;
-    //     $userId = $search['userId'] ?? null;
-    //
-    //     $query = $this->model
-    //         ->whereStatus($status)
-    //         ->orderBy('id', 'desc');
-    //
-    //     if ($userId) {
-    //         $query = $query->whereUserId($userId);
-    //     }
-    //
-    //     if ($tagsIds) {
-    //         $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
-    //             $q->whereIn('id', $tagsIds);
-    //         }, '=', count($tagsIds));
-    //     }
-    //
-    //     if ($title) {
-    //         $query = $query->where('title', 'like', "%$title%");
-    //     }
-    //
-    //     if (auth('api')->user()) {
-    //         $query->with('myVote');
-    //     }
-    //
-    //     return $query->withTagsAuthorContent()
-    //         ->paginate(10);
-    // }
     
     public function getUserPostsIds(int $userId): array
     {
@@ -251,20 +216,4 @@ class PostRepository
     {
         return $this->model->findOrFail($postId);
     }
-    
-    // public function findWithBasicRelationships(int $postId, bool $isPreview = false): ?Post
-    // {
-    //     $res = $this->model;
-    //
-    //     if (!$isPreview) {
-    //         $res = $res->withTagsAuthorContent()->findOrFail($postId);
-    //     } else {
-    //         $res = $res->withPreviewRelations()->findOrFail($postId);
-    //
-    //         $res->setRelation('tags', $res->previewTags);
-    //         $res->makeHidden('previewTags');
-    //     }
-    //
-    //     return $res;
-    // }
 }
