@@ -21,14 +21,6 @@ class CommentController extends Controller
         $this->repo = $repo;
     }
     
-    public function postComments(Request $r): JsonResponse
-    {
-        $postId = $r->post_id;
-        $comments = $this->repo->getPostComments($postId);
-        
-        return response()->json($comments);
-    }
-    
     public function store(CommentRequest $r): JsonResponse
     {
         return response()->json(

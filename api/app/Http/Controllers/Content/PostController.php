@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Content;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
+use App\Repositories\Content\CommentRepository;
 use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostService;
 use Illuminate\Http\JsonResponse;
@@ -118,59 +119,11 @@ class PostController extends Controller
         ]);
     }
     
-    // Non Refactored
-    
-    // public function post(int $postId, Request $r): JsonResponse
-    // {
-    //     $isPreview = intval($r->preview) === 1;
-    //
-    //     if ($isPreview) {
-    //         $post = $this->repo->findWithBasicRelationships($postId, true);
-    //     } else {
-    //         $post = $this->service
-    //             ->findPostWithBasicRelationshipsWithIncrementingViews($postId);
-    //     }
-    //
-    //     if (!$post) {
-    //         return response()->json([
-    //             'status' => 'fail',
-    //             'message' => 'Not found'
-    //         ], 404);
-    //     }
-    //
-    //     return response()->json([
-    //         'data' => $post,
-    //         'status' => 'success'
-    //     ]);
-    // }
-    
-    // public function store(PostRequest $r): JsonResponse
-    // {
-    //     $userId = auth()->id();
-    //
-    //     $errorMessage = null;
-    //
-    //     $maxPostsPerDay = 5;
-    //     $totalPostToday = $this->repo->getTotalUserPostsForToday($userId);
-    //     if ($totalPostToday >= $maxPostsPerDay) {
-    //         $errorMessage = trans('errors.max_allowed_post_for_today_exceeded') . " (${maxPostsPerDay})";
-    //     }
-    //
-    //     $maxDraftsPerUser = 10;
-    //     $totalDrafts = $this->repo->getTotalUserDrafts($userId);
-    //     if ($totalDrafts >= $maxDraftsPerUser) {
-    //         $errorMessage = trans('errors.max_allowed_drafts_exceeded') . " (${maxDraftsPerUser})";
-    //     }
-    //
-    //     if ($errorMessage) {
-    //         abort(422, $errorMessage);
-    //     }
-    //
-    //
-    //     $post = $this->service->create($r);
-    //
-    //     $post = $this->repo->findWithBasicRelationships($post->id);
-    //
-    //     return response()->json($post);
-    // }
+    public function postComments(int $postId): JsonResponse
+    {
+        $commentRepo = app()->make(CommentRepository::class);
+        $comments = $commentRepo->getPostComments($postId);
+        
+        return response()->json($comments);
+    }
 }

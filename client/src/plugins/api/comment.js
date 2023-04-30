@@ -14,8 +14,8 @@ export default class Comment {
   async fetchPostComments (postId) {
     try {
       return await this.api.get(
-        'comments/post-comments',
-        { post_id: postId },
+        `posts/${postId}/comments`,
+        null,
         'comments'
       )
     } catch (e) {

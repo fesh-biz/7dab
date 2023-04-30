@@ -66,6 +66,7 @@ Route::group(['prefix' => 'tags'], function () {
 Route::group(['prefix' => 'posts'], function () {
     Route::get('/top', [PostController::class, 'top']);
     Route::get('/{id}', [PostController::class, 'postView']);
+    Route::get('/{id}/comments', [PostController::class, 'postComments']);
     Route::get('/{id}/preview', [PostController::class, 'postPreview'])
         ->middleware('auth:api');
     Route::post('/increment-views/{id}', [PostController::class, 'incrementPostViewsCounter']);
@@ -93,13 +94,11 @@ Route::group(['prefix' => 'search'], function() {
 
 // Comments
 
-Route::group(['prefix' => 'comments', 'as' => '.comments'], function () {
-    Route::get('/post-comments', [CommentController::class, 'postComments']);
+Route::group(['prefix' => 'comments'], function () {
     Route::post('/', [CommentController::class, 'store'])
-        ->name('.create')->middleware('auth:api');
+        ->middleware('auth:api');
 
     // Non Refactored
 
-    Route::post('/{id}', [CommentController::class, 'update'])
-        ->name('.update');
+    Route::post('/{id}', [CommentController::class, 'update']);
 });
