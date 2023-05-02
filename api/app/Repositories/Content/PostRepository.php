@@ -140,17 +140,8 @@ class PostRepository
         return $q->paginate(10);
     }
     
-    public function create(string $title): Post
+    public function create(array $data): Post
     {
-        $data = [
-            'title' => $title,
-            'user_id' => auth()->id()
-        ];
-        
-        if (auth()->user()->roleName === 'admin') {
-            $data['status'] = 'approved';
-        }
-        
         return $this->model->create($data);
     }
     

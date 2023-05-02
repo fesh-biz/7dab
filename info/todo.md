@@ -2,9 +2,7 @@
 
 # Admin
 - [] Email notifications
-    - [] On Post created
     - [] On comment created
-    - [] On Post status changed to `pending`
     - [] On new user registered
 - [] Posts page
     - [] Post table rows:

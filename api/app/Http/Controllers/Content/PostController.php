@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Content;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Content\PostRequest;
 use App\Models\Content\Post;
+use App\Redis\EmailNotificationQueues\PendingPostNotificationQueue;
 use App\Repositories\Content\CommentRepository;
 use App\Repositories\Content\PostRepository;
 use App\Services\Content\PostService;
@@ -101,6 +102,8 @@ class PostController extends Controller
         $this->authorize('publish', $post);
         
         $post->update(['status' => 'pending']);
+        $pendingPostQueue = app()->make(PendingPostNotificationQueue::class);
+        $pendingPostQueue->add($post->id);
         
         return response()->json([
             'status' => 'success'

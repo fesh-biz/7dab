@@ -65,8 +65,13 @@ class PostService
     
     public function create(PostRequest $data): Post
     {
+        $postData = [
+            'title' => $data['title'],
+            'user_id' => auth()->id()
+        ];
+        
         DB::beginTransaction();
-        $post = $this->repo->create($data['title']);
+        $post = $this->repo->create($postData);
         
         $sections = $data['sections'];
         
