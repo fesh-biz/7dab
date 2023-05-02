@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Redis\Redis;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
-use Predis\Client;
 
 class Test extends Command
 {
@@ -23,12 +23,19 @@ class Test extends Command
     
     private function redis()
     {
-        $client = new Client();
+        $r = app()->make(Redis::class);
         
-        $value = json_encode([1, 2, 2]);
-        $client->set('postIds', $value);
+        $this->info('Key is: ' . $r->getKey());
         
-        dd(json_decode($client->get('postIds')));
+        $r->create(1, ['value' => 1]);
+        $r->create(2, ['value' => 2]);
+        $this->info('All:');
+        dump($r->all());
+        
+        $r->deleteAll();
+        $this->info('Deleted all:');
+        dump($r->all());
+        $this->info('Finished');
     }
     
     private function sitemap()
