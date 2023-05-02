@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'IconWithToolTip',
+  name: 'IconWithTooltip',
 
   props: {
     icon: {

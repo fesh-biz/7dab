@@ -1,12 +1,16 @@
 <template>
-  <div>
-    <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetching" indeterminate/>
+  <div class="row justify-center q-px-sm">
+    <div class="col-sm-12 col-xs-12 col-md-8 col-lg-6 col-xl-5">
+      <div>
+        <q-linear-progress :class="{'q-mt-md': !$q.platform.is.mobile}" v-if="isFetching" indeterminate/>
 
-    <post
-      v-if="!isFetching"
-      :post="post"
-      isPostView
-    />
+        <post
+          v-if="!isFetching"
+          :post="post"
+          isPostView
+        />
+      </div>
+    </div>
   </div>
 </template>
 

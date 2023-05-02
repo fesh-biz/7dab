@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="admin-posts">
     <!-- Tags Table -->
     <data-table
       :columns="columns"
@@ -11,6 +11,24 @@
     >
       <template #table="props">
         <q-tr>
+          <!-- Actions -->
+          <q-td>
+            <!-- Preview -->
+            <q-item
+              :to="{name: 'admin.posts.preview', params: {id: props.props.row.id}}"
+              target="_blank"
+            >
+              <q-item-section>
+                <icon-with-tooltip
+                  :tooltip="$t('preview')"
+                  color="positive"
+                  size="sm"
+                  icon="pageview"
+                />
+              </q-item-section>
+            </q-item>
+          </q-td>
+
           <!-- ID -->
           <q-td>
             {{ props.props.row.id }}
@@ -22,7 +40,7 @@
           </q-td>
 
           <!-- Status -->
-          <q-td>
+          <q-td @click="setPrevData(props.props.row)">
             {{ props.props.row.status }}
             <q-popup-edit
               buttons
@@ -31,7 +49,7 @@
             >
               <status
                 :tag="props.props.row"
-                @update="update"
+                @update="updateTableItem"
               />
             </q-popup-edit>
           </q-td>
@@ -46,8 +64,16 @@ import DataTable from 'components/common/DataTable'
 import Status from 'components/form/admin/tags/Status'
 import _ from 'lodash'
 import Api from 'src/plugins/api/api'
+import IconWithTooltip from 'components/common/IconWithTooltip'
 
 const columns = [
+  {
+    name: '',
+    required: true,
+    label: '',
+    align: 'left',
+    sortable: true
+  },
   {
     name: 'id',
     required: true,
@@ -75,6 +101,7 @@ export default {
   name: 'Index',
 
   components: {
+    IconWithTooltip,
     DataTable,
     Status
   },
@@ -94,7 +121,7 @@ export default {
       this.prevData = _.cloneDeep(item)
     },
 
-    update (item) {
+    updateTableItem (item) {
       const tableData = _.cloneDeep(this.$refs.datatable.data)
 
       const index = _.findIndex(tableData, { id: item.id })
@@ -108,7 +135,7 @@ export default {
       data[propName] = item[propName]
 
       const url = `admin/posts/${item.id}`
-      this.api.post(url, data, null, null)
+      this.api.post(url, data, null, null, true)
         .then(() => {
           this.$q.notify({
             message: 'Ok',
@@ -116,7 +143,7 @@ export default {
           })
         })
         .catch(() => {
-          this.update(this.prevData)
+          this.updateTableItem(this.prevData)
           this.$q.notify({
             message: 'Fail',
             color: 'negative'
@@ -126,3 +153,11 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.admin-posts
+  .q-item
+    padding: 0
+    min-height: unset
+    float: left
+</style>

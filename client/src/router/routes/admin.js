@@ -29,5 +29,14 @@ export default [
       title: 'posts'
     },
     component: () => import('pages/admin/post/Index')
+  },
+  {
+    path: 'admin/posts/:id/preview',
+    name: 'admin.posts.preview',
+    meta: {
+      middleware: [isAdmin],
+      title: 'posts'
+    },
+    component: () => import('pages/admin/post/Preview')
   }
 ]
