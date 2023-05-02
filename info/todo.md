@@ -1,9 +1,6 @@
 # MVP
 
 # Admin
-- [] Email notifications
-    - [] On comment created
-    - [] On new user registered
 - [] Posts page
     - [] Post table rows:
         - [] `id`

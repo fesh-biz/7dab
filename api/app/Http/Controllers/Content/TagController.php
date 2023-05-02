@@ -24,23 +24,4 @@ class TagController extends Controller
         
         return response()->json($data);
     }
-    
-    public function paginatedSearch(Request $r): JsonResponse
-    {
-        $desc = $r->descending === 'true' ? 'desc' : 'asc';
-        $orderBy = $r->sortBy;
-        $keyword = $r->keyword;
-
-        return response()->json(
-            $this->service->paginatedSearch($keyword, $orderBy, $desc)
-        );
-    }
-    
-    public function update(TagRequest $r, $id): JsonResponse
-    {
-        $tag = $this->service->getModel()->findOrFail($id);
-        $tag->update($r->validated());
-        
-        return response()->json(['status' => 'success']);
-    }
 }
