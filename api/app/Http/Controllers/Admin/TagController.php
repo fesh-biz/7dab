@@ -20,7 +20,7 @@ class TagController extends Controller
         $this->repo = $repo;
     }
     
-    public function paginatedSearch(Request $r): JsonResponse
+    public function index(Request $r): JsonResponse
     {
         $desc = $r->descending === 'true' ? 'desc' : 'asc';
         $orderBy = $r->sortBy;

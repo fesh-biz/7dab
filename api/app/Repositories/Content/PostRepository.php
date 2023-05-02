@@ -90,6 +90,26 @@ class PostRepository
         return $post;
     }
     
+    public function getAdminPaginatedPostsBySearch(array $search = null): LengthAwarePaginator
+    {
+        $keyword = $search['keyword'] ?? null;
+        
+        $orderBy = $search['order_by'] ?? 'id';
+        $descending = 'desc';
+        if (array_key_exists('is_descending', $search)) {
+            $descending = $search['is_descending'] ? 'desc' : 'asc';
+        }
+        
+        $query = $this->model
+            ->orderBy($orderBy, $descending);
+        
+        if ($keyword) {
+            $query = $query->where('title', 'like', "%$keyword%");
+        }
+        
+        return $query->paginate(10);
+    }
+    
     public function getPaginatedPostsBySearch(array $search = null): LengthAwarePaginator
     {
         $tagsIds = $search['tags_ids'] ?? null;

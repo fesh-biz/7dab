@@ -3,9 +3,9 @@
     <!-- Tags Table -->
     <data-table
       :columns="columns"
-      url="admin/tags"
+      url="admin/posts"
       rowKey="id"
-      title="Tags"
+      :title="title"
       use-body
       ref="datatable"
     >
@@ -19,13 +19,6 @@
           <!-- Title -->
           <q-td>
             {{ props.props.row.title }}
-            <q-popup-edit
-              buttons
-              v-model="props.props.row.title"
-              @save="storeTag(props.props.row, 'title')"
-            >
-              <q-input @focus="setTagPrevData(props.props.row)" @input="updateTag(props.props.row)" v-model="props.props.row.title" />
-            </q-popup-edit>
           </q-td>
 
           <!-- Status -->
@@ -38,7 +31,7 @@
             >
               <status
                 :tag="props.props.row"
-                @update="updateTag"
+                @update="update"
               />
             </q-popup-edit>
           </q-td>
@@ -52,7 +45,7 @@
 import DataTable from 'components/common/DataTable'
 import Status from 'components/form/admin/tags/Status'
 import _ from 'lodash'
-import Tag from 'src/plugins/api/tag'
+import Api from 'src/plugins/api/api'
 
 const columns = [
   {
@@ -79,7 +72,7 @@ const columns = [
 ]
 
 export default {
-  name: 'Tags',
+  name: 'Index',
 
   components: {
     DataTable,
@@ -89,30 +82,33 @@ export default {
   data () {
     return {
       columns,
-      tagApi: new Tag(),
-      tagPrevData: {}
+      api: new Api(),
+      prevData: {},
+      updateUrl: 'admin/posts',
+      title: 'Posts'
     }
   },
 
   methods: {
-    setTagPrevData (tag) {
-      this.tagPrevData = _.cloneDeep(tag)
+    setPrevData (item) {
+      this.prevData = _.cloneDeep(item)
     },
 
-    updateTag (tag) {
+    update (item) {
       const tableData = _.cloneDeep(this.$refs.datatable.data)
 
-      const index = _.findIndex(tableData, { id: tag.id })
-      tableData.splice(index, 1, tag)
+      const index = _.findIndex(tableData, { id: item.id })
+      tableData.splice(index, 1, item)
 
       this.$refs.datatable.data = tableData
     },
 
-    storeTag (tag, propName) {
+    storeTag (item, propName) {
       const data = {}
-      data[propName] = tag[propName]
+      data[propName] = item[propName]
 
-      this.tagApi.update(tag.id, data)
+      const url = `admin/posts/${item.id}`
+      this.api.post(url, data, null, null)
         .then(() => {
           this.$q.notify({
             message: 'Ok',
@@ -120,7 +116,7 @@ export default {
           })
         })
         .catch(() => {
-          this.updateTag(this.tagPrevData)
+          this.update(this.prevData)
           this.$q.notify({
             message: 'Fail',
             color: 'negative'

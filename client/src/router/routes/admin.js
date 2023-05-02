@@ -10,6 +10,7 @@ export default [
     },
     component: () => import('pages/admin/Index')
   },
+  // Tags
   {
     path: 'admin/tags',
     name: 'admin.tags',
@@ -18,5 +19,15 @@ export default [
       title: 'tags'
     },
     component: () => import('pages/admin/Tags')
+  },
+  // Posts
+  {
+    path: 'admin/posts',
+    name: 'admin.posts',
+    meta: {
+      middleware: [isAdmin],
+      title: 'posts'
+    },
+    component: () => import('pages/admin/post/Index')
   }
 ]

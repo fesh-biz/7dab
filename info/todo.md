@@ -3,11 +3,13 @@
 # Admin
 - [] Posts page
     - [] Post table rows:
+        - [] Preview, View, Edit
         - [] `id`
         - [] `title` up to 4 words + ..., as link to post
         - [] `status`
-        - [] 
-        - []
+        - [] `rating`
+        - [] `views`
+        - [] `comments`
 - [] Rules page
 - [] Form to allow make proposals of improvement
     - [] Page with simple form
