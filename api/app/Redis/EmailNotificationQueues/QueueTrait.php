@@ -19,6 +19,13 @@ trait QueueTrait
         return $this->search('is_sent', false);
     }
     
+    public function  getIdsForSending(): array
+    {
+        $pendingEntities = $this->search('is_sent', false);
+        
+        return array_keys($pendingEntities);
+    }
+    
     public function  deleteSentNotifications()
     {
         $res = $this->search('is_sent', true);

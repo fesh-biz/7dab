@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Redis\EmailNotificationQueues\PendingPostNotificationQueue;
 use App\Redis\Redis;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
@@ -19,6 +20,14 @@ class Test extends Command
     public function handle(): void
     {
         $this->runTestByItsName($this->argument('methodName'));
+    }
+    
+    private function test()
+    {
+        $p = app()->make(PendingPostNotificationQueue::class);
+        
+        $p->add(29);
+        $p->add(32);
     }
     
     private function redis()

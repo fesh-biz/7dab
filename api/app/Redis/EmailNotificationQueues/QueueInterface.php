@@ -8,6 +8,8 @@ interface QueueInterface
     
     public function markAsSent(int $id);
     
+    public function  getIdsForSending(): array;
+    
     public function getNotificationsForSending(): array;
     
     public function deleteSentNotifications();
