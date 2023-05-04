@@ -36,13 +36,19 @@ class AuthController extends Controller
         
         return response()->json('success');
     }
-    
 
     public function logout(): JsonResponse
     {
         auth()->user()->token()->delete();
 
         return response()->json('Success');
+    }
+    
+    public function resendEmailVerification(): JsonResponse
+    {
+        $this->sendEmailVerification(auth()->user());
+        
+        return response()->json('success');
     }
 
     public function register(UserRequest $r): JsonResponse
@@ -51,14 +57,7 @@ class AuthController extends Controller
 
         $user = $this->userRepo->createNewUser($userData);
     
-        $mailService = new MailService();
-        $mailService->sendEmail(
-            $user->email,
-            new EmailVerification(
-                encodeId($user->id),
-                $user->login
-            )
-        );
+        $this->sendEmailVerification($user);
 
         return $this->authUser($user, $userData['password']);
     }
@@ -107,5 +106,17 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return $this->sendErrorMessage(trans('common.something_went_wrong'));
         }
+    }
+    
+    private function sendEmailVerification($user)
+    {
+        $mailService = new MailService();
+        $mailService->sendEmail(
+            $user->email,
+            new EmailVerification(
+                encodeId($user->id),
+                $user->login
+            )
+        );
     }
 }

@@ -141,4 +141,8 @@ export default class UserApi {
         .catch(err => reject(err))
     })
   }
+
+  async resendEmailVerification () {
+    return await this.api.get('resend-email-verification', null, null, true)
+  }
 }

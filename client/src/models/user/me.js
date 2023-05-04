@@ -7,7 +7,7 @@ export default class Me extends AppModel {
     return {
       id: this.uid(null),
       login: this.string(''),
-      email: this.string(''),
+      is_verified: this.boolean(false),
       role_id: this.number(0),
       avatar: this.attr(null)
     }

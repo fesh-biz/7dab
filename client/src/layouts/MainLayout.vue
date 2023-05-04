@@ -70,6 +70,8 @@
         </div>
       </q-page>
     </q-page-container>
+
+    <verify-email />
   </q-layout>
 </template>
 
@@ -77,10 +79,12 @@
 import UserMenu from 'components/navbar/UserMenu'
 import GuestMenu from 'components/navbar/GuestMenu'
 import Me from 'src/models/user/me'
+import VerifyEmail from 'components/layout/VerifyEmail'
 
 export default {
   name: 'MainLayout',
   components: {
+    VerifyEmail,
     GuestMenu,
     UserMenu
   },

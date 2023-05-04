@@ -28,6 +28,7 @@ Route::post('verify-email', [AuthController::class, 'verifyEmail']);
 Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('/resend-email-verification', [AuthController::class, 'resendEmailVerification']);
 });
 
 // Users

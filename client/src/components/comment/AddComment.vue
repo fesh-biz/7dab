@@ -16,6 +16,7 @@
           outlined
           :autofocus="isReply"
           @focus="checkAuth"
+          ref="input"
           v-model="formModel.body"
           :error="!!validator.errors.body"
           :error-message="validator.errors.body"
@@ -104,6 +105,9 @@ export default {
       if (!this.me) {
         this.showUnauthMessage()
         return false
+      } else if (!this.me.is_verified) {
+        this.$refs.input.blur()
+        this.$root.$emit('verify-email')
       }
 
       return true

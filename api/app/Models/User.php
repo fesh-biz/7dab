@@ -87,6 +87,15 @@ class User extends Authenticatable
         3 => 'user'
     ];
     
+    protected $appends = [
+        'is_verified'
+    ];
+    
+    public function getIsVerifiedAttribute(): bool
+    {
+        return !is_null($this->email_verified_at);
+    }
+    
     public function getRoleNameAttribute(): string
     {
         return $this->roles[auth()->user()->role_id];
