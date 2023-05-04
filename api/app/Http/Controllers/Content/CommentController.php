@@ -23,6 +23,10 @@ class CommentController extends Controller
     
     public function store(CommentRequest $r): JsonResponse
     {
+        if (!auth()->user()->email_verified_at) {
+            abort(401);
+        }
+        
         return response()->json(
             $this->service->createWithIncrementingPostCommentsCounter(
                 $r->commentable_id,

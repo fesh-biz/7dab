@@ -57,6 +57,10 @@ class PostController extends Controller
     
     public function store(PostRequest $r): JsonResponse
     {
+        if (!auth()->user()->email_verified_at) {
+            abort(401);
+        }
+        
         $userId = auth()->id();
         
         $errorMessage = null;
