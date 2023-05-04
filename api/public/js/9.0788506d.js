@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[9],{5117:function(n,e,t){"use strict";t.r(e);var a=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",[n._v("\n  Admin\n")])},r=[],u={name:"Index",data(){return{}}},l=u,c=t("2877"),i=Object(c["a"])(l,a,r,!1,null,null,null);e["default"]=i.exports}}]);
