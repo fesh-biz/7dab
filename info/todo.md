@@ -1,21 +1,17 @@
 # MVP
+- [] Resending email approving
+    - [] User without `email_verified_at` can't:
+        - [] Create posts
+        - [] Create comments
+        - [] Notify him that he needs to verify his email
+            - [] Notification must have a button to send email verification link
+            - [] On click send and notice to check spam folder
 
-# Admin
-- [] Posts page
-    - [] Post table rows:
-        - [] Preview, View, Edit
-        - [] `id`
-        - [] `title` up to 4 words + ..., as link to post
-        - [] `status`
-        - [] `rating`
-        - [] `views`
-        - [] `comments`
-- [] Rules page
+# Features
 - [] Form to allow make proposals of improvement
     - [] Page with simple form
     - [] Page with accepted proposals for implementation
 
-------------------------------- After MVP ----------------------------------
 # Sitemap
 - [] Sitemap
     - [] Finish

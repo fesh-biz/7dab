@@ -3,7 +3,7 @@
     dence
     outlined
     v-model="model"
-    :options="options"
+    :options="statuses"
     @input="onChange"
   />
 </template>
@@ -11,34 +11,39 @@
 <script>
 import _ from 'lodash'
 
+const statuses = [
+  { label: 'Pending', value: 'pending' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Rejected', value: 'rejected' }
+]
+
 export default {
   name: 'Status',
 
   props: {
-    tag: {
+    item: {
       type: Object,
       required: true
+    },
+    statuses: {
+      type: Array,
+      default: () => statuses
     }
   },
 
   data () {
     return {
-      model: null,
-      options: [
-        { label: 'Pending', value: 'pending' },
-        { label: 'Approved', value: 'approved' },
-        { label: 'Rejected', value: 'rejected' }
-      ]
+      model: null
     }
   },
 
   created () {
-    this.model = _.find(this.options, { value: this.tag.status })
+    this.model = _.find(this.statuses, { value: this.item.status })
   },
 
   methods: {
     onChange () {
-      this.$emit('update', Object.assign(this.tag, { status: this.model.value }))
+      this.$emit('update', Object.assign(this.item, { status: this.model.value }))
     }
   }
 }

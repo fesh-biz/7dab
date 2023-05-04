@@ -48,10 +48,26 @@
               @save="storeTag(props.props.row, 'status')"
             >
               <status
-                :tag="props.props.row"
+                :item="props.props.row"
+                :statuses="statuses"
                 @update="updateTableItem"
               />
             </q-popup-edit>
+          </q-td>
+
+          <!-- Views -->
+          <q-td>
+            {{ props.props.row.views }}
+          </q-td>
+
+          <!-- Views -->
+          <q-td>
+            {{ props.props.row.comments }}
+          </q-td>
+
+          <!-- Views -->
+          <q-td>
+            {{ moment(props.props.row.created_at).format('YYYY-MM-DD') }}
           </q-td>
         </q-tr>
       </template>
@@ -65,6 +81,7 @@ import Status from 'components/form/admin/tags/Status'
 import _ from 'lodash'
 import Api from 'src/plugins/api/api'
 import IconWithTooltip from 'components/common/IconWithTooltip'
+import moment from 'moment'
 
 const columns = [
   {
@@ -94,6 +111,27 @@ const columns = [
     label: 'Status',
     align: 'left',
     sortable: true
+  },
+  {
+    name: 'views',
+    required: true,
+    label: 'Views',
+    align: 'left',
+    sortable: true
+  },
+  {
+    name: 'comments',
+    required: true,
+    label: 'Comments',
+    align: 'left',
+    sortable: true
+  },
+  {
+    name: 'created_at',
+    required: true,
+    label: 'Created at',
+    align: 'left',
+    sortable: true
   }
 ]
 
@@ -112,7 +150,16 @@ export default {
       api: new Api(),
       prevData: {},
       updateUrl: 'admin/posts',
-      title: 'Posts'
+      title: 'Posts',
+      moment: moment,
+      statuses: [
+        { label: 'Draft', value: 'draft' },
+        { label: 'Pending', value: 'pending' },
+        { label: 'Reviewing', value: 'reviewing' },
+        { label: 'Approved', value: 'approved' },
+        { label: 'Declined', value: 'declined' },
+        { label: 'Editing', value: 'editing' }
+      ]
     }
   },
 

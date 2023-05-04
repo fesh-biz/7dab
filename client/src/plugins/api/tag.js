@@ -38,7 +38,7 @@ export default class Tag {
 
   update (id, data) {
     return new Promise((resolve, reject) => {
-      this.api.put(`admin/tags/${id}`, data)
+      this.api.put(`admin/tags/${id}`, data, null, null, true)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })

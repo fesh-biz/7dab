@@ -37,7 +37,7 @@
               @save="storeTag(props.props.row, 'status')"
             >
               <status
-                :tag="props.props.row"
+                :item="props.props.row"
                 @update="updateTag"
               />
             </q-popup-edit>
