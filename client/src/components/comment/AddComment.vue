@@ -21,10 +21,34 @@
           :error="!!validator.errors.body"
           :error-message="validator.errors.body"
           @input="validator.resetErrors()"
+          @blur="onInputBlur"
         />
       </q-card-section>
 
       <q-separator />
+
+      <q-card-section
+        v-if="showUnauthMessage"
+      >
+        <p>
+          <strong style="color: red">{{ $t('need_to_login_or_register') }}</strong>
+        </p>
+
+        <q-btn
+          dense
+          no-caps
+          :to="{name: 'login'}"
+          label="Увійти"
+        />
+
+        <q-btn
+          dense
+          no-caps
+          class="q-ml-sm"
+          :to="{name: 'register'}"
+          label="Зареєструватись"
+        />
+      </q-card-section>
 
       <!-- Submit Button -->
       <q-card-actions class="q-ml-sm">
@@ -84,7 +108,8 @@ export default {
       isSubmitting: false,
       api: new Comment(),
       validator: new Validator(formModel),
-      scroll: new Scroll()
+      scroll: new Scroll(),
+      showUnauthMessage: false
     }
   },
 
@@ -101,16 +126,25 @@ export default {
   },
 
   methods: {
+    onInputBlur () {
+      setTimeout(() => {
+        this.showUnauthMessage = false
+      }, 500)
+    },
+
     checkAuth () {
+      let res = true
+
       if (!this.me) {
-        this.showUnauthMessage()
-        return false
+        this.showUnauthMessage = true
+        res = false
       } else if (!this.me.is_verified) {
         this.$refs.input.blur()
         this.$root.$emit('verify-email')
+        res = false
       }
 
-      return true
+      return res
     },
 
     submit () {
@@ -171,14 +205,6 @@ export default {
           element.classList.remove('flash')
         }, 2000) // remove the class after 2 seconds
       }
-    },
-
-    showUnauthMessage () {
-      this.$q.notify({
-        message: this.$t('need_to_login_or_register'),
-        position: 'center',
-        color: 'negative'
-      })
     }
   }
 }
