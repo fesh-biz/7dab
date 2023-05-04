@@ -168,6 +168,7 @@ import PostEditor from 'src/plugins/editor/post'
 import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
 import YouTubeField from 'components/form/common/YouTubeField'
+import Me from 'src/models/user/me'
 
 export default {
   name: 'AddPost',
@@ -213,6 +214,11 @@ export default {
   },
 
   created () {
+    const me = Me.query().first()
+    if (!me.is_verified) {
+      this.$root.$emit('verify-email')
+    }
+
     this.postEditor.resetFormModel()
     setTimeout(() => {
       this.postEditor.addSection('text')
