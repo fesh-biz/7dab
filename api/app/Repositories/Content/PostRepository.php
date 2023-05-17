@@ -114,6 +114,7 @@ class PostRepository
     {
         $tagsIds = $search['tags_ids'] ?? null;
         $keyword = $search['keyword'] ?? null;
+        $userId = $search['user_id'] ?? null;
     
         $query = $this->model
             ->whereStatus('approved')

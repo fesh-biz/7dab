@@ -107,12 +107,12 @@ export default {
     avatar () {
       let res = null
       const baseUrl = '/storage/user-avatars/o'
-      let a = this.me.avatar
+      let a = this?.me?.avatar
       if (this.isProfilePage && a) {
         res = `${baseUrl}/${a}`
       }
 
-      a = this.stats.profile.avatar
+      a = this.stats?.profile?.avatar
       if (a) {
         res = `${baseUrl}/${a}`
       }

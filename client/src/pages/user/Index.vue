@@ -2,7 +2,7 @@
   <div class="q-mt-md">
     <stats :user-id="userId"/>
 
-    <post-feed :params="{uid: userId}"/>
+    <post-feed :url="`users/${userId}/posts`" :params="{uid: userId}"/>
   </div>
 </template>
 
