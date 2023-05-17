@@ -40,6 +40,6 @@ class UserController extends Controller
         $postService = app()->make(PostService::class);
         $posts = $postService->getPaginatedPostsBySearch(['user_id' => $userId]);
         
-        return response()->json($posts);
+        return $this->sendPaginationResponse($posts);
     }
 }
