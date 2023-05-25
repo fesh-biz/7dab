@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use App\Redis\EmailNotificationQueues\PendingPostNotificationQueue;
 use App\Redis\Redis;
 use App\Services\Sitemap\SitemapService;
@@ -22,12 +23,23 @@ class Test extends Command
         $this->runTestByItsName($this->argument('methodName'));
     }
     
-    private function test()
+    private function createFakeUsers()
     {
-        $p = app()->make(PendingPostNotificationQueue::class);
+        $nickNames = ['папірець', 'IronMan', 'Neruhomyi', 'JBaserok', 'musicIsMyNature', 'Snicker',
+            'трошкиСобі'];
         
-        $p->add(29);
-        $p->add(32);
+        foreach ($nickNames as $nick) {
+            User::create([
+                'login' => $nick,
+                'email' => $nick . '@terevenky.com',
+                'email_verified_at' => now(),
+                'password' => bcrypt('Fesh717658')
+            ]);
+        }
+    
+        User::all()->map(function ($u) {
+            $this->info($u->email);
+        });
     }
     
     private function redis()
