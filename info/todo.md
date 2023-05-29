@@ -1,6 +1,3 @@
-# Fixes
-- [] Profile's posts are wrong it selects all
-
 # Filling
 - [x] Command to create fake users
     - [x] email `nickName@terevenky.com`

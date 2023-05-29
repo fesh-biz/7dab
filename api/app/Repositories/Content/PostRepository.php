@@ -128,6 +128,10 @@ class PostRepository
                 'postYouTubes'
             ])
             ->orderBy('id', 'desc');
+        
+        if ($userId) {
+            $query = $query->whereUserId($userId);
+        }
     
         if ($tagsIds) {
             $query = $query->whereHas('tags', function ($q) use ($tagsIds) {
