@@ -29,12 +29,15 @@ class Test extends Command
             'трошкиСобі'];
         
         foreach ($nickNames as $nick) {
-            User::create([
+            $user = User::create([
                 'login' => $nick,
                 'email' => $nick . '@terevenky.com',
-                'email_verified_at' => now(),
                 'password' => bcrypt('Fesh717658')
             ]);
+            
+            $user->email_verified_at = now();
+            $user->created_at = now()->subDays(mt_rand(10, 60));
+            $user->save();
         }
     
         User::all()->map(function ($u) {

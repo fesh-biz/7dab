@@ -65,20 +65,24 @@ class PostService
     
     public function create(PostRequest $data): Post
     {
+        $userId = auth()->id();
+        if ($userId === 1 && $data->fake_user_id) {
+            $userId = $data->fake_user_id;
+        }
+        
         $postData = [
             'title' => $data['title'],
-            'user_id' => auth()->id()
+            'user_id' => $userId
         ];
         
         DB::beginTransaction();
         $post = $this->repo->create($postData);
-        
         $sections = $data['sections'];
         
         foreach ($sections as $section) {
             $this->createSection($post->id, $section);
         }
-        
+    
         $tags = $data->tags;
         $this->syncWithTags($tags, $post);
         DB::commit();

@@ -80,6 +80,10 @@
       </div>
     </q-card-section>
 
+    <q-card-section v-if="me.id === 1">
+      <select-fake-user v-model="postEditor.fake_user_id" />
+    </q-card-section>
+
     <!-- Post controls -->
     <q-card-section class="flex justify-between">
       <q-inner-loading
@@ -169,11 +173,13 @@ import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
 import YouTubeField from 'components/form/common/YouTubeField'
 import Me from 'src/models/user/me'
+import SelectFakeUser from 'components/form/post/SelectFakeUser'
 
 export default {
   name: 'AddPost',
 
   components: {
+    SelectFakeUser,
     TooltipIcon,
     ImageField,
     TextField,
@@ -192,6 +198,10 @@ export default {
   },
 
   computed: {
+    me () {
+      return Me.query().first() || {}
+    },
+
     sectionsErrors () {
       return this.postEditor.validator.errors.sections
     },
@@ -214,8 +224,7 @@ export default {
   },
 
   created () {
-    const me = Me.query().first()
-    if (!me.is_verified) {
+    if (!this.me.is_verified) {
       this.$root.$emit('verify-email')
     }
 

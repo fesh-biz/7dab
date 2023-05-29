@@ -17,6 +17,7 @@ export default class Post {
     }
 
     this.formModel = _.cloneDeep(formModel)
+    this.fake_user_id = null
     this.api = new PostApi()
     this.totalImages = 0
     this.totalImagesMax = 10
@@ -165,6 +166,10 @@ export default class Post {
     const model = this.formModel
     const formData = new FormData()
     formData.append('title', model.title)
+
+    if (this.fake_user_id) {
+      formData.append('fake_user_id', this.fake_user_id)
+    }
 
     for (let i = 0; i < model.sections.length; i++) {
       const section = model.sections[i]

@@ -80,7 +80,8 @@ class PostRepository
                 'postYouTubes'
             ])->findOrFail($id);
         
-        if (auth()->id() !== $post->user_id) {
+        $authId = auth()->id();
+        if ($authId !== 1 && $authId !== $post->user_id) {
             abort(401, 'Unauthorized');
         }
         
