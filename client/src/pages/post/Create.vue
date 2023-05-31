@@ -173,7 +173,7 @@ import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
 import YouTubeField from 'components/form/common/YouTubeField'
 import Me from 'src/models/user/me'
-import SelectFakeUser from 'components/form/post/SelectFakeUser'
+import SelectFakeUser from 'components/fake-user/SelectFakeUser'
 
 export default {
   name: 'AddPost',
