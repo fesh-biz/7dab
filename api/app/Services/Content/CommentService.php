@@ -7,6 +7,7 @@ use App\Models\Content\Post;
 use App\Repositories\Content\CommentRepository;
 use App\Repositories\Content\PostRepository;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class CommentService
@@ -32,9 +33,16 @@ class CommentService
         string $body
     ): Comment
     {
+        $authId = auth('api')->id();
+        
+        $r = app()->make(Request::class);
+        if ($authId === 1 && $r->fake_user_id) {
+            $authId = $r->fake_user_id;
+        }
+        
         DB::beginTransaction();
         $comment = $this->repo->create([
-            'user_id' => auth('api')->id(),
+            'user_id' => $authId,
             'commentable_id' => $commentableId,
             'commentable_type' => $this->getCommentableModel($commentableType),
             'body' => $body,

@@ -1,10 +1,12 @@
 <template>
   <q-select
+    dense
+    outlined
     v-model="model"
     :options="users"
     option-value="id"
     option-label="login"
-    label="Select an item"
+    label="Обрати користувача"
   ></q-select>
 </template>
 

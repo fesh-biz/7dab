@@ -1,6 +1,3 @@
-# Comments by fake users
-- [] Make the same as post creating
-
 # Filling
 - [x] Command to create fake users
     - [x] email `nickName@terevenky.com`

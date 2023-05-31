@@ -25,6 +25,8 @@
         />
       </q-card-section>
 
+      <select-fake-user v-if="me && me.id === 1" v-model="fakeUserId"/>
+
       <q-separator />
 
       <q-card-section
@@ -74,6 +76,7 @@ import _ from 'lodash'
 import Validator from 'src/plugins/tools/validator'
 import CommentModel from 'src/models/content/comment'
 import Scroll from 'src/plugins/tools/scroll'
+import SelectFakeUser from 'components/fake-user/SelectFakeUser'
 
 const formModel = {
   body: null
@@ -81,7 +84,7 @@ const formModel = {
 
 export default {
   name: 'AddComment',
-
+  components: { SelectFakeUser },
   props: {
     isReply: {
       type: Boolean,
@@ -103,6 +106,7 @@ export default {
 
   data () {
     return {
+      fakeUserId: null,
       formModel: _.cloneDeep(formModel),
       isOpened: false,
       isSubmitting: false,
@@ -157,6 +161,10 @@ export default {
         commentable_id: this.commentableId,
         commentable_type: this.commentableType,
         body: this.formModel.body
+      }
+
+      if (this.me.id === 1 && this.fakeUserId) {
+        data.fake_user_id = this.fakeUserId
       }
 
       this.api.create(data)
