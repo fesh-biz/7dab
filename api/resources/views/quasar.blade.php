@@ -4,4 +4,4 @@
       gtag('js', new Date());
 
       gtag('config', 'G-47SHL9MFMJ');
-    }</script><link href=/css/vendor.e6148af3.css rel=stylesheet><link href=/css/app.07276b59.css rel=stylesheet></head><body style="overflow-y: scroll"><div id=q-app></div><div dusk=page-bottom></div><script src=/js/vendor.ffd2b1d4.js></script><script src=/js/app.5cad1a0a.js></script></body></html>
+    }</script><link href=/css/vendor.e6148af3.css rel=stylesheet><link href=/css/app.07276b59.css rel=stylesheet></head><body style="overflow-y: scroll"><div id=q-app></div><div dusk=page-bottom></div><script src=/js/vendor.ffd2b1d4.js></script><script src=/js/app.b4f1fa1d.js></script></body></html>
