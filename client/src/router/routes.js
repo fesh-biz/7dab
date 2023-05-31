@@ -5,6 +5,7 @@ import AdminRoutes from './routes/admin'
 import ProfileRoutes from './routes/profile'
 import ExternalLinks from './routes/external-links'
 import UserRoutes from './routes/user'
+import Static from './routes/static'
 
 const routes = [
   // Auth routes
@@ -12,6 +13,12 @@ const routes = [
     path: '/auth',
     component: () => import('layouts/MainLayout.vue'),
     children: AuthRoutes
+  },
+  // Static pages
+  {
+    path: '/static',
+    component: () => import('layouts/MainLayout.vue'),
+    children: Static
   },
   // Feed routes
   {

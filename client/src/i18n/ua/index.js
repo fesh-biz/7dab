@@ -1,4 +1,5 @@
 export default {
+  our_rules: 'Наші правила',
   user: 'Користувач',
   anthem: 'Гімн',
   author: 'Автор',

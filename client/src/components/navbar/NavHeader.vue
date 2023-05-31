@@ -24,27 +24,8 @@
           <!-- Menu -->
           <div class="row no-wrap q-pa-md">
             <div class="column">
-              <!-- General Menu  -->
-              <q-list dense>
-                <!-- Home Page -->
-                <q-item tag="a" href="/" native>
-                  <q-item-section>{{ $t('home_page') }}</q-item-section>
-                </q-item>
-
-                <!-- Search Page -->
-                <q-item exact clickable :to="{ name: 'search' }">
-                  <q-item-section>
-                    {{ $t('search') }}
-                  </q-item-section>
-                </q-item>
-
-                <!-- Add Post -->
-                <q-item exact clickable :to="{ name: 'createPost' }">
-                  <q-item-section>
-                    {{ $t('add_post') }}
-                  </q-item-section>
-                </q-item>
-              </q-list>
+              <!-- Site Menu  -->
+              <site-menu />
 
               <!-- Admin Menu -->
               <admin-menu v-if="me && me.id === 1"/>
@@ -69,11 +50,12 @@ import Me from 'src/models/user/me'
 import GuestMenu from 'components/navbar/GuestMenu'
 import UserMenu from 'components/navbar/UserMenu'
 import AdminMenu from 'components/navbar/AdminMenu'
+import SiteMenu from 'components/navbar/SiteMenu'
 
 export default {
   name: 'NavHeader',
 
-  components: { AdminMenu, GuestMenu, UserMenu },
+  components: { SiteMenu, AdminMenu, GuestMenu, UserMenu },
 
   data () {
     return {}
