@@ -9,6 +9,7 @@ use App\Models\Rating\RatingVote;
 use App\Models\User;
 use App\Repositories\Rating\RatingRepository;
 use App\Repositories\Rating\RatingVoteRepository;
+use App\Repositories\User\UserRepository;
 use DB;
 
 class RatingService
@@ -29,12 +30,19 @@ class RatingService
     
     public function vote(int $id, string $type, bool $isUpvote): RatingVote
     {
-        sleep(1);
         $authUserId = auth()->id();
         $model = $this->getRatingableModel($type);
         
-        if ($this->getRatingable($id, $model)->user_id === $authUserId) {
+        // Temporary fake users ($authUserId !== 1)
+        if ($authUserId !== 1 && $this->getRatingable($id, $model)->user_id === $authUserId) {
             abort(422, 'Не можна голосувати за себе.');
+        }
+        
+        // Temporary fake users (entire block)
+        if ($authUserId === 1) {
+            $userRepo = app()->make(UserRepository::class);
+            $fakeUser = $userRepo->getRandomFakeUser();
+            $authUserId = $fakeUser->id;
         }
         
         DB::beginTransaction();

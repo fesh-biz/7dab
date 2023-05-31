@@ -18,6 +18,12 @@ class UserRepository
         return $this->model;
     }
     
+    // Temporary Fake user
+    public function getRandomFakeUser(): User
+    {
+        return $this->model->where('email', 'like', '%@terevenky.com%')->inRandomOrder()->first();
+    }
+    
     public function createNewUser(array $userData): User
     {
         $userData['password'] = bcrypt($userData['password']);
