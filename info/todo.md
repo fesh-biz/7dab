@@ -1,23 +1,4 @@
-# Filling
-- [x] Command to create fake users
-    - [x] email `nickName@terevenky.com`
-    папірець, IronMan, Neruhomyi, JBaserok, musicIsMyNature, Snicker,
-    трошкиСобі
-- [] Post creating
-  - [] If user id is 1, add user selector to create post form
-    - [] Select from all users with email `@terevenky.com`
-        - [] default selected random
-    - [] Refactor creating post
-        - [] If auth->id === 1 && request->user_id
-            - [] set `posts.user_id = request->user_id`
-- [] Comment creating
-  - [] If user id is 1, add user selector to create post form
-    - [] Select from all users with email `@terevenky.com`
-        - [] default selected random
-    - [] Refactor creating post
-        - [] If auth->id === 1 && request->user_id
-            - [] set `posts.user_id = request->user_id`
-    
+
 
 # Features
 - [] Form to allow make proposals of improvement

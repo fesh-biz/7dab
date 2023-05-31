@@ -25,10 +25,20 @@ class Test extends Command
     
     private function createFakeUsers()
     {
-        $nickNames = ['папірець', 'IronMan', 'Neruhomyi', 'JBaserok', 'musicIsMyNature', 'Snicker',
-            'трошкиСобі'];
+        $nickNames = [
+            'папірець', 'IronMan', 'Neruhomyi', 'JBaserok',
+            'musicIsMyNature', 'Snicker', 'трошкиСобі', 'TheWizard',
+            'чарівник', 'мрійник', 'Mriyachka', 'Веселка',
+            'StarLord', 'дика перлина', 'kvikvi', 'квітка',
+            'tayemnytsa', 'вітряна дівка'
+        ];
         
         foreach ($nickNames as $nick) {
+            $email = $nick . '@terevenky.com';
+            if (User::whereEmail($email)->first()){
+                continue;
+            }
+            
             $user = User::create([
                 'login' => $nick,
                 'email' => $nick . '@terevenky.com',
