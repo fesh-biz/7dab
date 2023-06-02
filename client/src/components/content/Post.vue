@@ -139,7 +139,7 @@ export default {
       const postBodyHeight = this.$refs.postBody.$el.scrollHeight
       const allowedBodyHeightWithoutFolding = window.innerHeight * 0.49
 
-      return postBodyHeight < allowedBodyHeightWithoutFolding
+      return postBodyHeight < allowedBodyHeightWithoutFolding + 41
     },
 
     async expand () {
