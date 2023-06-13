@@ -27,6 +27,19 @@
                 />
               </q-item-section>
             </q-item>
+
+            <!-- Delete -->
+            <q-item>
+              <q-item-section>
+                <icon-with-tooltip
+                  @click="deletePost(props.props.row.id)"
+                  :tooltip="$t('delete')"
+                  :color="props.props.row.id === postIdDeleteConfirmation ? 'negative' : 'positive'"
+                  size="sm"
+                  icon="delete"
+                />
+              </q-item-section>
+            </q-item>
           </q-td>
 
           <!-- ID -->
@@ -45,7 +58,7 @@
             <q-popup-edit
               buttons
               v-model="props.props.row.status"
-              @save="storeTag(props.props.row, 'status')"
+              @save="updatePost(props.props.row, 'status')"
             >
               <status
                 :item="props.props.row"
@@ -159,13 +172,36 @@ export default {
         { label: 'Approved', value: 'approved' },
         { label: 'Declined', value: 'declined' },
         { label: 'Editing', value: 'editing' }
-      ]
+      ],
+      postIdDeleteConfirmation: null
     }
   },
 
   methods: {
+    deletePost (id) {
+      if (this.postIdDeleteConfirmation !== id) {
+        this.postIdDeleteConfirmation = id
+        return
+      }
+
+      this.api.post(`admin/posts/${id}/delete`, null, null, null, true)
+        .then(res => {
+          this.deleteTableItem(id)
+        })
+    },
+
     setPrevData (item) {
       this.prevData = _.cloneDeep(item)
+    },
+
+    deleteTableItem (id) {
+      const tableData = _.cloneDeep(this.$refs.datatable.data)
+
+      const index = _.findIndex(tableData, { id: id })
+      tableData.splice(index, 1)
+      console.log('tableData', tableData)
+
+      this.$refs.datatable.data = tableData
     },
 
     updateTableItem (item) {
@@ -177,7 +213,7 @@ export default {
       this.$refs.datatable.data = tableData
     },
 
-    storeTag (item, propName) {
+    updatePost (item, propName) {
       const data = {}
       data[propName] = item[propName]
 

@@ -50,4 +50,15 @@ class PostController extends Controller
         
         return response()->json(['status' => 'success']);
     }
+    
+    public function destroy(int $id): JsonResponse
+    {
+        $post = $this->repo->find($id);
+        
+        $this->service->destroy($post);
+        
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

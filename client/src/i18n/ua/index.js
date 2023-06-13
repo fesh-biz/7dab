@@ -1,4 +1,5 @@
 export default {
+  delete: 'Видалити',
   our_rules: 'Наші правила',
   user: 'Користувач',
   anthem: 'Гімн',

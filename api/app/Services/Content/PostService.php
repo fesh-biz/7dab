@@ -156,6 +156,8 @@ class PostService
     public function destroy(Post $post)
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $sections = $this->getPostSections($post->id)->toArray();
+        $this->deleteSections($sections);
         $post->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
