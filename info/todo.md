@@ -1,9 +1,6 @@
 # Feeding with fake users
-- [] Create admin/users page without any features at the moment
 - [] Create console command `ApproveFakeUsersPosts`
     - [] Run each 4 hours
-    - [] Set `approved` status for the first post
-        - [] Select from posts where user_id >= 11 && <= 28
 
 # Fixes
 - [] The text input field for the image doesn't allow to a user click the buttons without unfocus
