@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('notification:check-pending-posts')->everyMinute();
+        $schedule->command('publish-posts:publish-fake-users-posts')->everyFourHours();
     }
 
 
