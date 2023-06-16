@@ -21,6 +21,7 @@ class PublishFakeUsersPosts extends Command
         $firstPostFromFakeUser = Post::where('user_id', '>=', 11)
             ->where('user_id', '<=', 28)
             ->where('status', '!=', 'approved')
+            ->orderBy('id')
             ->first();
         
         if (!$firstPostFromFakeUser) return;
