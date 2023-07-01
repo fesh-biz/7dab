@@ -1,7 +1,3 @@
-# Feeding with fake users
-- [] Create console command `ApproveFakeUsersPosts`
-    - [] Run each 4 hours
-
 # Fixes
 - [] The text input field for the image doesn't allow to a user click the buttons without unfocus
 - [] If a user has typed an existing tag, apply that tag to the post correctly

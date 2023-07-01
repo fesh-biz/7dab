@@ -1,90 +1,94 @@
 <template>
-  <div class="admin-posts">
-    <!-- Tags Table -->
-    <data-table
-      :columns="columns"
-      url="admin/posts"
-      rowKey="id"
-      :title="title"
-      use-body
-      ref="datatable"
-    >
-      <template #table="props">
-        <q-tr>
-          <!-- Actions -->
-          <q-td>
-            <!-- Preview -->
-            <q-item
-              :to="{name: 'admin.posts.preview', params: {id: props.props.row.id}}"
-              target="_blank"
-            >
-              <q-item-section>
-                <icon-with-tooltip
-                  :tooltip="$t('preview')"
-                  color="positive"
-                  size="sm"
-                  icon="pageview"
+  <div>
+    <fake-user-posts-info />
+
+    <div class="admin-posts">
+      <!-- Tags Table -->
+      <data-table
+        :columns="columns"
+        url="admin/posts"
+        rowKey="id"
+        :title="title"
+        use-body
+        ref="datatable"
+      >
+        <template #table="props">
+          <q-tr>
+            <!-- Actions -->
+            <q-td>
+              <!-- Preview -->
+              <q-item
+                :to="{name: 'admin.posts.preview', params: {id: props.props.row.id}}"
+                target="_blank"
+              >
+                <q-item-section>
+                  <icon-with-tooltip
+                    :tooltip="$t('preview')"
+                    color="positive"
+                    size="sm"
+                    icon="pageview"
+                  />
+                </q-item-section>
+              </q-item>
+
+              <!-- Delete -->
+              <q-item>
+                <q-item-section>
+                  <icon-with-tooltip
+                    @click="deletePost(props.props.row.id)"
+                    :tooltip="$t('delete')"
+                    :color="props.props.row.id === postIdDeleteConfirmation ? 'negative' : 'positive'"
+                    size="sm"
+                    icon="delete"
+                  />
+                </q-item-section>
+              </q-item>
+            </q-td>
+
+            <!-- ID -->
+            <q-td>
+              {{ props.props.row.id }}
+            </q-td>
+
+            <!-- Title -->
+            <q-td>
+              {{ props.props.row.title }}
+            </q-td>
+
+            <!-- Status -->
+            <q-td @click="setPrevData(props.props.row)">
+              {{ props.props.row.status }}
+              <q-popup-edit
+                buttons
+                v-model="props.props.row.status"
+                @save="updatePost(props.props.row, 'status')"
+              >
+                <status
+                  :item="props.props.row"
+                  :statuses="statuses"
+                  @update="updateTableItem"
                 />
-              </q-item-section>
-            </q-item>
+              </q-popup-edit>
+            </q-td>
 
-            <!-- Delete -->
-            <q-item>
-              <q-item-section>
-                <icon-with-tooltip
-                  @click="deletePost(props.props.row.id)"
-                  :tooltip="$t('delete')"
-                  :color="props.props.row.id === postIdDeleteConfirmation ? 'negative' : 'positive'"
-                  size="sm"
-                  icon="delete"
-                />
-              </q-item-section>
-            </q-item>
-          </q-td>
+            <!-- Views -->
+            <q-td>
+              {{ props.props.row.views }}
+            </q-td>
 
-          <!-- ID -->
-          <q-td>
-            {{ props.props.row.id }}
-          </q-td>
+            <!-- Views -->
+            <q-td>
+              {{ props.props.row.comments }}
+            </q-td>
 
-          <!-- Title -->
-          <q-td>
-            {{ props.props.row.title }}
-          </q-td>
-
-          <!-- Status -->
-          <q-td @click="setPrevData(props.props.row)">
-            {{ props.props.row.status }}
-            <q-popup-edit
-              buttons
-              v-model="props.props.row.status"
-              @save="updatePost(props.props.row, 'status')"
-            >
-              <status
-                :item="props.props.row"
-                :statuses="statuses"
-                @update="updateTableItem"
-              />
-            </q-popup-edit>
-          </q-td>
-
-          <!-- Views -->
-          <q-td>
-            {{ props.props.row.views }}
-          </q-td>
-
-          <!-- Views -->
-          <q-td>
-            {{ props.props.row.comments }}
-          </q-td>
-
-          <!-- Views -->
-          <q-td>
-            {{ moment(props.props.row.created_at).format('YYYY-MM-DD') }}
-          </q-td>
-        </q-tr>
-      </template>
-    </data-table>
+            <!-- Views -->
+            <q-td>
+              {{ moment(props.props.row.created_at).format('YYYY-MM-DD') }}
+            </q-td>
+          </q-tr>
+        </template>
+      </data-table>
+    </div>
   </div>
 </template>
 
@@ -95,6 +99,7 @@ import _ from 'lodash'
 import Api from 'src/plugins/api/api'
 import IconWithTooltip from 'components/common/IconWithTooltip'
 import moment from 'moment'
+import FakeUserPostsInfo from 'components/admin/FakeUserPostsInfo'
 
 const columns = [
   {
@@ -152,6 +157,7 @@ export default {
   name: 'Index',
 
   components: {
+    FakeUserPostsInfo,
     IconWithTooltip,
     DataTable,
     Status

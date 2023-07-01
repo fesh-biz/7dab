@@ -20,6 +20,16 @@ class PostController extends Controller
         $this->repo = $repo;
     }
     
+    public function fakeUsersPosts(): JsonResponse
+    {
+        $res = Post::where('user_id', '>=', 11)
+            ->where('user_id', '<=', 28)
+            ->where('status', '!=', 'approved')
+            ->count('id');
+        
+        return response()->json($res);
+    }
+    
     public function index(Request $r): JsonResponse
     {
         $search = [

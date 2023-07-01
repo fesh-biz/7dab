@@ -14,6 +14,7 @@ Route::group(['prefix' => 'posts'], function () {
     Route::get('/', [PostController::class, 'index']);
     Route::post('/{id}', [PostController::class, 'update']);
     Route::post('/{id}/delete', [PostController::class, 'destroy']);
+    Route::get('/fake-users-posts', [PostController::class, 'fakeUsersPosts']);
 });
 
 Route::group(['prefix' => 'users'], function() {
