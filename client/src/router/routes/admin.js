@@ -10,6 +10,16 @@ export default [
     },
     component: () => import('pages/admin/Index')
   },
+  // Users
+  {
+    path: 'admin/users',
+    name: 'admin.users',
+    meta: {
+      middleware: [isAdmin],
+      title: 'users'
+    },
+    component: () => import('pages/admin/user/Index')
+  },
   // Tags
   {
     path: 'admin/tags',

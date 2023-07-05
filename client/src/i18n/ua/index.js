@@ -1,4 +1,5 @@
 export default {
+  users: 'Користувачі',
   delete: 'Видалити',
   our_rules: 'Наші правила',
   user: 'Користувач',

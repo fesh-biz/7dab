@@ -69,6 +69,12 @@ const menuList = [
     label: 'posts',
     routeName: 'admin.posts',
     separator: false
+  },
+  {
+    icon: 'inventory',
+    label: 'users',
+    routeName: 'admin.users',
+    separator: false
   }
 ]
 
