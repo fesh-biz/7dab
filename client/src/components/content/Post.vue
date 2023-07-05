@@ -22,7 +22,12 @@
           </div>
 
           <!-- Controls -->
-          <div>
+          <div class="flex content-center">
+            <q-badge
+              outline
+              color="blue-grey-3"
+              :label="this.moment(post.created_at).fromNow(true) + ' тому'"
+            />
             <!--<q-btn flat dense no-caps label="test"/>-->
           </div>
         </div>
@@ -92,6 +97,8 @@ import PostImage from 'components/content/PostImage'
 import Author from 'components/common/Author'
 import Cache from 'src/plugins/cache/cache'
 import PostYoutube from 'components/content/PostYoutube'
+import moment from 'moment'
+moment.locale('uk')
 
 export default {
   name: 'Post',
@@ -115,7 +122,8 @@ export default {
         is_images_loaded: false
       },
       isHasImages: false,
-      postId: null
+      postId: null,
+      moment: moment
     }
   },
 

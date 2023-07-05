@@ -1,3 +1,13 @@
+# Final MVP
+- [] `Хіти`, `Епічні`
+    - [] To achieve `hits`
+        - [] Post must have rating
+            - > max / 4
+            - < max / 2
+    - [] To achieve `epic`
+        - [] Post must have rating
+            - >= max / 2
+
 # Fixes
 - [] The text input field for the image doesn't allow to a user click the buttons without unfocus
 - [] If a user has typed an existing tag, apply that tag to the post correctly

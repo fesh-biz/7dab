@@ -37,7 +37,8 @@ export default class Post extends AppModel {
       tags: this.belongsToMany(Tag, PostTag, 'post_id', 'tag_id'),
       post_texts: this.hasMany(PostText, 'post_id'),
       post_images: this.hasMany(PostImage, 'post_id'),
-      post_you_tubes: this.hasMany(PostYouTube, 'post_id')
+      post_you_tubes: this.hasMany(PostYouTube, 'post_id'),
+      created_at: this.string('')
     }
   }
 
