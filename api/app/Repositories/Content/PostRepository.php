@@ -3,12 +3,15 @@
 namespace App\Repositories\Content;
 
 use App\Models\Content\Post;
+use App\Repositories\Extensions\DatatablePaginator;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class PostRepository
 {
+    use DatatablePaginator;
+    
     protected Post $model;
     
     public function __construct(Post $model)
@@ -89,26 +92,6 @@ class PostRepository
         $post->makeHidden('previewTags');
         
         return $post;
-    }
-    
-    public function getAdminPaginatedPostsBySearch(array $search = null): LengthAwarePaginator
-    {
-        $keyword = $search['keyword'] ?? null;
-        
-        $orderBy = $search['order_by'] ?? 'id';
-        $descending = 'desc';
-        if (array_key_exists('is_descending', $search)) {
-            $descending = $search['is_descending'] ? 'desc' : 'asc';
-        }
-        
-        $query = $this->model
-            ->orderBy($orderBy, $descending);
-        
-        if ($keyword) {
-            $query = $query->where('title', 'like', "%$keyword%");
-        }
-        
-        return $query->paginate(10);
     }
     
     public function getPaginatedPostsBySearch(array $search = null): LengthAwarePaginator

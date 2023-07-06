@@ -30,20 +30,11 @@ class PostController extends Controller
         return response()->json($res);
     }
     
-    public function index(Request $r): JsonResponse
+    public function index(): JsonResponse
     {
-        $search = [
-            'keyword' => $r->keyword
-        ];
+        $res = $this->repo->getPaginatedRecordsForAdmin('title');
         
-        if ($r->sortBy) {
-            $search = array_merge($search, [
-                'order_by' => $r->sortBy,
-                'is_descending' => $r->descending === 'true'
-            ]);
-        }
-        
-        return response()->json($this->repo->getAdminPaginatedPostsBySearch($search));
+        return response()->json($res);
     }
     
     public function update(Request $r, $id): JsonResponse

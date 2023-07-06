@@ -3,12 +3,12 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
-use App\Repositories\Extensions\SortedPaginator;
+use App\Repositories\Extensions\DatatablePaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
 {
-    use SortedPaginator;
+    use DatatablePaginator;
     
     protected User $model;
     
