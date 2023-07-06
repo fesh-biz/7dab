@@ -110,4 +110,16 @@ class User extends Authenticatable
     {
         return $this->role_id === 2;
     }
+    
+    public function toArray(): array
+    {
+        if (auth()->user() && auth()->user()->isAdmin()) {
+            $this->hidden = [
+                'password',
+                'remember_token',
+            ];
+        }
+        
+        return parent::toArray();
+    }
 }

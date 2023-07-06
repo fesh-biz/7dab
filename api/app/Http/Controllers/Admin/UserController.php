@@ -19,11 +19,9 @@ class UserController extends Controller
     
     public function index(Request $r): JsonResponse
     {
-        ddh($r);
+        $res = $this->repo->getPaginatedRecordsForAdmin('login');
         
-        return response()->json(
-            // $this->repo->getPaginatedRecordsForAdmin($search)
-        );
+        return response()->json($res);
     }
 
     public function fakeUsers(): JsonResponse

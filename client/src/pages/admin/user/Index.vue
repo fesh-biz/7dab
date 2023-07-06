@@ -32,6 +32,21 @@
           <q-td>
             {{ props.props.row.id }}
           </q-td>
+
+          <!-- Login -->
+          <q-td>
+            {{ props.props.row.login }}
+          </q-td>
+
+          <!-- Email -->
+          <q-td>
+            {{ props.props.row.email }}
+          </q-td>
+
+          <!-- Verified At -->
+          <q-td>
+            {{ moment(props.props.row.email_verified_at).format('YYYY MM DD') }}
+          </q-td>
         </q-tr>
       </template>
     </data-table>
@@ -41,6 +56,7 @@
 <script>
 import DataTable from 'components/common/DataTable'
 import IconWithTooltip from 'components/common/IconWithTooltip'
+import moment from 'moment'
 
 const columns = [
   {
@@ -56,6 +72,27 @@ const columns = [
     label: '#',
     align: 'left',
     sortable: true
+  },
+  {
+    name: 'login',
+    required: true,
+    label: 'Login',
+    align: 'left',
+    sortable: true
+  },
+  {
+    name: 'email',
+    required: true,
+    label: 'Email',
+    align: 'left',
+    sortable: true
+  },
+  {
+    name: 'email_verified_at',
+    required: true,
+    label: 'Verified At',
+    align: 'left',
+    sortable: true
   }
 ]
 
@@ -64,7 +101,8 @@ export default {
   components: { DataTable, IconWithTooltip },
   data () {
     return {
-      columns: columns
+      columns: columns,
+      moment: moment
     }
   }
 }
