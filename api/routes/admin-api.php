@@ -18,5 +18,6 @@ Route::group(['prefix' => 'posts'], function () {
 });
 
 Route::group(['prefix' => 'users'], function() {
+    Route::get('/', [UserController::class, 'index']);
     Route::get('/fake-users', [UserController::class, 'fakeUsers']);
 });

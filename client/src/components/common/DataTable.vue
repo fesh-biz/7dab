@@ -33,7 +33,7 @@
 import Api from 'src/plugins/api/api'
 
 export default {
-  name: 'Datable',
+  name: 'DataTable',
 
   props: {
     noTop: {

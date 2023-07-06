@@ -3,9 +3,13 @@
 namespace App\Repositories\User;
 
 use App\Models\User;
+use App\Repositories\Extensions\SortedPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
 {
+    use SortedPaginator;
+    
     protected User $model;
     
     public function __construct(User $model)
