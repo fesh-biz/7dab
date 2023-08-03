@@ -1,7 +1,7 @@
 <!DOCTYPE html><html><head><base href=/ ><title>Теревеньки</title><meta charset=utf-8><meta name=format-detection content="telephone=no"><meta name=msapplication-tap-highlight content=no><meta name=viewport content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width"><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><script async src="https://www.googletagmanager.com/gtag/js?id=G-47SHL9MFMJ"></script><script>if (window.location.host !== 'localhost:8080') {
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-      gtag('config', 'G-47SHL9MFMJ');
-    }</script><link href=/css/vendor.e6148af3.css rel=stylesheet><link href=/css/app.07276b59.css rel=stylesheet></head><body style="overflow-y: scroll"><div id=q-app></div><div dusk=page-bottom></div><script src=/js/vendor.ffd2b1d4.js></script><script src=/js/app.03c2fa97.js></script></body></html>
+            gtag('config', 'G-47SHL9MFMJ');
+        }</script><link href=/css/vendor.e6148af3.css rel=stylesheet><link href=/css/app.07276b59.css rel=stylesheet></head><body style="overflow-y: scroll"><div id=q-app></div><div dusk=page-bottom></div><script src=/js/vendor.ffd2b1d4.js></script><script src=/js/app.1634f316.js></script></body></html>
