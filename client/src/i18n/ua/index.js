@@ -1,4 +1,5 @@
 export default {
+  about: 'Нащо цей проект',
   users: 'Користувачі',
   delete: 'Видалити',
   our_rules: 'Наші правила',

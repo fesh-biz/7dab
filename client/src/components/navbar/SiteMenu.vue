@@ -25,6 +25,13 @@
         {{ $t('our_rules') }}
       </q-item-section>
     </q-item>
+
+    <!-- About -->
+    <q-item exact clickable :to="{ name: 'static.about' }">
+      <q-item-section>
+        {{ $t('about') }}
+      </q-item-section>
+    </q-item>
   </q-list>
 </template>
 
