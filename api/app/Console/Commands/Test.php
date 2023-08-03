@@ -2,11 +2,13 @@
 
 namespace App\Console\Commands;
 
+use App\Api\DigitalOcean\Space;
 use App\Models\User;
 use App\Redis\EmailNotificationQueues\PendingPostNotificationQueue;
 use App\Redis\Redis;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
+use Illuminate\Http\File;
 
 class Test extends Command
 {
@@ -70,6 +72,13 @@ class Test extends Command
         $this->info('Deleted all:');
         dump($r->all());
         $this->info('Finished');
+    }
+    
+    private function aws()
+    {
+        $spaceClient = new Space();
+        $file = new File(storage_path('app/public/post-images/2023/04/24/desktop/168234348322827800.jpeg'));
+        $spaceClient->uploadFile('test/image.jpg', $file->getContent());
     }
     
     private function sitemap()

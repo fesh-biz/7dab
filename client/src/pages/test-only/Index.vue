@@ -1,16 +1,14 @@
 <template>
   <div class="row flex justify-center">
     <div class="col-8">
-      <p>Index: {{ model }}</p>
-      <sync-testing :variable.sync="model"/>
-      <model-sync v-model="model"/>
+      <img src="https://cs1.terevenky.com/test/image1.jpg">
     </div>
   </div>
 </template>
 
 <script>
-import ModelSync from 'pages/test-only/syncing/ModelSync'
-import SyncTesting from 'pages/test-only/syncing/SyncTesting'
+// import ModelSync from 'pages/test-only/syncing/ModelSync'
+// import SyncTesting from 'pages/test-only/syncing/SyncTesting'
 import _ from 'lodash'
 import Post from 'src/models/content/post'
 
@@ -18,8 +16,8 @@ export default {
   name: 'Index',
 
   components: {
-    SyncTesting,
-    ModelSync
+    // SyncTesting,
+    // ModelSync
   },
 
   data () {

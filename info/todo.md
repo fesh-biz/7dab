@@ -1,3 +1,9 @@
+# Roadmap
+- [] Connect DO cloud
+- [] Add abilities:
+    - [] Upload GIFs
+    - [] Upload Videos
+
 # Final MVP
 - [] `Хіти`, `Епічні`
     - [] To achieve `hits`
