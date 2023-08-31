@@ -84,80 +84,13 @@
       <select-fake-user v-model="postEditor.fake_user_id" />
     </q-card-section>
 
-    <!-- Post controls -->
-    <q-card-section class="flex justify-between">
-      <q-inner-loading
-        :showing="isBusy"
-        color="positive"
-      />
-
-      <!-- Add Section -->
-      <div class="inline-block">
-        <!-- Text -->
-        <icon-with-tooltip
-          :tooltip="$t('add_text')"
-          color="positive"
-          :disabled="isBusy"
-          size="xl"
-          icon="notes"
-          @click="postEditor.addSection('text')"
-        />
-
-        <!-- Image -->
-        <icon-with-tooltip
-          :tooltip="$t('add_image')"
-          color="positive"
-          :disabled="isBusy"
-          size="xl"
-          icon="image"
-          @click="postEditor.addSection('image')"
-        />
-
-        <!-- YouTube -->
-        <icon-with-tooltip
-          :tooltip="$t('add_youtube')"
-          color="positive"
-          :disabled="isBusy"
-          size="xl"
-          icon="smart_display"
-          @click="postEditor.addSection('youtube')"
-        />
-      </div>
-
-      <!-- Cancel, Save, Preview -->
-      <div class="inline-block">
-        <!-- Preview -->
-        <icon-with-tooltip
-          :tooltip="$t('preview')"
-          color="positive"
-          :disabled="isBusy"
-          v-if="canBeViewed"
-          size="xl"
-          icon="pageview"
-          @click="$router.push({name: 'postPage', params: {id: postId}})"
-        />
-
-        <!-- Cancel -->
-        <icon-with-tooltip
-          @click="goBack"
-          :tooltip="$t('cancel')"
-          color="negative"
-          :disabled="isBusy"
-          size="xl"
-          icon="cancel"
-        />
-
-        <!-- Save -->
-        <icon-with-tooltip
-          :tooltip="$t('save')"
-          color="positive"
-          :disabled="isBusy"
-          size="xl"
-          icon="check_circle"
-          @click="saveOrUpdate()"
-        />
-      </div>
-    </q-card-section>
+    <post-control
+      :is-busy="isBusy"
+      :can-be-viewed="canBeViewed"
+      @preview="$router.push({name: 'postPage', params: {id: postId}})"
+      @cancel="goBack"
+      @save="saveOrUpdate"
+    />
   </q-card>
 </template>
 
@@ -174,11 +107,13 @@ import PostApi from 'src/plugins/api/post'
 import YouTubeField from 'components/form/common/YouTubeField'
 import Me from 'src/models/user/me'
 import SelectFakeUser from 'components/fake-user/SelectFakeUser'
+import PostControl from 'components/form/post/PostControl'
 
 export default {
   name: 'AddPost',
 
   components: {
+    PostControl,
     SelectFakeUser,
     TooltipIcon,
     ImageField,
