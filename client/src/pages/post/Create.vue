@@ -1,61 +1,7 @@
 <template>
   <q-card :flat="$q.platform.is.mobile" class="q-my-md">
     <!-- Post Form -->
-    <q-card-section>
-
-      <!-- Title -->
-      <q-input
-        outlined
-        dense
-        v-model="postEditor.formModel.title"
-        :label="$t('title')"
-
-        :error="!!postEditor.validator.errors.title"
-        :error-message="postEditor.validator.errors.title"
-
-        @input="postEditor.validator.resetFieldError('title')"
-      />
-
-      <!-- Movement, Deleting Section, Content -->
-      <div class="ap-body">
-        <div
-          v-for="(section, index) in postEditor.formModel.sections"
-          :key="'body-element' + section.order"
-          class="q-mb-md"
-        >
-          <!-- Delete -->
-          <div>
-            <!-- Delete -->
-            <icon-with-tooltip
-              @click="postEditor.deleteSection(index)"
-              :tooltip="$t('delete_section')"
-              icon="delete"
-            />
-          </div>
-
-          <!-- Content -->
-          <you-tube-field
-            v-if="section.type === 'youtube'"
-            v-model="section.content"
-          />
-          <component
-            v-if="section.type !== 'youtube'"
-            :ref="'editor[' + section.order + ']'"
-            :is="section.type + '-field'"
-            :content="section.content"
-            :order="section.order"
-            :error-message="getSectionError(section.order)"
-            @input="postEditor.validator.resetFieldError('sections', section.order)"
-          />
-        </div>
-      </div>
-
-      <!-- Tags -->
-      <tag-field
-        @input="updatePostTags"
-        :error-message="tagError"
-      />
-    </q-card-section>
+    <post-form />
 
     <!-- Main Error Message -->
     <q-card-section v-if="postEditor.validator.mainErrorMessage" class="flex justify-center">
@@ -95,32 +41,21 @@
 </template>
 
 <script>
-import ImageField from 'components/form/post/ImageField'
-import TextField from 'components/form/post/TextField'
-import TagField from 'components/form/post/TagField'
-
-import TooltipIcon from 'components/common/TooltipIcon'
-import IconWithTooltip from 'components/common/IconWithTooltip'
 import PostEditor from 'src/plugins/editor/post'
 import PostModel from 'src/models/content/post'
 import PostApi from 'src/plugins/api/post'
-import YouTubeField from 'components/form/common/YouTubeField'
 import Me from 'src/models/user/me'
 import SelectFakeUser from 'components/fake-user/SelectFakeUser'
 import PostControl from 'components/form/post/PostControl'
+import PostForm from 'components/form/post/PostForm'
 
 export default {
   name: 'AddPost',
 
   components: {
+    PostForm,
     PostControl,
-    SelectFakeUser,
-    TooltipIcon,
-    ImageField,
-    TextField,
-    IconWithTooltip,
-    TagField,
-    YouTubeField
+    SelectFakeUser
   },
 
   data () {
@@ -151,10 +86,6 @@ export default {
 
     post () {
       return PostModel.query().withAll().find(this.postId)
-    },
-
-    tagError () {
-      return this.postEditor.validator.errors.tags || null
     }
   },
 
@@ -193,15 +124,6 @@ export default {
       })
     },
 
-    getSectionError (order) {
-      const sectionsErrors = this.postEditor.validator.errors.sections
-      if (sectionsErrors && typeof sectionsErrors !== 'string') {
-        return sectionsErrors[order]
-      }
-
-      return null
-    },
-
     saveOrUpdate () {
       this.isBusy = true
       this.postEditor.saveOrUpdate(this.postId)
@@ -226,10 +148,6 @@ export default {
         .catch(() => {
           this.isBusy = false
         })
-    },
-
-    updatePostTags () {
-      this.postEditor.validator.resetFieldError('tags')
     },
 
     // @todo: To Apply this method to update post

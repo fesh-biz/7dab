@@ -17,7 +17,7 @@
 import PostEditor from 'src/plugins/editor/post'
 
 export default {
-  name: 'PostForm',
+  name: 'TextField',
 
   props: {
     content: {
