@@ -1,0 +1,26 @@
+@startuml
+object media {
+    App\Models\Media\Media
+    __
+    + id
+    mediable_id (ubi)
+    mediable_type (string)
+    user_id (ubi)
+    order (uti)
+    original_filename (string)
+    title (string)
+    data (json)
+    original_size (ubi)
+    mime_type (string)
+    created_at
+    updated_at
+}
+
+object mediaJsonData {
+    original_filepath
+    desktop_filepath
+    mobile_filepath
+}
+
+media -- mediaJsonData
+@enduml

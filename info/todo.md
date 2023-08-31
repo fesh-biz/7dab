@@ -1,3 +1,8 @@
+# Media
+- [] On added image/video
+    - [] Check file types
+        : 
+
 # Roadmap
 - [] Connect DO cloud
 - [] Add abilities:
