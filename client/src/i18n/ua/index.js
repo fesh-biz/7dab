@@ -1,4 +1,5 @@
 export default {
+  add_image_or_video: 'Додати зображення або відео',
   about: 'Нащо цей проект',
   users: 'Користувачі',
   delete: 'Видалити',

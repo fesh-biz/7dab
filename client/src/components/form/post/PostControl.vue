@@ -1,12 +1,12 @@
 <template>
-  <q-card-section class="flex justify-between">
+ <q-card-section class="post-control">
     <q-inner-loading
       :showing="isBusy"
       color="positive"
     />
 
     <!-- Add Section -->
-    <div class="inline-block">
+    <div class="add-section">
       <!-- Text -->
       <icon-with-tooltip
         :tooltip="$t('add_text')"
@@ -27,6 +27,16 @@
         @click="postEditor.addSection('image')"
       />
 
+      <!-- Media -->
+      <icon-with-tooltip
+        :tooltip="$t('add_image_or_video')"
+        color="positive"
+        :disabled="isBusy"
+        size="xl"
+        icon="cloud_upload"
+        @click="postEditor.addSection('media')"
+      />
+
       <!-- YouTube -->
       <icon-with-tooltip
         :tooltip="$t('add_youtube')"
@@ -38,8 +48,10 @@
       />
     </div>
 
+    <q-separator class="separator"/>
+
     <!-- Cancel, Save, Preview -->
-    <div class="inline-block">
+    <div class="form-actions">
       <!-- Preview -->
       <icon-with-tooltip
         :tooltip="$t('preview')"
@@ -71,6 +83,8 @@
         @click="$emit('save')"
       />
     </div>
+
+    <div class="clearfix"></div>
   </q-card-section>
 </template>
 
@@ -99,3 +113,25 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+.post-control
+  .add-section
+    float: left
+    @media (max-width: 520px)
+      float: unset
+    i
+      margin-right: 20px
+
+  .separator
+    margin: 20px 0
+    @media (min-width: 520px)
+      display: none
+
+  .form-actions
+    float: right
+    i
+      margin-left: 20px
+    //@media (max-width: 520px)
+    //  float: unset
+</style>

@@ -63,11 +63,12 @@ import YouTubeField from 'components/form/common/YouTubeField'
 import TextField from 'components/form/post/TextField'
 import ImageField from 'components/form/post/ImageField'
 import TagField from 'components/form/post/TagField'
+import MediaField from 'components/form/common/MediaField'
 
 export default {
   name: 'PostForm',
 
-  components: { TagField, YouTubeField, IconWithTooltip, TextField, ImageField },
+  components: { TagField, YouTubeField, IconWithTooltip, TextField, ImageField, MediaField },
 
   data () {
     return {
