@@ -26,6 +26,8 @@ class CreateMediaTable extends Migration
             $table->string('title')->nullable();
             $table->unsignedBigInteger('original_size');
             $table->string('mime_type');
+            $table->string('disc');
+
             $table->json('data');
 
             $table->timestamps();

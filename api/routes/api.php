@@ -16,6 +16,7 @@ use App\Http\Controllers\Content\CommentController;
 use App\Http\Controllers\Content\PostController;
 use App\Http\Controllers\Content\SearchController;
 use App\Http\Controllers\Content\TagController;
+use App\Http\Controllers\Media\MediaController;
 use App\Http\Controllers\Rating\RatingController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\UserController;
@@ -29,6 +30,12 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/resend-email-verification', [AuthController::class, 'resendEmailVerification']);
+});
+
+// Media
+Route::group(['prefix' => 'media', 'middleware' => 'auth:api'], function() {
+    Route::post('/', [MediaController::class, 'create']);
+    Route::delete('/{id}', [MediaController::class, 'delete']);
 });
 
 // Users

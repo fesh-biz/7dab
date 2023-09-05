@@ -35,7 +35,6 @@
           v-if="section.type === 'youtube'"
           v-model="section.content"
         />
-        {{ $cl(section.type) }}
         <component
           v-if="section.type !== 'youtube'"
           :ref="'editor[' + section.order + ']'"
@@ -46,6 +45,19 @@
           @input="postEditor.validator.resetFieldError('sections', section.order)"
         />
       </div>
+    </div>
+
+    <!-- Hint of Available Files -->
+    <div
+      v-if="hasMediaField"
+      style="width: 100%"
+      class="hint q-mb-md"
+    >
+      Допустимі файли:
+      <strong>.jpg, .jpeg, .gif, .webp, .png, .webm, .mp4</strong><br />
+      Розмір зображень не більше 5Mb <br />
+      Розмір GIF не більше 50Mb <br />
+      Розмір відео не більше 500Mb
     </div>
 
     <!-- Tags -->
@@ -79,6 +91,19 @@ export default {
   computed: {
     tagError () {
       return this.postEditor.validator.errors.tags || null
+    },
+
+    hasMediaField () {
+      let res = false
+
+      for (const section of this.postEditor.formModel.sections) {
+        if (section.type === 'media') {
+          res = true
+          break
+        }
+      }
+
+      return res
     }
   },
 

@@ -96,7 +96,7 @@ export default {
 
     this.postEditor.resetFormModel()
     setTimeout(() => {
-      this.postEditor.addSection('text')
+      this.postEditor.addSection('media')
     }, 10)
   },
 

@@ -1,7 +1,8 @@
-# Media
-- [] On added image/video
-    - [] Check file types
-        : 
+# Fixes
+- [] Move `client/src/plugins/api/my-vote.js` to `client/models/cache/cache-my-vote.js`
+- [] The text input field for the image doesn't allow to a user click the buttons without unfocus
+- [] If a user has typed an existing tag, apply that tag to the post correctly
+
 
 # Roadmap
 - [] Connect DO cloud
@@ -18,11 +19,7 @@
     - [] To achieve `epic`
         - [] Post must have rating
             - >= max / 2
-
-# Fixes
-- [] The text input field for the image doesn't allow to a user click the buttons without unfocus
-- [] If a user has typed an existing tag, apply that tag to the post correctly
-
+              
 # Sitemap
 - [] Sitemap
     - [] Finish
