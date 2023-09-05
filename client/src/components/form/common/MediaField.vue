@@ -14,6 +14,14 @@
       />
     </div>
 
+    <q-linear-progress
+      v-if="progress !== null"
+      size="10px"
+      :value="progress"
+      color="positive"
+      rounded
+    />
+
     <!-- Add Media -->
     <q-icon
       class="cursor-pointer"
@@ -57,7 +65,8 @@ export default {
 
   data () {
     return {
-      mediaApi: new MediaApi()
+      mediaApi: new MediaApi(),
+      progress: null
     }
   },
 
@@ -91,7 +100,9 @@ export default {
       // }
 
       if (files.length === 1) {
-        this.mediaApi.upload(files[0])
+        this.mediaApi.upload(files[0], (percentage) => {
+          this.progress = percentage !== 100 ? percentage / 100 : null
+        })
       }
     },
 

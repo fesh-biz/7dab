@@ -21,21 +21,9 @@ export default class MediaApi {
         method: 'post',
         data: formData,
         onUploadProgress: function ({ loaded, total, progress, bytes, estimated, rate, upload = true }) {
-          console.log('loaded', loaded)
-          console.log('total', total)
+          uploadProgress((loaded / total) * 100)
         }
       })
-        .then(res => resolve(res))
-        .catch(err => reject(err))
-    })
-  }
-
-  create (file) {
-    return new Promise((resolve, reject, progress) => {
-      const formData = new FormData()
-      formData.append('file', file)
-
-      this.api.post('/media', formData, null, null, true)
         .then(res => resolve(res))
         .catch(err => reject(err))
     })
