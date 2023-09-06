@@ -46,6 +46,8 @@ const allowedFileTypes = [
   'video/webm', 'video/mp4', 'video/avi'
 ]
 
+const fileChunkSize = 1024 * 1024 * 2 // 2 Mb
+
 export default {
   name: 'MediaField',
   components: { IconWithTooltip },
@@ -66,7 +68,8 @@ export default {
   data () {
     return {
       mediaApi: new MediaApi(),
-      progress: null
+      progress: null,
+      fileChunkSize: fileChunkSize
     }
   },
 
@@ -95,15 +98,40 @@ export default {
         })
       }
 
-      // if (files.length > 1) {
+      for (const fileIndex in files) {
+        const file = files[fileIndex]
+        if (fileIndex < 1) {
+          this.uploadFile(file)
+        }
+      }
+    },
+
+    async uploadFile (file) {
+      const checkType = await this.mediaApi.checkFileType(file.slice(0, 100))
+      console.log('checkType', checkType)
+
+      console.log('need to chunk', file.size > this.fileChunkSize)
+
+      // let chunks = null
+      // if (file.size > this.minFileSizeToChunk) {
+      //   chunks = []
+      //   let start = 0
+      //   const end = file.size
+      //   while (start < end) {
+      //     const endOffset = start + this.fileChunkSize
+      //     chunks.push(file.slice(start, endOffset))
+      //     start = endOffset
+      //   }
       //
+      //   this.mediaApi.upload(chunks[0], (percentage) => {
+      //     this.progress = percentage !== 100 ? percentage / 100 : null
+      //   })
       // }
 
-      if (files.length === 1) {
-        this.mediaApi.upload(files[0], (percentage) => {
-          this.progress = percentage !== 100 ? percentage / 100 : null
-        })
-      }
+      // const firstBytes = file.slice(0, 100)
+      // await this.mediaApi.upload(firstBytes, (percentage) => {
+      //   this.progress = percentage !== 100 ? percentage / 100 : null
+      // })
     },
 
     validateFiles (files) {

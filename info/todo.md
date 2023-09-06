@@ -1,14 +1,19 @@
-# Fixes
-- [] Move `client/src/plugins/api/my-vote.js` to `client/models/cache/cache-my-vote.js`
-- [] The text input field for the image doesn't allow to a user click the buttons without unfocus
-- [] If a user has typed an existing tag, apply that tag to the post correctly
-
-
 # Roadmap
+- [x] Send first 100 bytes to check mime type
+  - [x] `/media/check-file`
+- [] JS Chunk file by 2mb if file more than 2mb
+- [] PHP add middleware check files
+- [] PHP Check real file mime/type
 - [] Connect DO cloud
 - [] Add abilities:
     - [] Upload GIFs
     - [] Upload Videos
+
+
+# Fixes
+- [] Move `client/src/plugins/api/my-vote.js` to `client/models/cache/cache-my-vote.js`
+- [] The text input field for the image doesn't allow to a user click the buttons without unfocus
+- [] If a user has typed an existing tag, apply that tag to the post correctly
 
 # Final MVP
 - [] `Хіти`, `Епічні`

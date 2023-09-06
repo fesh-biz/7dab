@@ -11,6 +11,17 @@ export default class MediaApi {
     MediaApi.instance = this
   }
 
+  checkFileType (file) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      this.api.simplePost('/media/check-file', formData)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
   upload (file, uploadProgress) {
     return new Promise((resolve, reject, progress) => {
       const formData = new FormData()

@@ -43,6 +43,14 @@ export default class Api {
     })
   }
 
+  simplePost (url, data) {
+    return new Promise((resolve, reject) => {
+      return this.request(url, 'post', data, null, true)
+        .then(res => resolve(res))
+        .catch(err => reject(err))
+    })
+  }
+
   post (url, data, options, ormTableName, bypassCacheStoring) {
     return new Promise((resolve, reject) => {
       return this.request(url, 'post', data, ormTableName, bypassCacheStoring)
