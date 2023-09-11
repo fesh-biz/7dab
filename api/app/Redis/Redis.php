@@ -32,6 +32,7 @@ class Redis
 
     public function create(int $id, array $data)
     {
+        $data['created_at'] = now()->format('Y-m-d h:m:s');
         $data = json_encode($data);
 
         $this->client->hset($this->key, $id, $data);
