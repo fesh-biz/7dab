@@ -21,14 +21,14 @@ class CreateMediaTable extends Migration
 
             $table->foreignId('user_id')->constrained('users');
 
-            $table->unsignedTinyInteger('order');
+            $table->unsignedTinyInteger('order')->nullable();
             $table->string('original_filename');
             $table->string('title')->nullable();
-            $table->unsignedBigInteger('original_size');
+            $table->unsignedBigInteger('original_size')->nullable();
             $table->string('mime_type');
-            $table->string('disc');
+            $table->string('disc')->nullable();
 
-            $table->json('data');
+            $table->json('data')->nullable();
 
             $table->timestamps();
         });
