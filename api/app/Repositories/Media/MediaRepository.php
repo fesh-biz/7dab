@@ -21,6 +21,6 @@ class MediaRepository
 
     public function create(CreateMediaData $data): Media
     {
-        return $this->model->create($data);
+        return $this->model->create($data->toArray());
     }
 }

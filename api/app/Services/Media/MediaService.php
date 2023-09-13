@@ -26,11 +26,25 @@ class MediaService
         return $this->repo;
     }
 
-    public function create(CreateMediaData $d): Media
+    public function create(CreateMediaData $d): int
     {
         $media = $this->repo->create($d);
 
-        $redis = app()->make(MediaRedis::class);
-        $redis->create($media->id, );
+        $redisId = $this->createMediaRedis($media);
+    }
+
+    private function createMediaRedis(Media $m): int
+    {
+        $id = $m->id;
+
+        $mediaData = [
+            'chunks' => [],
+            'mime_type' => $m->mime_type
+        ];
+
+        $mediaRedis = app()->make(MediaRedis::class);
+        $mediaRedis->create($id, $mediaData);
+
+        return $id;
     }
 }

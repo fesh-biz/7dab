@@ -30,7 +30,7 @@ class Redis
         return $res;
     }
 
-    public function create(int $id, array $data)
+    public function create(int $id, mixed $data)
     {
         $data['created_at'] = now()->format('Y-m-d h:m:s');
         $data = json_encode($data);

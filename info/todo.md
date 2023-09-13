@@ -1,19 +1,19 @@
 # Roadmap
 - [x] Send first 100 bytes to check mime type
   - [x] `/media/check-file`
-    - [] Request
-        - [] Create `CheckFileRequest`
-        - [] `file_chunk` < 100 bytes // 500
-        - [] `file_size` // 422
-            - [] If mime is
-                - [] Image `file_size` < 5Mb
-                - [] Gif `file_size` < 50Mb
-                - [] Video `file_size` < 100Mb
-    - [] If request passed
-        - [] Create record `Media`
-            - [] `user_id`
-            - [] `original_filename`
-            - [] `mime_type`
+    - [x] Request
+        - [x] Create `CheckFileRequest`
+        - [x] `file_chunk` < 100 bytes // 500
+        - [x] `file_size` // 422
+            - [x] If mime is
+                - [x] Image `file_size` < 5Mb
+                - [x] Gif `file_size` < 50Mb
+                - [x] Video `file_size` < 100Mb
+    - [x] If request passed
+        - [x] Create record `Media`
+            - [x] `user_id`
+            - [x] `original_filename`
+            - [x] `mime_type`
         - [] Create media redis
           - [] `['id' => 'media_id', 'files' => [], 'mime_type' => '']`
         - [] Response

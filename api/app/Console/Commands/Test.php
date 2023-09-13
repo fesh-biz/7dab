@@ -25,49 +25,10 @@ class Test extends Command
         $this->runTestByItsName($this->argument('methodName'));
     }
 
-    private function createFakeUsers()
-    {
-        $nickNames = [
-            'папірець', 'IronMan', 'Neruhomyi', 'JBaserok',
-            'musicIsMyNature', 'Snicker', 'трошкиСобі', 'TheWizard',
-            'чарівник', 'мрійник', 'Mriyachka', 'Веселка',
-            'StarLord', 'дика перлина', 'kvikvi', 'квітка',
-            'tayemnytsa', 'вітряна дівка'
-        ];
-
-        foreach ($nickNames as $nick) {
-            $email = $nick . '@terevenky.com';
-            if (User::whereEmail($email)->first()) {
-                continue;
-            }
-
-            $user = User::create([
-                'login' => $nick,
-                'email' => $nick . '@terevenky.com',
-                'password' => bcrypt('Fesh717658')
-            ]);
-
-            $user->email_verified_at = now();
-            $user->created_at = now()->subDays(mt_rand(10, 60));
-            $user->save();
-        }
-
-        User::all()->map(function ($u) {
-            $this->info($u->email);
-        });
-    }
-
     private function redis()
     {
         $mediaRedis = app()->make(MediaRedis::class);
-        $mediaRedis->deleteAll();
 
-        $fileId = 20;
-
-        $res[] = $mediaRedis->create($fileId, ['file' => 'first']);
-        $res[] = $mediaRedis->create($fileId + 1, ['file' => 'first']);
-
-        dd($res);
         dd($mediaRedis->all());
     }
 
@@ -117,5 +78,39 @@ class Test extends Command
     private function runTestByItsName(string $testName)
     {
         $this->{$testName}();
+    }
+
+    // Unused
+
+    private function createFakeUsers()
+    {
+        $nickNames = [
+            'папірець', 'IronMan', 'Neruhomyi', 'JBaserok',
+            'musicIsMyNature', 'Snicker', 'трошкиСобі', 'TheWizard',
+            'чарівник', 'мрійник', 'Mriyachka', 'Веселка',
+            'StarLord', 'дика перлина', 'kvikvi', 'квітка',
+            'tayemnytsa', 'вітряна дівка'
+        ];
+
+        foreach ($nickNames as $nick) {
+            $email = $nick . '@terevenky.com';
+            if (User::whereEmail($email)->first()) {
+                continue;
+            }
+
+            $user = User::create([
+                'login' => $nick,
+                'email' => $nick . '@terevenky.com',
+                'password' => bcrypt('Fesh717658')
+            ]);
+
+            $user->email_verified_at = now();
+            $user->created_at = now()->subDays(mt_rand(10, 60));
+            $user->save();
+        }
+
+        User::all()->map(function ($u) {
+            $this->info($u->email);
+        });
     }
 }
