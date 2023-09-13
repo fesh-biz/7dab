@@ -30,7 +30,7 @@ class Redis
         return $res;
     }
 
-    public function create(int $id, mixed $data)
+    public function create(int $id, array $data)
     {
         $data['created_at'] = now()->format('Y-m-d h:m:s');
         $data = json_encode($data);
@@ -66,12 +66,20 @@ class Redis
 
     public function deleteMultiple(array $ids)
     {
+        if (!$ids) {
+            return;
+        }
+
         $this->client->hdel($this->key, $ids);
     }
 
     public function find(int $id)
     {
         $res = $this->client->hget($this->key, $id);
+
+        if (!$res) {
+            throw new \Exception('Redis record not found');
+        }
 
         return json_decode($res) ?? $res;
     }

@@ -18,7 +18,7 @@ class CreateMediaRedisData extends Data
     {
         return [
             'id' => $this->id,
-            'mime_type' => $this->mimeType,
+            'mimeType' => $this->mimeType,
             'chunks' => []
         ];
     }
