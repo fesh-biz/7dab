@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Media\CheckFileRequest;
 use App\Http\Resources\Media\MediaResource;
-use App\Plugins\MimeDetector\MimeDetector;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,24 +18,9 @@ class MediaController extends Controller
         $this->service = $service;
     }
 
-    public function checkFile(Request $request): JsonResponse
+    public function checkFile(CheckFileRequest $r): JsonResponse
     {
-        $file = $request->file('file');
-
-        if ($file->getSize() > 100) {
-            throw new \Exception('The given file chunk is too large');
-        }
-
-        $imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        $videoMimeTypes = ['video/mp4', 'video/webm'];
-
-        $mimeDetector = new MimeDetector();
-        $mimeDetector->setFile($file);
-        $mimeType = $mimeDetector->getMimeType();
-
-        if (!in_array($mimeType, $imageMimeTypes) && !in_array($mimeType, $videoMimeTypes)) {
-            throw new \Exception('Invalid file type: ' . $mimeType);
-        }
+        $media = $this->service->create($r->dto());
 
         return response()->json('success');
     }

@@ -1,14 +1,37 @@
 # Roadmap
 - [x] Send first 100 bytes to check mime type
   - [x] `/media/check-file`
+    - [] Request
+        - [] Create `CheckFileRequest`
+        - [] `file_chunk` < 100 bytes // 500
+        - [] `file_size` // 422
+            - [] If mime is
+                - [] Image `file_size` < 5Mb
+                - [] Gif `file_size` < 50Mb
+                - [] Video `file_size` < 100Mb
+    - [] If request passed
+        - [] Create record `Media`
+            - [] `user_id`
+            - [] `original_filename`
+            - [] `mime_type`
+        - [] Create media redis
+          - [] `['id' => 'media_id', 'files' => [], 'mime_type' => '']`
+        - [] Response
+            - [] 'redis_id'
+    - [] If request failed
+        - [] Send according error
+- [] Uploading big file by chunks
+    - [] Request
+        - [] Chunk size = 2Mb
+        - [] `[chunk_number, chunk, media_id]`
+        - [] `is_last` false|true
+    - [] Validation
+        - [] Get amount of chunks from redis
+ 
 - [] JS Chunk file by 2mb if file more than 2mb
-- [] PHP add middleware check files
-- [] PHP Check real file mime/type
 - [] Connect DO cloud
-- [] Add abilities:
-    - [] Upload GIFs
-    - [] Upload Videos
 
+- [] middleware `image-sanitize` to think what to do. Maybe it must be removed
 
 # Fixes
 - [] Move `client/src/plugins/api/my-vote.js` to `client/models/cache/cache-my-vote.js`

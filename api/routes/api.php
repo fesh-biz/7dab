@@ -35,7 +35,7 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
 // Media
 Route::group(['prefix' => 'media', 'middleware' => 'auth:api'], function() {
     Route::post('/', [MediaController::class, 'create']);
-    Route::post('/check-file', [MediaController::class, 'checkFile']);
+    Route::post('/check-file', [MediaController::class, 'checkFile'])->middleware();
     Route::delete('/{id}', [MediaController::class, 'delete']);
 });
 

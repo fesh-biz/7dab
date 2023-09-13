@@ -14,7 +14,9 @@ export default class MediaApi {
   checkFileType (file) {
     return new Promise((resolve, reject) => {
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file_chunk', file.slice(0, 100))
+      formData.append('name', file.name)
+      formData.append('size', file.size)
 
       this.api.simplePost('/media/check-file', formData)
         .then(res => resolve(res))

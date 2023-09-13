@@ -64,9 +64,10 @@ class Test extends Command
 
         $fileId = 20;
 
-        $mediaRedis->create($fileId, ['file' => 'first']);
-        $mediaRedis->create($fileId + 1, ['file' => 'first']);
+        $res[] = $mediaRedis->create($fileId, ['file' => 'first']);
+        $res[] = $mediaRedis->create($fileId + 1, ['file' => 'first']);
 
+        dd($res);
         dd($mediaRedis->all());
     }
 

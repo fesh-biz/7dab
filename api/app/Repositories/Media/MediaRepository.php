@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Media;
 
+use App\Data\Media\CreateMediaData;
 use App\Models\Media\Media;
 
 class MediaRepository
@@ -16,5 +17,10 @@ class MediaRepository
     public function getModel(): Media
     {
         return $this->model;
+    }
+
+    public function create(CreateMediaData $data): Media
+    {
+        return $this->model->create($data);
     }
 }

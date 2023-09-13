@@ -107,7 +107,7 @@ export default {
     },
 
     async uploadFile (file) {
-      const checkType = await this.mediaApi.checkFileType(file.slice(0, 100))
+      const checkType = await this.mediaApi.checkFileType(file)
       console.log('checkType', checkType)
 
       console.log('need to chunk', file.size > this.fileChunkSize)

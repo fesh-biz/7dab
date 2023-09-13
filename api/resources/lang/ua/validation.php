@@ -13,6 +13,8 @@ return [
     |
     */
 
+    'wrong_file_type' => 'Невірний тип файлу',
+    'file_is_too_large' => 'Дуже великий файл',
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
