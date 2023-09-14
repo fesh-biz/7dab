@@ -3,8 +3,10 @@
 namespace App\Services\Media;
 
 use App\Data\Media\CreateMediaData;
+use App\Data\Media\CreateMediaRedisData;
 use App\Models\Media\Media;
 use App\Redis\Models\MediaRedis;
+use App\Redis\Repositories\MediaRedisRepository;
 use App\Repositories\Media\MediaRepository;
 
 class MediaService
@@ -26,25 +28,13 @@ class MediaService
         return $this->repo;
     }
 
-    public function create(CreateMediaData $d): int
+    public function create(CreateMediaData $d): Media
     {
         $media = $this->repo->create($d);
 
-        $redisId = $this->createMediaRedis($media);
-    }
+        $mediaRedisRepo = app()->make(MediaRedisRepository::class);
+        $mediaRedisRepo->create(CreateMediaRedisData::from($media));
 
-    private function createMediaRedis(Media $m): int
-    {
-        $id = $m->id;
-
-        $mediaData = [
-            'chunks' => [],
-            'mime_type' => $m->mime_type
-        ];
-
-        $mediaRedis = app()->make(MediaRedis::class);
-        $mediaRedis->create($id, $mediaData);
-
-        return $id;
+        return $media;
     }
 }

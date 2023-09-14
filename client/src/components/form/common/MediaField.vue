@@ -59,9 +59,6 @@ export default {
     order: {
       type: Number,
       required: true
-    },
-    errorMessage: {
-      type: [String]
     }
   },
 
@@ -69,7 +66,8 @@ export default {
     return {
       mediaApi: new MediaApi(),
       progress: null,
-      fileChunkSize: fileChunkSize
+      fileChunkSize: fileChunkSize,
+      errorMessage: null
     }
   },
 

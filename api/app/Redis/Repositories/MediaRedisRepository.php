@@ -40,7 +40,7 @@ class MediaRedisRepository
     public function __call($name, $arguments)
     {
         $id = null;
-        if ($name === 'delete') {
+        if (count($arguments) === 1) {
             $id = $arguments[0];
         }
         $res = null;

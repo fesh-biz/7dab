@@ -10,14 +10,15 @@
                 - [x] Gif `file_size` < 50Mb
                 - [x] Video `file_size` < 100Mb
     - [x] If request passed
-        - [x] Create record `Media`
-            - [x] `user_id`
-            - [x] `original_filename`
-            - [x] `mime_type`
-        - [] Create media redis
-          - [] `['id' => 'media_id', 'files' => [], 'mime_type' => '']`
-        - [] Response
-            - [] 'redis_id'
+        - [] If file size > 2Mb
+            - [x] Create record `Media`
+                - [x] `user_id`
+                - [x] `original_filename`
+                - [x] `mime_type`
+            - [x] Create media redis
+              - [x] `['id' => 'media_id', 'files' => [], 'mime_type' => '']`
+            - [x] Response
+                - [x] `media_id`
     - [] If request failed
         - [] Send according error
 - [] Uploading big file by chunks

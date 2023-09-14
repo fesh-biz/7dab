@@ -10,7 +10,8 @@ class CreateMediaData extends Data
     public function __construct(
         public int $user_id,
         public string $original_filename,
-        public string $mime_type
+        public string $mime_type,
+        public int $original_size
     )
     {
     }

@@ -9,7 +9,7 @@ class CreateMediaRedisData extends Data
 {
     public function __construct(
         public int $id,
-        public string $mimeType
+        public string $mime_type
     )
     {
     }
@@ -18,7 +18,7 @@ class CreateMediaRedisData extends Data
     {
         return [
             'id' => $this->id,
-            'mimeType' => $this->mimeType,
+            'mime_type' => $this->mime_type,
             'chunks' => []
         ];
     }

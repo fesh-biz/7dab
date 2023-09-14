@@ -44,7 +44,8 @@ class CheckFileRequest extends FormRequest
         return new CreateMediaData(
             auth()->id(),
             $this->name,
-            $this->mimeType
+            $this->mimeType,
+            $this->size
         );
     }
 
