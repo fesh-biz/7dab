@@ -24,13 +24,16 @@ export default class MediaApi {
     })
   }
 
-  upload (file, uploadProgress) {
+  uploadChunk (data, uploadProgress) {
     return new Promise((resolve, reject, progress) => {
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('media_id', data.media_id)
+      formData.append('file_chunk', data.file_chunk)
+      formData.append('chunk_index', data.chunk_index)
+      formData.append('total_chunks', data.total_chunks)
 
       this.api.axios({
-        url: '/media',
+        url: '/media/upload-chunk',
         method: 'post',
         data: formData,
         onUploadProgress: function ({ loaded, total, progress, bytes, estimated, rate, upload = true }) {

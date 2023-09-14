@@ -105,31 +105,73 @@ export default {
     },
 
     async uploadFile (file) {
-      const checkType = await this.mediaApi.checkFileType(file)
-      console.log('checkType', checkType)
+      this.errorMessage = null
+      const res = await this.checkFile(file)
 
-      console.log('need to chunk', file.size > this.fileChunkSize)
-
-      // let chunks = null
-      // if (file.size > this.minFileSizeToChunk) {
-      //   chunks = []
-      //   let start = 0
-      //   const end = file.size
-      //   while (start < end) {
-      //     const endOffset = start + this.fileChunkSize
-      //     chunks.push(file.slice(start, endOffset))
-      //     start = endOffset
-      //   }
-      //
-      //   this.mediaApi.upload(chunks[0], (percentage) => {
-      //     this.progress = percentage !== 100 ? percentage / 100 : null
-      //   })
-      // }
+      if (file.size > this.fileChunkSize) {
+        await this.uploadFileByChunks(file, res.data.media_id)
+      }
 
       // const firstBytes = file.slice(0, 100)
       // await this.mediaApi.upload(firstBytes, (percentage) => {
       //   this.progress = percentage !== 100 ? percentage / 100 : null
       // })
+    },
+
+    async uploadFileByChunks (file, mediaId) {
+      const chunks = []
+      let start = 0
+      const end = file.size
+      while (start < end) {
+        const endOffset = start + this.fileChunkSize
+        chunks.push(file.slice(start, endOffset))
+        start = endOffset
+      }
+
+      console.log('chunks', chunks)
+
+      const totalChunks = chunks.length
+
+      for (let i = 0; i < totalChunks; i++) {
+        if (this.errorMessage) break
+
+        const chunk = chunks[i]
+        const data = {
+          media_id: mediaId,
+          file_chunk: chunk,
+          chunk_index: i,
+          total_chunks: totalChunks
+        }
+
+        console.log('data.chunk_index', data.chunk_index)
+        await this.uploadChunk(data)
+        console.log('data.chunk_index after', data.chunk_index)
+      }
+    },
+
+    async uploadChunk (data, attempt = 0) {
+      if (attempt >= 3) {
+        this.errorMessage = 'От халепа. Спробуйте ще раз.'
+        return
+      }
+
+      await this.mediaApi.uploadChunk(data, (percentage) => {
+        this.progress = percentage !== 100 ? percentage / 100 : null
+      })
+        .catch(async () => {
+          await this.uploadChunk(data, ++attempt)
+        })
+    },
+
+    checkFile (file) {
+      return new Promise((resolve, reject) => {
+        this.mediaApi.checkFileType(file)
+          .then(res => resolve(res))
+          .catch(err => {
+            this.errorMessage = err.response.data.errors.file_chunk[0]
+            reject(err)
+          })
+      })
     },
 
     validateFiles (files) {

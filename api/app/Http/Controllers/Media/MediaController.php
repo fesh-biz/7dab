@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Media;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\CheckFileRequest;
+use App\Http\Requests\Media\UploadMediaChunkRequest;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,12 +32,9 @@ class MediaController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function uploadChunk(UploadMediaChunkRequest $r)
     {
-        $fileContent = fopen($request->file, 'rb');
-        $first6Bites = fread($fileContent, 6);
 
-        ddh($first6Bites);
     }
 
     public function destroy(): JsonResponse
