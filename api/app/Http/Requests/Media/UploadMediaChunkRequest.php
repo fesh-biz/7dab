@@ -26,8 +26,10 @@ class UploadMediaChunkRequest extends FormRequest
             throw new \Exception('The given file chunk is too large');
         }
 
-        $this->mimeType = $this->getFileType($file);
-        $this->checkMimeType($this->mimeType);
+        if ($this->chunk_index < 1) {
+            $this->mimeType = $this->getFileType($file);
+            $this->checkMimeType($this->mimeType);
+        }
 
         return [
             'chunk_index' => ['integer', 'required'],

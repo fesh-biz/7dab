@@ -106,16 +106,13 @@ export default {
 
     async uploadFile (file) {
       this.errorMessage = null
+      this.progress = 0
+
       const res = await this.checkFile(file)
 
       if (file.size > this.fileChunkSize) {
         await this.uploadFileByChunks(file, res.data.media_id)
       }
-
-      // const firstBytes = file.slice(0, 100)
-      // await this.mediaApi.upload(firstBytes, (percentage) => {
-      //   this.progress = percentage !== 100 ? percentage / 100 : null
-      // })
     },
 
     async uploadFileByChunks (file, mediaId) {
@@ -155,12 +152,23 @@ export default {
         return
       }
 
+      const totalChunks = data.total_chunks
+      const currentChunkIndex = data.chunk_index
+      const percentagesPerChunk = 100 / totalChunks
+      console.log('percentagesPerChunk', percentagesPerChunk)
+
       await this.mediaApi.uploadChunk(data, (percentage) => {
-        this.progress = percentage !== 100 ? percentage / 100 : null
+        const currentPercentages = percentage / 100
+        console.log('currentPercentages', currentPercentages)
+        const currentProgress = currentPercentages / percentagesPerChunk * 100
+        console.log('currentProgress', currentProgress)
+        this.progress = (currentChunkIndex * percentagesPerChunk + currentProgress) / 100
       })
         .catch(async () => {
           await this.uploadChunk(data, ++attempt)
         })
+
+      throw new Error('test')
     },
 
     checkFile (file) {
