@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands\System;
+namespace App\Console\Commands\System\Clear;
 
 use Illuminate\Console\Command;
 
-class ClearConsoleLog extends Command
+class ClearLog extends Command
 {
-    protected $signature = 'log:clear';
+    protected $signature = 'clear:log';
 
     protected $description = 'Command description';
 
