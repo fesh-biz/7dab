@@ -28,6 +28,7 @@ class MediaController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'chunk_size' => explode('M', ini_get('upload_max_filesize'))[0],
             'media_id' => $media->id ?? null
         ]);
     }

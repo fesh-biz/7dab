@@ -14,16 +14,21 @@
       />
     </div>
 
-    <q-linear-progress
-      v-if="progress !== null"
-      size="10px"
-      :value="progress"
-      color="positive"
-      rounded
-    />
+    <div v-if="file && progress !== null" style="width: 100%; margin-top: 15px">
+      <q-linear-progress
+        size="10px"
+        :value="progress"
+        color="positive"
+        rounded
+      />
+      <div>{{ file.name }}</div>
+
+      <q-separator spaced="xl"/>
+    </div>
 
     <!-- Add Media -->
     <q-icon
+      v-if="!file"
       class="cursor-pointer"
       style="background-color: white"
       size="10rem"
@@ -46,8 +51,6 @@ const allowedFileTypes = [
   'video/webm', 'video/mp4', 'video/avi'
 ]
 
-const fileChunkSize = 1024 * 1024 * 2 // 2 Mb
-
 export default {
   name: 'MediaField',
   components: { IconWithTooltip },
@@ -66,7 +69,8 @@ export default {
     return {
       mediaApi: new MediaApi(),
       progress: null,
-      fileChunkSize: fileChunkSize,
+      fileChunkSize: 0,
+      file: null,
       errorMessage: null
     }
   },
@@ -109,6 +113,10 @@ export default {
       this.progress = 0
 
       const res = await this.checkFile(file)
+      const mb = 1024 * 1024
+      this.fileChunkSize = mb * res.data.chunk_size
+
+      this.file = file
 
       if (file.size > this.fileChunkSize) {
         await this.uploadFileByChunks(file, res.data.media_id)
@@ -125,8 +133,6 @@ export default {
         start = endOffset
       }
 
-      console.log('chunks', chunks)
-
       const totalChunks = chunks.length
 
       for (let i = 0; i < totalChunks; i++) {
@@ -140,9 +146,7 @@ export default {
           total_chunks: totalChunks
         }
 
-        console.log('data.chunk_index', data.chunk_index)
         await this.uploadChunk(data)
-        console.log('data.chunk_index after', data.chunk_index)
       }
     },
 
