@@ -1,36 +1,33 @@
 # Roadmap
-- [x] Send first 100 bytes to check mime type
-  - [x] `/media/check-file`
-    - [x] Request
-        - [x] Create `CheckFileRequest`
-        - [x] `file_chunk` < 100 bytes // 500
-        - [x] `file_size` // 422
-            - [x] If mime is
-                - [x] Image `file_size` < 5Mb
-                - [x] Gif `file_size` < 50Mb
-                - [x] Video `file_size` < 100Mb
-    - [x] If request passed
-        - [] If file size > 2Mb
-            - [x] Create record `Media`
-                - [x] `user_id`
-                - [x] `original_filename`
-                - [x] `mime_type`
-            - [x] Create media redis
-              - [x] `['id' => 'media_id', 'files' => [], 'mime_type' => '']`
-            - [x] Response
-                - [x] `media_id`
-    - [] If request failed
-        - [] Send according error
 - [] Uploading big file by chunks
     - [] Request
-        - [] Chunk size = 2Mb
         - [] `[chunk_number, chunk, media_id]`
-        - [] `is_last` false|true
-    - [] Validation
-        - [] Get amount of chunks from redis
- 
-- [] JS Chunk file by 2mb if file more than 2mb
-- [] Connect DO cloud
+        - [] Validation
+            - [x] Chunk size = by server
+            - [] Get amount of chunks from redis by media id
+            - [] Check chunks size amount is less than 100 Mb
+                - [] If more    
+                    - [] Delete all files
+                    - [] Delete record from Redis
+                    - [] Send error
+            - [] Check if user doesn't have more than 300 Mb of total temporary files
+                - [] If true
+                    - [] Throw error at the moment
+        - [] Saving
+            - [] Save chunk to temporary folder
+                - [] `/storage/temporary/user/{id}/*.*`
+            - [] If chunk is last
+                - [] Combine file
+                    - [] Delete all temporary files
+                    - [] Delete record from Redis
+                    - [] Check combined files size with `.media.original_size`
+                        - [] on false
+                            - [] Send error
+                - [] Save file to DO
+                - [] Update `.media.record`
+                    - `mediable`
+                    - `disc`
+                    - `data.original_filename`
 
 - [] middleware `image-sanitize` to think what to do. Maybe it must be removed
 
