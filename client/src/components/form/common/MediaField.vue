@@ -155,20 +155,20 @@ export default {
       const totalChunks = data.total_chunks
       const currentChunkIndex = data.chunk_index
       const percentagesPerChunk = 100 / totalChunks
-      console.log('percentagesPerChunk', percentagesPerChunk)
+      const completedProgress = currentChunkIndex * percentagesPerChunk
 
       await this.mediaApi.uploadChunk(data, (percentage) => {
-        const currentPercentages = percentage / 100
-        console.log('currentPercentages', currentPercentages)
-        const currentProgress = currentPercentages / percentagesPerChunk * 100
-        console.log('currentProgress', currentProgress)
-        this.progress = (currentChunkIndex * percentagesPerChunk + currentProgress) / 100
+        const currentProgress = percentagesPerChunk / 100 * percentage
+        this.progress = (completedProgress + currentProgress) / 100
+        if (this.progress === 1) {
+          setTimeout(() => {
+            this.progress = null
+          }, 500)
+        }
       })
         .catch(async () => {
           await this.uploadChunk(data, ++attempt)
         })
-
-      throw new Error('test')
     },
 
     checkFile (file) {
