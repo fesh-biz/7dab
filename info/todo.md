@@ -1,10 +1,10 @@
 # Roadmap
 - [] Uploading big file by chunks
     - [] Request
-        - [] `[chunk_number, chunk, media_id]`
+        - [x] `[chunk_number, chunk, media_id]`
         - [] Validation
             - [x] Chunk size = by server
-            - [] Get amount of chunks from redis by media id
+            - [x] Get amount of chunks size from redis by media id
             - [] Check chunks size amount is less than 100 Mb
                 - [] If more    
                     - [] Delete all files

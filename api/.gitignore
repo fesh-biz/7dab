@@ -3,6 +3,7 @@
 /public/storage
 /storage/*.key
 /storage/file-chunks
+/storage/merged-files
 /vendor
 .env
 .env.dusk.local

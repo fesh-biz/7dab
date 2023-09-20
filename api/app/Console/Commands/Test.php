@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Redis\Models\Media;
 use App\Redis\Models\MediaRedis;
 use App\Redis\Repositories\MediaRedisRepository;
+use App\Services\Media\MediaFileService;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -31,7 +32,9 @@ class Test extends Command
     {
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
 
-        $media = ($mediaRedisRepo->find(101));
+        $media = ($mediaRedisRepo->find(107));
+        $mediaFileService = new MediaFileService();
+        $mediaFileService->mergeFileChunks(107, $media->mime_type, $media->chunks);
 
         dd(dd($media));
     }

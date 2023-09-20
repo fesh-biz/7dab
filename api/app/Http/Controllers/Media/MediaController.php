@@ -38,10 +38,6 @@ class MediaController extends Controller
     public function uploadChunk(UploadMediaChunkRequest $r)
     {
         $mediaId = $r->media_id;
-        $chunkIndex = $r->chunk_index;
-        $totalChunks = $r->total_chunks;
-        $file = $r->file('file_chunk');
-
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
         $uploadedMediaChunksSize = $mediaRedisRepo->getUploadedMediaChunksSize($mediaId);
 
@@ -50,6 +46,8 @@ class MediaController extends Controller
             throw new \Exception('Max sum of all chunks has been reached');
         }
 
+
+        $file = $r->file('file_chunk');
         $mediaFileService = new MediaFileService();
         $mediaFileService->checkFileHasExploits($file->get());
 
@@ -57,10 +55,15 @@ class MediaController extends Controller
 
         $mediaRedisRepo->addFileChunk($mediaId, $filename, $file->getSize());
 
+        $chunkIndex = $r->chunk_index;
+        $totalChunks = $r->total_chunks;
 
-        // if ($chunkIndex > 0) {
-        //     ddh($uploadedMediaChunksSize);
-        // }
+        $mediaRedis = $mediaRedisRepo->find((int)$mediaId);
+        if ($chunkIndex + 1 === (int)$totalChunks) {
+            $filename = $mediaFileService->mergeFileChunks($mediaId, $mediaRedis->mime_type, $mediaRedis->chunks);
+
+            return response()->json([$filename]);
+        }
     }
 
     public function destroy(): JsonResponse
