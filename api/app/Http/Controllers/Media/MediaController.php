@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\CheckFileRequest;
 use App\Http\Requests\Media\UploadMediaChunkRequest;
 use App\Redis\Repositories\MediaRedisRepository;
+use App\Services\Media\MediaFileService;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -49,20 +50,11 @@ class MediaController extends Controller
             throw new \Exception('Max sum of all chunks has been reached');
         }
 
-        // Sanitizing file
-        $patterns = ['<?php', 'phar'];
-        foreach ($patterns as $pattern) {
-            if (str_contains($file->get(), $pattern)) {
-                throw new \Exception('File has exploit: ' . $pattern);
-            }
-        }
+        $mediaFileService = new MediaFileService();
+        $mediaFileService->checkFileHasExploits($file->get());
 
-        // Save file to temporary storage folder
-        $path = 'media-' . $mediaId;
-        $filename = $file->hashName();
-        $file->storeAs($path, $filename, 'file_chunks_storage');
+        $filename = $mediaFileService->storeChunk($mediaId, $file);
 
-        // add new file chunk to redis record
         $mediaRedisRepo->addFileChunk($mediaId, $filename, $file->getSize());
 
 

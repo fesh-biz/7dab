@@ -31,10 +31,9 @@ class Test extends Command
     {
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
 
-        $media = ($mediaRedisRepo->find(97));
-        $content = file_get_contents(storage_path('file-chunks/media-97/' . $media->chunks[1]->filename));
+        $media = ($mediaRedisRepo->find(101));
 
-        dd(str_contains($content, '<?php'));
+        dd(dd($media));
     }
 
     private function aws()
