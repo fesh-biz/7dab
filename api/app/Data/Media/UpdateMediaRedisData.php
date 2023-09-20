@@ -9,7 +9,7 @@ class UpdateMediaRedisData extends Data
 {
     public function __construct(
         public int $id,
-        public string $mimeType,
+        public string $mime_type,
         public array $chunks
     )
     {

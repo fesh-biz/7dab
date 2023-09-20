@@ -22,7 +22,7 @@ class UploadMediaChunkRequest extends FormRequest
         }
 
         $mb = 1024 * 1024;
-        $maxAllowedMb = explode('M', ini_get('upload_max_filesize'))[0];
+        $maxAllowedMb = getUploadMaxFilesize();
         if ($file->getSize() > $maxAllowedMb * $mb) {
             throw new \Exception('The given file chunk is too large');
         }

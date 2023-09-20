@@ -30,17 +30,11 @@ class Test extends Command
     private function redis()
     {
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
-        $mediaRedisRepo->deleteAll();
 
-        $data = new CreateMediaRedisData(1, 'image/jpeg');
-        $mediaRedisRepo->create($data);
+        $media = ($mediaRedisRepo->find(97));
+        $content = file_get_contents(storage_path('file-chunks/media-97/' . $media->chunks[1]->filename));
 
-        $mediaRedisRepo->addFileChunk(1, 'file1');
-        $mediaRedisRepo->addFileChunk(1, 'file2');
-        $mediaRedisRepo->addFileChunk(1, 'file3');
-        $mediaRedisRepo->addFileChunk(1, 'file4');
-
-        dd($mediaRedisRepo->all());
+        dd(str_contains($content, '<?php'));
     }
 
     private function aws()

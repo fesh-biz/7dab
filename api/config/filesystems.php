@@ -42,6 +42,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'file_chunks_storage' => [
+            'driver' => 'local',
+            'root' => storage_path('file-chunks'),
+            'url' => '',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

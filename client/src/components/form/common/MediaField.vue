@@ -153,6 +153,8 @@ export default {
     async uploadChunk (data, attempt = 0) {
       if (attempt >= 3) {
         this.errorMessage = 'От халепа. Спробуйте ще раз.'
+        this.file = null
+        this.progress = null
         return
       }
 

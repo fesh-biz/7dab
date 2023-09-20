@@ -28,8 +28,17 @@
                     - `mediable`
                     - `disc`
                     - `data.original_filename`
+- [] Upload whole file if it's less thank file chunk size
+    - [] Validation same as `CheckFileRequest`
+    - [] Save file to DO
+    - [] Update `.media.record`
+        - `mediable`
+        - `disc`
+        - `data.original_filename`
+- [x] middleware `image-sanitize` to think what to do. Maybe it must be removed
+    - [] Delete Image Sanitize package
 
-- [] middleware `image-sanitize` to think what to do. Maybe it must be removed
+- [] Create uploader for vendor js
 
 # Fixes
 - [] Move `client/src/plugins/api/my-vote.js` to `client/models/cache/cache-my-vote.js`
