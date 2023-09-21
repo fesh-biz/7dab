@@ -2,6 +2,15 @@
 
 namespace App\Redis\Repositories;
 
+/**
+ * Class Repository
+ * @package App\Redis\Repositories
+ * @method find(int $id)
+ * @method delete(int $id)
+ * @method deleteAll()
+ * @method all()
+ * @method deleteMultiple(array $ids)
+ */
 class Repository
 {
     public function __call($name, $arguments)

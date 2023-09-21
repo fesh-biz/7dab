@@ -3,7 +3,7 @@
 namespace App\Services\Media;
 
 use App\Data\Media\CreateMediaData;
-use App\Data\Media\CreateMediaRedisData;
+use App\Data\Media\MediaRedisData;
 use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
 use App\Redis\Models\MediaRedis;
@@ -34,7 +34,7 @@ class MediaService
         $media = $this->repo->create($d);
 
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
-        $mediaRedisRepo->create(CreateMediaRedisData::from($media));
+        $mediaRedisRepo->create(MediaRedisData::from($media));
 
         return $media;
     }

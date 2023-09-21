@@ -18,12 +18,12 @@ class UserRedisRepository extends Repository
 
     public function create(UserRedisData $data)
     {
-        $this->model->create($data->id, $data->toArray());
+        return $this->model->create($data->id, $data->toArray());
     }
 
     public function update(UserRedisData $data)
     {
-        $this->model->create($data->id, $data->toArray());
+        return $this->model->create($data->id, $data->toArray());
     }
 
     public function addMediaId(int $id, int $mediaId)

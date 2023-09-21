@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Redis\Repositories;
 
-use App\Data\Media\CreateMediaRedisData;
-use App\Data\Media\UpdateMediaRedisData;
+use App\Data\Media\MediaRedisData;
 use App\Redis\Models\MediaRedis;
 
 class MediaRedisRepository extends Repository
@@ -17,14 +16,14 @@ class MediaRedisRepository extends Repository
         $this->model = $model;
     }
 
-    public function create(CreateMediaRedisData $data)
+    public function create(MediaRedisData $data)
     {
-        $this->model->create($data->id, $data->toArray());
+        return $this->model->create($data->id, $data->toArray());
     }
 
-    public function update(UpdateMediaRedisData $data)
+    public function update(MediaRedisData $data)
     {
-        $this->model->create($data->id, $data->toArray());
+        return $this->model->create($data->id, $data->toArray());
     }
 
     public function incrementFailedAttempts(int $mediaId)
@@ -33,7 +32,7 @@ class MediaRedisRepository extends Repository
 
         $media->failed_attempts++;
 
-        $this->model->create($mediaId, CreateMediaRedisData::from($media)->toArray());
+        $this->model->create($mediaId, MediaRedisData::from($media)->toArray());
     }
 
     public function getUploadedMediaChunks(int $mediaId):? array
@@ -64,7 +63,7 @@ class MediaRedisRepository extends Repository
             'size' => $fileSize
         ];
 
-        $updateData = UpdateMediaRedisData::from($redisMedia);
+        $updateData = MediaRedisData::from($redisMedia);
 
         $this->update($updateData);
     }

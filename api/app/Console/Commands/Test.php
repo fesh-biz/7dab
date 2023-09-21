@@ -3,14 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Api\DigitalOcean\Space;
-use App\Data\Media\CreateMediaRedisData;
-use App\Data\User\UserRedisData;
+use App\Data\Media\MediaRedisData;
 use App\Models\User;
-use App\Redis\Models\Media;
-use App\Redis\Models\MediaRedis;
-use App\Redis\Repositories\MediaRedisRepository;
-use App\Redis\Repositories\UserRedisRepository;
-use App\Services\Media\MediaFileService;
+use App\Redis\Services\MediaRedisService;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -32,17 +27,18 @@ class Test extends Command
 
     private function redis()
     {
-        $userRedisRepo = app()->make(UserRedisRepository::class);
+        $mediaRedisService = app()->make(MediaRedisService::class);
+        $mediaData = new MediaRedisData(5, 'mime/type');
 
-        $userId = 1;
-        $userData = new UserRedisData($userId);
-        $userRedisRepo->create($userData);
-        $userRedisRepo->addMediaId($userId, 32);
-        $userRedisRepo->addMediaId($userId, 40);
+        $mediaRedisService->userRedisRepo->deleteAll();
+        $mediaRedisService->mediaRedisRepo->deleteAll();
 
-        $userRedisRepo->deleteMediaId($userId, 40);
+        $mediaRedisService->create($mediaData);
 
-        dd($userRedisRepo->all());
+        dd([
+            'media' => $mediaRedisService->mediaRedisRepo->all(),
+            'user' => $mediaRedisService->userRedisRepo->all()
+        ]);
     }
 
     private function aws()

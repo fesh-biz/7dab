@@ -38,6 +38,8 @@ class Redis
         $data = json_encode($data);
 
         $this->client->hset($this->key, (string)$id, $data);
+
+        return $this->find($id);
     }
 
     public function all(): array
@@ -77,13 +79,13 @@ class Redis
 
     public function find(int $id)
     {
-        $res = $this->client->hget($this->key, $id);
+        $res = $this->client->hget($this->key, (string)$id);
 
         if (!$res) {
-            throw new \Exception('Redis record not found');
+            return null;
         }
 
-        return json_decode($res) ?? $res;
+        return json_decode($res);
     }
 
     public function getKey(): string

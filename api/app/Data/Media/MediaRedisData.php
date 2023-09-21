@@ -5,7 +5,7 @@ namespace App\Data\Media;
 
 use Spatie\LaravelData\Data;
 
-class CreateMediaRedisData extends Data
+class MediaRedisData extends Data
 {
     public function __construct(
         public int $id,
