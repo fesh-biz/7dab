@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\CheckFileRequest;
 use App\Http\Requests\Media\UploadMediaChunkRequest;
 use App\Redis\Repositories\MediaRedisRepository;
-use App\Services\Media\MediaFileService;
+use App\Services\Media\MediaException;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class MediaController extends Controller
 {
@@ -35,34 +34,16 @@ class MediaController extends Controller
         ]);
     }
 
-    public function uploadChunk(UploadMediaChunkRequest $r)
+    public function uploadChunk(UploadMediaChunkRequest $r): JsonResponse
     {
-        $mediaId = $r->media_id;
-        $mediaRedisRepo = app()->make(MediaRedisRepository::class);
-        $uploadedMediaChunksSize = $mediaRedisRepo->getUploadedMediaChunksSize($mediaId);
+        try {
+            $res = $this->service->uploadChunk($r->dto());
+            return response()->json(['filename' => $res]);
+        } catch (MediaException $e) {
+            app()->make(MediaRedisRepository::class)
+                ->incrementFailedAttempts($r->dto()->media_id);
 
-        $maxChunkSize = 1024 * 1024 * getUploadMaxFilesize();
-        if ($uploadedMediaChunksSize > config('7dab.media_chunks_sum_max_size') - $maxChunkSize) {
-            throw new \Exception('Max sum of all chunks has been reached');
-        }
-
-
-        $file = $r->file('file_chunk');
-        $mediaFileService = new MediaFileService();
-        $mediaFileService->checkFileHasExploits($file->get());
-
-        $filename = $mediaFileService->storeChunk($mediaId, $file);
-
-        $mediaRedisRepo->addFileChunk($mediaId, $filename, $file->getSize());
-
-        $chunkIndex = $r->chunk_index;
-        $totalChunks = $r->total_chunks;
-
-        $mediaRedis = $mediaRedisRepo->find((int)$mediaId);
-        if ($chunkIndex + 1 === (int)$totalChunks) {
-            $filename = $mediaFileService->mergeFileChunks($mediaId, $mediaRedis->mime_type, $mediaRedis->chunks);
-
-            return response()->json([$filename]);
+            throw $e;
         }
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Redis;
 
 use Predis\Client;
@@ -35,7 +37,7 @@ class Redis
         $data['created_at'] = now()->format('Y-m-d h:m:s');
         $data = json_encode($data);
 
-        $this->client->hset($this->key, $id, $data);
+        $this->client->hset($this->key, (string)$id, $data);
     }
 
     public function all(): array

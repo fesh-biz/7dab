@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Media;
 
+use App\Data\Media\UploadMediaChunkData;
+use App\Services\Media\MediaException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadMediaChunkRequest extends FormRequest
@@ -18,13 +20,13 @@ class UploadMediaChunkRequest extends FormRequest
         $file = $this->file('file_chunk');
 
         if (!$file) {
-            throw new \Exception('File Chunk is missing');
+            throw new MediaException('File Chunk is missing');
         }
 
         $mb = 1024 * 1024;
         $maxAllowedMb = getUploadMaxFilesize();
         if ($file->getSize() > $maxAllowedMb * $mb) {
-            throw new \Exception('The given file chunk is too large');
+            throw new MediaException('The given file chunk is too large');
         }
 
         if ($this->chunk_index < 1) {
@@ -33,8 +35,19 @@ class UploadMediaChunkRequest extends FormRequest
         }
 
         return [
+            'media_id' => ['integer', 'required'],
             'chunk_index' => ['integer', 'required'],
             'total_chunks' => ['integer', 'required']
         ];
+    }
+
+    public function dto(): UploadMediaChunkData
+    {
+        return new UploadMediaChunkData(
+            $this->media_id,
+            $this->file_chunk,
+            $this->chunk_index,
+            $this->total_chunks
+        );
     }
 }

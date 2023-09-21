@@ -39,7 +39,7 @@ class MediaFileService
             $chunkPath = $chunksPath . $chunk->filename;
             $content = file_get_contents($chunkPath);
             if ($content === false) {
-                throw new \Exception('Chunk is missing: ' . $chunksPath);
+                throw new MediaException('Chunk is missing: ' . $chunksPath);
             }
 
             file_put_contents($filename, $content, FILE_APPEND);
@@ -52,7 +52,7 @@ class MediaFileService
     {
         foreach ($this->exploitPatterns as $pattern) {
             if (str_contains($fileContent, $pattern)) {
-                throw new \Exception('File has exploit: ' . $pattern);
+                throw new MediaException('File has exploit: ' . $pattern);
             }
         }
     }

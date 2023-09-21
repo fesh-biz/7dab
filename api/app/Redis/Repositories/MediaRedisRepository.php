@@ -27,6 +27,15 @@ class MediaRedisRepository
         $this->model->create($data->id, $data->toArray());
     }
 
+    public function incrementFailedAttempts(int $mediaId)
+    {
+        $media = $this->model->find($mediaId);
+
+        $media->failed_attempts++;
+
+        $this->model->create($mediaId, CreateMediaRedisData::from($media)->toArray());
+    }
+
     public function getUploadedMediaChunks(int $mediaId):? array
     {
         $mediaRedis = $this->model->find($mediaId);

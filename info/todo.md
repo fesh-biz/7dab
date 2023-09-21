@@ -1,33 +1,29 @@
 # Roadmap
 - [] Uploading big file by chunks
-    - [] Request
-        - [x] `[chunk_number, chunk, media_id]`
-        - [] Validation
-            - [x] Chunk size = by server
-            - [x] Get amount of chunks size from redis by media id
-            - [] Check chunks size amount is less than 100 Mb
-                - [] If more    
-                    - [] Delete all files
-                    - [] Delete record from Redis
-                    - [] Send error
-            - [] Check if user doesn't have more than 300 Mb of total temporary files
-                - [] If true
-                    - [] Throw error at the moment
-        - [] Saving
-            - [] Save chunk to temporary folder
-                - [] `/storage/temporary/user/{id}/*.*`
-            - [] If chunk is last
-                - [] Combine file
-                    - [] Delete all temporary files
-                    - [] Delete record from Redis
-                    - [] Check combined files size with `.media.original_size`
-                        - [] on false
-                            - [] Send error
-                - [] Save file to DO
-                - [] Update `.media.record`
-                    - `mediable`
-                    - `disc`
-                    - `data.original_filename`
+    - [] If failed attempts is 3 (store to media as `failed_attempts`)
+        - [] Delete file chunks with according redis record
+            - [] On deleting `MediaRedis` record, delete its id from `UserMediaRedis`
+    - [] Check if user doesn't have more than 300 Mb of total temporary files
+        - [] Make auto create/update post on media uploaded
+            - [] Create with empty titles if needed
+            - [] If all drafts have files more than 300 Mb
+                - [] Don't allow to user to upload new files
+        - [] Create `UserMediaRedis, UserMediaRedisRepository`
+            - [] Object to create/update
+                - `user_id` as hash key
+                - {temporary_media: [ids]}
+        - [] If true
+            - [] Throw error at the moment
+- [] Saving
+    - [] If chunk is last
+        - [] Merge file
+            - [] Delete all temporary files
+            - [] Delete record from Redis
+        - [] Save file to DO
+        - [] Update `.media.record`
+            - `mediable`
+            - `disc`
+            - `data.original_filename`
 - [] Upload whole file if it's less thank file chunk size
     - [] Validation same as `CheckFileRequest`
     - [] Save file to DO

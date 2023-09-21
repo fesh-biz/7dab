@@ -32,11 +32,7 @@ class Test extends Command
     {
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
 
-        $media = ($mediaRedisRepo->find(107));
-        $mediaFileService = new MediaFileService();
-        $mediaFileService->mergeFileChunks(107, $media->mime_type, $media->chunks);
-
-        dd(dd($media));
+        dd($mediaRedisRepo->all());
     }
 
     private function aws()
