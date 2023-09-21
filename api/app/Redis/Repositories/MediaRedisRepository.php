@@ -8,7 +8,7 @@ use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\UpdateMediaRedisData;
 use App\Redis\Models\MediaRedis;
 
-class MediaRedisRepository
+class MediaRedisRepository extends Repository
 {
     public MediaRedis $model;
 
@@ -67,19 +67,5 @@ class MediaRedisRepository
         $updateData = UpdateMediaRedisData::from($redisMedia);
 
         $this->update($updateData);
-    }
-
-    public function __call($name, $arguments)
-    {
-        $id = null;
-        if (count($arguments) === 1) {
-            $id = $arguments[0];
-        }
-        $res = null;
-        if (method_exists($this->model, $name)) {
-            $res = $this->model->{$name}($id);
-        }
-
-        return $res;
     }
 }
