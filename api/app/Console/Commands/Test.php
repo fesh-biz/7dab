@@ -5,9 +5,7 @@ namespace App\Console\Commands;
 use App\Api\DigitalOcean\Space;
 use App\Data\Media\MediaRedisData;
 use App\Models\User;
-use App\Redis\Models\Model;
 use App\Redis\Models\UserRedis;
-use App\Redis_bckp\Services\MediaRedisService;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -29,18 +27,19 @@ class Test extends Command
 
     private function mf()
     {
-        $model = new UserRedis();
+        UserRedis::deleteAll();
 
-        $id = 2;
         $data = [
             'id' => 2,
             'color' => 'green',
             'age' => 15
         ];
+        // $model = UserRedis::create($data);
 
-        $model = UserRedis::create($data);
-
-        dd($model);
+        // $model->delete();
+        UserRedis::delete(2);
+        // dump(['model' => $model]);
+        dd(['all' => UserRedis::all()]);
     }
 
     private function redis()

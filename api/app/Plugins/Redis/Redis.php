@@ -32,11 +32,20 @@ class Redis
         return $res;
     }
 
-    public function create(int $id, array $data)
+    public function create(array $data)
     {
-        $data['created_at'] = now()->format('Y-m-d h:m:s');
-        $data = json_encode($data);
+        if (!array_key_exists('id', $data)) {
+            throw new RedisException('Key id inside $data is required to create redis record');
+        }
 
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+
+        $data['created_at'] = now()->format('Y-m-d h:m:s');
+
+        $id = $data['id'];
+        $data = json_encode($data);
         $this->client->hset($this->key, (string)$id, $data);
 
         return $this->find($id);

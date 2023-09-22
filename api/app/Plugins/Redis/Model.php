@@ -16,6 +16,7 @@ namespace App\Plugins\Redis;
  * @method deleteAll()
  * @method all()
  * @method deleteMultiple(array $ids)
+ * @method create(array $data)
  */
 class Model
 {
@@ -25,21 +26,6 @@ class Model
     public function __construct()
     {
         $this->redis = new Redis($this->getRedisKey());
-    }
-
-    public function create(array $data): self
-    {
-        if (!array_key_exists('id', $data)) {
-            throw new RedisException('Key id inside $data is required to create redis record');
-        }
-
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
-
-        $this->redis->create($this->id, $data);
-
-        return $this;
     }
 
     private function getRedisKey(): string
@@ -71,6 +57,12 @@ class Model
             $id = $arguments[0];
         }
 
+        if ($name === 'delete') {
+            $this->redis->delete($this->id);
+
+            return $this;
+        }
+
         $res = null;
         if (method_exists($this->redis, $name)) {
             $res = $this->redis->{$name}($id);
@@ -79,7 +71,7 @@ class Model
         return $res;
     }
 
-    public static function __callStatic($method, $arguments)
+    public static function __callStatic($name, $arguments)
     {
         $model = new static();
 
@@ -88,6 +80,49 @@ class Model
             $id = $arguments[0];
         }
 
-        return $model->{$method}($id);
+        if ($name === 'delete') {
+            if (!$id) {
+                throw new RedisException('Argument $id was\'nt given');
+            }
+
+            $model->redis->delete($id);
+
+            return true;
+        }
+
+
+        $data = null;
+        if (count($arguments) === 1) {
+            $data = $arguments[0];
+        }
+
+        $res = $model->{$name}($data);
+
+        if (is_array($res)) {
+            $collection = [];
+
+            foreach ($res as $attributes) {
+                $collection[] = self::getModel(get_object_vars($attributes));
+            }
+
+            return $collection;
+        }
+
+        if ($res->id ?? false) {
+            return self::getModel(get_object_vars($res));
+        }
+
+        return $res;
+    }
+
+    private static function getModel(array $attributes): self
+    {
+        $model = new static();
+
+        foreach ($attributes as $name => $value) {
+            $model->attributes[$name] = $value;
+        }
+
+        return $model;
     }
 }
