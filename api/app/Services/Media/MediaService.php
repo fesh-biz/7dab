@@ -6,8 +6,8 @@ use App\Data\Media\CreateMediaData;
 use App\Data\Media\MediaRedisData;
 use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
-use App\Redis\Models\MediaRedis;
-use App\Redis\Repositories\MediaRedisRepository;
+use App\Redis_bckp\Models\MediaRedis;
+use App\Redis_bckp\Repositories\MediaRedisRepository;
 use App\Repositories\Media\MediaRepository;
 
 class MediaService

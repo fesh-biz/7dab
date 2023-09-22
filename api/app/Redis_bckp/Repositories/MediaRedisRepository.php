@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Redis\Repositories;
+namespace App\Redis_bckp\Repositories;
 
 use App\Data\Media\MediaRedisData;
-use App\Redis\Models\MediaRedis;
+use App\Redis_bckp\Models\MediaRedis;
 
 class MediaRedisRepository extends Repository
 {

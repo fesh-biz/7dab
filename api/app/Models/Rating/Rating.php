@@ -34,27 +34,29 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Rating extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'ratingable_id',
         'ratingable_type',
         'positive_votes',
         'negative_votes'
     ];
-    
+
     protected $hidden = [
         'ratingable_type'
     ];
-    
+
     protected $appends = [
         'ratingable_type_name'
     ];
-    
+
     public function ratingable(): MorphTo
     {
+        self::find();
+
         return $this->morphTo();
     }
-    
+
     public function getRatingableTypeNameAttribute(): string
     {
         $value = $this->attributes['ratingable_type'];

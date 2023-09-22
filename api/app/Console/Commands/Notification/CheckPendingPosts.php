@@ -3,25 +3,25 @@
 namespace App\Console\Commands\Notification;
 
 use App\Models\Content\Post;
-use App\Redis\EmailNotificationQueues\PendingPostNotificationQueue;
+use App\Redis_bckp\EmailNotificationQueues\PendingPostNotificationQueue;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
 class CheckPendingPosts extends Command
 {
     protected $signature = 'notification:check-pending-posts';
-    
+
     protected $description = 'Check for pending posts and send email to admin';
-    
+
     public function __construct()
     {
         parent::__construct();
     }
-    
+
     public function handle()
     {
         $postsQueue = app()->make(PendingPostNotificationQueue::class);
-        
+
         $postsIds = $postsQueue->getIdsForSending();
         $postsQueue->deleteAll();
 

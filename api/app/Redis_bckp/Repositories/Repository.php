@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Redis\Repositories;
+namespace App\Redis_bckp\Repositories;
 
 /**
  * Class Repository

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Redis;
+namespace App\Plugins\Redis;
 
 use Predis\Client;
 
@@ -11,20 +11,20 @@ class Redis
     protected Client $client;
     protected string $key;
 
-    public function __construct(Client $client)
+    public function __construct(string $key)
     {
-        $this->client = $client;
+        $this->client = new Client();
 
-        $this->key = $this->getKey();
+        $this->key = $key;
     }
 
-    public function search(string $key, $needle): array
+    public function search(string $key, $value): array
     {
         $all = $this->all();
 
         $res = [];
         foreach ($all as $id => $obj) {
-            if ($obj->{$key} === $needle) {
+            if ($obj->{$key} === $value) {
                 $res[$id] = $obj;
             }
         }
@@ -86,11 +86,5 @@ class Redis
         }
 
         return json_decode($res);
-    }
-
-    public function getKey(): string
-    {
-        $className = basename(str_replace('\\', '/', static::class));
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $className));
     }
 }

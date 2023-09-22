@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Redis\EmailNotificationQueues;
+namespace App\Redis_bckp\EmailNotificationQueues;
 
-use App\Redis\Redis;
+use App\Redis_bckp\Redis;
 
 class PendingPostNotificationQueue extends Redis implements QueueInterface
 {

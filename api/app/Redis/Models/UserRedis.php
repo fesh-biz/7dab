@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Redis\Models;
 
-use App\Redis\Redis;
+use App\Plugins\Redis\Model;
 
-class UserRedis extends Redis
+class UserRedis extends Model
 {
 
 }

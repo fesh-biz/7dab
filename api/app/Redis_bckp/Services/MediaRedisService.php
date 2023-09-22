@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Redis\Services;
+namespace App\Redis_bckp\Services;
 
 use App\Data\Media\MediaRedisData;
 use App\Data\User\UserRedisData;
-use App\Redis\Repositories\MediaRedisRepository;
-use App\Redis\Repositories\UserRedisRepository;
+use App\Redis_bckp\Repositories\MediaRedisRepository;
+use App\Redis_bckp\Repositories\UserRedisRepository;
 
 class MediaRedisService
 {

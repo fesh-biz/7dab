@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Redis\Repositories;
+namespace App\Redis_bckp\Repositories;
 
 use App\Data\User\UserRedisData;
-use App\Redis\Models\UserRedis;
+use App\Redis_bckp\Models\UserRedis;
 
 class UserRedisRepository extends Repository
 {
