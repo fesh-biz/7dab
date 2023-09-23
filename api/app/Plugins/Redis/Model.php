@@ -10,7 +10,7 @@ namespace App\Plugins\Redis;
  * Class Model
  * @package App\Plugins\Redis
  * @property int $id
- * @method search(string $field, mixed $value)
+ * @method getWhere(string $field, mixed $value)
  * @method find(int $id)
  * @method delete(int $id)
  * @method deleteAll()
@@ -18,7 +18,7 @@ namespace App\Plugins\Redis;
  * @method deleteMultiple(array $ids)
  * @method create(array $data)
  */
-class Model
+class Model implements ModelInterface
 {
     protected array $attributes;
     protected Redis $redis;

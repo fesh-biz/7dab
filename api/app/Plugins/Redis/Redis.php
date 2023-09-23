@@ -18,7 +18,7 @@ class Redis
         $this->key = $key;
     }
 
-    public function search(string $key, $value): array
+    public function getWhere(string $key, $value): array
     {
         $all = $this->all();
 

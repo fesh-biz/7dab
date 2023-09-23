@@ -25,23 +25,6 @@ class Test extends Command
         $this->runTestByItsName($this->argument('methodName'));
     }
 
-    private function mf()
-    {
-        UserRedis::deleteAll();
-
-        $data = [
-            'id' => 2,
-            'color' => 'green',
-            'age' => 15
-        ];
-        // $model = UserRedis::create($data);
-
-        // $model->delete();
-        UserRedis::delete(2);
-        // dump(['model' => $model]);
-        dd(['all' => UserRedis::all()]);
-    }
-
     private function redis()
     {
         $mediaRedisService = app()->make(MediaRedisService::class);
