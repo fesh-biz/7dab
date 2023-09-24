@@ -40,10 +40,6 @@ class Redis implements RedisInterface
             throw new RedisException('Key id inside $data is required to create redis record');
         }
 
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
-
         $data['created_at'] = now()->format('Y-m-d h:m:s');
 
         $id = $data['id'];

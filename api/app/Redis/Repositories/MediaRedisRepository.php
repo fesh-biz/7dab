@@ -29,8 +29,9 @@ class MediaRedisRepository extends Repository
         $media = $this->model->find($mediaId);
 
         $media->failed_attempts++;
+        $media->save();
 
-        $this->model->create($mediaId, MediaRedisData::from($media)->toArray());
+        return $media;
     }
 
     public function getUploadedMediaChunks(int $mediaId):? array
@@ -53,16 +54,19 @@ class MediaRedisRepository extends Repository
         return $res;
     }
 
-    public function addFileChunk(int $id, string $filename, int $fileSize)
+    public function addFileChunk(int $id, string $filename, int $fileSize): MediaRedis
     {
-        $redisMedia = $this->model->find($id);
-        $redisMedia->chunks[] = [
+        /** @var MediaRedis $media */
+        $media = $this->model->find($id);
+        $chunks = $media->chunks;
+        $chunks[] = [
             'filename' => $filename,
             'size' => $fileSize
         ];
+        $media->chunks = $chunks;
 
-        $updateData = MediaRedisData::from($redisMedia);
+        $media->save();
 
-        $this->update($updateData);
+        return $media;
     }
 }

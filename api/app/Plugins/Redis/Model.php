@@ -10,13 +10,15 @@ namespace App\Plugins\Redis;
  * Class Model
  * @package App\Plugins\Redis
  * @property int $id
- * @method getWhere(string $field, mixed $value)
- * @method find(int $id)
+ * @method create(array $data)
+ * @method update(int $id, array $data)
  * @method delete(int $id = null)
  * @method deleteAll()
  * @method all()
  * @method deleteMultiple(array $ids)
- * @method create(array $data)
+ * @method getWhere(string $field, mixed $value)
+ * @method find(int $id)
+
  */
 class Model
 {
@@ -28,13 +30,11 @@ class Model
         $this->redis = new Redis($this->getRedisKey());
     }
 
-    public function save(): static
+    public function save()
     {
         $data = get_object_vars($this)['attributes'];
 
-        $res = $this->redis->update($this->id, $data);
-
-        return static::getModel($res);
+        $this->redis->update($this->id, $data);
     }
 
     private function getRedisKey(): string
@@ -130,7 +130,7 @@ class Model
         $model = new static();
 
         foreach ($attributes as $name => $value) {
-            $model->attributes[$name] = $value;
+            $model->{$name} = $value;
         }
 
         return $model;

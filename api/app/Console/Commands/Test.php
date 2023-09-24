@@ -36,13 +36,11 @@ class Test extends Command
         $mediaRedisData = new MediaRedisData(1, 'image/jpeg');
         $media = $mediaRedisRepo->create($mediaRedisData);
 
-        $mediaRedisData = new MediaRedisData(2, 'image/gif');
-        $mediaRedisRepo->create($mediaRedisData);
+        $mediaRedisRepo->addFileChunk($media->id, 'file1', 100);
+        $mediaRedisRepo->addFileChunk($media->id, 'file2', 200);
+        $mediaRedisRepo->addFileChunk($media->id, 'file3', 300);
 
-        $media->failed_attempts = 2;
-        $media->save();
-
-        dd(['getWhere' => $mediaRedisRepo->getWhere('mime_type', 'image/jpeg')]);
+        dd($media);
     }
 
     private function aws()

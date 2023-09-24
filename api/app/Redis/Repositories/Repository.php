@@ -3,7 +3,6 @@
 namespace App\Redis\Repositories;
 
 use App\Plugins\Redis\Model;
-use App\Plugins\Redis\RedisException;
 
 /**
  * Class Repository
