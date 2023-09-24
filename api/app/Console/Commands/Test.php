@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
+use App\Redis\Repositories\UserRedisRepository;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -30,17 +31,18 @@ class Test extends Command
 
     private function redis()
     {
-        $mediaRedisRepo = app()->make(MediaRedisRepository::class);
-        $mediaRedisRepo->deleteAll();
+        $userRepo = app()->make(UserRedisRepository::class);
+        $userData = new UserRedisData(1);
 
-        $mediaRedisData = new MediaRedisData(1, 'image/jpeg');
-        $media = $mediaRedisRepo->create($mediaRedisData);
+        $user = $userRepo->create($userData);
+        $updatedData = new UserRedisData(1, [1, 2, 3]);
 
-        $mediaRedisRepo->addFileChunk($media->id, 'file1', 100);
-        $mediaRedisRepo->addFileChunk($media->id, 'file2', 200);
-        $mediaRedisRepo->addFileChunk($media->id, 'file3', 300);
+        $user = $userRepo->update($user->id, $updatedData);
+        $user = $userRepo->addMediaId($user->id, 4);
+        $user = $userRepo->deleteMediaId($user->id, 2);
 
-        dd($media);
+        dump(['res' => $user]);
+        dd(['all' => $userRepo->all()]);
     }
 
     private function aws()

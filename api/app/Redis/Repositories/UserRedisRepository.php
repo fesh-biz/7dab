@@ -23,27 +23,36 @@ class UserRedisRepository extends Repository
         return $this->model->update($id, $data->toArray());
     }
 
-    public function addMediaId(int $id, int $mediaId)
+    public function addMediaId(int $id, int $mediaId): UserRedis
     {
+        /** @var UserRedis $user */
         $user = $this->model->find($id);
-        $user->media_ids[] = $mediaId;
 
-        $userData = UserRedisData::from($user);
+        $ids = $user->media_ids;
+        $ids[] = $mediaId;
+        $user->media_ids = $ids;
 
-        $this->update($userData);
+        $user->save();
+
+        return $user;
     }
 
-    public function deleteMediaId(int $id, int $mediaId)
+    public function deleteMediaId(int $id, int $mediaId): UserRedis
     {
+        /** @var UserRedis $user */
         $user = $this->model->find($id);
 
-        foreach ($user->media_ids as $key => $id) {
+        $mediaIds = $user->media_ids;
+        foreach ($mediaIds as $key => $id) {
             if ($id === $mediaId) {
-                unset($user->media_ids[$key]);
+                unset($mediaIds[$key]);
                 break;
             }
         }
 
-        $this->update(UserRedisData::from($user));
+        $user->media_ids = $mediaIds;
+        $user->save();
+
+        return $user;
     }
 }
