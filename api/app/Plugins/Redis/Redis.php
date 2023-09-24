@@ -6,7 +6,7 @@ namespace App\Plugins\Redis;
 
 use Predis\Client;
 
-class Redis
+class Redis implements RedisInterface
 {
     protected Client $client;
     protected string $key;
@@ -18,16 +18,18 @@ class Redis
         $this->key = $key;
     }
 
-    public function getWhere(string $key, $value): array
+    public function getWhere(string $field, mixed $value):? array
     {
         $all = $this->all();
 
         $res = [];
         foreach ($all as $id => $obj) {
-            if ($obj->{$key} === $value) {
+            if ($obj->{$field} === $value) {
                 $res[$id] = $obj;
             }
         }
+
+        if (!count($res)) return null;
 
         return $res;
     }
@@ -51,6 +53,19 @@ class Redis
         return $this->find($id);
     }
 
+    public function update(int $id, array $data)
+    {
+        if (!$this->find($id)) {
+            throw new RedisException('Model with $id=' . $id . ' not found');
+        }
+
+        $data['id'] = $id;
+
+        $this->create($data);
+
+        return $this->find($id);
+    }
+
     public function all(): array
     {
         $res = $this->client->hgetall($this->key);
@@ -62,28 +77,32 @@ class Redis
         return $res;
     }
 
-    public function delete(int $id)
+    public function delete(int $id): bool
     {
-        $this->client->hdel($this->key, [$id]);
+        if (!$id) {
+            throw new RedisException('Argument $id was\'nt given');
+        }
+
+        return !!$this->client->hdel($this->key, [$id]);
     }
 
-    public function deleteAll()
+    public function deleteAll(): bool
     {
         $ids = [];
         foreach ($this->all() as $id => $data) {
             $ids[] = $id;
         }
 
-        $this->deleteMultiple($ids);
+        return $this->deleteMultiple($ids);
     }
 
-    public function deleteMultiple(array $ids)
+    public function deleteMultiple(array $ids): bool
     {
         if (!$ids) {
-            return;
+            return false;
         }
 
-        $this->client->hdel($this->key, $ids);
+        return !!$this->client->hdel($this->key, $ids);
     }
 
     public function find(int $id)

@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use App\Api\DigitalOcean\Space;
 use App\Data\Media\MediaRedisData;
+use App\Data\User\UserRedisData;
 use App\Models\User;
+use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
+use App\Redis\Repositories\MediaRedisRepository;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -27,18 +30,19 @@ class Test extends Command
 
     private function redis()
     {
-        $mediaRedisService = app()->make(MediaRedisService::class);
-        $mediaData = new MediaRedisData(5, 'mime/type');
+        $mediaRedisRepo = app()->make(MediaRedisRepository::class);
+        $mediaRedisRepo->deleteAll();
 
-        $mediaRedisService->userRedisRepo->deleteAll();
-        $mediaRedisService->mediaRedisRepo->deleteAll();
+        $mediaRedisData = new MediaRedisData(1, 'image/jpeg');
+        $media = $mediaRedisRepo->create($mediaRedisData);
 
-        $mediaRedisService->create($mediaData);
+        $mediaRedisData = new MediaRedisData(2, 'image/gif');
+        $mediaRedisRepo->create($mediaRedisData);
 
-        dd([
-            'media' => $mediaRedisService->mediaRedisRepo->all(),
-            'user' => $mediaRedisService->userRedisRepo->all()
-        ]);
+        $media->failed_attempts = 2;
+        $media->save();
+
+        dd(['getWhere' => $mediaRedisRepo->getWhere('mime_type', 'image/jpeg')]);
     }
 
     private function aws()

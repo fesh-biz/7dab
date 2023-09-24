@@ -12,13 +12,13 @@ namespace App\Plugins\Redis;
  * @property int $id
  * @method getWhere(string $field, mixed $value)
  * @method find(int $id)
- * @method delete(int $id)
+ * @method delete(int $id = null)
  * @method deleteAll()
  * @method all()
  * @method deleteMultiple(array $ids)
  * @method create(array $data)
  */
-class Model implements ModelInterface
+class Model
 {
     protected array $attributes;
     protected Redis $redis;
@@ -26,6 +26,15 @@ class Model implements ModelInterface
     public function __construct()
     {
         $this->redis = new Redis($this->getRedisKey());
+    }
+
+    public function save(): static
+    {
+        $data = get_object_vars($this)['attributes'];
+
+        $res = $this->redis->update($this->id, $data);
+
+        return static::getModel($res);
     }
 
     private function getRedisKey(): string
@@ -36,7 +45,7 @@ class Model implements ModelInterface
 
     public function __set($name, $value)
     {
-        if ($name === 'id') $value = (int) $value;
+        if ($name === 'id') $value = (int)$value;
 
         $this->attributes[$name] = $value;
     }
@@ -52,71 +61,67 @@ class Model implements ModelInterface
 
     public function __call($name, $arguments)
     {
-        $id = null;
-        if (count($arguments) === 1) {
-            $id = $arguments[0];
-        }
-
-        if ($name === 'delete') {
-            $this->redis->delete($this->id);
-
-            return $this;
-        }
+        $this->checkMethodExists($name);
 
         $res = null;
-        if (method_exists($this->redis, $name)) {
-            $res = $this->redis->{$name}($id);
+        $isExecuted = false;
+        if ($name === 'delete') {
+            $res = $this->redis->delete($this->id);
+            $isExecuted = true;
         }
 
-        return $res;
+        if (!$isExecuted) {
+            $res = $this->redis->{$name}($arguments[0] ?? null, $arguments[1] ?? null);
+        }
+
+        return self::makeResult($res);
     }
 
     public static function __callStatic($name, $arguments)
     {
         $model = new static();
+        $model->checkMethodExists($name);
 
-        $id = null;
-        if (count($arguments) === 1) {
-            $id = $arguments[0];
+        $res = $model->redis->{$name}($arguments[0] ?? null, $arguments[1] ?? null);
+
+        return self::makeResult($res);
+    }
+
+    private function checkMethodExists(string $name)
+    {
+        if (!method_exists($this->redis, $name)) {
+            $className = get_class($this->redis);
+            throw new RedisException("Method $name not found in $className");
+        }
+    }
+
+    private static function makeResult(mixed $res): self|array|bool|null
+    {
+        if (!$res || is_bool($res)) {
+            return $res;
         }
 
-        if ($name === 'delete') {
-            if (!$id) {
-                throw new RedisException('Argument $id was\'nt given');
-            }
-
-            $model->redis->delete($id);
-
-            return true;
+        if ($res->id ?? false) {
+            return self::getModel($res);
         }
-
-
-        $data = null;
-        if (count($arguments) === 1) {
-            $data = $arguments[0];
-        }
-
-        $res = $model->{$name}($data);
 
         if (is_array($res)) {
-            $collection = [];
-
-            foreach ($res as $attributes) {
-                $collection[] = self::getModel(get_object_vars($attributes));
+            foreach ($res as $data) {
+                $collection[] = self::getModel($data);
             }
 
             return $collection;
         }
-
-        if ($res->id ?? false) {
-            return self::getModel(get_object_vars($res));
-        }
-
-        return $res;
     }
 
-    private static function getModel(array $attributes): self
+    private static function getModel(mixed $attributes):? self
     {
+        if (!$attributes) {
+            return null;
+        }
+
+        $attributes = get_object_vars($attributes);
+
         $model = new static();
 
         foreach ($attributes as $name => $value) {
