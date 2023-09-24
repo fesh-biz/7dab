@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Api\DigitalOcean\Space;
+use App\Data\Media\CreateMediaData;
 use App\Data\Media\MediaRedisData;
 use App\Data\User\UserRedisData;
 use App\Models\User;
@@ -10,6 +11,8 @@ use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Repositories\UserRedisRepository;
+use App\Redis\Services\MediaRedisService;
+use App\Services\Media\MediaService;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
@@ -32,17 +35,17 @@ class Test extends Command
     private function redis()
     {
         $userRepo = app()->make(UserRedisRepository::class);
-        $userData = new UserRedisData(1);
+        $userRepo->deleteAll();
+        $mediaRepo = app()->make(MediaRedisRepository::class);
+        $mediaRepo->deleteAll();
 
-        $user = $userRepo->create($userData);
-        $updatedData = new UserRedisData(1, [1, 2, 3]);
+        $mediaService = app()->make(MediaService::class);
+        $mediaData = new CreateMediaData(1, 'original_file_name', 'image/gif', 10232);
 
-        $user = $userRepo->update($user->id, $updatedData);
-        $user = $userRepo->addMediaId($user->id, 4);
-        $user = $userRepo->deleteMediaId($user->id, 2);
+        $mediaService->create($mediaData);
 
-        dump(['res' => $user]);
-        dd(['all' => $userRepo->all()]);
+        dump(['users' => $userRepo->all()]);
+        dd(['media' => $mediaRepo->all()]);
     }
 
     private function aws()

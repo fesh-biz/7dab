@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Media;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\CheckFileRequest;
 use App\Http\Requests\Media\UploadMediaChunkRequest;
-use App\Redis_bckp\Repositories\MediaRedisRepository;
+use App\Redis\Repositories\MediaRedisRepository;
 use App\Services\Media\MediaException;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;

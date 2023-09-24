@@ -6,8 +6,8 @@ use App\Data\Media\CreateMediaData;
 use App\Data\Media\MediaRedisData;
 use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
-use App\Redis_bckp\Models\MediaRedis;
-use App\Redis_bckp\Repositories\MediaRedisRepository;
+use App\Redis\Repositories\MediaRedisRepository;
+use App\Redis\Services\MediaRedisService;
 use App\Repositories\Media\MediaRepository;
 
 class MediaService
@@ -33,8 +33,8 @@ class MediaService
     {
         $media = $this->repo->create($d);
 
-        $mediaRedisRepo = app()->make(MediaRedisRepository::class);
-        $mediaRedisRepo->create(MediaRedisData::from($media));
+        $mediaRedisService = app()->make(MediaRedisService::class);
+        $mediaRedisService->create(MediaRedisData::from($media));
 
         return $media;
     }
