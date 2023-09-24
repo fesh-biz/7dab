@@ -39,7 +39,7 @@ class Model
 
     private function getRedisKey(): string
     {
-        $className = basename(str_replace('\\', '/', get_class($this)));
+        $className = basename(str_replace('\\', '/', static::class));
         return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $className));
     }
 
