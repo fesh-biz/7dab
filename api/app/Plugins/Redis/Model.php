@@ -106,15 +106,20 @@ class Model
         }
 
         if (is_array($res)) {
+            $collection = [];
             foreach ($res as $data) {
                 $collection[] = self::getModel($data);
+            }
+
+            if (!count($collection)) {
+                return null;
             }
 
             return $collection;
         }
     }
 
-    private static function getModel(mixed $attributes):? self
+    private static function getModel(mixed $attributes): ?self
     {
         if (!$attributes) {
             return null;
