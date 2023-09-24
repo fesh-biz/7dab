@@ -36,9 +36,9 @@ class MediaRedisRepository extends Repository
 
     public function getUploadedMediaChunks(int $mediaId):? array
     {
-        $mediaRedis = $this->model->find($mediaId);
+        $media = $this->model->find($mediaId);
 
-        return $mediaRedis->chunks;
+        return $media->chunks;
     }
 
     public function getUploadedMediaChunksSize(int $mediaId): int
