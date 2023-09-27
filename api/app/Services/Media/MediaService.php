@@ -8,11 +8,12 @@ use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Services\MediaRedisService;
+use App\Redis\Services\UserRedisService;
 use App\Repositories\Media\MediaRepository;
 
 class MediaService
 {
-    protected MediaRepository $repo;
+    public MediaRepository $repo;
 
     public function __construct(MediaRepository $repo)
     {
@@ -39,6 +40,11 @@ class MediaService
         return $media;
     }
 
+    public function delete(int $id)
+    {
+        $this->getModel()->destroy($id);;
+    }
+
     public function uploadChunk(UploadMediaChunkData $data):? string
     {
         $mediaId = $data->media_id;
@@ -46,8 +52,8 @@ class MediaService
         $uploadedMediaChunksSize = $mediaRedisRepo->getUploadedMediaChunksSize($mediaId);
 
         $maxChunkSize = 1024 * 1024 * getUploadMaxFilesize();
-        // if ($uploadedMediaChunksSize > config('7dab.media_chunks_sum_max_size') - $maxChunkSize) {
-        if ($uploadedMediaChunksSize > 10) {
+        if ($uploadedMediaChunksSize > config('7dab.media_chunks_sum_max_size') - $maxChunkSize) {
+        // if ($data->chunk_index > 4) {
             throw new MediaException('Max sum of all chunks has been reached');
         }
 
@@ -65,9 +71,29 @@ class MediaService
 
         $mediaRedis = $mediaRedisRepo->find($mediaId);
         if ($chunkIndex + 1 === $totalChunks) {
-            return $mediaFileService->mergeFileChunks($mediaId, $mediaRedis->mime_type, $mediaRedis->chunks);
+            $filename = $mediaFileService->mergeFileChunks($mediaId, $mediaRedis->mime_type, $mediaRedis->chunks);
+
+            $this->deleteMediaWithRedis($mediaId);
+
+            return $filename;
         }
 
         return null;
+    }
+
+    public function deleteMediaWithRedis(int $mediaId)
+    {
+        $media = $this->getModel()->find($mediaId);
+
+        $mediaRedisService = app()->make(MediaRedisService::class);
+        $mediaRedisService->mediaRedisRepo->delete($media->id);
+
+        $userRedisService = app()->make(UserRedisService::class);
+        $userRedisService->deleteUserIfEmptyMediaIds($media->user_id);
+
+        $fileService = app()->make(MediaFileService::class);
+        $fileService->deleteMediaChunksDirectory($media->id);
+
+        $media->delete();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Services\Media;
 
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class MediaFileService
@@ -64,6 +65,13 @@ class MediaFileService
         $file->storeAs($path, $filename, 'file_chunks_storage');
 
         return $filename;
+    }
+
+    public function deleteMediaChunksDirectory(int $mediaId)
+    {
+        $dir = $this->chunksBasePath . "/media-$mediaId";
+
+        File::deleteDirectory($dir);
     }
 
     private function prepareFolder(int $mediaId): string

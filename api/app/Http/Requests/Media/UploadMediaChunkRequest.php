@@ -43,11 +43,6 @@ class UploadMediaChunkRequest extends FormRequest
 
     public function dto(): UploadMediaChunkData
     {
-        return new UploadMediaChunkData(
-            $this->media_id,
-            $this->file_chunk,
-            $this->chunk_index,
-            $this->total_chunks
-        );
+        return UploadMediaChunkData::from($this);
     }
 }

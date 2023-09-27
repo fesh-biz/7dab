@@ -4,10 +4,7 @@
         - [] Delete file chunks with according redis record
             - [] On deleting `MediaRedis` record, delete its id from `UserMediaRedis`
     - [] Check if user doesn't have more than 300 Mb of total temporary files
-        - [] Make auto create/update post on media uploaded
-            - [] Create with empty titles if needed
-            - [] If all drafts have files more than 300 Mb
-                - [] Don't allow to user to upload new files
+        - [] Don't allow to user to upload new files
         - [] Create `UserMediaRedis, UserMediaRedisRepository`
             - [] Object to create/update
                 - `user_id` as hash key

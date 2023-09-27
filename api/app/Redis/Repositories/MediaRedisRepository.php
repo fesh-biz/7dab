@@ -24,7 +24,7 @@ class MediaRedisRepository extends Repository
         return $this->model->update($id, $data->toArray());
     }
 
-    public function incrementFailedAttempts(int $mediaId)
+    public function incrementFailedAttempts(int $mediaId): MediaRedis
     {
         $media = $this->model->find($mediaId);
 

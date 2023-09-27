@@ -10,6 +10,7 @@ use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Repositories\UserRedisRepository;
+use App\Services\Media\MediaFileService;
 
 class MediaRedisService
 {

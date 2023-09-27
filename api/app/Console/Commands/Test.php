@@ -12,6 +12,8 @@ use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Repositories\UserRedisRepository;
 use App\Redis\Services\MediaRedisService;
+use App\Repositories\Media\MediaRepository;
+use App\Services\Media\MediaFileService;
 use App\Services\Media\MediaService;
 use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
@@ -34,15 +36,25 @@ class Test extends Command
 
     private function redis()
     {
+        // $mediaData = new MediaRedisData(1, 'image/jpeg');
+        // $media = MediaRedis::create($mediaData);
+
         $userRepo = app()->make(UserRedisRepository::class);
-        $userRepo->deleteAll();
         $mediaRepo = app()->make(MediaRedisRepository::class);
-        $mediaRepo->deleteAll();
 
-        $mediaService = app()->make(MediaService::class);
-        $mediaData = new CreateMediaData(1, 'original_file_name', 'image/gif', 10232);
+        // $mr = app()->make(MediaRepository::class);
+        // $mr->getModel()->destroy(2);
+        //
+        // $userRepo->deleteAll();
+        // $mediaRepo->deleteAll();
+        // $mediaService = app()->make(MediaService::class);
+        // $mediaData = new CreateMediaData(1, 'original_file_name', 'image/gif', 10232);
+        //
+        // $mediaService->create($mediaData);
+        //
 
-        $mediaService->create($mediaData);
+        $mediaFileService = new MediaFileService();
+        $mediaFileService->deleteMediaChunksDirectory(168);
 
         dump(['users' => $userRepo->all()]);
         dd(['media' => $mediaRepo->all()]);

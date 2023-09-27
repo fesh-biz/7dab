@@ -110,7 +110,6 @@ export default {
 
     async uploadFile (file) {
       this.errorMessage = null
-      this.progress = 0
 
       const res = await this.checkFile(file)
       const mb = 1024 * 1024
@@ -119,6 +118,7 @@ export default {
       this.file = file
 
       if (file.size > this.fileChunkSize) {
+        this.progress = 0
         await this.uploadFileByChunks(file, res.data.media_id)
       }
     },

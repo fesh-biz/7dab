@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Media\CheckFileRequest;
 use App\Http\Requests\Media\UploadMediaChunkRequest;
 use App\Redis\Repositories\MediaRedisRepository;
+use App\Redis\Repositories\UserRedisRepository;
+use App\Redis\Services\MediaRedisService;
+use App\Redis\Services\UserRedisService;
 use App\Services\Media\MediaException;
+use App\Services\Media\MediaFileService;
 use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
 
@@ -40,8 +44,13 @@ class MediaController extends Controller
             $res = $this->service->uploadChunk($r->dto());
             return response()->json(['filename' => $res]);
         } catch (MediaException $e) {
-            app()->make(MediaRedisRepository::class)
+            $redisMedia = app()->make(MediaRedisRepository::class)
                 ->incrementFailedAttempts($r->dto()->media_id);
+
+            if ($redisMedia->failed_attempts >= 3) {
+                $this->service->deleteMediaWithRedis($r->dto()->media_id);
+            }
+
 
             throw $e;
         }
