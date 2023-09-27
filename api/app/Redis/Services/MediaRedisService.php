@@ -35,4 +35,15 @@ class MediaRedisService
 
         return $this->mediaRedisRepo->create($data);
     }
+
+    public function delete(int $mediaId)
+    {
+        $fileService = app()->make(MediaFileService::class);
+        $fileService->deleteMediaChunksDirectory($mediaId);
+
+        $this->mediaRedisRepo->delete($mediaId);
+
+        $userRedisService = app()->make(UserRedisService::class);
+        $userRedisService->deleteUserIfEmptyMediaIds($mediaId);
+    }
 }

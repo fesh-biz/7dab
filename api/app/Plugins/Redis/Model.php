@@ -66,7 +66,7 @@ class Model
         $res = null;
         $isExecuted = false;
         if ($name === 'delete') {
-            $res = $this->redis->delete($this->id);
+            $res = $this->redis->delete($arguments[0] ?? $this->id);
             $isExecuted = true;
         }
 

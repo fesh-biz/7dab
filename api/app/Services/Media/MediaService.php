@@ -40,11 +40,6 @@ class MediaService
         return $media;
     }
 
-    public function delete(int $id)
-    {
-        $this->getModel()->destroy($id);;
-    }
-
     public function uploadChunk(UploadMediaChunkData $data):? string
     {
         $mediaId = $data->media_id;
@@ -53,7 +48,7 @@ class MediaService
 
         $maxChunkSize = 1024 * 1024 * getUploadMaxFilesize();
         if ($uploadedMediaChunksSize > config('7dab.media_chunks_sum_max_size') - $maxChunkSize) {
-        // if ($data->chunk_index > 4) {
+        // if ($data->chunk_index > 3) {
             throw new MediaException('Max sum of all chunks has been reached');
         }
 
@@ -73,27 +68,12 @@ class MediaService
         if ($chunkIndex + 1 === $totalChunks) {
             $filename = $mediaFileService->mergeFileChunks($mediaId, $mediaRedis->mime_type, $mediaRedis->chunks);
 
-            $this->deleteMediaWithRedis($mediaId);
+            $mediaRedisService = app()->make(MediaRedisService::class);
+            $mediaRedisService->delete($mediaId);
 
             return $filename;
         }
 
         return null;
-    }
-
-    public function deleteMediaWithRedis(int $mediaId)
-    {
-        $media = $this->getModel()->find($mediaId);
-
-        $mediaRedisService = app()->make(MediaRedisService::class);
-        $mediaRedisService->mediaRedisRepo->delete($media->id);
-
-        $userRedisService = app()->make(UserRedisService::class);
-        $userRedisService->deleteUserIfEmptyMediaIds($media->user_id);
-
-        $fileService = app()->make(MediaFileService::class);
-        $fileService->deleteMediaChunksDirectory($media->id);
-
-        $media->delete();
     }
 }

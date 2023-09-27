@@ -19,6 +19,7 @@ class UserRedisService
     {
         /** @var UserRedis $user */
         $user = $this->userRedisRepo->find($userId);
+
         if (!count($user->media_ids)) {
             $user->delete();
         }

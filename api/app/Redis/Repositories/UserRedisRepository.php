@@ -13,7 +13,7 @@ class UserRedisRepository extends Repository
     {
     }
 
-    public function create(UserRedisData $data)
+    public function create(UserRedisData $data): UserRedis
     {
         return $this->model->create($data->toArray());
     }

@@ -48,9 +48,11 @@ class MediaController extends Controller
                 ->incrementFailedAttempts($r->dto()->media_id);
 
             if ($redisMedia->failed_attempts >= 3) {
-                $this->service->deleteMediaWithRedis($r->dto()->media_id);
-            }
+                $mediaRedisService = app()->make(MediaRedisService::class);
+                $mediaRedisService->delete($r->dto()->media_id);
 
+                $this->service->getModel()->destroy($r->dto()->media_id);
+            }
 
             throw $e;
         }

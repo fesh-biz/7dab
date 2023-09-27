@@ -36,8 +36,7 @@ class Test extends Command
 
     private function redis()
     {
-        // $mediaData = new MediaRedisData(1, 'image/jpeg');
-        // $media = MediaRedis::create($mediaData);
+        $mediaData = new MediaRedisData(1, 'image/jpeg');
 
         $userRepo = app()->make(UserRedisRepository::class);
         $mediaRepo = app()->make(MediaRedisRepository::class);
@@ -52,9 +51,6 @@ class Test extends Command
         //
         // $mediaService->create($mediaData);
         //
-
-        $mediaFileService = new MediaFileService();
-        $mediaFileService->deleteMediaChunksDirectory(168);
 
         dump(['users' => $userRepo->all()]);
         dd(['media' => $mediaRepo->all()]);
