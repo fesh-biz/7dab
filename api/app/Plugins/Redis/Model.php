@@ -18,12 +18,11 @@ namespace App\Plugins\Redis;
  * @method deleteMultiple(array $ids)
  * @method getWhere(string $field, mixed $value)
  * @method find(int $id)
-
  */
 class Model
 {
     protected array $attributes;
-    protected Redis $redis;
+    public Redis $redis;
 
     public function __construct()
     {
@@ -35,6 +34,57 @@ class Model
         $data = get_object_vars($this)['attributes'];
 
         $this->redis->update($this->id, $data);
+    }
+
+    private function checkMethodExists(string $name)
+    {
+        if (!method_exists($this->redis, $name)) {
+            $className = get_class($this->redis);
+            throw new RedisException("Method $name not found in $className");
+        }
+    }
+
+    private static function makeResult(mixed $res): self|array|bool|null
+    {
+        if (!$res || is_bool($res)) {
+            return $res;
+        }
+
+        if ($res->id ?? false) {
+            return self::getModel($res);
+        }
+
+        if (is_array($res)) {
+            $collection = [];
+            foreach ($res as $id => $data) {
+                $collection[$id] = self::getModel($data);
+            }
+
+            if (!count($collection)) {
+                return null;
+            }
+
+            return $collection;
+        }
+
+        return null;
+    }
+
+    private static function getModel(mixed $attributes): ?self
+    {
+        if (!$attributes) {
+            return null;
+        }
+
+        $attributes = get_object_vars($attributes);
+
+        $model = new static();
+
+        foreach ($attributes as $name => $value) {
+            $model->{$name} = $value;
+        }
+
+        return $model;
     }
 
     private function getRedisKey(): string
@@ -85,54 +135,5 @@ class Model
         $res = $model->redis->{$name}($arguments[0] ?? null, $arguments[1] ?? null);
 
         return self::makeResult($res);
-    }
-
-    private function checkMethodExists(string $name)
-    {
-        if (!method_exists($this->redis, $name)) {
-            $className = get_class($this->redis);
-            throw new RedisException("Method $name not found in $className");
-        }
-    }
-
-    private static function makeResult(mixed $res): self|array|bool|null
-    {
-        if (!$res || is_bool($res)) {
-            return $res;
-        }
-
-        if ($res->id ?? false) {
-            return self::getModel($res);
-        }
-
-        if (is_array($res)) {
-            $collection = [];
-            foreach ($res as $data) {
-                $collection[] = self::getModel($data);
-            }
-
-            if (!count($collection)) {
-                return null;
-            }
-
-            return $collection;
-        }
-    }
-
-    private static function getModel(mixed $attributes): ?self
-    {
-        if (!$attributes) {
-            return null;
-        }
-
-        $attributes = get_object_vars($attributes);
-
-        $model = new static();
-
-        foreach ($attributes as $name => $value) {
-            $model->{$name} = $value;
-        }
-
-        return $model;
     }
 }

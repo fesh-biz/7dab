@@ -1,3 +1,14 @@
+# Test
+- [] Create Test .env and configure it
+- [] Install and Configure Parallel
+- [] Redis User
+    - [] Created by UserRedisData and can be found by id
+    - [] Delete user
+    - [] Delete if media_ids is empty
+        - [] If empty - delete
+        - [] If not empty - leave as is
+- [] Redis Media
+
 # Roadmap
 - [] Uploading big file by chunks
     - [] If failed attempts is 3 (store to media as `failed_attempts`)

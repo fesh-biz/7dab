@@ -18,22 +18,6 @@ class Redis implements RedisInterface
         $this->key = $key;
     }
 
-    public function getWhere(string $field, mixed $value):? array
-    {
-        $all = $this->all();
-
-        $res = [];
-        foreach ($all as $id => $obj) {
-            if ($obj->{$field} === $value) {
-                $res[$id] = $obj;
-            }
-        }
-
-        if (!count($res)) return null;
-
-        return $res;
-    }
-
     public function create(array $data)
     {
         if (!array_key_exists('id', $data)) {
@@ -60,17 +44,6 @@ class Redis implements RedisInterface
         $this->create($data);
 
         return $this->find($id);
-    }
-
-    public function all(): array
-    {
-        $res = $this->client->hgetall($this->key);
-
-        foreach ($res as $id => $data) {
-            $res[$id] = json_decode($data) ?? $data;
-        }
-
-        return $res;
     }
 
     public function delete(int $id): bool
@@ -101,6 +74,34 @@ class Redis implements RedisInterface
         return !!$this->client->hdel($this->key, $ids);
     }
 
+
+    public function getWhere(string $field, mixed $value):? array
+    {
+        $all = $this->all();
+
+        $res = [];
+        foreach ($all as $id => $obj) {
+            if ($obj->{$field} === $value) {
+                $res[$id] = $obj;
+            }
+        }
+
+        if (!count($res)) return null;
+
+        return $res;
+    }
+
+    public function all(): array
+    {
+        $res = $this->client->hgetall($this->key);
+
+        foreach ($res as $id => $data) {
+            $res[$id] = json_decode($data) ?? $data;
+        }
+
+        return $res;
+    }
+
     public function find(int $id)
     {
         $res = $this->client->hget($this->key, (string)$id);
@@ -110,5 +111,10 @@ class Redis implements RedisInterface
         }
 
         return json_decode($res);
+    }
+
+    public function getRedisKey(): string
+    {
+        return $this->key;
     }
 }
