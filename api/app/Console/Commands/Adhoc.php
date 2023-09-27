@@ -19,9 +19,9 @@ use App\Services\Sitemap\SitemapService;
 use Illuminate\Console\Command;
 use Illuminate\Http\File;
 
-class Test extends Command
+class Adhoc extends Command
 {
-    protected $signature = 'test {methodName}';
+    protected $signature = 'adhoc {methodName}';
     protected $description = 'Command description';
 
     public function __construct()
