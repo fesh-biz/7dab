@@ -36,6 +36,11 @@ class Model
         $this->redis->update($this->id, $data);
     }
 
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
     private function checkMethodExists(string $name)
     {
         if (!method_exists($this->redis, $name)) {
