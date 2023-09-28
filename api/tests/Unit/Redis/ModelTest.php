@@ -3,6 +3,7 @@
 namespace Tests\Unit\Redis;
 
 use App\Plugins\Redis\Model;
+use App\Plugins\Redis\RedisException;
 use PHPUnit\Framework\TestCase;
 
 class RedisTestModel extends Model {}
@@ -106,6 +107,38 @@ class ModelTest extends TestCase
 
         $res = $this->model->find($id);
         $this->assertTrue($res->prop === $updatedValue);
+    }
+
+    /**
+     * @test
+     * @group RedisModel
+     */
+    public function method_update_throw_exception_if_ids_not_equal()
+    {
+        $id = 5;
+        $data = $this->getModelData($id);
+        $this->model->create($data);
+
+        $wrongId = 6;
+        $data = $this->getModelData($wrongId);
+
+        $this->expectException(RedisException::class);
+        $this->expectExceptionMessage('Given id not equal to data id');
+        $this->model->update($id, $data);
+    }
+
+    /**
+     * @test
+     * @group RedisModel
+     */
+    public function method_update_throw_exception_if_record_with_given_id_not_found()
+    {
+        $wrongId = 6;
+        $data = $this->getModelData($wrongId);
+
+        $this->expectException(RedisException::class);
+        $this->expectExceptionMessage("Model with \$id=$wrongId not found");
+        $this->model->update($wrongId, $data);
     }
 
     /**
@@ -218,7 +251,6 @@ class ModelTest extends TestCase
         $this->assertTrue($res === null);
     }
 
-    // * @method find(int $id)
     /**
      * @test
      * @group RedisModel
