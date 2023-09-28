@@ -39,6 +39,10 @@ class Redis implements RedisInterface
             throw new RedisException('Model with $id=' . $id . ' not found');
         }
 
+        if ($id !== $data['id']) {
+            throw new RedisException('Given id not equal to data id');
+        }
+
         $data['id'] = $id;
 
         $this->create($data);
