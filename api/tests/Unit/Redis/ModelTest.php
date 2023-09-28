@@ -86,6 +86,32 @@ class ModelTest extends TestCase
      * @test
      * @group RedisModel
      */
+    public function can_save_changed_attributes()
+    {
+        $id = 25;
+        $data = [
+            'id' => $id,
+            'prop' => 'default value'
+        ];
+
+        $model = $this->model->create($data);
+
+        $res = $this->model->find($id);
+        $this->assertTrue($res->prop === $data['prop']);
+
+        $updatedValue = 'updated value';
+        $model->prop = $updatedValue;
+        $model->save();
+
+
+        $res = $this->model->find($id);
+        $this->assertTrue($res->prop === $updatedValue);
+    }
+
+    /**
+     * @test
+     * @group RedisModel
+     */
     public function method_delete_works_from_this_and_static()
     {
         $data = $this->getModelData(26);
