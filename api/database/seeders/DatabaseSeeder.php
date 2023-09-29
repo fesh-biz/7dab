@@ -18,8 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        \Schema::disableForeignKeyConstraints();
         $this->call(RoleSeeder::class);
 
+        User::truncate();
         User::factory()->create([
             'email' => 'feshbiz@gmail.com',
             'login' => 'uvei',
@@ -62,5 +64,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PostSeeder::class);
         $this->call(CommentSeeder::class);
         $this->call(RatingSeeder::class);
+        \Schema::enableForeignKeyConstraints();
     }
 }
