@@ -6,6 +6,7 @@ namespace App\Redis\Services;
 
 use App\Data\Media\MediaRedisData;
 use App\Data\User\UserRedisData;
+use App\Plugins\Redis\RedisException;
 use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
@@ -23,6 +24,9 @@ class MediaRedisService
     public function create(MediaRedisData $data): MediaRedis
     {
         $userId = auth()->id();
+        if (!$userId) {
+            throw new RedisException('User is unauthenticated');
+        }
 
         /** @var UserRedis $userRedis */
         $userRedis = $this->userRedisRepo->find($userId);
