@@ -11,7 +11,7 @@ use App\Plugins\Redis\Model;
  * @property string $mime_type
  * @property array $chunks
  * @property int $failed_attempts
- * @property string $created_at
+ * @mixin Model
  */
 class MediaRedis extends Model
 {

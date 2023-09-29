@@ -10,6 +10,8 @@ namespace App\Plugins\Redis;
  * Class Model
  * @package App\Plugins\Redis
  * @property int $id
+ * @property string $created_at
+ * @property int $auth_user_id
  * @method create(array $data)
  * @method update(int $id, array $data)
  * @method delete(int $id = null)

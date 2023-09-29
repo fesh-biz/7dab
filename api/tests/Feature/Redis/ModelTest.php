@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Unit\Redis;
+namespace Tests\Feature\Redis;
 
+use App\Models\User;
 use App\Plugins\Redis\Model;
 use App\Plugins\Redis\RedisException;
-use PHPUnit\Framework\TestCase;
+use Carbon\Carbon;
+use Tests\TestCase;
 
 class RedisTestModel extends Model {}
 
@@ -58,6 +60,27 @@ class ModelTest extends TestCase
 
         $model = RedisTestModel::create($data);
         $this->assertDataArrayEqualsModelAttributes($data, $model);
+    }
+
+    /**
+     * @test
+     * @group RedisModel
+     */
+    public function method_create_adds_created_at_and_auth_id_on_creating()
+    {
+        $user = User::first();
+        $this->actingAs($user);
+
+        $id = 2;
+        $this->model->create(['id' => $id]);
+
+        $model = $this->model->find($id);
+        $this->assertTrue(
+            $user->id === $model->auth_user_id,
+            'Auth user id of created redis model mismatch to auth id'
+        );
+
+        $this->assertNotNull($model->created_at);
     }
 
     /**

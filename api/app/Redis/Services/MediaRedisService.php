@@ -10,7 +10,6 @@ use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Repositories\UserRedisRepository;
-use App\Services\Media\MediaFileService;
 
 class MediaRedisService
 {
@@ -38,12 +37,13 @@ class MediaRedisService
 
     public function delete(int $mediaId)
     {
-        $fileService = app()->make(MediaFileService::class);
-        $fileService->deleteMediaChunksDirectory($mediaId);
+        /** @var MediaRedis $mediaRedis */
+        $mediaRedis = $this->mediaRedisRepo->find($mediaId);
 
-        $this->mediaRedisRepo->delete($mediaId);
+        $userId = $mediaRedis->auth_user_id;
+        $this->userRedisRepo->deleteMediaId($userId, $mediaId);
+        $this->userRedisRepo->deleteUserIfEmptyMediaIds($userId);
 
-        $userRedisService = app()->make(UserRedisService::class);
-        $userRedisService->deleteUserIfEmptyMediaIds($mediaId);
+        $mediaRedis->delete();
     }
 }

@@ -19,40 +19,44 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(RoleSeeder::class);
-        
+
         User::factory()->create([
             'email' => 'feshbiz@gmail.com',
             'login' => 'uvei',
             'password' => bcrypt('Fesh761737'),
             'role_id' => 1
         ]);
-        
+
+        if (app()->environment() === 'testing') {
+            return;
+        }
+
         User::factory()->create([
             'email' => 'svitluk.vargetova@gmail.com',
             'login' => 'Світлана',
             'password' => bcrypt('vargetova1990'),
             'role_id' => 2
         ]);
-        
+
         User::factory()->create([
             'email' => 'guest@gmail.com',
             'login' => 'гость',
             'password' => bcrypt('password'),
             'role_id' => 3
         ]);
-        
+
         User::factory(5)->create();
-        
+
         $this->call(PassportSeeder::class);
-        
+
         if (app()->environment() === 'dusk') {
             return;
         }
-        
+
         if (File::exists(config('7dab.post_image_storage_base_path'))) {
             File::deleteDirectory(config('7dab.post_image_storage_base_path'));
         }
-        
+
         // Content
         $this->call(TagSeeder::class);
         $this->call(PostSeeder::class);

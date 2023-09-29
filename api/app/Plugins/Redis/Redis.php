@@ -25,6 +25,7 @@ class Redis implements RedisInterface
         }
 
         $data['created_at'] = now()->format('Y-m-d h:m:s');
+        $data['auth_user_id'] = auth()->id();
 
         $id = $data['id'];
         $data = json_encode($data);

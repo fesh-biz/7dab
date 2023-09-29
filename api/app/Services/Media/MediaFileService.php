@@ -67,14 +67,27 @@ class MediaFileService
         return $filename;
     }
 
-    public function deleteMediaChunksDirectory(int $mediaId)
+    public function deleteMediaChunksDirectory(int $mediaId): string
     {
         $dir = $this->chunksBasePath . "/media-$mediaId";
 
         File::deleteDirectory($dir);
+
+        return $dir;
     }
 
-    private function prepareFolder(int $mediaId): string
+    public function createMediaChunksDirectory(int $mediaId): string
+    {
+        $dir = $this->chunksBasePath . "/media-$mediaId";
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 755, true);
+        }
+
+        return $dir;
+    }
+
+    public function prepareFolder(int $mediaId): string
     {
         $dir = $this->mergedFilesBasePath . "/media-$mediaId";
 
