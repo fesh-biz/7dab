@@ -46,12 +46,9 @@ class MediaService
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
         $uploadedMediaChunksSize = $mediaRedisRepo->getUploadedMediaChunksSize($mediaId);
 
-        $maxChunkSize = 1024 * 1024 * getUploadMaxFilesize();
-        if ($uploadedMediaChunksSize > config('7dab.media_chunks_sum_max_size') - $maxChunkSize) {
-        // if ($data->chunk_index > 3) {
+        if ($uploadedMediaChunksSize + $data->file_chunk->getSize() > config('7dab.media_chunks_sum_max_size')) {
             throw new MediaException('Max sum of all chunks has been reached');
         }
-
 
         $file = $data->file_chunk;
         $mediaFileService = new MediaFileService();
