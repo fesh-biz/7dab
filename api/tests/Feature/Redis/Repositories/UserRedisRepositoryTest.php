@@ -106,6 +106,37 @@ class UserRedisRepositoryTest extends TestCase
         $this->assertNotTrue(in_array($deletedMediaId, $user->media_ids));
     }
 
+    /**
+     * @test
+     * @group UserRedisRepository
+     */
+    public function method_delete_user_if_empty_media_ids()
+    {
+        $userId = 1;
+        $this->createUser($userId);
+
+        $this->repo->deleteUserIfEmptyMediaIds($userId);
+        $user = $this->repo->find($userId);
+
+        $this->assertTrue($user === null, 'User wasnt deleted when media_ids is empty');
+    }
+
+    /**
+     * @test
+     * @group UserRedisRepository
+     */
+    public function method_delete_user_if_empty_media_ids_doesnt_delete_if_not_empty_media_ids()
+    {
+        $userId = 1;
+        $data = new UserRedisData($userId, [1, 2]);
+        $this->repo->create($data);
+
+        $this->repo->deleteUserIfEmptyMediaIds($userId);
+
+        $user = $this->repo->find($userId);
+        $this->assertNotNull($user);
+    }
+
     private function createUser(int $id = 1): UserRedis
     {
         $data = new UserRedisData($id);
