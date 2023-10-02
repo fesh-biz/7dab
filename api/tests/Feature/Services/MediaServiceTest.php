@@ -11,6 +11,7 @@ use App\Redis\Models\MediaRedis;
 use App\Redis\Models\UserRedis;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Repositories\UserRedisRepository;
+use App\Services\Media\MediaFileService;
 use App\Services\Media\MediaService;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -20,6 +21,7 @@ class MediaServiceTest extends TestCase
     protected MediaService $service;
     protected UserRedisRepository $userRedisRepo;
     protected MediaRedisRepository $mediaRedisRepo;
+    protected MediaFileService $fileService;
 
     protected function setUp(): void
     {
@@ -29,6 +31,7 @@ class MediaServiceTest extends TestCase
         $this->service = app()->make(MediaService::class);
         $this->userRedisRepo = app()->make(UserRedisRepository::class);
         $this->mediaRedisRepo = app()->make(MediaRedisRepository::class);
+        $this->fileService = app()->make(MediaFileService::class);
 
         $this->userRedisRepo->deleteAll();
         $this->mediaRedisRepo->deleteAll();
@@ -68,7 +71,7 @@ class MediaServiceTest extends TestCase
 
     /**
      * Method uploadChunk doesn't allow to upload a new chunk
-     * if the size of already uploaded chunks is greater than allowed
+     * if the size of the uploaded chunks is greater than allowed
      * @test
      * @group MediaService
      */
@@ -102,5 +105,47 @@ class MediaServiceTest extends TestCase
 
         $this->expectExceptionMessage('Max sum of all chunks has been reached');
         $this->service->uploadChunk($uploadData);
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function upload_chunk_has_file_exploits_exception()
+    {
+        $mediaId = 12;
+        $data = new MediaRedisData($mediaId, 'image/jpeg');
+        $mediaRedis = $this->mediaRedisRepo->create($data);
+
+        $fileChunk = UploadedFile::fake()->createWithContent('testfile.jpg', '<?php');
+        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2, 3);
+
+        $this->expectExceptionMessage('File has exploit:');
+        $this->service->uploadChunk($uploadData);
+
+        $fileChunk = UploadedFile::fake()->createWithContent('testfile.jpg', 'phar');
+        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2, 3);
+
+        $this->expectExceptionMessage('File has exploit:');
+        $this->service->uploadChunk($uploadData);
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     * @group MediaServiceUploadChunk
+     */
+    public function upload_chunk_saves_chunk_to_disc()
+    {
+        $user = User::first();
+        $this->actingAs($user);
+
+        $createMediaData = new CreateMediaData($user->id, 'original_filename.jpeg', 'image/jpeg', 10000);
+        $media = $this->service->create($createMediaData);
+
+        $chunk = UploadedFile::fake()->create('chunk1', 504);
+        $uploadMediaChunkData = new UploadMediaChunkData($media->id, $chunk, 1, 3);
+
+        $this->service->uploadChunk($uploadMediaChunkData);
     }
 }

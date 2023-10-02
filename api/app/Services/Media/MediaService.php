@@ -8,7 +8,6 @@ use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Services\MediaRedisService;
-use App\Redis\Services\UserRedisService;
 use App\Repositories\Media\MediaRepository;
 
 class MediaService

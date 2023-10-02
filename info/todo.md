@@ -1,5 +1,3 @@
-# Test
-
 # Roadmap
 - [] Uploading big file by chunks
     - [] If failed attempts is 3 (store to media as `failed_attempts`)

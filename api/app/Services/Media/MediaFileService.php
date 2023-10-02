@@ -60,8 +60,11 @@ class MediaFileService
 
     public function storeChunk(int $mediaId, UploadedFile $file): string
     {
+        $dir = $this->createMediaChunksDirectory($mediaId);
+
         $path = 'media-' . $mediaId;
         $filename = $file->hashName();
+
         $file->storeAs($path, $filename, 'file_chunks_storage');
 
         return $filename;
@@ -81,7 +84,9 @@ class MediaFileService
         $dir = $this->chunksBasePath . "/media-$mediaId";
 
         if (!is_dir($dir)) {
-            mkdir($dir, 755, true);
+            mkdir($dir, 0777, true);
+            chmod($this->chunksBasePath, 0777);
+            chmod($dir, 0777);
         }
 
         return $dir;
@@ -92,7 +97,7 @@ class MediaFileService
         $dir = $this->mergedFilesBasePath . "/media-$mediaId";
 
         if (!is_dir($dir)) {
-            mkdir($dir, 755, true);
+            mkdir($dir, 0777, true);
         }
 
         return $dir;
