@@ -9,14 +9,16 @@ use Illuminate\Support\Str;
 
 class MediaFileService
 {
-    private string $chunksBasePath;
-    private string $mergedFilesBasePath;
+    public string $chunksBasePath;
+    public string $mergedFilesBasePath;
     private array $exploitPatterns = ['<?php', 'phar'];
 
     public function __construct()
     {
         $this->chunksBasePath = storage_path('file-chunks');
         $this->mergedFilesBasePath = storage_path('merged-files');
+
+        $this->createBaseFolders();
     }
 
     /**
@@ -70,36 +72,54 @@ class MediaFileService
         return $filename;
     }
 
-    public function deleteMediaChunksDirectory(int $mediaId): string
+    public function createMediaMergedFilesFolder(int $mediaId): string
+    {
+        $dir = $this->mergedFilesBasePath . "/media-$mediaId";
+        $this->createFolder($dir);
+
+        return $dir;
+    }
+
+    public function deleteMediaMergedFilesFolder(int $mediaId): string
     {
         $dir = $this->chunksBasePath . "/media-$mediaId";
-
         File::deleteDirectory($dir);
 
         return $dir;
     }
 
-    public function createMediaChunksDirectory(int $mediaId): string
+    public function createMediaChunksFolder(int $mediaId): string
     {
         $dir = $this->chunksBasePath . "/media-$mediaId";
-
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-            chmod($this->chunksBasePath, 0777);
-            chmod($dir, 0777);
-        }
+        $this->createFolder($dir);
 
         return $dir;
     }
 
-    public function prepareFolder(int $mediaId): string
+    public function deleteMediaChunksFolder(int $mediaId): string
     {
-        $dir = $this->mergedFilesBasePath . "/media-$mediaId";
-
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
+        $dir = $this->chunksBasePath . "/media-$mediaId";
+        File::deleteDirectory($dir);
 
         return $dir;
+    }
+
+    public function createBaseFolders()
+    {
+        $this->createFolder($this->chunksBasePath);
+        $this->createFolder($this->mergedFilesBasePath);
+    }
+
+    public function deleteBaseFolders()
+    {
+        File::deleteDirectory($this->chunksBasePath);
+        File::deleteDirectory($this->mergedFilesBasePath);
+    }
+
+    private function createFolder($dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir);
+            chmod($dir, 0777);
+        }
     }
 }
