@@ -44,9 +44,15 @@ class Redis implements RedisInterface
             throw new RedisException('Given id not equal to data id');
         }
 
-        $data['id'] = $id;
+        $redisData = $this->find($id);
+        $redisData = get_object_vars($redisData);
+        foreach ($data as $key => $value) {
+            $redisData[$key] = $value;
+        }
 
-        $this->create($data);
+        $redisData['id'] = $id;
+
+        $this->create($redisData);
 
         return $this->find($id);
     }

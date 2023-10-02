@@ -110,6 +110,34 @@ class ModelTest extends TestCase
      * @test
      * @group RedisModel
      */
+    public function method_update_updates_only_passed_properties()
+    {
+        $id = 2;
+        $data = [
+            'id' => $id,
+            'name' => 'John',
+            'age' => 20
+        ];
+
+        $model = $this->model->create($data);
+        $this->assertTrue($model->id === $data['id']);
+        $this->assertTrue($model->name === $data['name']);
+        $this->assertTrue($model->age === $data['age']);
+
+        $updatedData = [
+            'id' => $id,
+            'name' => 'Jane'
+        ];
+        $this->model->update($id, $updatedData);
+        $model = $this->model->find($id);
+        $this->assertTrue($model->name === $updatedData['name']);
+        $this->assertTrue($model->age === $data['age']);
+    }
+
+    /**
+     * @test
+     * @group RedisModel
+     */
     public function can_save_changed_attributes()
     {
         $id = 25;
