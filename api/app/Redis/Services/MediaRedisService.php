@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Redis\Services;
 
-use App\Data\Media\MediaRedisData;
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\User\UserRedisData;
 use App\Plugins\Redis\RedisException;
 use App\Redis\Models\MediaRedis;
@@ -21,7 +21,7 @@ class MediaRedisService
     {
     }
 
-    public function create(MediaRedisData $data): MediaRedis
+    public function create(CreateMediaRedisData $data): MediaRedis
     {
         $userId = auth()->id();
         if (!$userId) {

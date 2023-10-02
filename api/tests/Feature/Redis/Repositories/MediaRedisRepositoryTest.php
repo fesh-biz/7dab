@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Redis\Repositories;
 
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\MediaRedisData;
 use App\Redis\Models\MediaRedis;
 use App\Redis\Repositories\MediaRedisRepository as MediaRepo;
@@ -22,10 +23,26 @@ class MediaRedisRepositoryTest extends TestCase
      * @test
      * @group MediaRedisRepository
      */
+    public function method_create()
+    {
+        $id = 2;
+        $data = new CreateMediaRedisData($id, 'image/jpeg', 5);
+        $this->repo->create($data);
+        $media = $this->repo->find($id);
+
+        foreach ($data->toArray() as $field => $value) {
+            $this->assertEquals($value, $media->{$field});
+        }
+    }
+
+    /**
+     * @test
+     * @group MediaRedisRepository
+     */
     public function incrementFailedAttempts()
     {
         $id = 1;
-        $data = new MediaRedisData($id, 'image/jpeg');
+        $data = new CreateMediaRedisData($id, 'image/jpeg', 3);
         $this->repo->create($data);
 
         /** @var MediaRedis $media */
@@ -43,9 +60,9 @@ class MediaRedisRepositoryTest extends TestCase
      */
     public function getUploadedMediaChunks()
     {
-        ['id' => $id, 'chunks' => $chunks] = $this->createMediaWithChunks();
+        ['mediaId' => $mediaId, 'chunks' => $chunks] = $this->createMediaWithChunks();
 
-        $createdChunks = $this->repo->getUploadedMediaChunks($id);
+        $createdChunks = $this->repo->getUploadedMediaChunks($mediaId);
 
         foreach ($chunks as $index => $chunk) {
             $createdChunk = $createdChunks[$index];
@@ -61,9 +78,9 @@ class MediaRedisRepositoryTest extends TestCase
      */
     public function getUploadedMediaChunksSize()
     {
-        ['id' => $id, 'chunksSize' => $chunksSize] = $this->createMediaWithChunks();
+        ['mediaId' => $mediaId, 'chunksSize' => $chunksSize] = $this->createMediaWithChunks();
 
-        $uploadedChunksSize = $this->repo->getUploadedMediaChunksSize($id);
+        $uploadedChunksSize = $this->repo->getUploadedMediaChunksSize($mediaId);
 
         $this->assertEquals($chunksSize, $uploadedChunksSize);
     }
@@ -74,14 +91,14 @@ class MediaRedisRepositoryTest extends TestCase
      */
     public function addFileChunk()
     {
-        ['id' => $id, 'chunks' => $chunks] = $this->createMediaWithChunks();
+        ['mediaId' => $mediaId, 'chunks' => $chunks] = $this->createMediaWithChunks();
 
         $filename = 'new chunk';
         $size = 4234;
-        $this->repo->addFileChunk($id, $filename, $size);
+        $this->repo->addFileChunk($mediaId, $filename, $size);
 
         /** @var MediaRedis $media */
-        $media = $this->repo->find($id);
+        $media = $this->repo->find($mediaId);
         $this->assertTrue(count($media->chunks) === count($chunks) + 1, 'Chunks amount mismatch');
 
         $addedChunk = $media->chunks;
@@ -92,9 +109,14 @@ class MediaRedisRepositoryTest extends TestCase
 
     private function createMediaWithChunks(): array
     {
+        $mediaId = 2;
+        $totalChunks = 10;
+        $data = new CreateMediaRedisData($mediaId, 'image/jpeg', $totalChunks);
+        $this->repo->create($data);
+
         $chunks = [];
         $chunksSize = 0;
-        foreach (range(1, 10) as $id) {
+        foreach (range(1, $totalChunks) as $id) {
             $size = $id * 10;
             $chunksSize += $size;
 
@@ -104,12 +126,11 @@ class MediaRedisRepositoryTest extends TestCase
             ];
         }
 
-        $id = 2;
-        $data = new MediaRedisData($id, 'image/jpeg', $chunks);
-        $this->repo->create($data);
+        $data = new MediaRedisData($mediaId, 'image/jpeg', $chunks);
+        $this->repo->update($mediaId, $data);
 
         return [
-            'id' => $id,
+            'mediaId' => $mediaId,
             'chunks' => $chunks,
             'chunksSize' => $chunksSize
         ];

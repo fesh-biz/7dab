@@ -2,6 +2,7 @@
 
 namespace App\Redis\Repositories;
 
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\MediaRedisData;
 use App\Redis\Models\MediaRedis;
 
@@ -14,7 +15,7 @@ class MediaRedisRepository extends Repository
         $this->model = $model;
     }
 
-    public function create(MediaRedisData $data): MediaRedis
+    public function create(CreateMediaRedisData $data): MediaRedis
     {
         return $this->model->create($data->toArray());
     }
