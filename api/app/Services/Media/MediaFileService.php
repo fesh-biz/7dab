@@ -33,17 +33,17 @@ class MediaFileService
     {
         $chunksPath = $this->chunksBasePath . "/media-$mediaId/";
 
-        $dir = $this->prepareFolder($mediaId);
+        $dir = $this->createMediaMergedFilesFolder($mediaId);
         $hashName = Str::random(40);
         $extension = explode('/', $mimeType)[1];
         $filename = $dir . '/' . $hashName . ".$extension";
 
         foreach ($chunks as $i => $chunk) {
             $chunkPath = $chunksPath . $chunk->filename;
-            $content = file_get_contents($chunkPath);
-            if ($content === false) {
-                throw new MediaException('Chunk is missing: ' . $chunksPath);
+            if (!is_file($chunkPath)) {
+                throw new MediaException('Chunk is missing: ' . $chunkPath);
             }
+            $content = file_get_contents($chunkPath);
 
             file_put_contents($filename, $content, FILE_APPEND);
         }
@@ -62,7 +62,7 @@ class MediaFileService
 
     public function storeChunk(int $mediaId, UploadedFile $file): string
     {
-        $dir = $this->createMediaChunksDirectory($mediaId);
+        $dir = $this->createMediaChunksFolder($mediaId);
 
         $path = 'media-' . $mediaId;
         $filename = $file->hashName();
@@ -70,6 +70,14 @@ class MediaFileService
         $file->storeAs($path, $filename, 'file_chunks_storage');
 
         return $filename;
+    }
+
+    public function getFilePath(string $filename, int $mediaId, bool $isChunk = true): string
+    {
+        $res = $isChunk ? $this->chunksBasePath : $this->mergedFilesBasePath;
+        $res .= "/media-$mediaId/$filename";
+
+        return $res;
     }
 
     public function createMediaMergedFilesFolder(int $mediaId): string
@@ -82,7 +90,7 @@ class MediaFileService
 
     public function deleteMediaMergedFilesFolder(int $mediaId): string
     {
-        $dir = $this->chunksBasePath . "/media-$mediaId";
+        $dir = $this->mergedFilesBasePath . "/media-$mediaId";
         File::deleteDirectory($dir);
 
         return $dir;
