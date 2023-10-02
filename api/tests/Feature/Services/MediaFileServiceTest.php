@@ -56,13 +56,13 @@ class MediaFileServiceTest extends TestCase
      */
     public function merge_file_chunks_has_exception_if_chunk_filename_is_missing()
     {
+
         $wrongChunk = new \stdClass();
-        $wrongChunk->filename = 'notAFile.jpg';
         $mediaId = 2;
+        $wrongChunk->filename = $this->service->getFilePath('notAFile.jpg', $mediaId);
         $mime = 'image/jpeg';
 
-        $chunkPath = $this->service->getFilePath($wrongChunk->filename, $mediaId);
-        $expectedMessage = 'Chunk is missing: ' . $chunkPath;
+        $expectedMessage = 'Chunk is missing: ' . $wrongChunk->filename;
 
         $this->expectExceptionMessage($expectedMessage);
         $this->service->mergeFileChunks($mediaId, $mime, [$wrongChunk]);
@@ -90,9 +90,8 @@ class MediaFileServiceTest extends TestCase
         $file = UploadedFile::fake()->create('test.jpeg', 214);
         $mediaId = 24;
         $filename = $this->service->storeChunk($mediaId, $file);
-        $filepath = $this->service->getFilePath($filename, $mediaId);
 
-        $this->assertTrue(is_file($filepath));
+        $this->assertTrue(is_file($filename));
     }
 
     /**

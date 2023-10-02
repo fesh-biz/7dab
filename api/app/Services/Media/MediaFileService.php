@@ -39,7 +39,7 @@ class MediaFileService
         $filename = $dir . '/' . $hashName . ".$extension";
 
         foreach ($chunks as $i => $chunk) {
-            $chunkPath = $chunksPath . $chunk->filename;
+            $chunkPath = $chunk->filename;
             if (!is_file($chunkPath)) {
                 throw new MediaException('Chunk is missing: ' . $chunkPath);
             }
@@ -69,7 +69,7 @@ class MediaFileService
 
         $file->storeAs($path, $filename, 'file_chunks_storage');
 
-        return $filename;
+        return $this->getFilePath($filename, $mediaId);
     }
 
     public function getFilePath(string $filename, int $mediaId, bool $isChunk = true): string

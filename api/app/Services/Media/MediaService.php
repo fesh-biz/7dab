@@ -39,7 +39,7 @@ class MediaService
         return $media;
     }
 
-    public function uploadChunk(UploadMediaChunkData $data):? string
+    public function uploadChunk(UploadMediaChunkData $data): string
     {
         $mediaId = $data->media_id;
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
@@ -66,10 +66,8 @@ class MediaService
 
             $mediaRedisService = app()->make(MediaRedisService::class);
             $mediaRedisService->delete($mediaId);
-
-            return $filename;
         }
 
-        return null;
+        return $filename;
     }
 }

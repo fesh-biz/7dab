@@ -69,6 +69,32 @@ class MediaServiceTest extends TestCase
         $this->assertTrue(in_array($media->id, $userRedis->media_ids));
     }
 
+    // Upload Method stores chunk
+    /**
+     * @test
+     * @group MediaService
+     * @group MediaServiceUploadChunk
+     */
+    public function upload_chunk_stores_chunk_to_disc()
+    {
+        $user = User::first();
+        $this->actingAs($user);
+
+        $createMediaData = new CreateMediaData($user->id, 'original_filename.jpeg', 'image/jpeg', 10000);
+        $media = $this->service->create($createMediaData);
+
+        $chunk = UploadedFile::fake()->create('chunk1', 504);
+        $uploadMediaChunkData = new UploadMediaChunkData($media->id, $chunk, 1, 3);
+
+        $this->service->uploadChunk($uploadMediaChunkData);
+
+    }
+    // Upload Method add file chunk to media redis
+    // Upload Method if chunk is last it merges all chunks into single file
+    // Upload Method if chunk is last it removes media from redis
+    // Upload Method if chunk is last it removes media_id from redis user
+    // Upload Method if chunk is last it removes redis user if its media_ids is empty
+
     /**
      * Method uploadChunk doesn't allow to upload a new chunk
      * if the size of the uploaded chunks is greater than allowed
@@ -128,24 +154,5 @@ class MediaServiceTest extends TestCase
 
         $this->expectExceptionMessage('File has exploit:');
         $this->service->uploadChunk($uploadData);
-    }
-
-    /**
-     * @test
-     * @group MediaService
-     * @group MediaServiceUploadChunk
-     */
-    public function upload_chunk_saves_chunk_to_disc()
-    {
-        $user = User::first();
-        $this->actingAs($user);
-
-        $createMediaData = new CreateMediaData($user->id, 'original_filename.jpeg', 'image/jpeg', 10000);
-        $media = $this->service->create($createMediaData);
-
-        $chunk = UploadedFile::fake()->create('chunk1', 504);
-        $uploadMediaChunkData = new UploadMediaChunkData($media->id, $chunk, 1, 3);
-
-        $this->service->uploadChunk($uploadMediaChunkData);
     }
 }
