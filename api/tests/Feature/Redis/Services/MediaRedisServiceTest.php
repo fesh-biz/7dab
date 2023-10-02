@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Redis\Services;
 
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\MediaRedisData;
 use App\Data\User\UserRedisData;
 use App\Models\User;
@@ -68,7 +69,7 @@ class MediaRedisServiceTest extends TestCase
             new UserRedisData($user->id, [$prevMediaId])
         );
 
-        $data = new MediaRedisData($mediaId, 'image/jpeg');
+        $data = new CreateMediaRedisData($mediaId, 'image/jpeg', 5);
         $this->service->create($data);
 
         /** @var UserRedis $userRedis */
@@ -103,7 +104,7 @@ class MediaRedisServiceTest extends TestCase
     {
         $this->actingAs($user);
 
-        $data = new MediaRedisData($mediaId, 'image/jpeg');
+        $data = new CreateMediaRedisData($mediaId, 'image/jpeg', 5);
         $this->service->create($data);
 
         $mediaRedis = $this->service->mediaRedisRepo->find($mediaId);
