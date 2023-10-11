@@ -3,9 +3,11 @@
 namespace App\Services\Media;
 
 use App\Data\Media\CreateMediaData;
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\MediaRedisData;
 use App\Data\Media\UploadMediaChunkData;
 use App\Models\Media\Media;
+use App\Plugins\Redis\RedisException;
 use App\Redis\Repositories\MediaRedisRepository;
 use App\Redis\Services\MediaRedisService;
 use App\Repositories\Media\MediaRepository;
@@ -34,12 +36,18 @@ class MediaService
         $media = $this->repo->create($d);
 
         $mediaRedisService = app()->make(MediaRedisService::class);
-        $mediaRedisService->create(MediaRedisData::from($media));
+
+        $data = new CreateMediaRedisData(
+            $media->id,
+            $d->mime_type,
+            $this->getTotalChunks($d->original_size)
+        );
+        $mediaRedisService->create($data);
 
         return $media;
     }
 
-    public function uploadChunk(UploadMediaChunkData $data): string
+    public function storeChunk(UploadMediaChunkData $data): string
     {
         $mediaId = $data->media_id;
         $mediaRedisRepo = app()->make(MediaRedisRepository::class);
@@ -58,7 +66,7 @@ class MediaService
         $mediaRedisRepo->addFileChunk($mediaId, $filename, $file->getSize());
 
         $chunkIndex = $data->chunk_index;
-        $totalChunks = $data->total_chunks;
+        $totalChunks = $mediaRedisRepo->find($mediaId)->total_chunks;
 
         $mediaRedis = $mediaRedisRepo->find($mediaId);
         if ($chunkIndex + 1 === $totalChunks) {
@@ -69,5 +77,12 @@ class MediaService
         }
 
         return $filename;
+    }
+
+    public function getTotalChunks($fileSize): int
+    {
+        $mb = 1024 * 1024;
+        $uploadSize = $mb * getUploadMaxFilesize();
+        return (int) ceil($fileSize / $uploadSize);
     }
 }

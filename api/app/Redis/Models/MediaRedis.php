@@ -7,8 +7,8 @@ use App\Plugins\Redis\Model;
 /**
  * Class MediaRedis
  * @package App\Redis\Models
- * @property int $id
  * @property string $mime_type
+ * @property int $total_chunks
  * @property array $chunks
  * @property int $failed_attempts
  * @mixin Model

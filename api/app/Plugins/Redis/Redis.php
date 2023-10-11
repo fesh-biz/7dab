@@ -57,6 +57,11 @@ class Redis implements RedisInterface
         return $this->find($id);
     }
 
+    public function count(): int
+    {
+        return count($this->all());
+    }
+
     public function delete(int $id): bool
     {
         if (!$id) {

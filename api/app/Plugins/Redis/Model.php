@@ -20,6 +20,7 @@ namespace App\Plugins\Redis;
  * @method deleteMultiple(array $ids)
  * @method getWhere(string $field, mixed $value)
  * @method find(int $id)
+ * @method count()
  */
 class Model
 {

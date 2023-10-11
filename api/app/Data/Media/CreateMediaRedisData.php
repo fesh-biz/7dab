@@ -12,8 +12,8 @@ class CreateMediaRedisData extends Data
         public int $id,
         public string $mime_type,
         public int $total_chunks,
-        public int $failed_attempts = 0,
-        public array $chunks = []
+        public array $chunks = [],
+        public int $failed_attempts = 0
     )
     {
     }

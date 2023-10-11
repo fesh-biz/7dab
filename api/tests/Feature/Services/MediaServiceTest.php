@@ -3,8 +3,10 @@
 namespace Tests\Feature\Services;
 
 use App\Data\Media\CreateMediaData;
+use App\Data\Media\CreateMediaRedisData;
 use App\Data\Media\MediaRedisData;
 use App\Data\Media\UploadMediaChunkData;
+use App\Data\User\UserRedisData;
 use App\Models\Media\Media;
 use App\Models\User;
 use App\Redis\Models\MediaRedis;
@@ -41,7 +43,7 @@ class MediaServiceTest extends TestCase
      * @test
      * @group MediaService
      */
-    public function method_create()
+    public function create_stores_media_record_in_database()
     {
         $user = User::first();
         $this->actingAs($user);
@@ -53,62 +55,151 @@ class MediaServiceTest extends TestCase
             12521
         );
 
-        /** @var Media $media */
-        $media = $this->service->create($data);
+        $this->service->create($data);
         $this->assertDatabaseHas(Media::class, $data->toArray());
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function create_stores_media_to_redis()
+    {
+        ['media' => $media] = $this->createMedia();
 
         /** @var MediaRedis $mediaRedis */
         $mediaRedis = $this->mediaRedisRepo->find($media->id);
         $this->assertNotNull($mediaRedis);
         $this->assertEquals($mediaRedis->id, $media->id);
-
-        /** @var UserRedis $userRedis */
-        $userRedis = $this->userRedisRepo->find($media->user_id);
-        $this->assertNotNull($userRedis);
-        $this->assertEquals($userRedis->id, $media->user_id);
-        $this->assertTrue(in_array($media->id, $userRedis->media_ids));
     }
 
-    // Upload Method stores chunk
     /**
      * @test
      * @group MediaService
-     * @group MediaServiceUploadChunk
      */
-    public function upload_chunk_stores_chunk_to_disc()
+    public function create_stores_media_to_redis_with_correct_chunks_number ()
+    {
+        $mb = 1024 * 1024;
+        $expectedNumberOfChunks = 4;
+        $fileSizeFor3Chunks = $expectedNumberOfChunks * $mb * getUploadMaxFilesize();
+
+        ['media' => $media] = $this->createMedia($fileSizeFor3Chunks);
+
+        /** @var MediaRedis $media */
+        $media = $this->mediaRedisRepo->find($media->id);
+        $this->assertTrue(
+            $media->total_chunks === $expectedNumberOfChunks,
+            'Number of chunks mismatch'
+        );
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function create_creates_new_user_in_redis_if_necessary()
+    {
+        $redisUsers = $this->userRedisRepo->all();
+        $this->assertCount(0, $redisUsers);
+
+        ['user' => $user] = $this->createMedia();
+        $redisUser = $this->userRedisRepo->find($user->id);
+        $this->assertTrue($redisUser->id === $user->id);
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function create_only_updates_redis_user_data()
     {
         $user = User::first();
-        $this->actingAs($user);
+        $uploadedMediaIds = [2, 3];
+        $redisUserData = new UserRedisData($user->id, $uploadedMediaIds);
+        $this->userRedisRepo->create($redisUserData);
 
-        $createMediaData = new CreateMediaData($user->id, 'original_filename.jpeg', 'image/jpeg', 10000);
-        $media = $this->service->create($createMediaData);
+        ['user' => $user, 'media' => $media] = $this->createMedia();
+        $mediaRedis = $this->mediaRedisRepo->find($media->id);
+        /** @var UserRedis $userRedis */
+        $userRedis = $this->userRedisRepo->find($user->id);
 
-        $chunk = UploadedFile::fake()->create('chunk1', 504);
-        $uploadMediaChunkData = new UploadMediaChunkData($media->id, $chunk, 1, 3);
-
-        $this->service->uploadChunk($uploadMediaChunkData);
-
+        $this->assertTrue(in_array($media->id, $userRedis->media_ids));
+        $this->assertTrue(in_array(2, $userRedis->media_ids));
+        $this->assertTrue(in_array(3, $userRedis->media_ids));
     }
-    // Upload Method add file chunk to media redis
-    // Upload Method if chunk is last it merges all chunks into single file
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function store_chunk_stores_chunks_to_disc()
+    {
+        ['media' => $media] = $this->createMedia();
+
+        $filename = $this->storeChunk($media->id);
+        $this->assertTrue(is_file($filename));
+    }
+
+    /**
+     * @test
+     * @group MediaService
+     */
+    public function store_chunk_adds_file_to_media_redis()
+    {
+        ['media' => $media] = $this->createMedia();
+
+        $filename = $this->storeChunk($media->id);
+
+        /** @var MediaRedis $mediaRedis */
+        $mediaRedis = $this->mediaRedisRepo->find($media->id);
+
+        $this->assertEquals($filename, $mediaRedis->chunks[0]->filename);
+        $this->assertTrue(is_file($filename));
+    }
+
+    /**
+     * @test
+     * @group MediaServiceq
+     */
+    public function store_chunk_merges_all_chunks_into_single_file()
+    {
+        $chunkSize = getUploadMaxFilesize() * 1024;
+        $totalChunks = 5;
+        $fileSize = $chunkSize * $totalChunks;
+
+        ['media' => $media] = $this->createMedia($fileSize);
+
+        $filename = null;
+        foreach (range(0, $totalChunks - 1) as $chunkIndex) {
+            $chunk = UploadedFile::fake()->create('test.jpg', 5 * 1024);
+            $filename = $this->storeChunk($media->id, $chunk, $chunkIndex);
+        }
+        $mediaRedis = $this->mediaRedisRepo->find($media->id);
+
+        $this->assertTrue(is_file($filename));
+    }
+
     // Upload Method if chunk is last it removes media from redis
     // Upload Method if chunk is last it removes media_id from redis user
     // Upload Method if chunk is last it removes redis user if its media_ids is empty
+    // Upload Method if chunk is last and merged filesize !== $media->original_size remove all
+    // Upload Method if chunk is last it uploads file to DigitalOcean Space
+    // Upload Method if chunk is last it updates media with DO Space url
 
     /**
      * Method uploadChunk doesn't allow to upload a new chunk
      * if the size of the uploaded chunks is greater than allowed
-     * @test
+     * @tests
      * @group MediaService
      */
-    public function upload_chunk_throw_sum_exception()
+    public function upload_chunk_has_sum_exception()
     {
         $mb = 1024 * 1024;
         $uploadMaxFileSize = $mb * getUploadMaxFilesize();
         $maxAllowedChunksSumSize = config('7dab.media_chunks_sum_max_size');
 
         $mediaId = 12;
-        $data = new MediaRedisData($mediaId, 'image/jpeg');
+        $data = new CreateMediaRedisData($mediaId, 'image/jpeg', 5);
         $mediaRedis = $this->mediaRedisRepo->create($data);
 
         $firstChunkSize = $uploadMaxFileSize;
@@ -127,32 +218,74 @@ class MediaServiceTest extends TestCase
         $mediaRedis->save();
 
         $fileChunk = UploadedFile::fake()->create('test.jpeg', 100);
-        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2, 3);
+        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2);
 
         $this->expectExceptionMessage('Max sum of all chunks has been reached');
         $this->service->uploadChunk($uploadData);
     }
 
     /**
-     * @test
+     * @tests
      * @group MediaService
      */
     public function upload_chunk_has_file_exploits_exception()
     {
         $mediaId = 12;
-        $data = new MediaRedisData($mediaId, 'image/jpeg');
+        $data = new CreateMediaRedisData($mediaId, 'image/jpeg', 5);
         $mediaRedis = $this->mediaRedisRepo->create($data);
 
         $fileChunk = UploadedFile::fake()->createWithContent('testfile.jpg', '<?php');
-        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2, 3);
+        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 0);
 
         $this->expectExceptionMessage('File has exploit:');
         $this->service->uploadChunk($uploadData);
 
         $fileChunk = UploadedFile::fake()->createWithContent('testfile.jpg', 'phar');
-        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 2, 3);
+        $uploadData = new UploadMediaChunkData($mediaId, $fileChunk, 0);
 
         $this->expectExceptionMessage('File has exploit:');
         $this->service->uploadChunk($uploadData);
+    }
+
+    /**
+     * @tests
+     * @group MediaService
+     */
+    public function get_total_chunks_returns_number_equal_or_greater_than_1()
+    {
+        $mb = 1024 * 1024;
+        $uploadSize = $mb * getUploadMaxFilesize();
+
+        $fiveUploadSizePlusOne = 5 * $uploadSize + 1;
+        $sixChunks = $this->service->getTotalChunks($fiveUploadSizePlusOne);
+        $this->assertTrue($sixChunks === 6);
+
+        $oneChunk = $this->service->getTotalChunks(1);
+        $this->assertTrue($oneChunk === 1);
+    }
+
+    private function createMedia(int $fileSize = 10000): array
+    {
+        $user = User::first();
+        $this->actingAs($user);
+
+        $createMediaData = new CreateMediaData($user->id, 'original_filename.jpeg', 'image/jpeg', $fileSize);
+        $media = $this->service->create($createMediaData);
+
+        return [
+            'user' => $user,
+            'media' => $media
+        ];
+    }
+
+    private function storeChunk(int $mediaId, UploadedFile $chunk = null, int $chunkIndex = 1): string
+    {
+        if (!$chunk) {
+            $chunk = UploadedFile::fake()->create('chunk1', 504);
+        }
+
+        $uploadMediaChunkData = new UploadMediaChunkData($mediaId, $chunk, $chunkIndex);
+
+        return $this->service->storeChunk($uploadMediaChunkData);
     }
 }
