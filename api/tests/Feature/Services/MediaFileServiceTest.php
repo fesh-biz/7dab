@@ -24,6 +24,7 @@ class MediaFileServiceTest extends TestCase
     /**
      * @test
      * @group MediaFileService
+     * @group mm
      */
     public function merge_file_chunks_creates_merged_file()
     {
