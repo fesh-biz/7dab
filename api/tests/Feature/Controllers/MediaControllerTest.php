@@ -62,7 +62,6 @@ class MediaControllerTest extends TestCase
     /**
      * @test
      * @group MediaController
-     * @group qq
      */
     public function check_file_throw_exception_about_wrong_mime_type()
     {
@@ -82,12 +81,34 @@ class MediaControllerTest extends TestCase
     }
 
     /**
-     * @tes
+     * @test
      * @group MediaController
      */
     public function check_file_allow_specific_mime_types()
     {
+        $basePath = base_path('tests/files');
+        $files = scandir($basePath);
+        $filesToCheck = [];
+        foreach ($files as $filename) {
+            $filePath = $basePath . "/$filename";
+            if (is_file($filePath)) {
+                $filesToCheck[] = $filePath;
+            }
+        }
 
+        foreach ($filesToCheck as $filename) {
+            $file = fopen($filename, 'rb');
+            $content = fread($file, 100);
+            $extension = pathinfo($filename)['extension'];
+            $postData = [
+                'file_chunk' => UploadedFile::fake()->createWithContent('test.' . $extension, $content),
+                'size' => 2332
+            ];
+
+            ['res' => $res] = $this->sendCheckFileRequestAsUser($postData);
+
+            $this->assertTrue($res->status === 'success');
+        }
     }
 
     /**

@@ -39,7 +39,7 @@ class CheckFileRequest extends FormRequest
 
         return [
             'file_chunk' => 'required',
-            'size' => ['required', 'number']
+            'size' => ['required', 'integer']
         ];
     }
 
