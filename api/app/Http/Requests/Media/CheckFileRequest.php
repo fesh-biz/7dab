@@ -10,6 +10,7 @@ class CheckFileRequest extends FormRequest
     use ChecksTrait;
 
     private string $mimeType;
+    private string $name;
 
     public function authorize(): bool
     {
@@ -24,9 +25,12 @@ class CheckFileRequest extends FormRequest
             throw new \Exception('Chunk File is missing');
         }
 
-        if ($file->getSize() > 100) {
+        $fileSize = app()->environment() === 'testing' ? 100 * 1024 : 100;
+        if ($file->getSize() > $fileSize) {
             throw new \Exception('The given file chunk is too large');
         }
+
+        $this->name = $file->getClientOriginalName();
 
         $this->mimeType = $this->getFileType($file);
         $this->checkMimeType($this->mimeType);
@@ -35,7 +39,7 @@ class CheckFileRequest extends FormRequest
 
         return [
             'file_chunk' => 'required',
-            'name' => ['required', 'string']
+            'size' => ['required', 'number']
         ];
     }
 

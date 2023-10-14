@@ -38,10 +38,10 @@ class MediaController extends Controller
         ]);
     }
 
-    public function uploadChunk(UploadMediaChunkRequest $r): JsonResponse
+    public function storeChunk(UploadMediaChunkRequest $r): JsonResponse
     {
         try {
-            $res = $this->service->uploadChunk($r->dto());
+            $res = $this->service->storeChunk($r->dto());
             return response()->json(['filename' => $res]);
         } catch (MediaException $e) {
             $redisMedia = app()->make(MediaRedisRepository::class)

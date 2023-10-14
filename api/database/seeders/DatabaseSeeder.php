@@ -29,10 +29,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1
         ]);
 
-        if (app()->environment() === 'testing') {
-            return;
-        }
-
         User::factory()->create([
             'email' => 'svitluk.vargetova@gmail.com',
             'login' => 'Світлана',
@@ -49,9 +45,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory(5)->create();
 
-        $this->call(PassportSeeder::class);
 
-        if (app()->environment() === 'dusk') {
+        if (app()->environment() === 'dusk' || app()->environment() === 'testing') {
             return;
         }
 

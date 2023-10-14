@@ -20,7 +20,7 @@ trait ChecksTrait
         $videoMimeTypes = ['video/mp4', 'video/webm'];
 
         if (!in_array($mimeType, $imageMimeTypes) && !in_array($mimeType, $videoMimeTypes)) {
-            $this->throwFileValidationException(trans('validation.wrong_file_type'));
+            throw new \Exception(trans('validation.wrong_file_type'));
         }
     }
 

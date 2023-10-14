@@ -33,10 +33,10 @@ Route::middleware('auth:api')->namespace('Auth')->group(function () {
 });
 
 // Media
-Route::group(['prefix' => 'media', 'middleware' => 'auth:api'], function() {
-    Route::post('/upload-chunk', [MediaController::class, 'uploadChunk']);
-    Route::post('/check-file', [MediaController::class, 'checkFile']);
-    Route::delete('/{id}', [MediaController::class, 'delete']);
+Route::group(['prefix' => 'media', 'middleware' => 'auth:api', 'as' => 'media.'], function() {
+    Route::post('/upload-chunk', [MediaController::class, 'uploadChunk'])->name('uploadChunk');
+    Route::post('/check-file', [MediaController::class, 'checkFile'])->name('checkFile');
+    Route::delete('/{id}', [MediaController::class, 'delete'])->name('delete');
 });
 
 // Users
