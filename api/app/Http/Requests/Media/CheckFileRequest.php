@@ -55,10 +55,11 @@ class CheckFileRequest extends FormRequest
 
     private function checkFileSize(string $mimeType, int $size): void
     {
-        $Mb = 1024 * 1024;
-        $maxImageSize = 5 * $Mb;
-        $maxGifSize = 50 * $Mb;
-        $maxVideoSize = 100 * $Mb;
+        $mb = 1024 * 1024;
+        $uploadMaxFilesize = getUploadMaxFilesize() * $mb;
+        $maxImageSize = $uploadMaxFilesize; // 5Mb
+        $maxGifSize = 10 * $uploadMaxFilesize; // 50Mb
+        $maxVideoSize = 20 * $uploadMaxFilesize; // 100Mb
 
         $maxAllowedSize = match ($mimeType) {
             'image/jpeg', 'image/png', 'image/webp' => $maxImageSize,
