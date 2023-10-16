@@ -365,6 +365,23 @@ class MediaControllerTest extends TestCase
         $this->assertNotNull($this->mediaRedisRepo->find($r->media_id));
     }
 
+    /**
+     * @tes
+     * @group MediaController
+     */
+    public function store_chunk_throws_exception_about_max_sum_of_all_chunks_has_been_reached()
+    {
+
+    }
+
+    /**
+     * @tes
+     * @group MediaController
+     */
+    public function store_chunk_()
+    {
+
+    }
 
     // Upload Method if chunk is last it removes media from redis
     // Upload Method if chunk is last it removes media_id from redis user
