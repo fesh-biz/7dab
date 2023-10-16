@@ -25,16 +25,12 @@ class MediaController extends Controller
 
     public function checkFile(CheckFileRequest $r): JsonResponse
     {
-        $mb = 1024 * 1024;
-        $media = null;
-        if ($r->dto()->original_size > 2 * $mb) {
-            $media = $this->service->create($r->dto());
-        }
+        $media = $this->service->create($r->dto());
 
         return response()->json([
             'status' => 'success',
             'chunk_size' => explode('M', ini_get('upload_max_filesize'))[0],
-            'media_id' => $media->id ?? null
+            'media_id' => $media->id
         ]);
     }
 

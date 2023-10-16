@@ -14,7 +14,9 @@ class MediaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id' => 1,
+            'original_filename' => 'test.jpg',
+            'mime_type' => 'image/jpg'
         ];
     }
 }

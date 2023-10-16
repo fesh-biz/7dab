@@ -2,15 +2,43 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Data\User\UserRedisData;
+use App\Models\Media\Media;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Redis\Repositories\MediaRedisRepository;
+use App\Redis\Repositories\UserRedisRepository;
+use App\Services\Media\MediaFileService;
+use App\Services\Media\MediaService;
 use Illuminate\Http\UploadedFile;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class MediaControllerTest extends TestCase
 {
+    protected MediaService $mediaService;
+    protected UserRedisRepository $userRedisRepo;
+    protected MediaRedisRepository $mediaRedisRepo;
+    protected MediaFileService $fileService;
+
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->fileService = app()->make(MediaFileService::class);
+        $this->fileService->deleteBaseFolders();
+        $this->fileService->createBaseFolders();
+
+        $this->artisan('db:seed');
+
+        $this->mediaService = app()->make(MediaService::class);
+        $this->userRedisRepo = app()->make(UserRedisRepository::class);
+        $this->mediaRedisRepo = app()->make(MediaRedisRepository::class);
+
+        $this->userRedisRepo->deleteAll();
+        $this->mediaRedisRepo->deleteAll();
+    }
+
     /**
      * @test
      * @group MediaController
@@ -268,30 +296,73 @@ class MediaControllerTest extends TestCase
     }
 
     /**
-     * @tes
+     * @test
      * @group MediaController
      */
     public function check_file_creates_user_in_redis()
     {
+        $this->assertTrue($this->userRedisRepo->count() === 0);
 
+        $postData = $this->getCheckFilePostData('webm');
+
+        ['user' => $u] = $this->sendCheckFileRequestAsUser($postData);
+        $userRedis = $this->userRedisRepo->find($u->id);
+
+        $this->assertNotNull($userRedis);
+        $this->assertEquals($userRedis->id, $u->id);
     }
 
     /**
-     * @tes
+     * @test
+     * @group MediaController
+     */
+    public function check_file_doesnt_override_user_in_redis_and_adds_media_id_to_its()
+    {
+        $user = User::first();
+        $media = Media::factory()->create();
+        $userRedisData = new UserRedisData($user->id, [$media->id]);
+        $this->userRedisRepo->create($userRedisData);
+
+        $postData = $this->getCheckFilePostData('webm');
+
+        ['user' => $u, 'res' => $r] = $this->sendCheckFileRequestAsUser($postData, $user);
+        $userRedis = $this->userRedisRepo->find($u->id);
+
+        $this->assertTrue(in_array($media->id, $userRedis->media_ids));
+        $this->assertTrue(in_array($r->media_id, $userRedis->media_ids));
+    }
+
+    /**
+     * @test
      * @group MediaController
      */
     public function check_file_creates_media_in_redis()
     {
+        $postData = $this->getCheckFilePostData('jpg');
 
+        ['user' => $u, 'res' => $r] = $this->sendCheckFileRequestAsUser($postData);
+
+        $mediaDBData = [
+            'user_id' => $u->id,
+            'original_filename' => $postData['file_chunk']->getClientOriginalName(),
+            'mime_type' => 'image/jpeg',
+            'original_size' => $postData['size']
+        ];
+
+        $this->assertDatabaseHas('media', $mediaDBData);
     }
 
     /**
-     * @tes
+     * @test
      * @group MediaController
      */
     public function check_file_creates_media_in_database()
     {
+        $postData = $this->getCheckFilePostData('jpg');
 
+        ['user' => $u, 'res' => $r] = $this->sendCheckFileRequestAsUser($postData);
+
+        $this->assertNotNull($this->mediaRedisRepo->find($r->media_id));
     }
 
 
@@ -302,14 +373,15 @@ class MediaControllerTest extends TestCase
     // Upload Method if chunk is last it uploads file to DigitalOcean Space
     // Upload Method if chunk is last it updates media with DO Space url
 
-    private function sendCheckFileRequestAsUser(array $postData = []): array
+    private function sendCheckFileRequestAsUser(array $postData = [], User $user = null): array
     {
-        $user = User::first();
+        $user = $user ?: User::first();
         Passport::actingAs($user);
 
         $res = $this->actingAs($user)
             ->postJson(route('media.checkFile'), $postData)
             ->getContent();
+
         return [
             'res' => json_decode($res),
             'user' => $user

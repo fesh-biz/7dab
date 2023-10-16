@@ -52,7 +52,7 @@ class Model
         }
     }
 
-    private static function makeResult(mixed $res): self|array|bool|null
+    private static function makeResult(mixed $res)
     {
         if (!$res || is_bool($res)) {
             return $res;
